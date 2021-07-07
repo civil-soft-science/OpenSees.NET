@@ -103,8 +103,8 @@ MumpsSolver::initializeMumps(void)
     }
     
     int nnz = theMumpsSOE->nnz;
-    int *rowA = theMumpsSOE->rowA;
-    int *colA = theMumpsSOE->colA;
+    MUMPS_INT *rowA = theMumpsSOE->rowA;
+    MUMPS_INT *colA = theMumpsSOE->colA;
     
     // increment row and col A values by 1 for mumps fortran indexing
     for (int i = 0; i < nnz; i++) {
@@ -151,8 +151,8 @@ MumpsSolver::solveAfterInitialization(void)
 {
   int nnz = theMumpsSOE->nnz;
   int n = theMumpsSOE->size;
-  int *rowA = theMumpsSOE->rowA;
-  int *colA = theMumpsSOE->colA;
+  MUMPS_INT *rowA = theMumpsSOE->rowA;
+  MUMPS_INT *colA = theMumpsSOE->colA;
 
   double *X = theMumpsSOE->X;
   double *B = theMumpsSOE->B;

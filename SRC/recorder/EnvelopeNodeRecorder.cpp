@@ -565,13 +565,13 @@ EnvelopeNodeRecorder::record(int commitTag, double timeStamp)
     if (theDomain == 0 || theDofs == 0) {
         return 0;
     }
-#endif // _CSS
-
-
     if (theHandler == 0) {
         opserr << "EnvelopeNodeRecorder::record() - no DataOutputHandler has been set\n";
         return -1;
     }
+#endif // _CSS
+
+
 
 
     if (initializationDone != true)
@@ -1039,6 +1039,10 @@ EnvelopeNodeRecorder::sendSelf(int commitTag, Channel &theChannel)
     return -1;
   }
 
+#ifdef _CSS
+  if (theHandler != 0)
+#endif // _CSS
+
   if (theHandler->sendSelf(commitTag, theChannel) < 0) {
     opserr << "EnvelopeNodeRecorder::sendSelf() - failed to send the DataOutputHandler\n";
     return -1;
@@ -1338,11 +1342,16 @@ EnvelopeNodeRecorder::initialize(void)
 	}
       }
     }
-
+#ifdef _CSS
+    if (theHandler != 0)
+#endif // _CSS
     theHandler->setOrder(xmlOrder);
   }
 
-  for (int i=0; i<numValidNodes; i++) {
+#ifdef _CSS
+  if (theHandler != 0)
+#endif // _CSS
+      for (int i=0; i<numValidNodes; i++) {
     int nodeTag = theNodes[i]->getTag();
 
     theHandler->tag("NodeOutput");
@@ -1363,7 +1372,10 @@ EnvelopeNodeRecorder::initialize(void)
     theHandler->endTag();
   }
 
-  if (theNodalTags != 0 && addColumnInfo == 1) {
+#ifdef _CSS
+  if (theHandler != 0)
+#endif // _CSS
+      if (theNodalTags != 0 && addColumnInfo == 1) {
     theHandler->setOrder(dataOrder);
   }
 

@@ -211,7 +211,7 @@ DirectIntegrationAnalysis::analyzeStep(double dT)
     theIntegrator->revertToLastStep();
     return -2;
   }
-  
+  double t = the_Domain->getCurrentTime();
   result = theAlgorithm->solveCurrentStep();
   if (result < 0) {
     opserr << "DirectIntegrationAnalysis::analyze() - the Algorithm failed";

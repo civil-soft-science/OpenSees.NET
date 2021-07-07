@@ -156,8 +156,8 @@ MumpsParallelSOE::setSize(Graph &theGraph)
     if (colA != 0) delete [] colA;
 
     A = new double[nnz];    
-    rowA = new int[nnz];
-    colA = new int[nnz];
+    rowA = new MUMPS_INT[nnz];
+    colA = new MUMPS_INT[nnz];
       
     for (int i=0; i<nnz; i++) {
       A[i]=0;
@@ -188,7 +188,7 @@ MumpsParallelSOE::setSize(Graph &theGraph)
     X = new double[size];
     myB = new double[size];
     workArea = new double[size];
-    colStartA = new int[size+1]; 
+    colStartA = new MUMPS_INT[size+1];
     
     if (B == 0 || X == 0 || colStartA == 0 || workArea == 0 || myB == 0) {
       opserr << "WARNING MumpsSOE::MumpsSOE :";

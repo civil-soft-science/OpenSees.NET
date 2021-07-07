@@ -138,8 +138,8 @@ MumpsSOE::setSize(Graph &theGraph)
     if (rowA != 0) delete [] rowA;
     
     A = new double[newNNZ];
-    rowA = new int[newNNZ];
-    colA = new int[newNNZ];
+    rowA = new MUMPS_INT[newNNZ];
+    colA = new MUMPS_INT[newNNZ];
     
     if (A == 0 || rowA == 0 || colA == 0) {
       opserr << "WARNING MumpsSOE::MumpsSOE :";
@@ -168,7 +168,7 @@ MumpsSOE::setSize(Graph &theGraph)
     // create the new
     B = new double[size];
     X = new double[size];
-    colStartA = new int[size+1]; 
+    colStartA = new MUMPS_INT[size+1];
     
     if (B == 0 || X == 0 || colStartA == 0) {
       opserr << "WARNING MumpsSOE::MumpsSOE :";

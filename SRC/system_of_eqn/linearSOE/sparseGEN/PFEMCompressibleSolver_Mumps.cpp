@@ -182,8 +182,8 @@ PFEMCompressibleSolver_Mumps::solve()
 	sid.n = H->n;
 	sid.nz = H->nzmax;
 	sid.a = H->x;
-	sid.irn = new int[sid.nz];
-	sid.jcn = new int[sid.nz];
+	sid.irn = new MUMPS_INT[sid.nz];
+	sid.jcn = new MUMPS_INT[sid.nz];
 
 	for(int j=0; j<sid.n; j++) {
 	    for(int k=H->p[j]; k<H->p[j+1]; k++) {

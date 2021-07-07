@@ -1572,8 +1572,11 @@ int OPS_NodeEleConnectsCmd(ClientData clientData, Tcl_Interp* interp, int argc, 
 }
 int OPS_LogCommandsCmd(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
+    static int nCall = 0;
 	std::string file = "commandsLog.tcl";
-	CmdLogStream.setFile(file.c_str());
+   if (nCall == 0)
+	 CmdLogStream.setFile(file.c_str());
+   nCall++;
 	if (LOG_COMMANDS == 0)		// to support for "stop"
 		LOG_COMMANDS = 1;
 	int narg = 1;
@@ -1604,6 +1607,14 @@ int OPS_LogCommandsCmd(ClientData clientData, Tcl_Interp* interp, int argc, TCL_
 			LOG_COMMANDS = 0;
 			CmdLogStream.close();
 		}
+		else if (strcmp(argv[narg], "-comment") == 0)
+		{
+			narg++;
+         if (argc > narg)
+         {
+             CmdLogStream << argv[narg++];
+         }
+      }
 	}
 
 	return 0;

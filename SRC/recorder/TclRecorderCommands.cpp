@@ -113,7 +113,11 @@ extern void* OPS_NodeRecorderRMS();
 
  static ExternalRecorderCommand *theExternalRecorderCommands = NULL;
 
-enum outputMode  {STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BINARY_STREAM, DATA_STREAM_CSV, TCP_STREAM, DATA_STREAM_ADD};
+#ifdef _CSS
+ enum outputMode  {No_Output, STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BINARY_STREAM, DATA_STREAM_CSV, TCP_STREAM, DATA_STREAM_ADD};
+ #else
+ enum outputMode  {STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BINARY_STREAM, DATA_STREAM_CSV, TCP_STREAM, DATA_STREAM_ADD};
+#endif
 
 
  #include <EquiSolnAlgo.h>
@@ -1143,13 +1147,15 @@ enum outputMode  {STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BIN
 
        TCL_Char *responseID = 0;
 
-       outputMode eMode = STANDARD_STREAM;
-
-       int pos = 2;
 #ifdef _CSS
 		 int procDataMethod = 0;
 		 int cntrlRcrdrTag = 0;
+		 outputMode eMode = No_Output;
+#else
+		 outputMode eMode = STANDARD_STREAM;
 #endif // _CSS
+
+       int pos = 2;
 
        bool echoTimeFlag = false;
        int flags = 0;
@@ -1478,11 +1484,17 @@ enum outputMode  {STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BIN
 	 theOutputStream = new BinaryFileStream(fileName);
        } else if (eMode == TCP_STREAM && inetAddr != 0) {
 	 theOutputStream = new TCP_Stream(inetPort, inetAddr);
-       } else {
+       }
+#ifndef _CSS
+		 else {
 	 theOutputStream = new StandardStream();
        }
+		 theOutputStream->setPrecision(precision);
+#else
 
+		 if (theOutputStream != 0)
        theOutputStream->setPrecision(precision);
+#endif // !_CSS
 
        if (theTimeSeries != 0 && theTimeSeriesID.Size() < theDofs.Size()) {
 	 opserr << "ERROR: recorder Node/EnvelopNode # TimeSeries must equal # dof - IGNORING TimeSeries OPTION\n";

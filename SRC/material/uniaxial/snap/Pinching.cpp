@@ -50,7 +50,7 @@ Pinching::Pinching(int tag, Vector inputParam )
   :UniaxialMaterial(tag,MAT_TAG_Pinching)
 {
 	if( (inputParam.Size()) < 19) 
-		opserr << "Error: Pinching(): inputParam, size <19\n" << "\a";
+		opserr << "Error: Pinching(): inputParam, size <19\n";
   
 	/*
  	Input parameters
@@ -88,7 +88,15 @@ Pinching::Pinching(int tag, Vector inputParam )
 	ck				= inputParam[16];
 	ca				= inputParam[17];
 	cd				= inputParam[18];
-  
+#ifdef _CSS
+	reloadFFac = inputParam[19];
+	if (reloadFFac > fpPos || reloadFFac > fpNeg)
+	{
+	  opserr << "Warning: Pinching(): reloadFFac > fpPos || reloadFFac > fpNeg\n";
+	  reloadFFac = fpPos < fpNeg ? fpPos : fpNeg;
+	}
+#endif
+
 	// Error check
 	if ( ecaps < 0.0 || ecapk < 0.0 || ecapa < 0.0 || ecapd < 0.0)
     {
@@ -250,8 +258,12 @@ int Pinching::sendSelf(int cTag, Channel &theChannel)
 
 UniaxialMaterial *Pinching::getCopy(void)
 {
+#ifdef _CSS
+	Vector inp(20);
+#else
 	Vector inp(19);
-	
+#endif // _CSS
+
 	inp[0] = elstk;
 	inp[1] = fyieldPos;
 	inp[2] = fyieldNeg;
@@ -271,7 +283,9 @@ UniaxialMaterial *Pinching::getCopy(void)
 	inp[16] = ck;
 	inp[17] = ca;
 	inp[18] = cd;
-	
+#ifdef _CSS
+	inp[19] = reloadFFac;
+#endif
 	Pinching *theCopy = new Pinching(this->getTag(), inp );
 
 	for (int i=0; i<22; i++) {
@@ -286,53 +300,105 @@ UniaxialMaterial *Pinching::getCopy(void)
 
 int Pinching::setTrialStrain( double d, double strainRate)
 {
-	int flagDeg , flgstop , Unl, kon;
-	double deltaD;
-	double ekP,ekunload,ekexcurs,Enrgtot,Enrgc,sp,sn,dmax,dmin,fyPos,fyNeg,fP,dP;
-	double ek,f,RSE,a2,betaa,betad,betak,betas,ekLim;
-	double ekt,f1,f2,fpinch,dCap1Pos,dCap2Pos,dCap1Neg,dCap2Neg;
-	double dyPos,dyNeg,dch,ekpinch, cpPos, cpNeg;
-	double Enrgi,ekhardNeg,ekhardPos,fmax,fmin;
-	double alphaPos, alphaNeg, fCapRefPos, fCapRefNeg;
-	
-	//	Updating of information in each new call to this Model ----------
+	 int flagDeg, flgstop, Unl, kon;
+	 flagDeg = 0;
+	 flgstop = 0;
+	 Unl = 1;
+#ifndef _CSS
+	 double deltaD;
+	 double ekP, ekunload, ekexcurs, Enrgtot, Enrgc, sp, sn, dmax, dmin, fyPos, fyNeg, fP, dP;
+	 double ek, f, RSE, a2, betaa, betad, betak, betas, ekLim;
+	 double ekt, f1, f2, fpinch, dCap1Pos, dCap2Pos, dCap1Neg, dCap2Neg;
+	 double dyPos, dyNeg, dch, ekpinch, cpPos, cpNeg;
+	 double Enrgi, ekhardNeg, ekhardPos, fmax, fmin;
+	 double alphaPos, alphaNeg, fCapRefPos, fCapRefNeg;
 
-	flagDeg = 0;
-	flgstop = 0;
-	Unl = 1;
-	
-  	dP			= hsCommit[0];
-	fP			= hsCommit[1];
-	ekP			= hsCommit[2];
- 	ekunload	= hsCommit[3];
-	ekexcurs	= hsCommit[4];
-	Enrgtot		= hsCommit[5];
-	Enrgc		= hsCommit[6];
-	sp			= hsCommit[7];
-	sn			= hsCommit[8];
+	 //	Updating of information in each new call to this Model ----------
+
+
+	 dP = hsCommit[0];
+	 fP = hsCommit[1];
+	 ekP = hsCommit[2];
+	 ekunload = hsCommit[3];
+	 ekexcurs = hsCommit[4];
+	 Enrgtot = hsCommit[5];
+	 Enrgc = hsCommit[6];
+	 sp = hsCommit[7];
+	 sn = hsCommit[8];
+	 kon = (int)hsCommit[9];
+	 dmax = hsCommit[10];
+	 dmin = hsCommit[11];
+	 fyPos = hsCommit[12];
+	 fyNeg = hsCommit[13];
+	 cpPos = hsCommit[14];
+	 cpNeg = hsCommit[15];
+	 fmax = hsCommit[16];
+	 fmin = hsCommit[17];
+	 alphaPos = hsCommit[18];
+	 alphaNeg = hsCommit[19];
+	 fCapRefPos = hsCommit[20];
+	 fCapRefNeg = hsCommit[21];
+
+#else
 	kon			= (int) hsCommit[9];
-	dmax		= hsCommit[10];
-	dmin		= hsCommit[11];
-	fyPos		= hsCommit[12];
-	fyNeg		= hsCommit[13];			   
-	cpPos		= hsCommit[14];
-	cpNeg		= hsCommit[15];
-	fmax		= hsCommit[16];
-	fmin		= hsCommit[17];
-	alphaPos	= hsCommit[18];
-	alphaNeg	= hsCommit[19];
-	fCapRefPos	= hsCommit[20];
-	fCapRefNeg	= hsCommit[21];
-	
-	ekhardPos	= alphaPos * elstk;
-	ekhardNeg	= alphaNeg * elstk;
-	deltaD		= d-dP;
+  	hsTrial[0]	= d	 ;
+	hsTrial[1]	= hsCommit[1]	 ;
+	hsTrial[2]	= hsCommit[2]	 ;
+ 	hsTrial[3]	= hsCommit[3]	 ;
+	hsTrial[4]	= hsCommit[4]	 ;
+	hsTrial[5]	= hsCommit[5]	 ;
+	hsTrial[6]	= hsCommit[6]	 ;
+	hsTrial[7]	= hsCommit[7]	 ;
+	hsTrial[8]	= hsCommit[8]	 ;
+	hsTrial[10]	= hsCommit[10]	 ;
+	hsTrial[11]	= hsCommit[11]	 ;
+	hsTrial[12]	= hsCommit[12]	 ;
+	hsTrial[13]	= hsCommit[13]	 ;			   
+	hsTrial[14]	= hsCommit[14]	 ;
+	hsTrial[15]	= hsCommit[15]	 ;
+	hsTrial[16]	= hsCommit[16]	 ;
+	hsTrial[17]	= hsCommit[17]	 ;
+	hsTrial[18]	= hsCommit[18]	 ;
+	hsTrial[19]	= hsCommit[19]	 ;
+	hsTrial[20]	= hsCommit[20]	 ;
+	hsTrial[21]	= hsCommit[21]	 ;
+  	double dP				= hsCommit[0]	 ;
+	double fP				= hsTrial[1]	 ;
+	double ekP				= hsTrial[2]	 ;
 
-	betas = betak = betaa = betad = 0.0;
+	double & f				= hsTrial[1]	 ;
+	double & ek				= hsTrial[2]	 ;
+ 	double & ekunload		= hsTrial[3]	 ;
+	double & ekexcurs		= hsTrial[4]	 ;
+	double & Enrgtot		= hsTrial[5]	 ;
+	double & Enrgc			= hsTrial[6]	 ;
+	double & sp				= hsTrial[7]	 ;
+	double & sn				= hsTrial[8]	 ;
+	double & dmax			= hsTrial[10]	 ;
+	double & dmin			= hsTrial[11]	 ;
+	double & fyPos			= hsTrial[12]	 ;
+	double & fyNeg			= hsTrial[13]	 ;			   
+	double & cpPos			= hsTrial[14]	 ;
+	double & cpNeg			= hsTrial[15]	 ;
+	double & fmax			= hsTrial[16]	 ;
+	double & fmin			= hsTrial[17]	 ;
+	double & alphaPos		= hsTrial[18]	 ;
+	double & alphaNeg		= hsTrial[19]	 ;
+	double & fCapRefPos	= hsTrial[20]	 ;
+	double & fCapRefNeg	= hsTrial[21]	 ;
+	double RSE, a2, ekLim, dch, ekpinch, fpinch, fReload, ekt, Enrgi, dyNeg,
+		 dCap1Neg, dCap2Neg, dyPos, dCap1Pos, dCap2Pos, f1, f2;
+#endif
+	double snr, spr; // _CSS
+	double ekhardPos	= alphaPos * elstk;
+	double ekhardNeg	= alphaNeg * elstk;
+	double deltaD		= d-dP;
+
+	double betas = 0,  betak = 0, betaa = 0, betad = 0;
 
 	//	Loop to initialize parameters 
 	if ( kon == 0 )
-    {
+   {
 		if( deltaD >= 0.0)
 		{
 			kon = 1;
@@ -341,15 +407,14 @@ int Pinching::setTrialStrain( double d, double strainRate)
 		{
 			kon = 2;
 		}
-    }
+   }
 
 	//	Modification to the origin of the deviation point
 	// a_pinch = 1 - a_pinch;
-
+	
 
 	//	STARTS BIG LOOP
 	//	Positive Delta indicating loading
-
 	if ( deltaD >= 0.0 ) {
 		if ( kon == 2 ) {
 			kon = 1;
@@ -371,7 +436,8 @@ int Pinching::setTrialStrain( double d, double strainRate)
 			//	Determination of sn according to the hysteresis status
 			
 			if( ekunload <= 1.e-7 ) flgstop = 1;
-			
+#ifndef _CSS
+
 			if(fP < 0.0) {
 				if( (fabs(dmax-dyieldPos) >= 1.e-10) && (fabs(dP - fP / ekunload) <= 1.e-10) ) {
 					sn = 1.e-9;
@@ -380,8 +446,13 @@ int Pinching::setTrialStrain( double d, double strainRate)
 					sn = dP - fP / ekunload;
 				}
 			}
+		   if( fabs( dmin - dP ) <= 1.e-10) sp = sn + 1.e-10;
+#else
+			//if (fP < 0.0) {
+				sn = dP - fP / ekunload;
+			//}
+#endif // !_CSS
 
-	    if( fabs( dmin - dP ) <= 1.e-10) sp = sn + 1.e-10;
 		}
 		
 		//	LOADING
@@ -395,17 +466,27 @@ int Pinching::setTrialStrain( double d, double strainRate)
 			this->envelPosCap ( fyPos, alphaPos, capSlope, cpPos, dmax, &fmax, &ekt );
 			dch = dmax - fmax / ekunload;
 			double fpdegPos = fmax * fpPos;
-			ekpinch = fpdegPos / ( dmax - sn );
-			fpinch = ekpinch * ( a_pinch * dch - sn );
-			
-			if(sn <= a_pinch * dch ) {
-				if ( d < sn ) {
+#ifdef _CSS
+			fReload = reloadFFac * fmax;
+			snr = sn + fReload / ekunload;
+			ekpinch = (fpdegPos- fReload) / ( dmax - snr );
+			fpinch = ekpinch * ( a_pinch * dch - snr ) + fReload;
+#else
+			ekpinch = fpdegPos / (dmax - sn);
+			fpinch = ekpinch * (a_pinch * dch - sn);
+			snr = sn;
+#endif //_CSS
+			if(snr <= a_pinch * dch ) {
+				if ( d < snr ) {
 					ek = ekunload;
 					f  = fP + ek * deltaD;
 				}
-				else if ( d >= sn  &&  d < a_pinch * dch ) {
+				else if ( d >= snr  &&  d < a_pinch * dch ) {
 					ek = ekpinch;
-					f2 = ek * ( d - sn );
+					f2 = ek * ( d - snr );
+#ifdef _CSS
+					f2 += fReload;
+#endif
 					f1 = fP + ekunload * deltaD;
 					f= (f1<f2) ? f1 : f2;
 					if( ekunload < ek ) flgstop = 1;
@@ -420,16 +501,22 @@ int Pinching::setTrialStrain( double d, double strainRate)
 					if ( fabs( f - f1 )  <  1.e-10) ek = ekunload;
 				}
 			}
-			else if( sn  >  a_pinch * dch) {
-				//	If d is larger than sn
+			else // snr > a_pinch * dch
+			{
+				//	If d is larger than snr
 				
-				if( d  <  sn ) {
+				if( d  <  snr ) {
 					ek = ekunload;
 					f = fP + ek * deltaD;
 				}
 				else {
-					ek = fmax / ( dmax - sn );
-					f2 = ek * ( d - sn );
+#ifdef _CSS
+					 ek = (fmax-fReload) / (dmax - snr);
+					 f2 = ek * (d - snr)+ fReload;
+#else
+					 ek = fmax / (dmax - snr);
+					 f2 = ek * (d - snr);
+#endif // _CSS
 					f1 = fP + ekunload * deltaD;
 					f = (f1 < f2) ? f1 : f2;
 					if ( ekunload  <  ek) flgstop = 1;
@@ -437,7 +524,8 @@ int Pinching::setTrialStrain( double d, double strainRate)
 				}
 			}
 		}
-		else {
+		else // fabs(sn) <= 1e-10
+		{
 			if (d  >  0.0) { 
 				this->envelPosCap ( fyPos, alphaPos, capSlope, cpPos, d, &f, &ek );
 			}
@@ -470,6 +558,8 @@ int Pinching::setTrialStrain( double d, double strainRate)
 
 			if( ekunload <= 1.e-7) return 0;
 			
+#ifndef _CSS
+
 			if( fP > 0.0) {
 				if( fabs( dmin-dyieldNeg ) >= 1.e-10  && fabs(dP - fP / ekunload) <= 1.e-10) {
 					sp = 1.e-9;
@@ -481,7 +571,11 @@ int Pinching::setTrialStrain( double d, double strainRate)
 			}
 			
 			if( fabs( dmax - dP ) <= 1.e-10 ) sn = sp - 1.e-10;
-			
+#else
+			if (fP > 0.0)
+					  sp = dP - fP / ekunload;
+#endif // !_CSS
+
 		}
 		
 		//	UNLOADING (deltaD<0) ---------------------------------------------
@@ -497,17 +591,28 @@ int Pinching::setTrialStrain( double d, double strainRate)
 			this->envelNegCap ( fyNeg, alphaNeg, capSlope, cpNeg, dmin, &fmin, &ekt );
 			dch = dmin - fmin / ekunload;
 			double fpdegNeg = fmin * fpNeg;
-			ekpinch = fpdegNeg / ( dmin - sp );
-			fpinch = ekpinch * ( a_pinch * dch - sp );
-			
-			if( sp >= a_pinch * dch ) {
-				if ( d > sp ) {
+#ifdef _CSS
+			fReload = reloadFFac * fmin;
+			spr = sp + fReload / ekunload;
+			ekpinch = (fpdegNeg- fReload) / (dmin - spr);
+			fpinch = ekpinch * (a_pinch * dch - spr)+ fReload;
+#else
+			ekpinch = fpdegNeg / (dmin - sp);
+			fpinch = ekpinch * (a_pinch * dch - sp);
+			spr = sp;
+#endif //_CSS
+
+			if( spr >= a_pinch * dch ) {
+				if ( d > spr ) {
 					ek = ekunload;
 					f  = fP + ek * deltaD;
 				}
-				else if ( d <= sp  &&  d > a_pinch * dch) {
+				else if ( d <= spr  &&  d > a_pinch * dch) {
 					ek = ekpinch;
-					f2 = ek * ( d - sp );
+					f2 = ek * ( d - spr );
+#ifdef _CSS
+					f2 += fReload;
+#endif
 					f1 = fP + ekunload * deltaD;
 					
 					f = (f1>f2) ? f1 : f2;
@@ -523,14 +628,19 @@ int Pinching::setTrialStrain( double d, double strainRate)
 					if ( fabs( f - f1 ) < 1.e-10 ) ek = ekunload;
 				}
 			}
-			else if( sp < a_pinch * dch ) {
-				if( d > sp ) {
+			else if( spr < a_pinch * dch ) {
+				if( d > spr ) {
 					ek = ekunload;
 					f = fP + ek * deltaD;
 				}
 				else {
-					ek = fmin / ( dmin - sp );
-					f2 = ek * ( d - sp );
+#ifdef _CSS
+					ek = (fmin-fReload) / (dmin - spr);
+					f2 = ek * (d - spr) + fReload;
+#else
+					ek = fmin / ( dmin - spr );
+					f2 = ek * ( d - spr );
+#endif // _CSS
 					f1 = fP + ekunload * deltaD;
 					f  = (f1 > f2) ? f1 : f2;
 					if ( ekunload < ek) flgstop = 1;
@@ -627,6 +737,7 @@ int Pinching::setTrialStrain( double d, double strainRate)
 	}
 	
 	// Relationship between basic variables and hsTrial array	for next cycle
+#ifndef _CSS
 	hsTrial[0] = d;
 	hsTrial[1] = f;
 	hsTrial[2] = ek;
@@ -636,11 +747,11 @@ int Pinching::setTrialStrain( double d, double strainRate)
 	hsTrial[6] = Enrgc;
 	hsTrial[7] = sp;
 	hsTrial[8] = sn;
-	hsTrial[9] = (double) kon;
+	hsTrial[9] = (double)kon;
 	hsTrial[10] = dmax;
 	hsTrial[11] = dmin;
 	hsTrial[12] = fyPos;
-	hsTrial[13] = fyNeg;			   
+	hsTrial[13] = fyNeg;
 	hsTrial[14] = cpPos;
 	hsTrial[15] = cpNeg;
 	hsTrial[16] = fmax;
@@ -649,6 +760,9 @@ int Pinching::setTrialStrain( double d, double strainRate)
 	hsTrial[19] = alphaNeg;
 	hsTrial[20] = fCapRefPos;
 	hsTrial[21] = fCapRefNeg;
+#else
+	hsTrial[9] = (double) kon;
+#endif // !_CSS
 
 	return 0;
 }
@@ -682,7 +796,7 @@ void Pinching::envelPosCap( double fy, double alphaPos, double alphaCap,
 	dy = fy / elstk;
 	
 	if (dy < cpDsp)
-    {
+   {
 		Res = Resfac * fyieldPos;
 		rcap = fy+alphaPos * elstk * ( cpDsp - dy );
 		dres = cpDsp + ( Res - rcap ) / ( alphaCap * elstk );
@@ -722,9 +836,9 @@ void Pinching::envelPosCap( double fy, double alphaPos, double alphaCap,
 				}
 			}
 		}
-    }
+   }
 	else
-    {
+   {
 		rcap = elstk * cpDsp;
 		Res = Resfac * rcap;
 		dres = cpDsp + ( Res - rcap ) / ( alphaCap * elstk );

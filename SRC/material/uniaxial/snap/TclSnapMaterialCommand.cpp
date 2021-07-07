@@ -269,10 +269,18 @@ TclModelBuilder_addSnapMaterial(ClientData clientData, Tcl_Interp *interp, int a
 			return 0;
 		}
 		
+#ifdef _CSS
+		Vector input(20);
+#else
 		Vector input(19);
+#endif // _CSS
 		double temp;
 		
+#ifdef _CSS
+		for (int i = 3, j = 0; j < argc - 3; i++, j++) {
+#else
 		for (int i = 3, j = 0; j < 19; i++, j++) {
+#endif // _CSS
 			if (Tcl_GetDouble(interp, argv[i], &temp) != TCL_OK) {
 				opserr << "WARNING invalid input, data " << i << endln;
 				printCommand(argc, argv);

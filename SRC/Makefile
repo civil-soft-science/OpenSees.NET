@@ -423,12 +423,12 @@ RECORDER_LIBS = $(FE)/recorder/Recorder.o \
 	$(FE)/recorder/ElementRecorderRMS.o \
 	$(FE)/recorder/NodeRecorderRMS.o \
 	$(FE)/recorder/VTK_Recorder.o \
-	$(FE)/ResidElementRecorder.o \
-	$(FE)/ResidNodeRecorder.o \
-	$(FE)/ResidDriftRecorder.o \
-	$(FE)/ConditionalElementRecorder.o \
-	$(FE)/ConditionalNodeRecorder.o \
-	$(FE)/ConditionalDriftRecorder.o
+	$(FE)/recorder/ResidElementRecorder.o \
+	$(FE)/recorder/ResidNodeRecorder.o \
+	$(FE)/recorder/ResidDriftRecorder.o \
+	$(FE)/recorder/ConditionalElementRecorder.o \
+	$(FE)/recorder/ConditionalNodeRecorder.o \
+	$(FE)/recorder/ConditionalDriftRecorder.o
 
 
 DATABASE_LIBS = $(FE)/database/FileDatastore.o \

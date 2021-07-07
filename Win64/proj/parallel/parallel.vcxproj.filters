@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7ca25d97-806e-46d8-b95b-e8987fa1ecd2}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{11b1afac-5900-4ff8-b8b0-48907f6107ad}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="actor">
+      <UniqueIdentifier>{2df98bec-b086-4fc7-b54c-01f937a29b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver">
+      <UniqueIdentifier>{e11a740e-3d16-4e6a-9422-4d4f2d4263d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="solver\mumps">
+      <UniqueIdentifier>{f3db66ff-0a54-4944-b2a2-faefed22f084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="numberer">
+      <UniqueIdentifier>{4ea09978-b332-420d-9793-e97c8c76a688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="partitioner">
+      <UniqueIdentifier>{ae1821b2-cfa3-47b2-8cad-7f75d6722118}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="partitioner\metis">
+      <UniqueIdentifier>{e6568340-59a1-4c2f-b93a-e591e5e7776b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="domain">
+      <UniqueIdentifier>{15f679d4-f9cb-468f-966d-edb08eb53704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="analysis">
+      <UniqueIdentifier>{1d7d2502-ead5-4f2a-9e03-cd4b67db6120}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\SRC\actor\actor\Actor.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\channel\Channel.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\objectBroker\FEM_ObjectBroker.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\objectBroker\FEM_ObjectBrokerAllClasses.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\channel\HTTP.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\channel\MPI_Channel.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\address\MPI_ChannelAddress.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\machineBroker\MPI_MachineBroker.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\machineBroker\MachineBroker.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\message\Message.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\actor\MovableObject.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\objectBroker\ObjectBroker.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\shadow\Shadow.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\channel\Socket.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\actor\channel\TCP_Socket.cpp">
+      <Filter>actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\profileSPD\DistributedProfileSPDLinSOE.cpp">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenColLinSOE.cpp">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenRowLinSOE.cpp">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenRowLinSolver.cpp">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSuperLU.cpp">
+      <Filter>solver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsParallelSOE.cpp">
+      <Filter>solver\mumps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsParallelSolver.cpp">
+      <Filter>solver\mumps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsSOE.cpp">
+      <Filter>solver\mumps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsSolver.cpp">
+      <Filter>solver\mumps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\analysis\numberer\ParallelNumberer.cpp">
+      <Filter>numberer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\partitioner\DomainPartitioner.cpp">
+      <Filter>partitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\loadBalancer\LoadBalancer.cpp">
+      <Filter>partitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\graph\partitioner\Metis.cpp">
+      <Filter>partitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\loadBalancer\ShedHeaviest.cpp">
+      <Filter>partitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\balance.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\bucketsort.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\ccgraph.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\coarsen.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\compress.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\debug.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\estmem.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\fm.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\fortran.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\frename.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\graph.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\initpart.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kvmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kwayfm.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kwayrefine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kwayvolfm.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\kwayvolrefine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\match.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mbalance.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mbalance2.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mcoarsen.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\memory.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mesh.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\meshpart.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mfm.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mfm2.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mincover.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\minitpart.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\minitpart2.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mkmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mkwayfmh.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mkwayrefine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mmatch.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mmd.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mpmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mrefine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mrefine2.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\mutil.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\myqsort.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\ometis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\parmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\pmetis.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\pqueue.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\refine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\separator.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\sfm.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\srefine.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\stat.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\subdomains.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\timing.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OTHER\METIS\util.c">
+      <Filter>partitioner\metis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\subdomain\ActorSubdomain.cpp">
+      <Filter>domain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomain.cpp">
+      <Filter>domain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomainEleIter.cpp">
+      <Filter>domain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomainSubIter.cpp">
+      <Filter>domain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\domain\subdomain\ShadowSubdomain.cpp">
+      <Filter>domain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\analysis\integrator\DistributedDisplacementControl.cpp">
+      <Filter>analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\analysis\analysis\StaticDomainDecompositionAnalysis.cpp">
+      <Filter>analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\analysis\analysis\TransientDomainDecompositionAnalysis.cpp">
+      <Filter>analysis</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\SRC\actor\actor\Actor.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\channel\Channel.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\objectBroker\FEM_ObjectBroker.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\objectBroker\FEM_ObjectBrokerAllClasses.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\channel\MPI_Channel.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\address\MPI_ChannelAddress.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\machineBroker\MPI_MachineBroker.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\machineBroker\MachineBroker.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\message\Message.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\actor\MovableObject.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\objectBroker\ObjectBroker.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\shadow\Shadow.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\channel\Socket.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\actor\channel\TCP_Socket.h">
+      <Filter>actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\profileSPD\DistributedProfileSPDLinSOE.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenColLinSOE.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenRowLinSOE.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSparseGenRowLinSolver.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\sparseGEN\DistributedSuperLU.h">
+      <Filter>solver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsParallelSOE.h">
+      <Filter>solver\mumps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsParallelSolver.h">
+      <Filter>solver\mumps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsSOE.h">
+      <Filter>solver\mumps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\system_of_eqn\linearSOE\mumps\MumpsSolver.h">
+      <Filter>solver\mumps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\analysis\numberer\ParallelNumberer.h">
+      <Filter>numberer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\partitioner\DomainPartitioner.h">
+      <Filter>partitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\graph\partitioner\GraphPartitioner.h">
+      <Filter>partitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\loadBalancer\LoadBalancer.h">
+      <Filter>partitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\graph\partitioner\Metis.h">
+      <Filter>partitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\loadBalancer\ShedHeaviest.h">
+      <Filter>partitioner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\defs.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\macros.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\metis.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\proto.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\rename.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OTHER\METIS\struct.h">
+      <Filter>partitioner\metis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\subdomain\ActorSubdomain.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomain.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomainEleIter.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\domain\partitioned\PartitionedDomainSubIter.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\subdomain\ShadowActorSubdomain.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\domain\subdomain\ShadowSubdomain.h">
+      <Filter>domain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\analysis\integrator\DistributedDisplacementControl.h">
+      <Filter>analysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\analysis\analysis\StaticDomainDecompositionAnalysis.h">
+      <Filter>analysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\analysis\analysis\TransientDomainDecompositionAnalysis.h">
+      <Filter>analysis</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -41,7 +41,7 @@
 
 #include <LinearSOE.h>
 #include <Vector.h>
-
+#include <mumps_c_types.h>
 class MumpsSolver;
 class MumpsParallelSolver;
 class LinearSOESolver;
@@ -83,7 +83,7 @@ class MumpsSOE : public LinearSOE
     int size;            // order of A
     int nnz;             // number of non-zeros in A
     double *A, *B, *X;   // 1d arrays containing coefficients of A, B and X
-    int *colA, *rowA, *rowB, *colStartA; // int arrays containing info about coeficientss in A
+    MUMPS_INT* colA, *rowA, *rowB, *colStartA; // int arrays containing info about coeficientss in A
     Vector *vectX;
     Vector *vectB;    
     int Asize, Bsize;    // size of the 1d array holding A

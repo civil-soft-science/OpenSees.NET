@@ -31,10 +31,10 @@
 // force and deformation, damage due to deformation and energy, and
 // degraded unloading stiffness based on maximum ductility.  This
 // is a modified implementation of Hyster2.f90 by Filippou.
+#include <OPS_Globals.h>
 #ifdef _CSS
 #include <stdlib.h>
 #include <BucklingMaterial.h>
-#include <OPS_Globals.h>
 #include <math.h>
 #include <float.h>
 #include <Channel.h>

@@ -84,6 +84,9 @@ class Pinching : public UniaxialMaterial
  private:
   
   // Input parameters
+#ifdef _CSS
+	  double reloadFFac;
+#endif
   double elstk,fyieldPos,fyieldNeg,alpha,Resfac; // Properties
   double capSlope,capDispPos,capDispNeg;	 // Cap
   double ecaps,ecapk,ecapa,ecapd,cs,ck,ca,cd;	 // Degradation parameters
