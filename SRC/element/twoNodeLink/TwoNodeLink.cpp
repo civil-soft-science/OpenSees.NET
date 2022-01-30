@@ -1231,10 +1231,12 @@ void TwoNodeLink::setUp()
             if (xp.Size() > 2)
                 x(2) = xp(2);
         } else if (onP0)  {
+#ifndef _CSS
             opserr << "WARNING TwoNodeLink::setUp() - " 
                 << "element: " << this->getTag() << endln
                 << "ignoring nodes and using specified "
                 << "local x vector to determine orientation\n";
+#endif // _CSS
         }
         if (y.Size() == 0)  {
             y.resize(3);

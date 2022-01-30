@@ -1528,84 +1528,58 @@ void
 ElasticBeam2d::computeSectionForces(Vector& sp, double xi)
 {
 	double L = theCoordTransf->getInitialLength();
-	double oneOverL = 1 / L;
-	int order = 3;
-	static ID code(3);
-	code(0) = 2;	// P is the first quantity
-	code(1) = 3;	// Mz is the second
-	code(2) = 1;	// My is the third 
-	double xL1 = xi - 1;
-	double xL = xi;
-	sp.Zero();
-			sp(0) = q(0);
-			sp(1) = -oneOverL * (q(1) + q(2));
-			sp(2) = xL1 * q(1) + xL * q(2);
-	int type;
-
+   Vector xVec(3), yVec(3), zVec(3);
+   theCoordTransf->getLocalAxes(xVec, yVec, zVec);
 	double x = xi * L;
-
-
-
+	sp.Zero();
+   //convert P to local system:
+   sp(0) = -P(0) * xVec(0) - P(1) * xVec(1);
+   sp(1) = -P(0) * yVec(0) - P(1) * yVec(1);
+   sp(2) = -P(2) - sp(1) * x;
+	int type;
 	for (int i = 0; i < numEleLoads; i++) {
 
 		double loadFactor = eleLoadFactors[i];
 		const Vector& data = eleLoads[i]->getData(type, loadFactor);
-
 		if (type == LOAD_TAG_Beam2dUniformLoad) {
 			double wa = data(1) * loadFactor;  // Axial
 			double wy = data(0) * loadFactor;  // Transverse
-
-					sp(0) += wa * (L - x);
-					sp(1) += wy * (x - 0.5 * L);
-					sp(2) += wy * 0.5 * x * (x - L);
+		   sp(0) -= wa * x;
+		   sp(1) -= wy * x;
+		   sp(2) += wy * 0.5 * x * x;
 		}
 		else if (type == LOAD_TAG_Beam2dPartialUniformLoad) {
 			double wa = data(1) * loadFactor;  // Axial
 			double wy = data(0) * loadFactor;  // Transverse
 			double a = data(2) * L;
 			double b = data(3) * L;
-
-			double Fa = wa * (b - a); // resultant axial load
-			double Fy = wy * (b - a); // resultant transverse load
 			double c = a + 0.5 * (b - a);
-			double VI = Fy * (1 - c / L);
-			double VJ = Fy * c / L;
-
-
 			if (x <= a) {
-				sp(0) += Fa;
-				sp(2) -= VI * x;
-				sp(1) -= VI;
+				//
 			}
 			else if (x >= b) {
-				sp(2) += VJ * (x - L);
-				sp(1) += VJ;
+				sp(0) -= wa * (b - a);
+				sp(1) -= wy * (b - a);
+            sp(2) += wy * (b - a) * (x - c);
 			}
 			else {
-				sp(0) += Fa - wa * (x - a);
-				sp(2) += -VI * x + 0.5 * wy * x * x + wy * a * (0.5 * a - x);
-				sp(1) += -VI + wy * (x - a);
-			}
+				sp(0) -= wa * (x - a);
+				sp(1) -= wy * (x - a);
+            sp(2) += 0.5 * wy * (x - a) * (x - a);
+         }
 		}
 		else if (type == LOAD_TAG_Beam2dPointLoad) {
 			double P = data(0) * loadFactor;
 			double N = data(1) * loadFactor;
 			double aOverL = data(2);
-
 			if (aOverL < 0.0 || aOverL > 1.0)
 				continue;
 			double a = aOverL * L;
-			double V1 = P * (1.0 - aOverL);
-			double V2 = P * aOverL;
 
-			if (x <= a) {
-				sp(0) += N;
-				sp(2) -= x * V1;
-				sp(1) -= V1;
-			}
-			else {
-				sp(2) -= (L - x) * V2;
-				sp(1) += V2;
+			if (x > a) {
+				sp(0) -= N;
+				sp(1) -= P;
+            sp(2) += P * (x - a);
 			}
 		}
 		else {
@@ -1613,5 +1587,7 @@ ElasticBeam2d::computeSectionForces(Vector& sp, double xi)
 				this->getTag() << endln;
 		}
 	}
+
+
 }
 #endif // _CSS

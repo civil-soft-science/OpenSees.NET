@@ -1535,12 +1535,12 @@ int OPS_recorderValue(ClientData clientData, Tcl_Interp *interp, int argc, TCL_C
 		Tcl_SetResult(interp, buffer, TCL_VOLATILE);
 		return TCL_OK;
 	}
-	else {
-		opserr << "Could Not Find the Specified Recorder Object in Domain\n";
-		return TCL_ERROR;
-	}
-
-	return TCL_OK;
+	 opserr << "WARNING: recorderValue Could Not Find the Specified Recorder Object in Domain\n";
+	 //return TCL_ERROR;
+    char buffer[40];
+    sprintf(buffer, "%35.8f", 0.0);
+    Tcl_SetResult(interp, buffer, TCL_VOLATILE);
+    return TCL_OK;
 }
 
 #ifdef _CSS
@@ -6855,9 +6855,6 @@ findID(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 int 
 nodeCoord(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 {
-#ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
-#endif // _CSS
   // make sure at least one other argument to contain type of system
   if (argc < 2) {
     opserr << "WARNING want - nodeCoord nodeTag? <dim?>\n";
@@ -6983,9 +6980,6 @@ updateElementDomain(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Cha
 int 
 eleNodes(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 {
-#ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
-#endif // _CSS
 	if (argc < 2) {
     opserr << "WARNING want - eleNodes eleTag?\n";
     return TCL_ERROR;

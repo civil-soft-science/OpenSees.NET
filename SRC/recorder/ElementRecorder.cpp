@@ -58,7 +58,7 @@
 #ifdef _CSS
 #include <math.h>
 #endif // _CSS
-
+#ifndef _CSS
 void*
 OPS_ElementRecorder()
 {
@@ -258,6 +258,10 @@ OPS_ElementRecorder()
                 procDataMethod = 2;
             else if (strcmp(procType, "min") == 0)
                 procDataMethod = 3;
+            else if (strcmp(procType, "maxAbs") == 0)
+                procDataMethod = 4;
+            else if (strcmp(procType, "minAbs") == 0)
+                procDataMethod = 5;
             else
                 opserr << "unrecognized element result process method: " << procType << endln;
         }
@@ -318,6 +322,7 @@ OPS_ElementRecorder()
     
     return recorder;
 }
+#endif // !_CSS
 
 
 ElementRecorder::ElementRecorder()
@@ -518,7 +523,11 @@ ElementRecorder::record(int commitTag, double timeStamp)
                             (*data)(loc++) = eleData(j);
                     }
                     else {
+#ifdef _CSS
+                        int dataSize = eleData.Size();
+#else
                         int dataSize = data->Size();
+#endif // _CSS
                         for (int j = 0; j < numDOF; j++) {
                             int index = (*dof)(j);
                             if (index >= 0 && index < dataSize)
