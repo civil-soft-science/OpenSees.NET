@@ -50,6 +50,10 @@
 #include <string.h>
 #include <map>
 #include <ElementIter.h>
+#ifdef _CSS
+#include <Beam2dPointLoad.h>
+#include <Beam2dUniformLoad.h>
+#endif // _CSS
 
 Matrix DispBeamColumn2d::K(6,6);
 Vector DispBeamColumn2d::P(6);
@@ -358,6 +362,9 @@ DispBeamColumn2d::DispBeamColumn2d(int tag, int nd1, int nd2,
  numSections(numSec), theSections(0), crdTransf(0), beamInt(0),
   connectedExternalNodes(2),
   Q(6), q(3), rho(r), cMass(cm), parameterID(0)
+#ifdef _CSS
+    , numEleLoads(0), eleLoads(0), eleLoadFactors(0) //SAJalali
+#endif // _CSS
 {
   // Allocate arrays of pointers to SectionForceDeformations
   theSections = new SectionForceDeformation *[numSections];
@@ -414,6 +421,9 @@ DispBeamColumn2d::DispBeamColumn2d()
  numSections(0), theSections(0), crdTransf(0), beamInt(0),
  connectedExternalNodes(2),
   Q(6), q(3), rho(0.0), cMass(0), parameterID(0)
+#ifdef _CSS
+    , numEleLoads(0), eleLoads(0), eleLoadFactors(0) //SAJalali
+#endif // _CSS
 {
     q0[0] = 0.0;
     q0[1] = 0.0;
@@ -443,6 +453,14 @@ DispBeamColumn2d::~DispBeamColumn2d()
 
   if (beamInt != 0)
     delete beamInt;
+#ifdef _CSS
+  //SAJalali
+  if (eleLoads != 0)
+  {
+      delete[] eleLoads;
+      delete[] eleLoadFactors;
+  }
+#endif // _CSS
 }
 
 int
@@ -885,13 +903,38 @@ DispBeamColumn2d::zeroLoad(void)
   p0[0] = 0.0;
   p0[1] = 0.0;
   p0[2] = 0.0;
-  
+#ifdef _CSS
+  numEleLoads = 0; //SAJalali
+#endif // _CSS
+
   return;
 }
 
 int 
 DispBeamColumn2d::addLoad(ElementalLoad *theLoad, double loadFactor)
 {
+#ifdef _CSS
+    //SAJalali
+    ElementalLoad** theNextEleLoads = new ElementalLoad * [numEleLoads + 1];
+    double* theNextEleLoadFactors = new double[numEleLoads + 1];
+    for (int i = 0; i < numEleLoads; i++) {
+        theNextEleLoads[i] = eleLoads[i];
+        theNextEleLoadFactors[i] = eleLoadFactors[i];
+    }
+    if (eleLoads != 0)
+    {
+        delete[] eleLoads;
+        delete[] eleLoadFactors;
+    }
+    eleLoads = theNextEleLoads;
+    eleLoadFactors = theNextEleLoadFactors;
+
+
+    eleLoadFactors[numEleLoads] = loadFactor;
+    eleLoads[numEleLoads] = theLoad;
+    numEleLoads++;
+#endif // _CSS
+
   int type;
   const Vector &data = theLoad->getData(type, loadFactor);
   double L = crdTransf->getInitialLength();
@@ -1107,7 +1150,11 @@ DispBeamColumn2d::sendSelf(int commitTag, Channel &theChannel)
   int i, j;
   int loc = 0;
   
+#ifdef _CSS
+  static Vector data(15);
+#else
   static Vector data(14);
+#endif // _CSS
   data(0) = this->getTag();
   data(1) = connectedExternalNodes(0);
   data(2) = connectedExternalNodes(1);
@@ -1134,7 +1181,10 @@ DispBeamColumn2d::sendSelf(int commitTag, Channel &theChannel)
   data(11) = betaK;
   data(12) = betaK0;
   data(13) = betaKc;
-  
+#ifdef _CSS
+  data(14) = numEleLoads;
+#endif // _CSS
+
   if (theChannel.sendVector(dbTag, commitTag, data) < 0) {
     opserr << "DispBeamColumn2d::sendSelf() - failed to send data Vector\n";
      return -1;
@@ -1187,6 +1237,21 @@ DispBeamColumn2d::sendSelf(int commitTag, Channel &theChannel)
       return -1;
     }
   }
+#ifdef _CSS
+  ID loadTags(numEleLoads);
+  for (int i = 0; i < numEleLoads; i++)
+      loadTags(i) = eleLoads[i]->getClassTag();
+  int res = theChannel.sendID(this->getDbTag(), commitTag, loadTags);
+  for (int i = 0; i < numEleLoads; i++)
+  {
+      res += eleLoads[i]->sendSelf(commitTag, theChannel);
+  }
+  res += theChannel.sendVector(this->getDbTag(), commitTag, Vector(eleLoadFactors, numEleLoads));
+  if (res < 0) {
+      opserr << "ElasticBeam3d::sendSelf() - could not send eleLoad Data.\n";
+      return res;
+  }
+#endif // _CSS
 
   return 0;
 }
@@ -1201,7 +1266,11 @@ DispBeamColumn2d::recvSelf(int commitTag, Channel &theChannel,
   int dbTag = this->getDbTag();
   int i;
   
+#ifdef _CSS
+  static Vector data(15);
+#else
   static Vector data(14);
+#endif // _CSS
 
   if (theChannel.recvVector(dbTag, commitTag, data) < 0)  {
     opserr << "DispBeamColumn2d::recvSelf() - failed to recv data Vector\n";
@@ -1363,6 +1432,39 @@ opserr << "DispBeamColumn2d::recvSelf() - out of memory creating sections array 
       }     
     }
   }
+#ifdef _CSS
+  numEleLoads = data(17);
+  eleLoads = new ElementalLoad * [numEleLoads];
+  eleLoadFactors = new double[numEleLoads];
+  ID loadTags(numEleLoads);
+  int res = theChannel.recvID(this->getDbTag(), commitTag, loadTags);
+
+  for (int i = 0; i < numEleLoads; i++)
+  {
+      int classtag = loadTags(i);
+      switch (classtag)
+      {
+      case LOAD_TAG_Beam2dPointLoad:
+          eleLoads[i] = new Beam2dPointLoad();
+          eleLoads[i]->recvSelf(commitTag, theChannel, theBroker);
+          break;
+      case LOAD_TAG_Beam2dUniformLoad:
+          eleLoads[i] = new Beam2dUniformLoad();
+          eleLoads[i]->recvSelf(commitTag, theChannel, theBroker);
+          break;
+      default:
+          opserr << "DispBeamColumn2d::recvSelf(): error reading elemental Load Data\n";
+          break;
+      }
+  }
+  Vector loadFacs(eleLoadFactors, numEleLoads);
+  res += theChannel.recvVector(this->getDbTag(), commitTag, loadFacs);
+  if (res < 0) {
+      opserr << "DispBeamColumn2d::recvSelf() - error reading elemental Load Data\n";
+      return res;
+  }
+
+#endif // _CSS
 
   return 0;
 }
@@ -1618,6 +1720,27 @@ DispBeamColumn2d::setResponse(const char **argv, int argc,
   {
   return new ElementResponse(this, 11, 0.0);
   }
+  else if (strcmp(argv[0], "internalForce") == 0 || strcmp(argv[0], "InternalForce") == 0)
+  {
+
+      if (argc > 1) {
+
+          double xi = atof(argv[1]);
+          if (xi >= 0 && xi <= 1) {
+              output.tag("InternalForce");
+              output.attr("xi", xi);
+              int t = this->getTag();
+              theResponse = new ElementResponse(this, 15, Vector(3));
+              Information& info = theResponse->getInformation();
+              info.theDouble = xi;
+              output.endTag();
+
+          }
+          else {
+              opserr << "WARNING! DispBeamColumn2d::setResponse():invalid section location: " << xi << " value must be in 0<= <=1 range" << endln;
+          }
+      }
+  }
 
 #endif // _CSS
 
@@ -1635,6 +1758,10 @@ DispBeamColumn2d::getResponse(int responseID, Information &eleInfo)
  #ifdef _CSS
 	if (Element::getResponse(responseID, eleInfo) == 0)
 		return 0;
+   if (Element::getResponse(responseID, eleInfo) == 0)
+       return 0;
+   static Vector force(3);//SAJalali
+   const Vector& v = crdTransf->getBasicTrialDisp();
 #endif // _CSS
  double V;
   double L = crdTransf->getInitialLength();
@@ -1773,7 +1900,12 @@ DispBeamColumn2d::getResponse(int responseID, Information &eleInfo)
 	  }
 	  return eleInfo.setDouble(max);
   }
- #endif // _CSS
+  else if (responseID == 15) {
+      L = eleInfo.theDouble;
+      computeSectionForces(force, L);
+      eleInfo.setVector(force);
+  }
+#endif // _CSS
  else
     return Element::getResponse(responseID, eleInfo);
 }
@@ -2300,3 +2432,73 @@ DispBeamColumn2d::commitSensitivity(int gradNumber, int numGrads)
 
 // AddingSensitivity:END /////////////////////////////////////////////
 
+#ifdef _CSS
+//by SAJalali
+void
+DispBeamColumn2d::computeSectionForces(Vector& sp, double xi)
+{
+    double L = crdTransf->getInitialLength();
+    Vector xVec(3), yVec(3), zVec(3);
+    crdTransf->getLocalAxes(xVec, yVec, zVec);
+    double x = xi * L;
+    sp.Zero();
+    this->getResistingForce();
+    //convert P to local system:
+    sp(0) = -P(0) * xVec(0) - P(1) * xVec(1);
+    sp(1) = -P(0) * yVec(0) - P(1) * yVec(1);
+    sp(2) = -P(2) - sp(1) * x;
+    int type;
+    for (int i = 0; i < numEleLoads; i++) {
+
+        double loadFactor = eleLoadFactors[i];
+        const Vector& data = eleLoads[i]->getData(type, loadFactor);
+        if (type == LOAD_TAG_Beam2dUniformLoad) {
+            double wa = data(1) * loadFactor;  // Axial
+            double wy = data(0) * loadFactor;  // Transverse
+            sp(0) -= wa * x;
+            sp(1) -= wy * x;
+            sp(2) += wy * 0.5 * x * x;
+        }
+        else if (type == LOAD_TAG_Beam2dPartialUniformLoad) {
+            double wa = data(1) * loadFactor;  // Axial
+            double wy = data(0) * loadFactor;  // Transverse
+            double a = data(2) * L;
+            double b = data(3) * L;
+            double c = a + 0.5 * (b - a);
+            if (x <= a) {
+                //
+            }
+            else if (x >= b) {
+                sp(0) -= wa * (b - a);
+                sp(1) -= wy * (b - a);
+                sp(2) += wy * (b - a) * (x - c);
+            }
+            else {
+                sp(0) -= wa * (x - a);
+                sp(1) -= wy * (x - a);
+                sp(2) += 0.5 * wy * (x - a) * (x - a);
+            }
+        }
+        else if (type == LOAD_TAG_Beam2dPointLoad) {
+            double P = data(0) * loadFactor;
+            double N = data(1) * loadFactor;
+            double aOverL = data(2);
+            if (aOverL < 0.0 || aOverL > 1.0)
+                continue;
+            double a = aOverL * L;
+
+            if (x > a) {
+                sp(0) -= N;
+                sp(1) -= P;
+                sp(2) += P * (x - a);
+            }
+        }
+        else {
+            opserr << "ElasticBeam2d::computeSectionForces -- load type unknown for element with tag: " <<
+                this->getTag() << endln;
+        }
+    }
+
+
+}
+#endif // _CSS

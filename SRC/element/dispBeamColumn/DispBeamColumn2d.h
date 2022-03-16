@@ -114,6 +114,13 @@ class DispBeamColumn2d : public Element
   protected:
     
   private:
+#ifdef _CSS
+      void computeSectionForces(Vector& sp, double xi);
+      int numEleLoads;
+      ElementalLoad** eleLoads;
+      double* eleLoadFactors;
+#endif // _CSS
+
     const Matrix &getInitialBasicStiff(void);
     void getBasicStiff(Matrix &kb, int initial = 0);
 #if !_DLL
