@@ -6338,7 +6338,10 @@ nodeDisp(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
       }
       
       double value = (*nodalResponse)(dof);
-      
+#ifdef _CSS
+	  if (value > 1e20)
+		  value = 1e20;
+#endif // _CSS
       // now we copy the value to the tcl string that is returned
 
       char buffer [40];
@@ -6346,9 +6349,12 @@ nodeDisp(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
       Tcl_SetResult(interp, buffer, TCL_VOLATILE);
       //  sprintf(interp->result,"%35.20f ",value);
     } else {
-      char buffer [40];
+      char buffer [120];
       for (int i=0; i<size; i++) {
-	sprintf(buffer,"%35.20f",(*nodalResponse)(i));
+		  double value = (*nodalResponse)(i);
+		  if (value > 1e20)
+			  value = 1e20;
+	sprintf(buffer,"%35.20f",value);
 	Tcl_AppendResult(interp, buffer, NULL);
       }
     }	
