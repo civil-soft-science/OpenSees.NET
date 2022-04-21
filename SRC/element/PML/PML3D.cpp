@@ -391,6 +391,7 @@ PML3D::update(void)
 	int MCRD = 3;
 	int NNODE = 8;
 
+#ifndef _CSS
 	pml3d_(M,
 		C,
 		K,
@@ -400,6 +401,7 @@ PML3D::update(void)
 		coords,
 		&MCRD,
 		&NNODE);
+#endif // !_CSS
 
 
 	// opserr << this->getTag() << "\n";

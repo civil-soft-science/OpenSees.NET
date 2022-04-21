@@ -9684,6 +9684,21 @@ getNodeTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv
 }
 
 int
+getCrdTransfTags(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+	ID crdTransfTags = OPS_getAllCrdTransfTags();  // Function defined in CrdTransf.h
+
+	char buffer[20];
+
+	for (int i = 0; i < crdTransfTags.Size(); ++i)
+	{
+		sprintf(buffer, "%d ", crdTransfTags(i));
+		Tcl_AppendResult(interp, buffer, NULL);
+	}
+
+	return TCL_OK;
+}
+int
 getParamTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 {
 #ifdef _CSS

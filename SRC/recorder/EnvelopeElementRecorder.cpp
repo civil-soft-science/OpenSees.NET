@@ -321,7 +321,7 @@ EnvelopeElementRecorder::EnvelopeElementRecorder(const ID *ele,
 							 const ID *indexValues)
  :Recorder(RECORDER_TAGS_EnvelopeElementRecorder),
   numEle(0), eleID(0), numDOF(0), dof(0), theResponses(0), theDomain(&theDom),
-  theHandler(&theOutputHandler), deltaT(dT), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0),
+  theHandler(&theOutputHandler), deltaT(dT), nextTimeStampToRecord(0.0),
   data(0), currentData(0), first(true),
   initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(echoTime), addColumnInfo(0)
 #ifdef _CSS

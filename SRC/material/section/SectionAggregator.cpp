@@ -46,7 +46,9 @@
 #include <classTags.h>
 #include <elementAPI.h>
 #include <vector>
-
+#ifdef _CSS
+#include <FiberSection2d.h>
+#endif
 void* OPS_SectionAggregator()
 {
     if (OPS_GetNumRemainingInputArgs() < 3) {
@@ -952,20 +954,20 @@ SectionAggregator::setResponse(const char **argv, int argc, OPS_Stream &output)
   
   Response *theResponse =0;
 
+#ifdef _CSS	// by SAJalali
   if ( (strcmp(argv[0],"deformations") == 0) || (strcmp(argv[0],"deformation") == 0) || 
 	(strcmp(argv[0],"forces") == 0) || (strcmp(argv[0],"force") == 0) ||
        (strcmp(argv[0],"forceAndDeformation") == 0)) {
     
     return this->SectionForceDeformation::setResponse(argv, argc, output);
   } 
-  // by SAJalali
+  
   int num = numMats;
   if (theSection != 0)
 	  num++;
   if ((strcmp(argv[0], "energy") == 0) || (strcmp(argv[0], "Energy") == 0)) {
 	  return theResponse = new MaterialResponse(this, 8, Vector(num));
   }
-#ifdef _CSS
   if ((strcmp(argv[0], "maxDuctility") == 0) || (strcmp(argv[0], "MaxDuctility") == 0)) {
 	  return theResponse = new MaterialResponse(this, 9, Vector(num));
   }
@@ -994,6 +996,7 @@ SectionAggregator::setResponse(const char **argv, int argc, OPS_Stream &output)
 int
 SectionAggregator::getResponse(int responseID, Information &sectInfo)
 {
+#ifdef _CSS
 	FiberSection2d* sec = 0;
 	int num = numMats;
 	if (theSection != 0)
@@ -1008,7 +1011,6 @@ SectionAggregator::getResponse(int responseID, Information &sectInfo)
 		sectInfo.setVector(res);
 		//opserr << "energyVect=" << res << "\n";
 	}
-#ifdef _CSS
 	else if (responseID == 9) {
 		for (int i = 0; i < numMats; i++)
 			res(i) = theAdditions[i]->getDuctility();

@@ -327,7 +327,7 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder()
  theDofs(0), theNodalTags(0), theNodes(0),
  currentData(0), data(0), 
  theDomain(0), theHandler(0),
- deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0),
+ deltaT(0.0), nextTimeStampToRecord(0.0),
  first(true), initializationDone(false), 
  numValidNodes(0), addColumnInfo(0), theTimeSeries(0), timeSeriesValues(0)
 {
@@ -349,7 +349,7 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder(const ID &dofs,
  theDofs(0), theNodalTags(0), theNodes(0),
  currentData(0), data(0), 
  theDomain(&theDom), theHandler(&theOutputHandler),
- deltaT(dT), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0),
+ deltaT(dT), nextTimeStampToRecord(0.0),
  first(true), initializationDone(false), numValidNodes(0), echoTimeFlag(echoTime), 
  addColumnInfo(0), theTimeSeries(theSeries), timeSeriesValues(0)
 #ifdef _CSS
@@ -1041,10 +1041,9 @@ EnvelopeNodeRecorder::sendSelf(int commitTag, Channel &theChannel)
       return -1;
     }
 
-  static Vector data(3);
+  static Vector data(2);
   data(0) = deltaT;
   data(1) = nextTimeStampToRecord;
-  data(2) = relDeltaTTol;
   if (theChannel.sendVector(0, commitTag, data) < 0) {
     opserr << "EnvelopeNodeRecorder::sendSelf() - failed to send data\n";
     return -1;
@@ -1167,7 +1166,6 @@ EnvelopeNodeRecorder::recvSelf(int commitTag, Channel &theChannel,
   }
   deltaT = data(0);
   nextTimeStampToRecord = data(1);
-  relDeltaTTol = data(2);
  
   if (theHandler != 0)
     delete theHandler;

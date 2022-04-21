@@ -135,6 +135,9 @@
     <Filter Include="CEqElement">
       <UniqueIdentifier>{44a1f5d6-7e75-44f5-a5a5-b79b65801b24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PML">
+      <UniqueIdentifier>{d2d8799f-ed8c-42ca-ad1d-b456df8c835b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\SRC\element\Element.cpp">
@@ -977,6 +980,12 @@
     <ClCompile Include="..\..\..\SRC\element\truss\InertiaTruss.cpp">
       <Filter>truss</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\element\PML\PML2D.cpp">
+      <Filter>PML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\element\PML\PML3D.cpp">
+      <Filter>PML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\SRC\element\Element.h">
@@ -1725,6 +1734,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\element\truss\InertiaTruss.h">
       <Filter>truss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\element\PML\PML2D.h">
+      <Filter>PML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\element\PML\PML3D.h">
+      <Filter>PML</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

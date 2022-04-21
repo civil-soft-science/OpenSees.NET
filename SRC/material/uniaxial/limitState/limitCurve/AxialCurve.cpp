@@ -403,12 +403,6 @@ AxialCurve::checkElementState(double springForce)
 
 					outputFile.close();
 
-#if !_DLL
-					sprintf(tclAssignment , "set fail_%d  1", eleTag);
-					Tcl_Eval(theTclInterp, tclAssignment);
-#endif
-
-
 				}
 			}
 			else // inside failure surface

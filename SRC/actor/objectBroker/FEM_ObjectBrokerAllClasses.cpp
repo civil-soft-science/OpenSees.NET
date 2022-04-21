@@ -261,8 +261,8 @@
 #include "UWelements/BeamEndContact3Dp.h"
 #include "UWelements/QuadBeamEmbedContact.h"
 
-//#include "PML/PML2D.h"
-//#include "PML/PML3D.h"
+#include "PML/PML2D.h"
+#include "PML/PML3D.h"
 
 #include "UP-ucsd/Nine_Four_Node_QuadUP.h"
 #include "UP-ucsd/BrickUP.h"
@@ -1587,7 +1587,6 @@ FEM_ObjectBrokerAllClasses::getNewNDMaterial(int classTag)
       return new InitialStateAnalysisWrapper(); 
   case ND_TAG_stressDensity:
 	  return new stressDensity();
-#endif
   case ND_TAG_CycLiqCP3D:
       return new CycLiqCP3D(); 
 

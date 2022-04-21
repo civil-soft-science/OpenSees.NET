@@ -55,7 +55,6 @@ class EnvelopeElementRecorder: public Recorder
           int procMethod = 0,
 #endif // _CSS
 			    double deltaT = 0.0,
-			    double relDeltaTTol = 0.00001,
 			    bool echoTimeFlag = true,
 			    const ID *dof =0); 
 

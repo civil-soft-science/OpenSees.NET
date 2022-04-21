@@ -120,7 +120,7 @@ SteelBRB::SteelBRB(int pTag, double pE,double pSigmaY0, double pSigmaY_T,double 
 // AddingSensitivity:END //////////////////////////////////////
 #if !_DLL
 	debug1 = new ofstream("stress_sens_debug.out");
-
+#endif
 
 
 }

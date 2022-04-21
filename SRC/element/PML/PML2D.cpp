@@ -29,7 +29,7 @@
 
 
 #include <OPS_Globals.h>
-#ifndef _CSS
+
 #include "PML2D.h"
 
 #include <stdio.h> 
@@ -147,7 +147,8 @@ void  PML2D::setDomain( Domain *theDomain )
   int MCRD = 2; 
   int NNODE = PML2D_NUM_NODES;
 
-  pml2d_(K, 
+#ifndef _CSS
+  pml2d_(K,
        C, 
        M,   
        &NDOFEL, 
@@ -156,6 +157,8 @@ void  PML2D::setDomain( Domain *theDomain )
        coords, 
        &MCRD,
        &NNODE);
+#endif // !_CSS
+
 }
 
 
@@ -540,5 +543,3 @@ PML2D::updateParameter(int parameterID, Information &info)
     int res = -1;
     return res;
 }
-
-#endif // !_CSS

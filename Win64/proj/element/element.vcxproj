@@ -263,6 +263,8 @@
     <ClCompile Include="..\..\..\SRC\element\PFEMElement\TriangleMeshGenerator.cpp" />
     <ClCompile Include="..\..\..\SRC\element\PFEMElement\TriGaussPoints.cpp" />
     <ClCompile Include="..\..\..\SRC\element\PFEMElement\TriMesh.cpp" />
+    <ClCompile Include="..\..\..\SRC\element\PML\PML2D.cpp" />
+    <ClCompile Include="..\..\..\SRC\element\PML\PML3D.cpp" />
     <ClCompile Include="..\..\..\SRC\element\RockingBC\RockingBC.cpp" />
     <ClCompile Include="..\..\..\SRC\element\shell\ShellANDeS.cpp" />
     <ClCompile Include="..\..\..\SRC\element\shell\ShellDKGQ.cpp" />
@@ -543,6 +545,8 @@
     <ClInclude Include="..\..\..\SRC\element\PFEMElement\TriangleMeshGenerator.h" />
     <ClInclude Include="..\..\..\SRC\element\PFEMElement\TriGaussPoints.h" />
     <ClInclude Include="..\..\..\SRC\element\PFEMElement\TriMesh.h" />
+    <ClInclude Include="..\..\..\SRC\element\PML\PML2D.h" />
+    <ClInclude Include="..\..\..\SRC\element\PML\PML3D.h" />
     <ClInclude Include="..\..\..\SRC\element\RockingBC\RockingBC.h" />
     <ClInclude Include="..\..\..\SRC\element\shell\ShellANDeS.h" />
     <ClInclude Include="..\..\..\SRC\element\shell\ShellDKGQ.h" />
