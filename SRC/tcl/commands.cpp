@@ -47,6 +47,9 @@ extern "C" {
 #include <OPS_Globals.h>
 #include <TclModelBuilder.h>
 #include <Matrix.h>
+#include <iostream>
+#include <set>
+#include <algorithm>
 
 extern void OPS_clearAllUniaxialMaterial(void);
 extern void OPS_clearAllNDMaterial(void);
@@ -72,6 +75,7 @@ using std::ofstream;
 #include <DummyStream.h>
 
 bool OPS_suppressOpenSeesOutput = false;
+bool OPS_showHeader = true;
 StandardStream sserr;
 OPS_Stream *opserrPtr = &sserr;
 
@@ -81,8 +85,11 @@ OPS_Stream *opserrPtr = &sserr;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 #include <elementAPI.h>
+extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
+
 #include <packages.h>
 
 #include <FEM_ObjectBrokerAllClasses.h>
@@ -105,11 +112,15 @@ OPS_Stream *opserrPtr = &sserr;
 #include <NodeIter.h>
 #include <LoadPattern.h>
 #include <LoadPatternIter.h>
+#include <NodalLoad.h>
+#include <NodalLoadIter.h>
 #include <ElementalLoad.h>
 #include <ElementalLoadIter.h>
 #include <ParameterIter.h>
 #include <SP_Constraint.h> //Joey UC Davis
 #include <SP_ConstraintIter.h> //Joey UC Davis
+#include <MP_Constraint.h>
+#include <MP_ConstraintIter.h>
 #include <Parameter.h>
 #include <ParameterIter.h>
 #include <InitialStateParameter.h>
@@ -130,6 +141,7 @@ OPS_Stream *opserrPtr = &sserr;
 #include <CTestFixedNumIter.h>
 #include <NormDispAndUnbalance.h>
 #include <NormDispOrUnbalance.h>
+
 #include <CTestPFEM.h>
 
 // soln algorithms
@@ -171,6 +183,7 @@ OPS_Stream *opserrPtr = &sserr;
 #include <DOF_Numberer.h>
 
 // integrators
+// #include <HarmonicSteadyState.h>
 #include <LoadControl.h>
 #include <StagedLoadControl.h>
 #include <ArcLength.h>
@@ -181,6 +194,7 @@ OPS_Stream *opserrPtr = &sserr;
 #include <EQPath.h>
 
 #include <PFEMIntegrator.h>
+
 #include <Integrator.h>//Abbas
 
 //  recorders
@@ -193,17 +207,23 @@ FileStream CmdLogStream(0);
 FileStream* CmdStrmPtr = &CmdLogStream;
 #endif // _CSS
 
+// transformations
+#include <CrdTransf.h>
+
 extern void *OPS_NewtonRaphsonAlgorithm(void);
+extern void *OPS_ExpressNewton(void);
 extern void *OPS_ModifiedNewton(void);
 extern void *OPS_NewtonHallM(void);
 
 extern void *OPS_Newmark(void);
 extern void *OPS_StagedNewmark(void);
 extern void *OPS_GimmeMCK(void);
+//extern void *OPS_HarmonicSteadyState(void);
 extern void *OPS_AlphaOS(void);
 extern void *OPS_AlphaOS_TP(void);
 extern void *OPS_AlphaOSGeneralized(void);
 extern void *OPS_AlphaOSGeneralized_TP(void);
+extern void *OPS_ExplicitDifference(void);
 extern void *OPS_CentralDifference(void);
 extern void *OPS_CentralDifferenceAlternative(void);
 extern void *OPS_CentralDifferenceNoDamping(void);
@@ -251,6 +271,7 @@ extern void OPS_ResponseSpectrumAnalysis(void);
 #include <StaticAnalysis.h>
 #include <DirectIntegrationAnalysis.h>
 #include <VariableTimeStepDirectIntegrationAnalysis.h>
+
 #include <PFEMAnalysis.h>
 
 // system of eqn and solvers
@@ -533,6 +554,7 @@ static TclReliabilityBuilder *theReliabilityBuilder = 0;
 
 Integrator *theSensitivityAlgorithm = 0;
 Integrator *theSensitivityIntegrator = 0;
+
 //FMK RELIABILITY ReliabilityStaticAnalysis *theReliabilityStaticAnalysis = 0;
 //FMK RELIABILITY ReliabilityDirectIntegrationAnalysis *theReliabilityTransientAnalysis = 0;
 
@@ -543,11 +565,12 @@ Integrator *theSensitivityIntegrator = 0;
 //static SensitivityIntegrator *theSensitivityIntegrator = 0;
 //static NewmarkSensitivityIntegrator *theNSI = 0;
 
+#endif
+
+#ifdef _OPTIMIZATION
 #include <TclOptimizationBuilder.h>
 static TclOptimizationBuilder *theOptimizationBuilder = 0;   // Quan March 2010 (3)
-
 #endif
-// AddingSensitivity:END ///////////////////////////////////////////////
 
 
 StaticIntegrator *theStaticIntegrator =0;
@@ -825,6 +848,11 @@ int OpenSeesAppInit(Tcl_Interp *interp) {
     Tcl_CreateObjCommand(interp, "source", &OPS_SourceCmd,
 			 (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL); 
 
+    Tcl_CreateCommand(interp, "getNDM", &getNDM,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "getNDF", &getNDF,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+
     Tcl_CreateCommand(interp, "wipe", &wipeModel,
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL); 
 
@@ -937,6 +965,8 @@ int OpenSeesAppInit(Tcl_Interp *interp) {
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
     Tcl_CreateCommand(interp, "updateElementDomain", &updateElementDomain, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
+    Tcl_CreateCommand(interp, "eleType", &eleType,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
     Tcl_CreateCommand(interp, "eleNodes", &eleNodes, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);            
     Tcl_CreateCommand(interp, "nodeMass", &nodeMass, 
@@ -999,10 +1029,40 @@ int OpenSeesAppInit(Tcl_Interp *interp) {
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
     Tcl_CreateCommand(interp, "getNodeTags", &getNodeTags, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
+    Tcl_CreateCommand(interp, "getCrdTransfTags", &getCrdTransfTags, 
+          (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL); 
     Tcl_CreateCommand(interp, "getParamTags", &getParamTags, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
     Tcl_CreateCommand(interp, "getParamValue", &getParamValue, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
+              
+    Tcl_CreateCommand(interp, "fixedNodes", &fixedNodes,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "fixedDOFs", &fixedDOFs,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "constrainedNodes", &constrainedNodes,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "constrainedDOFs", &constrainedDOFs,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "retainedNodes", &retainedNodes,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+    Tcl_CreateCommand(interp, "retainedDOFs", &retainedDOFs,
+        (ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+
+    Tcl_CreateCommand(interp, "getNumElements", &getNumElements,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getEleClassTags", &getEleClassTags,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getEleLoadClassTags", &getEleLoadClassTags,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getEleLoadTags", &getEleLoadTags,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getEleLoadData", &getEleLoadData,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getNodeLoadTags", &getNodeLoadTags,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateCommand(interp, "getNodeLoadData", &getNodeLoadData,
+		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);
 
     Tcl_CreateCommand(interp, "sdfResponse", &sdfResponse, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL);  
@@ -1085,13 +1145,17 @@ int OpenSeesAppInit(Tcl_Interp *interp) {
     //FMK RELIABILITY theReliabilityTransientAnalysis =0;    
     // AddingSensitivity:END //////////////////////////////////
 
+#endif
+
+#ifdef _OPTIMIZATION    
     theOptimizationBuilder = 0;
     
     // --- Quan March 2010  (4)
     Tcl_CreateCommand(interp, "optimization", &optimization, 
 		      (ClientData)NULL, (Tcl_CmdDeleteProc *)NULL); 
-#endif
 
+#endif
+    
     theAlgorithm =0;
     theHandler =0;
     theNumberer =0;
@@ -1192,7 +1256,7 @@ OPS_SourceCmd(
 #endif
 }
 
-#ifdef _RELIABILITY   
+#ifdef _OPTIMIZATION
 
 // -- optimization Quan March 2010  (5)
 int 
@@ -1210,6 +1274,9 @@ optimization(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **arg
     return TCL_ERROR;
 }
 
+#endif
+
+#ifdef _RELIABILITY   
 
 int 
 reliability(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
@@ -1222,8 +1289,6 @@ reliability(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv
   else
     return TCL_ERROR;
 }
-
-
 
 
 int 
@@ -1739,6 +1804,9 @@ setLoadConst(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **arg
 int 
 setCreep(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 {
+#ifdef _CSS
+	printArgv(interp, argc, argv); //SAJalali
+#endif // _CSS
   if (argc < 2) {
       opserr << "WARNING illegal command - setCreep value? \n";
       return TCL_ERROR;
@@ -2433,19 +2501,24 @@ printA(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
   FileStream outputFile;
   OPS_Stream *output = &opserr;
 
+  bool ret = false;
   int currentArg = 1;
+  while (currentArg < argc) {
+      if ((strcmp(argv[currentArg], "file") == 0) ||
+          (strcmp(argv[currentArg], "-file") == 0)) {
+          currentArg++;
 
-  if (argc > 2) {
-    if ((strcmp(argv[currentArg],"file") == 0) || 
-	(strcmp(argv[currentArg],"-file") == 0)) {
-      currentArg++;
-      
-      if (outputFile.setFile(argv[currentArg]) != 0) {
-	opserr << "print <filename> .. - failed to open file: " << argv[currentArg] << endln;
-	return TCL_ERROR;
+          if (outputFile.setFile(argv[currentArg]) != 0) {
+              opserr << "print <filename> .. - failed to open file: " << argv[currentArg] << endln;
+              return TCL_ERROR;
+          }
+          output = &outputFile;
       }
-      output = &outputFile;
-    }
+      else if ((strcmp(argv[currentArg], "ret") == 0) ||
+          (strcmp(argv[currentArg], "-ret") == 0)) {
+          ret = true;
+      }
+      currentArg++;
   }
   if (theSOE != 0) {
     if (theStaticIntegrator != 0)
@@ -2455,12 +2528,26 @@ printA(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
       
     const Matrix *A = theSOE->getA();
     if (A != 0) {
-      *output << *A;
+        if (ret) {
+            int n = A->noRows();
+            int m = A->noCols();
+            if (n * m > 0) {
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < m; j++) {
+                        char buffer[40];
+                        sprintf(buffer, "%.10e ", (*A)(i, j));
+                        Tcl_AppendResult(interp, buffer, NULL);
+                    }
+                }
+            }
+        }
+        else {
+            *output << *A;
+            // close the output file
+            outputFile.close();
+        }
     }
   }
-  
-  // close the output file
-  outputFile.close();
   
   return res;
 }
@@ -2477,32 +2564,48 @@ printB(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
   OPS_Stream *output = &opserr;
   //  bool done = false;
 
+  bool ret = false;
   int currentArg = 1;
+  while (currentArg < argc) {
+      if ((strcmp(argv[currentArg], "file") == 0) ||
+          (strcmp(argv[currentArg], "-file") == 0)) {
+          currentArg++;
 
-  if (argc > 2) {
-    if ((strcmp(argv[currentArg],"file") == 0) || 
-	(strcmp(argv[currentArg],"-file") == 0)) {
-      currentArg++;
-      
-      if (outputFile.setFile(argv[currentArg]) != 0) {
-	opserr << "print <filename> .. - failed to open file: " << argv[currentArg] << endln;
-	return TCL_ERROR;
+          if (outputFile.setFile(argv[currentArg]) != 0) {
+              opserr << "print <filename> .. - failed to open file: " << argv[currentArg] << endln;
+              return TCL_ERROR;
+          }
+          output = &outputFile;
       }
-      output = &outputFile;
-    }
+      else if ((strcmp(argv[currentArg], "ret") == 0) ||
+          (strcmp(argv[currentArg], "-ret") == 0)) {
+          ret = true;
+      }
+      currentArg++;
   }
   if (theSOE != 0) {
     if (theStaticIntegrator != 0)
-      theStaticIntegrator->formTangent();
+      theStaticIntegrator->formUnbalance();
     else if (theTransientIntegrator != 0)
-      theTransientIntegrator->formTangent(0);
+      theTransientIntegrator->formUnbalance();
       
     const Vector &b = theSOE->getB();
-    *output << b;
+    if (ret) {
+        int n = b.Size();
+        if (n > 0) {
+            for (int i = 0; i < n; i++) {
+                char buffer[40];
+                sprintf(buffer, "%.10e ", b(i));
+                Tcl_AppendResult(interp, buffer, NULL);
+            }
+        }
+    }
+    else {
+        *output << b;
+        // close the output file
+        outputFile.close();
+    }
   }
-  
-  // close the output file
-  outputFile.close();
   
   return res;
 }
@@ -3201,7 +3304,7 @@ specifySOE(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 	  }
 	  PFEMSolver_Mumps* theSolver = new PFEMSolver_Mumps(relax,0,0,0);
           theSOE = new PFEMLinSOE(*theSolver);
-#endif
+#endif // _PARALLEL_INTERPRETERS
       } else if (strcmp(argv[2],"-quasi-mumps")==0) {
 #ifdef _PARALLEL_INTERPRETERS
 	  int relax = 20;
@@ -3213,7 +3316,7 @@ specifySOE(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 	  }
 	  PFEMCompressibleSolver_Mumps* theSolver = new PFEMCompressibleSolver_Mumps(relax,0,0);
           theSOE = new PFEMCompressibleLinSOE(*theSolver);
-#endif
+#endif // _PARALLEL_INTERPRETERS
       }
   }
 
@@ -4259,24 +4362,13 @@ specifyAlgorithm(ClientData clientData, Tcl_Interp *interp, int argc,
   }
 
   else if (strcmp(argv[1],"ExpressNewton") == 0) {
-    int nIter = 2, factorOnce = 0, formTangent = CURRENT_TANGENT;
-    double kMultiplier = 1.0;
-	  if (argc >= 3 && Tcl_GetInt(interp, argv[2], &nIter) != TCL_OK)
+    void *theNewtonAlgo = OPS_ExpressNewton();
+    if (theNewtonAlgo == 0)
       return TCL_ERROR;
-	  if (argc >= 4 && Tcl_GetDouble(interp, argv[3], &kMultiplier) != TCL_OK)
-      return TCL_ERROR;
-    int count = 4;
-    while (argc > count) {
-      if ((strcmp(argv[count],"-initialTangent") == 0) || (strcmp(argv[count],"-InitialTangent") == 0)) {
-        formTangent = INITIAL_TANGENT;
-      } else if ((strcmp(argv[count],"-currentTangent") == 0) || (strcmp(argv[count],"-CurrentTangent") ==0 )) {
-        formTangent = CURRENT_TANGENT;
-      } else if ((strcmp(argv[count],"-factorOnce") == 0) || (strcmp(argv[count],"-FactorOnce") ==0 )) {
-        factorOnce = 1;
-      }
-      count++;
-    }
-    theNewAlgo = new ExpressNewton(nIter,kMultiplier,formTangent,factorOnce);
+
+    theNewAlgo = (EquiSolnAlgo *)theNewtonAlgo;
+    if (theTest != 0)
+      theNewAlgo->setConvergenceTest(theTest);
   }
 
   else {
@@ -5406,6 +5498,13 @@ specifyIntegrator(ClientData clientData, Tcl_Interp *interp, int argc,
       theTransientAnalysis->setIntegrator(*theTransientIntegrator);
   }
   
+  else if (strcmp(argv[1],"ExplicitDifference") == 0) {
+    theTransientIntegrator = (TransientIntegrator *)OPS_ExplicitDifference();
+    
+    if (theTransientAnalysis != 0)
+      theTransientAnalysis->setIntegrator(*theTransientIntegrator);
+  }
+
   else if (strcmp(argv[1],"CentralDifference") == 0) {
     theTransientIntegrator = (TransientIntegrator *)OPS_CentralDifference();
     
@@ -6923,6 +7022,297 @@ nodeCoord(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
   return TCL_ERROR;
 }
 
+int
+fixedNodes(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    SP_Constraint* theSP;
+    SP_ConstraintIter& spIter = theDomain.getDomainAndLoadPatternSPs();
+
+    // get unique constrained nodes with set
+    set<int> tags;
+    int tag;
+    while ((theSP = spIter()) != 0) {
+        tag = theSP->getNodeTag();
+        tags.insert(tag);
+    }
+    // assign set to vector and sort
+    vector<int> tagv;
+    tagv.assign(tags.begin(), tags.end());
+    sort(tagv.begin(), tagv.end());
+    // loop through unique, sorted tags, adding to output
+    char buffer[20];
+    for (int tag : tagv) {
+        sprintf(buffer, "%d ", tag);
+        Tcl_AppendResult(interp, buffer, NULL);
+    }
+
+    return TCL_OK;
+}
+
+int
+fixedDOFs(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    if (argc < 2) {
+        opserr << "WARNING want - fixedDOFs fNode?\n";
+        return TCL_ERROR;
+    }
+
+    int fNode;
+    if (Tcl_GetInt(interp, argv[1], &fNode) != TCL_OK) {
+        opserr << "WARNING fixedDOFs fNode? - could not read fNode? \n";
+        return TCL_ERROR;
+    }
+    
+    SP_Constraint* theSP;
+    SP_ConstraintIter& spIter = theDomain.getDomainAndLoadPatternSPs();
+
+    int tag;
+    Vector fixed(6);
+    while ((theSP = spIter()) != 0) {
+        tag = theSP->getNodeTag();
+        if (tag == fNode) {
+            fixed(theSP->getDOF_Number()) = 1;
+        }
+    }
+
+    char buffer[20];
+    for (int i = 0; i < 6; i++) {
+        if (fixed(i) == 1) {
+            sprintf(buffer, "%d ", i + 1);
+            Tcl_AppendResult(interp, buffer, NULL);
+        }
+    }
+
+    return TCL_OK;
+}
+
+int
+constrainedNodes(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    bool all = 1;
+    int rNode;
+    if (argc > 1) {
+        if (Tcl_GetInt(interp, argv[1], &rNode) != TCL_OK) {
+            opserr << "WARNING constrainedNodes <rNode?> - could not read rNode? \n";
+            return TCL_ERROR;
+        }
+        all = 0;
+    }
+
+    MP_Constraint* theMP;
+    MP_ConstraintIter& mpIter = theDomain.getMPs();
+
+    // get unique constrained nodes with set
+    set<int> tags;
+    int tag;
+    while ((theMP = mpIter()) != 0) {
+        tag = theMP->getNodeConstrained();
+        if (all || rNode == theMP->getNodeRetained()) {
+            tags.insert(tag);
+        }
+    }
+    // assign set to vector and sort
+    vector<int> tagv;
+    tagv.assign(tags.begin(), tags.end());
+    sort(tagv.begin(), tagv.end());
+    // loop through unique, sorted tags, adding to output
+    char buffer[20];
+    for (int tag : tagv) {
+        sprintf(buffer, "%d ", tag);
+        Tcl_AppendResult(interp, buffer, NULL);
+    }
+
+    return TCL_OK;
+}
+
+int
+constrainedDOFs(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    if (argc < 2) {
+        opserr << "WARNING want - constrainedDOFs cNode? <rNode?> <rDOF?>\n";
+        return TCL_ERROR;
+    }
+
+    int cNode;
+    if (Tcl_GetInt(interp, argv[1], &cNode) != TCL_OK) {
+        opserr << "WARNING constrainedDOFs cNode? <rNode?> <rDOF?> - could not read cNode? \n";
+        return TCL_ERROR;
+    }
+
+    int rNode;
+    bool allNodes = 1;
+    if (argc > 2) {
+        if (Tcl_GetInt(interp, argv[2], &rNode) != TCL_OK) {
+            opserr << "WARNING constrainedDOFs cNode? <rNode?> <rDOF?> - could not read rNode? \n";
+            return TCL_ERROR;
+        }
+        allNodes = 0;
+    }
+
+    int rDOF;
+    bool allDOFs = 1;
+    if (argc > 3) {
+        if (Tcl_GetInt(interp, argv[3], &rDOF) != TCL_OK) {
+            opserr << "WARNING constrainedDOFs cNode? <rNode?> <rDOF?> - could not read rDOF? \n";
+            return TCL_ERROR;
+        }
+        rDOF--;
+        allDOFs = 0;
+    }
+
+    MP_Constraint* theMP;
+    MP_ConstraintIter& mpIter = theDomain.getMPs();
+
+    int tag;
+    int i;
+    int n;
+    Vector constrained(6);
+    while ((theMP = mpIter()) != 0) {
+        tag = theMP->getNodeConstrained();
+        if (tag == cNode) {
+            if (allNodes || rNode == theMP->getNodeRetained()) {
+                const ID &cDOFs = theMP->getConstrainedDOFs();
+                n = cDOFs.Size();
+                if (allDOFs) {
+                    for (i = 0; i < n; i++) {
+                        constrained(cDOFs(i)) = 1;
+                    }
+                }
+                else {
+                    const ID &rDOFs = theMP->getRetainedDOFs();
+                    for (i = 0; i < n; i++) {
+                        if (rDOF == rDOFs(i))
+                            constrained(cDOFs(i)) = 1;
+                    }
+                }
+            }
+        }
+    }
+    char buffer[20];
+    for (int i = 0; i < 6; i++) {
+        if (constrained(i) == 1) {
+            sprintf(buffer, "%d ", i + 1);
+            Tcl_AppendResult(interp, buffer, NULL);
+        }
+    }
+
+    return TCL_OK;
+}
+
+int
+retainedNodes(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    bool all = 1;
+    int cNode;
+    if (argc > 1) {
+        if (Tcl_GetInt(interp, argv[1], &cNode) != TCL_OK) {
+            opserr << "WARNING retainedNodes <cNode?> - could not read cNode? \n";
+            return TCL_ERROR;
+        }
+        all = 0;
+    }
+
+    MP_Constraint* theMP;
+    MP_ConstraintIter& mpIter = theDomain.getMPs();
+
+    // get unique constrained nodes with set
+    set<int> tags;
+    int tag;
+    while ((theMP = mpIter()) != 0) {
+        tag = theMP->getNodeRetained();
+        if (all || cNode == theMP->getNodeConstrained()) {
+            tags.insert(tag);
+        }
+    }
+    // assign set to vector and sort
+    vector<int> tagv;
+    tagv.assign(tags.begin(), tags.end());
+    sort(tagv.begin(), tagv.end());
+    // loop through unique, sorted tags, adding to output
+    char buffer[20];
+    for (int tag : tagv) {
+        sprintf(buffer, "%d ", tag);
+        Tcl_AppendResult(interp, buffer, NULL);
+    }
+
+    return TCL_OK;
+}
+
+int
+retainedDOFs(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+
+    if (argc < 2) {
+        opserr << "WARNING want - retainedDOFs rNode? <cNode?> <cDOF?>\n";
+        return TCL_ERROR;
+    }
+
+    int rNode;
+    if (Tcl_GetInt(interp, argv[1], &rNode) != TCL_OK) {
+        opserr << "WARNING retainedDOFs rNode? <cNode?> <cDOF?> - could not read rNode? \n";
+        return TCL_ERROR;
+    }
+
+    int cNode;
+    bool allNodes = 1;
+    if (argc > 2) {
+        if (Tcl_GetInt(interp, argv[2], &cNode) != TCL_OK) {
+            opserr << "WARNING retainedDOFs rNode? <cNode?> <cDOF?> - could not read cNode? \n";
+            return TCL_ERROR;
+        }
+        allNodes = 0;
+    }
+
+    int cDOF;
+    bool allDOFs = 1;
+    if (argc > 3) {
+        if (Tcl_GetInt(interp, argv[3], &cDOF) != TCL_OK) {
+            opserr << "WARNING retainedDOFs rNode? <cNode?> <cDOF?> - could not read cDOF? \n";
+            return TCL_ERROR;
+        }
+        cDOF--;
+        allDOFs = 0;
+    }
+
+    MP_Constraint* theMP;
+    MP_ConstraintIter& mpIter = theDomain.getMPs();
+
+    int tag;
+    int i;
+    int n;
+    Vector retained(6);
+    while ((theMP = mpIter()) != 0) {
+        tag = theMP->getNodeRetained();
+        if (tag == rNode) {
+            if (allNodes || cNode == theMP->getNodeConstrained()) {
+                const ID& rDOFs = theMP->getRetainedDOFs();
+                n = rDOFs.Size();
+                if (allDOFs) {
+                    for (i = 0; i < n; i++) {
+                        retained(rDOFs(i)) = 1;
+                    }
+                }
+                else {
+                    const ID& cDOFs = theMP->getConstrainedDOFs();
+                    for (i = 0; i < n; i++) {
+                        if (cDOF == cDOFs(i))
+                            retained(rDOFs(i)) = 1;
+                    }
+                }
+            }
+        }
+    }
+    char buffer[20];
+    for (int i = 0; i < 6; i++) {
+        if (retained(i) == 1) {
+            sprintf(buffer, "%d ", i + 1);
+            Tcl_AppendResult(interp, buffer, NULL);
+        }
+    }
+
+    return TCL_OK;
+}
+
 int 
 setNodeCoord(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
 {
@@ -6981,6 +7371,101 @@ updateElementDomain(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Cha
     }
 
 	return 0;
+}
+
+int
+getNDM(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    int ndm;
+
+    if (argc > 1) {
+        int tag;
+        if (Tcl_GetInt(interp, argv[1], &tag) != TCL_OK) {
+            opserr << "WARNING getNDM nodeTag? \n";
+            return TCL_ERROR;
+        }
+        Node* theNode = theDomain.getNode(tag);
+        if (theNode == 0) {
+            opserr << "WARNING nodeTag " << tag << " does not exist \n";
+            return TCL_ERROR;
+        }
+        const Vector& coords = theNode->getCrds();
+        ndm = coords.Size();
+    } else {
+        if (theBuilder == 0) {
+            return TCL_OK;
+        }
+        else {
+            ndm = OPS_GetNDM();
+        }
+    }
+
+    char buffer[20];
+    sprintf(buffer, "%d", ndm);
+    Tcl_AppendResult(interp, buffer, NULL);
+
+    return TCL_OK;
+}
+
+int
+getNDF(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    int ndf;
+
+    if (argc > 1) {
+        int tag;
+        if (Tcl_GetInt(interp, argv[1], &tag) != TCL_OK) {
+            opserr << "WARNING getNDF nodeTag? \n";
+            return TCL_ERROR;
+        }
+        Node* theNode = theDomain.getNode(tag);
+        if (theNode == 0) {
+            opserr << "WARNING nodeTag " << tag << " does not exist \n";
+            return TCL_ERROR;
+        }
+        ndf = theNode->getNumberDOF();
+    } else {
+        if (theBuilder == 0) {
+            return TCL_OK;
+        }
+        else {
+            ndf = OPS_GetNDF();
+        }
+    }
+
+    char buffer[20];
+    sprintf(buffer, "%d", ndf);
+    Tcl_AppendResult(interp, buffer, NULL);
+
+    return TCL_OK;
+}
+
+int
+eleType(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+    if (argc < 2) {
+        opserr << "WARNING want - eleType eleTag?\n";
+        return TCL_ERROR;
+    }
+
+    int tag;
+
+    if (Tcl_GetInt(interp, argv[1], &tag) != TCL_OK) {
+        opserr << "WARNING eleType eleTag? \n";
+        return TCL_ERROR;
+    }
+
+    char buffer[80];
+    Element* theElement = theDomain.getElement(tag);
+    if (theElement == 0) {
+        opserr << "WARNING eleType ele " << tag << " not found" << endln;
+        return TCL_ERROR;
+    }
+    const char* type = theElement->getClassType();
+    sprintf(buffer, "%s", type);
+    Tcl_AppendResult(interp, buffer, NULL);
+
+    return TCL_OK;
 }
 
 int 
@@ -8822,6 +9307,342 @@ getNP(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
   Tcl_SetResult(interp, buffer, TCL_VOLATILE);
 
   return TCL_OK;  
+}
+
+int
+getNumElements(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+  char buffer[20];
+
+  sprintf(buffer, "%d ", theDomain.getNumElements());
+  Tcl_AppendResult(interp, buffer, NULL);
+
+  return TCL_OK;
+}
+
+int
+getEleClassTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	Element *theEle;
+	ElementIter &eleIter = theDomain.getElements();
+
+	char buffer[20];
+
+        while ((theEle = eleIter()) != 0) {
+          sprintf(buffer, "%d ", theEle->getClassTag());
+          Tcl_AppendResult(interp, buffer, NULL);
+        }
+  } else if (argc == 2) {
+	int eleTag;
+
+	if (Tcl_GetInt(interp, argv[1], &eleTag) != TCL_OK) {
+	  opserr << "WARNING getParamValue -- could not read paramTag \n";
+	  return TCL_ERROR;
+	}
+
+	Element *theEle = theDomain.getElement(eleTag);
+
+	char buffer[20];
+
+	sprintf(buffer, "%d ", theEle->getClassTag());
+	Tcl_AppendResult(interp, buffer, NULL);
+
+  } else {
+    opserr << "WARNING want - getEleClassTags <eleTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
+}
+
+int
+getEleLoadClassTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	LoadPattern *thePattern;
+	LoadPatternIter &thePatterns = theDomain.getLoadPatterns();
+
+	char buffer[20];
+
+	while ((thePattern = thePatterns()) != 0) {
+	  ElementalLoadIter theEleLoads = thePattern->getElementalLoads();
+	  ElementalLoad *theLoad;
+
+	  while ((theLoad = theEleLoads()) != 0) {
+		sprintf(buffer, "%d ", theLoad->getClassTag());
+		Tcl_AppendResult(interp, buffer, NULL);
+	  }
+	}
+
+  } else if (argc == 2) {
+	int patternTag;
+
+	if (Tcl_GetInt(interp, argv[1], &patternTag) != TCL_OK) {
+	  opserr << "WARNING getEleLoadClassTags -- could not read patternTag\n";
+	  return TCL_ERROR;
+	}
+
+	LoadPattern *thePattern = theDomain.getLoadPattern(patternTag);
+    if (thePattern == nullptr) {
+	  opserr << "ERROR load pattern with tag " << patternTag << " not found in domain -- getEleLoadClassTags\n";
+	  return TCL_ERROR;
+	}
+
+	ElementalLoadIter theEleLoads = thePattern->getElementalLoads();
+	ElementalLoad* theLoad;
+
+	char buffer[20];
+
+	while ((theLoad = theEleLoads()) != 0) {
+	  sprintf(buffer, "%d ", theLoad->getClassTag());
+	  Tcl_AppendResult(interp, buffer, NULL);
+	}
+
+  } else {
+    opserr << "WARNING want - getEleLoadClassTags <patternTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
+}
+
+int
+getEleLoadTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	LoadPattern *thePattern;
+	LoadPatternIter &thePatterns = theDomain.getLoadPatterns();
+
+	char buffer[20];
+
+	while ((thePattern = thePatterns()) != 0) {
+	  ElementalLoadIter theEleLoads = thePattern->getElementalLoads();
+	  ElementalLoad *theLoad;
+
+	  while ((theLoad = theEleLoads()) != 0) {
+		sprintf(buffer, "%d ", theLoad->getElementTag());
+		Tcl_AppendResult(interp, buffer, NULL);
+	  }
+	}
+
+  } else if (argc == 2) {
+	int patternTag;
+
+	if (Tcl_GetInt(interp, argv[1], &patternTag) != TCL_OK) {
+	  opserr << "WARNING getEleLoadTags -- could not read patternTag \n";
+	  return TCL_ERROR;
+	}
+
+	LoadPattern *thePattern = theDomain.getLoadPattern(patternTag);
+    if (thePattern == nullptr) {
+	  opserr << "ERROR load pattern with tag " << patternTag << " not found in domain -- getEleLoadTags\n";
+	  return TCL_ERROR;
+	}
+
+	ElementalLoadIter theEleLoads = thePattern->getElementalLoads();
+	ElementalLoad* theLoad;
+
+	char buffer[20];
+
+	while ((theLoad = theEleLoads()) != 0) {
+	  sprintf(buffer, "%d ", theLoad->getElementTag());
+	  Tcl_AppendResult(interp, buffer, NULL);
+	}
+
+  } else {
+    opserr << "WARNING want - getEleLoadTags <patternTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
+}
+
+int
+getEleLoadData(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	LoadPattern *thePattern;
+	LoadPatternIter &thePatterns = theDomain.getLoadPatterns();
+
+	char buffer[40];
+	int typeEL;
+
+	while ((thePattern = thePatterns()) != 0) {
+	  ElementalLoadIter &theEleLoads = thePattern->getElementalLoads();
+	  ElementalLoad *theLoad;
+
+	  while ((theLoad = theEleLoads()) != 0) {
+		const Vector &eleLoadData = theLoad->getData(typeEL, 1.0);
+
+		int eleLoadDataSize = eleLoadData.Size();
+		opserr << "eleLoadDataSize: "<< eleLoadDataSize << "\n";
+		for (int i = 0; i < eleLoadDataSize; i++) {
+		  sprintf(buffer, "%35.20f ", eleLoadData(i));
+		  Tcl_AppendResult(interp, buffer, NULL);
+		}
+	  }
+	}
+
+  } else if (argc == 2) {
+	int patternTag;
+
+	if (Tcl_GetInt(interp, argv[1], &patternTag) != TCL_OK) {
+	  opserr << "WARNING getEleLoadData -- could not read patternTag \n";
+	  return TCL_ERROR;
+	}
+
+	LoadPattern *thePattern = theDomain.getLoadPattern(patternTag);
+    if (thePattern == nullptr) {
+	  opserr << "ERROR load pattern with tag " << patternTag << " not found in domain -- getEleLoadData\n";
+	  return TCL_ERROR;
+	}
+
+	ElementalLoadIter theEleLoads = thePattern->getElementalLoads();
+	ElementalLoad* theLoad;
+
+	int typeEL;
+	char buffer[40];
+
+	while ((theLoad = theEleLoads()) != 0) {
+		const Vector &eleLoadData = theLoad->getData(typeEL, 1.0);
+
+		int eleLoadDataSize = eleLoadData.Size();
+		for (int i = 0; i < eleLoadDataSize; i++) {
+		  sprintf(buffer, "%35.20f ", eleLoadData(i));
+		  Tcl_AppendResult(interp, buffer, NULL);
+		}
+
+	}
+
+  } else {
+    opserr << "WARNING want - getEleLoadTags <patternTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
+}
+
+int
+getNodeLoadTags(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	LoadPattern *thePattern;
+	LoadPatternIter &thePatterns = theDomain.getLoadPatterns();
+
+	char buffer[20];
+
+	while ((thePattern = thePatterns()) != 0) {
+	  NodalLoadIter theNodLoads = thePattern->getNodalLoads();
+	  NodalLoad *theNodLoad;
+
+	  while ((theNodLoad = theNodLoads()) != 0) {
+		sprintf(buffer, "%d ", theNodLoad->getNodeTag());
+		Tcl_AppendResult(interp, buffer, NULL);
+	  }
+	}
+
+  } else if (argc == 2) {
+	int patternTag;
+
+	if (Tcl_GetInt(interp, argv[1], &patternTag) != TCL_OK) {
+	  opserr << "WARNING getNodeLoadTags -- could not read patternTag \n";
+	  return TCL_ERROR;
+	}
+
+	LoadPattern *thePattern = theDomain.getLoadPattern(patternTag);
+    if (thePattern == nullptr) {
+	  opserr << "ERROR load pattern with tag " << patternTag << " not found in domain -- getNodeLoadTags\n";
+	  return TCL_ERROR;
+	}
+
+	NodalLoadIter theNodLoads = thePattern->getNodalLoads();
+	NodalLoad* theNodLoad;
+
+	char buffer[20];
+
+	while ((theNodLoad = theNodLoads()) != 0) {
+	  sprintf(buffer, "%d ", theNodLoad->getNodeTag());
+	  Tcl_AppendResult(interp, buffer, NULL);
+	}
+
+  } else {
+    opserr << "WARNING want - getNodeLoadTags <patternTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
+}
+
+int
+getNodeLoadData(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv)
+{
+
+  if (argc == 1) {
+	LoadPattern *thePattern;
+	LoadPatternIter &thePatterns = theDomain.getLoadPatterns();
+
+	char buffer[40];
+	int typeEL;
+
+	while ((thePattern = thePatterns()) != 0) {
+	  NodalLoadIter &theNodeLoads = thePattern->getNodalLoads();
+	  NodalLoad *theNodLoad;
+
+	  while ((theNodLoad = theNodeLoads()) != 0) {
+		const Vector &eleLoadData = theNodLoad->getData(typeEL);
+
+		int eleLoadDataSize = eleLoadData.Size();
+		opserr << "eleLoadDataSize: "<< eleLoadDataSize << "\n";
+		for (int i = 0; i < eleLoadDataSize; i++) {
+		  sprintf(buffer, "%35.20f ", eleLoadData(i));
+		  Tcl_AppendResult(interp, buffer, NULL);
+		}
+	  }
+	}
+
+  } else if (argc == 2) {
+	int patternTag;
+
+	if (Tcl_GetInt(interp, argv[1], &patternTag) != TCL_OK) {
+	  opserr << "WARNING getNodeLoadData -- could not read patternTag \n";
+	  return TCL_ERROR;
+	}
+
+	LoadPattern *thePattern = theDomain.getLoadPattern(patternTag);
+    if (thePattern == nullptr) {
+	  opserr << "ERROR load pattern with tag " << patternTag << " not found in domain -- getNodeLoadData\n";
+	  return TCL_ERROR;
+	}
+
+	NodalLoadIter theNodeLoads = thePattern->getNodalLoads();
+	NodalLoad* theNodLoad;
+
+	int typeEL;
+	char buffer[40];
+
+	while ((theNodLoad = theNodeLoads()) != 0) {
+		const Vector &eleLoadData = theNodLoad->getData(typeEL);
+
+		int eleLoadDataSize = eleLoadData.Size();
+		for (int i = 0; i < eleLoadDataSize; i++) {
+		  sprintf(buffer, "%35.20f ", eleLoadData(i));
+		  Tcl_AppendResult(interp, buffer, NULL);
+		}
+
+	}
+
+  } else {
+    opserr << "WARNING want - getNodeLoadTags <patternTag?>\n" << endln;
+    return TCL_ERROR;
+  }
+
+  return TCL_OK;
 }
 
 int
