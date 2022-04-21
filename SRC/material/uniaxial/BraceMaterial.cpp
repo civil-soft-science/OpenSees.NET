@@ -41,11 +41,11 @@ static int numBraceMaterials = 0;
 void *
 OPS_BraceMaterial(void)
 {
-  if (numBraceMaterials == 0) {
+  /*if (numBraceMaterials == 0) {
       numBraceMaterials++;
       opserr << "BraceMaterial uniaxial material - Written by Chuang-Sheng Yang (Walter) see:ANALYTICAL AND EXPERIMENTAL STUDY OF\n";
       opserr << "CONCENTRICALLY BRACED FRAMES WITH ZIPPER STRUTS\n";
-  }
+  }*/
   
   // Pointer to a uniaxial material that will be returned
   UniaxialMaterial *theMaterial = 0;

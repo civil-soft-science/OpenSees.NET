@@ -86,6 +86,7 @@ OPS_ElementRecorder()
 
     bool echoTimeFlag = false;
     double dT = 0.0;
+    double rTolDt = 0.00001;
     bool doScientific = false;
 
     int precision = 6;
@@ -167,6 +168,15 @@ OPS_ElementRecorder()
                 int num = 1;
                 if (OPS_GetDoubleInput(&num, &dT) < 0) {
                     opserr << "WARNING: failed to read dT\n";
+                    return 0;
+                }
+            }
+        }
+        else if (strcmp(option, "-rTolDt") == 0) {
+            if (OPS_GetNumRemainingInputArgs() > 0) {
+                int num = 1;
+                if (OPS_GetDoubleInput(&num, &rTolDt) < 0) {
+                    opserr << "WARNING: failed to read rTolDt\n";
                     return 0;
                 }
             }
@@ -272,13 +282,14 @@ OPS_ElementRecorder()
             nargrem = 1 + OPS_GetNumRemainingInputArgs();
             data = new const char *[nargrem];
             data[0] = option;
-	    argv = new char*[nargrem];
+	    //argv = new char*[nargrem];
 	    char buffer[128];
             for (int i = 1; i < nargrem; i++) {
-	      argv[i] = new char[128];
+	      data[i] = new char[128];
 
 	      // Turn everything in to a string for setResponse
-	      data[i] = OPS_GetStringFromAll(buffer, 128);
+	      //data[i] = OPS_GetStringFromAll(buffer, 128);
+	      OPS_GetStringFromAll((char*)data[i], 128);
 	    }
         }
     }
@@ -311,13 +322,13 @@ OPS_ElementRecorder()
 #ifdef _CSS
         procDataMethod,
 #endif // _CSS
-        dT, &dofs);
+        dT, rTolDt, &dofs);
 
-    if (argv != 0) {
+    if (data != 0) {
       for (int i=1; i<nargrem; ++i) {
-	delete [] argv[i];
+	delete [] data[i];
       }
-      delete [] argv;
+      delete [] data;
     }
     
     return recorder;
@@ -329,7 +340,7 @@ ElementRecorder::ElementRecorder()
 :Recorder(RECORDER_TAGS_ElementRecorder),
  numEle(0), numDOF(0), eleID(0), dof(0), theResponses(0), 
  theDomain(0), theOutputHandler(0),
- echoTimeFlag(true), deltaT(0), nextTimeStampToRecord(0.0), data(0), 
+ echoTimeFlag(true), deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0), data(0),
  initializationDone(false), responseArgs(0), numArgs(0), addColumnInfo(0)
 {
 
@@ -345,11 +356,12 @@ ElementRecorder::ElementRecorder(const ID *ele,
              int procMethod,
 #endif // _CSS
              double dT,
-				 const ID *theDOFs)
+			double rTolDt,
+			const ID *theDOFs)
 :Recorder(RECORDER_TAGS_ElementRecorder),
  numEle(0), numDOF(0), eleID(0), dof(0), theResponses(0), 
  theDomain(&theDom), theOutputHandler(&theOutput),
- echoTimeFlag(echoTime), deltaT(dT), nextTimeStampToRecord(0.0), data(0),
+ echoTimeFlag(echoTime), deltaT(dT), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0), data(0),
  initializationDone(false), responseArgs(0), numArgs(0), addColumnInfo(0)
 #ifdef _CSS
  , procDataMethod(procMethod)
@@ -614,9 +626,10 @@ ElementRecorder::sendSelf(int commitTag, Channel &theChannel)
     return -1;
   }
 
-  static Vector dData(2);
+  static Vector dData(3);
   dData(0) = deltaT;
   dData(1) = nextTimeStampToRecord;
+  dData(2) = relDeltaTTol;
   if (theChannel.sendVector(0, commitTag, dData) < 0) {
     opserr << "ElementRecorder::sendSelf() - failed to send dData\n";
     return -1;
@@ -740,6 +753,7 @@ ElementRecorder::recvSelf(int commitTag, Channel &theChannel,
   }
   deltaT = dData(0);
   nextTimeStampToRecord = dData(1);
+  relDeltaTTol = dData(2);
 
   //
   // resize & recv the eleID

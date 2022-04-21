@@ -119,6 +119,9 @@
     <ClCompile Include="..\..\..\SRC\recorder\ConditionalElementRecorder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\response\CrdTransfResponse.cpp">
+      <Filter>response</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\SRC\recorder\AlgorithmIncrements.h">
@@ -222,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\ConditionalDriftRecorder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\response\CrdTransfResponse.h">
+      <Filter>response</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

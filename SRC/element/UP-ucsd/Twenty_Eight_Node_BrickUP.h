@@ -139,7 +139,7 @@ public :
 #ifdef _CSS
     void computeResistingForce();
 #endif // _CSS
-
+	friend class QzLiq1; // Sumeet
 private :
     //static data
     static Matrix stiff ;

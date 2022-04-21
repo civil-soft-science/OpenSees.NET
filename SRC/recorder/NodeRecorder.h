@@ -60,8 +60,8 @@ class NodeRecorder: public Recorder
 #endif // _CSS
         double deltaT = 0.0,
 		 bool echoTimeFlag = true,
-		 TimeSeries **timeSeries = 0); 
-    
+		 TimeSeries **timeSeries = 0);
+
     ~NodeRecorder();
 #if _DLL
 	OPS_Stream* getOutputHandler() {
@@ -73,10 +73,10 @@ class NodeRecorder: public Recorder
 #endif
     int record(int commitTag, double timeStamp);
 
-    int domainChanged(void);    
+    int domainChanged(void);
     int setDomain(Domain &theDomain);
-    int sendSelf(int commitTag, Channel &theChannel);  
-    int recvSelf(int commitTag, Channel &theChannel, 
+    int sendSelf(int commitTag, Channel &theChannel);
+    int recvSelf(int commitTag, Channel &theChannel,
 		 FEM_ObjectBroker &theBroker);
 	virtual double getRecordedValue(int clmnId, int rowOffset, bool reset); //added by SAJalali
 
@@ -107,6 +107,7 @@ class NodeRecorder: public Recorder
     int dataFlag;        // flag indicating what it is to be stored in recorder
 
     double deltaT;
+    double relDeltaTTol;
     double nextTimeStampToRecord;
 
     // AddingSensitivity:BEGIN //////////////////////////////

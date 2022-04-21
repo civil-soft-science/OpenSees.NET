@@ -147,7 +147,7 @@ void  PML2D::setDomain( Domain *theDomain )
   int MCRD = 2; 
   int NNODE = PML2D_NUM_NODES;
 
-  pml_(K, 
+  pml2d_(K, 
        C, 
        M,   
        &NDOFEL, 

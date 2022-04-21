@@ -361,15 +361,8 @@ AxialCurve::checkElementState(double springForce)
 		
 		//cout << "force = " << force << ", forceSurface = " << forceSurface << endln;
 
-		char tclAssignment[100]="";
-
 		if (stateFlag == 0) //prior to failure
 		{
-
-			sprintf(tclAssignment , "set fail_%d  0", eleTag);
-#if !_DLL
-			Tcl_Eval(theTclInterp, tclAssignment);
-#endif
 
 
 			if (force >= forceSurface) // on/outside failure surface
@@ -410,8 +403,8 @@ AxialCurve::checkElementState(double springForce)
 
 					outputFile.close();
 
-					sprintf(tclAssignment , "set fail_%d  1", eleTag);
 #if !_DLL
+					sprintf(tclAssignment , "set fail_%d  1", eleTag);
 					Tcl_Eval(theTclInterp, tclAssignment);
 #endif
 

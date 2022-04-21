@@ -1382,46 +1382,11 @@ ElasticBeam3d::setResponse(const char **argv, int argc, OPS_Stream &output)
     }   
   }
   
-  else if (strcmp(argv[0],"xaxis") == 0 || strcmp(argv[0],"xlocal") == 0)
-    theResponse = new ElementResponse(this, 201, Vector(3));
+  output.endTag(); // ElementOutput
+
+  if (theResponse == 0)
+    theResponse = theCoordTransf->setResponse(argv, argc, output);
   
-  else if (strcmp(argv[0],"yaxis") == 0 || strcmp(argv[0],"ylocal") == 0)
-    theResponse = new ElementResponse(this, 202, Vector(3));
-  
-  else if (strcmp(argv[0],"zaxis") == 0 || strcmp(argv[0],"zlocal") == 0)
-    theResponse = new ElementResponse(this, 203, Vector(3));
-
-#ifdef _CSS
-  //SAJalali
-  else if (strcmp(argv[0], "internalForce") == 0 || strcmp(argv[0], "InternalForce") == 0)
-  {
-
-      if (argc > 1) {
-
-          double xi = atof(argv[1]);
-          if (xi >= 0 && xi <= 1) {
-              output.tag("InternalForce");
-              output.attr("xi", xi);
-
-              theResponse = new ElementResponse(this, 6, Vector(6));
-              Information& info = theResponse->getInformation();
-              info.theDouble = xi;
-              output.endTag();
-
-          }
-          else {
-              opserr << "WARNING! ElasticBeam2d::invalid section location: " << xi << " value must be in 0<= <=1 range" << endln;
-          }
-      }
-  }
-  else if (strcmp(argv[0], "energy") == 0) //by SAJalali
-  {
-      return new ElementResponse(this, 7, 0.0);
-  }
-
-#endif // _CSS
-output.endTag(); // ElementOutput
-
   return theResponse;
 }
 
@@ -1507,21 +1472,6 @@ ElasticBeam3d::getResponse (int responseID, Information &eleInfo)
 #endif // _CSS
   default:
     break;
-  }
-
-  if (responseID >= 201 && responseID <= 203) {
-    static Vector xlocal(3);
-    static Vector ylocal(3);
-    static Vector zlocal(3);
-    
-    theCoordTransf->getLocalAxes(xlocal,ylocal,zlocal);
-    
-    if (responseID == 201)
-      return eleInfo.setVector(xlocal);
-    if (responseID == 202)
-      return eleInfo.setVector(ylocal);
-    if (responseID == 203)
-      return eleInfo.setVector(zlocal);    
   }
 
   return -1;

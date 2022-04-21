@@ -49,7 +49,8 @@ class DriftRecorder: public Recorder
 		int procDataMethod = 0,
 #endif // _CSS
 		bool echoTime = false,
-		double dT = 0.0);
+		double dT = 0.0,
+		double relDeltaTTol = 0.00001);
 
   DriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 		Domain &theDomain, 
@@ -58,7 +59,8 @@ class DriftRecorder: public Recorder
 		int procDataMethod = 0,
 #endif // _CSS
 		bool echoTime = false,
-		double dT = 0.0);
+		double dT = 0.0,
+		double relDeltaTTol = 0.00001);
   
   ~DriftRecorder();
 
@@ -101,6 +103,7 @@ class DriftRecorder: public Recorder
   bool echoTimeFlag;   // flag indicating whether time to be included in o/p
   
   double deltaT, nextTimeStampToRecord;
+  double relDeltaTTol;
 };
 
 #endif

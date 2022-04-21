@@ -59,11 +59,13 @@ DriftRecorder::DriftRecorder(int ni,
     int procMethod,
 #endif // _CSS
     bool timeFlag,
-			     double dT)
+	double dT,
+	double rTolDt)
   :Recorder(RECORDER_TAGS_DriftRecorder),
    ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), data(0),
    theDomain(&theDom), theOutputHandler(&theDataOutputHandler),
-   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT), nextTimeStampToRecord(0.0)
+   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT), relDeltaTTol(rTolDt),
+	nextTimeStampToRecord(0.0)
 #ifdef _CSS
     , procDataMethod(procMethod)
 #endif // _CSS
@@ -88,11 +90,13 @@ DriftRecorder::DriftRecorder(const ID &nI,
             int procMethod,
 #endif // _CSS
 			     bool timeFlag,
-			     double dT)
+			     double dT,
+			     double rTolDt)
   :Recorder(RECORDER_TAGS_DriftRecorder),
    ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), data(0),
    theDomain(&theDom), theOutputHandler(&theDataOutputHandler),
-   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT)
+   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT),
+	relDeltaTTol(rTolDt)
 #ifdef _CSS
     , procDataMethod(procMethod)
 #endif // _CSS
@@ -147,7 +151,9 @@ DriftRecorder::record(int commitTag, double timeStamp)
   if (numNodes == 0 || data == 0)
     return 0;
 
-  if (deltaT == 0.0 || timeStamp >= nextTimeStampToRecord) {
+  // where relDeltaTTol is the maximum reliable ratio between analysis time step and deltaT
+  // and provides tolerance for floating point precision (see floating-point-tolerance-for-recorder-time-step.md)
+    if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
 
     if (deltaT != 0.0) 
       nextTimeStampToRecord = timeStamp + deltaT;
@@ -276,9 +282,10 @@ DriftRecorder::sendSelf(int commitTag, Channel &theChannel)
 
 
 
-  static Vector dData(2);
+  static Vector dData(3);
   dData(0) = deltaT;
   dData(1) = nextTimeStampToRecord;
+  dData(2) = relDeltaTTol;
   if (theChannel.sendVector(0, commitTag, dData) < 0) {
     opserr << "ElementRecorder::sendSelf() - failed to send dData\n";
     return -1;
@@ -347,6 +354,7 @@ DriftRecorder::recvSelf(int commitTag, Channel &theChannel,
   }
   deltaT = dData(0);
   nextTimeStampToRecord = dData(1);
+  relDeltaTTol = dData(2);
 
   if (theOutputHandler != 0)
     delete theOutputHandler;

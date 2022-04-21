@@ -1711,9 +1711,11 @@ DispBeamColumn2d::setResponse(const char **argv, int argc,
   else if (strcmp(argv[0],"integrationWeights") == 0)
     return new ElementResponse(this, 8, Vector(numSections));
 
-  else if (strcmp(argv[0], "energy") == 0) //by SAJalali
-  {
-  return new ElementResponse(this, 10, 0.0);
+  else if (strcmp(argv[0],"sectionTags") == 0)
+    theResponse = new ElementResponse(this, 110, ID(numSections));
+  
+  else if (strcmp(argv[0], "energy") == 0) {
+    theResponse = new ElementResponse(this, 10, 0.0);
   }
 #ifdef _CSS
   else if (strcmp(argv[0], "maxDuctility") == 0 || strcmp(argv[0], "MaxDuctility") == 0) //by SAJalali
@@ -1744,6 +1746,9 @@ DispBeamColumn2d::setResponse(const char **argv, int argc,
 
 #endif // _CSS
 
+  if (theResponse == 0)
+    theResponse = crdTransf->setResponse(argv, argc, output);
+  
   output.endTag();
 
   if (theResponse == 0)
@@ -1879,6 +1884,14 @@ DispBeamColumn2d::getResponse(int responseID, Information &eleInfo)
       weights(i) = wt[i]*L;
     return eleInfo.setVector(weights);
   }
+
+  else if (responseID == 110) {
+    ID tags(numSections);
+    for (int i = 0; i < numSections; i++)
+      tags(i) = theSections[i]->getTag();
+    return eleInfo.setID(tags);
+  }
+  
   //by SAJalali
   else if (responseID == 10) {
 	  double xi[maxNumSections];

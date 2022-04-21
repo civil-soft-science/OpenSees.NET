@@ -81,6 +81,7 @@ OPS_EnvelopeElementRecorder()
 
     bool echoTimeFlag = false;
     double dT = 0.0;
+    double rTolDt = 0.00001;
     bool doScientific = false;
 
     int precision = 6;
@@ -157,6 +158,15 @@ OPS_EnvelopeElementRecorder()
                 int num = 1;
                 if (OPS_GetDoubleInput(&num, &dT) < 0) {
                     opserr << "WARNING: failed to read dT\n";
+                    return 0;
+                }
+            }
+        }
+        else if (strcmp(option, "-rTolDt") == 0) {
+            if (OPS_GetNumRemainingInputArgs() > 0) {
+                int num = 1;
+                if (OPS_GetDoubleInput(&num, &rTolDt) < 0) {
+                    opserr << "WARNING: failed to read rTolDt\n";
                     return 0;
                 }
             }
@@ -245,8 +255,13 @@ OPS_EnvelopeElementRecorder()
             nargrem = 1 + OPS_GetNumRemainingInputArgs();
             data = new const char *[nargrem];
             data[0] = option;
-            for (int i = 1; i < nargrem; i++)
-                data[i] = OPS_GetString();
+            for (int i = 1; i < nargrem; i++) {
+	      data[i] = new char[128];
+
+	      // Turn everything in to a string for setResponse
+	      //data[i] = OPS_GetStringFromAll(buffer, 128);
+	      OPS_GetStringFromAll((char*)data[i], 128);
+	    }
         }
     }
 
@@ -285,7 +300,7 @@ OPS_EnvelopeElementRecorder()
 EnvelopeElementRecorder::EnvelopeElementRecorder()
 :Recorder(RECORDER_TAGS_EnvelopeElementRecorder),
  numEle(0), numDOF(0), eleID(0), dof(0), theResponses(0), theDomain(0),
- theHandler(0), deltaT(0), nextTimeStampToRecord(0.0), 
+ theHandler(0), deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0),
  data(0), currentData(0), first(true),
  initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(false), addColumnInfo(0)
 {
@@ -306,7 +321,7 @@ EnvelopeElementRecorder::EnvelopeElementRecorder(const ID *ele,
 							 const ID *indexValues)
  :Recorder(RECORDER_TAGS_EnvelopeElementRecorder),
   numEle(0), eleID(0), numDOF(0), dof(0), theResponses(0), theDomain(&theDom),
-  theHandler(&theOutputHandler), deltaT(dT), nextTimeStampToRecord(0.0), 
+  theHandler(&theOutputHandler), deltaT(dT), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0),
   data(0), currentData(0), first(true),
   initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(echoTime), addColumnInfo(0)
 #ifdef _CSS
@@ -678,6 +693,7 @@ EnvelopeElementRecorder::sendSelf(int commitTag, Channel &theChannel)
 
   static Vector dData(1);
   dData(1) = deltaT;
+  dData(2) = relDeltaTTol;
   if (theChannel.sendVector(0, commitTag, dData) < 0) {
     opserr << "EnvelopeElementRecorder::sendSelf() - failed to send dData\n";
     return -1;
@@ -801,6 +817,7 @@ EnvelopeElementRecorder::recvSelf(int commitTag, Channel &theChannel,
     return -1;
   }
   deltaT = dData(1);
+  relDeltaTTol = dData(2);
 
 
   //

@@ -38,11 +38,9 @@
 #include <Vector.h>
 #include <Matrix.h>
 #include <MatrixUtil.h>
-#include <classTags.h>
 #include <SectionAggregator.h>
 #include <MaterialResponse.h>
 #include <ID.h>
-#include <FiberSection2d.h>			//by SAJalali
 #include <string.h>
 
 #include <classTags.h>
@@ -972,17 +970,27 @@ SectionAggregator::setResponse(const char **argv, int argc, OPS_Stream &output)
 	  return theResponse = new MaterialResponse(this, 9, Vector(num));
   }
 #endif // _CSS
+  if (argc > 2 && (strcmp(argv[0], "addition") == 0) || (strcmp(argv[0], "material") == 0)) {
 
+	  // Get the tag of the material
+	  int materialTag = atoi(argv[1]);
 
-  if (theSection != 0)
-    return theSection->setResponse(argv, argc, output);
-  else 
-    return this->SectionForceDeformation::setResponse(argv, argc, output);
+	  // Loop to find the right material
+	  int ok = 0;
+	  for (int i = 0; i < numMats; i++)
+		  if (materialTag == theAdditions[i]->getTag())
+			  theResponse = theAdditions[i]->setResponse(&argv[2], argc - 2, output);
+  }
 
-  return 0;
+  if ((argc > 1) && (strcmp(argv[0],"section") == 0) && (theSection))
+    theResponse = theSection->setResponse(&argv[1], argc-1, output);
+
+  if (theResponse == 0)
+    return SectionForceDeformation::setResponse(argv, argc, output);
+  
+  return theResponse;
 }
 
-//by SAJalali
 int
 SectionAggregator::getResponse(int responseID, Information &sectInfo)
 {

@@ -36,11 +36,14 @@
 
  #include <tcl.h>
 
+
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
  #include <Domain.h>
  #include <EquiSolnAlgo.h>
+
+
 
  // recorders
  #include <NodeRecorder.h>
@@ -61,13 +64,18 @@
  #include <EnvelopeElementRecorder.h>
  #include <NormElementRecorder.h>
  #include <NormEnvelopeElementRecorder.h>
+
  #include <PVDRecorder.h>
- #include <MPCORecorder.h>
+
  #include <GmshRecorder.h>
  #include <VTK_Recorder.h>
+
 extern void* OPS_PVDRecorder();
+
 extern void* OPS_GmshRecorder();
+#ifdef _HDF5
 extern void* OPS_MPCORecorder();
+#endif // _HDF5
 extern void* OPS_VTK_Recorder();
 extern void* OPS_ElementRecorderRMS();
 extern void* OPS_NodeRecorderRMS();
@@ -97,6 +105,7 @@ extern void* OPS_NodeRecorderRMS();
 
  #include <packages.h>
  #include <elementAPI.h>
+extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
 
 
  extern TimeSeries *TclSeriesCommand(ClientData clientData, Tcl_Interp *interp, TCL_Char *arg);
@@ -178,6 +187,7 @@ extern void* OPS_NodeRecorderRMS();
 				 int numEle = 0;
        int endEleIDs = 2;
        double dT = 0.0;
+       double rTolDt = 0.00001;
        bool echoTime = false;
        int loc = endEleIDs;
        int flags = 0;
@@ -360,7 +370,13 @@ extern void* OPS_NodeRecorderRMS();
 	   if (Tcl_GetDouble(interp, argv[loc], &dT) != TCL_OK)	
 	     return TCL_ERROR;	
 	   loc++;
-	 } 
+	 }
+	 else if (strcmp(argv[loc],"-rTolDt") == 0) {
+            loc++;
+            if (Tcl_GetDouble(interp, argv[loc], &rTolDt) != TCL_OK)
+	     return TCL_ERROR;
+	   loc++;
+     }
 
 
 	 else if (strcmp(argv[loc],"-precision") == 0) {
@@ -515,6 +531,7 @@ extern void* OPS_NodeRecorderRMS();
 							procDataMethod,
 #endif // _CSS
 					      dT,
+					      rTolDt,
 					      specificIndices);
 
        } else if (strcmp(argv[1],"EnvelopeElement") == 0) {
@@ -539,7 +556,8 @@ extern void* OPS_NodeRecorderRMS();
 						  echoTime,
 						  theDomain, 
 						  *theOutputStream,
-						  dT, 
+						  dT,
+						  rTolDt,
 						  specificIndices);
 
        }
@@ -577,7 +595,8 @@ extern void* OPS_NodeRecorderRMS();
 							  argc-eleData, 
 							  theDomain, 
 							  *theOutputStream,
-							  dT, 
+							  dT,
+							  rTolDt,
 							  echoTime,
 							  specificIndices);
        }       
@@ -603,6 +622,7 @@ extern void* OPS_NodeRecorderRMS();
        }    
 
        double dT = 0.0;
+       double rTolDt = 0.00001;
        bool echoTime = false;
        int loc = 2;
        int eleID;
@@ -624,7 +644,14 @@ extern void* OPS_NodeRecorderRMS();
 	 if (Tcl_GetDouble(interp, argv[loc], &dT) != TCL_OK)	
 	   return TCL_ERROR;	
 	 loc++;
-       } 
+       }
+       else if ( strcmp(argv[loc],"-rTolDt" ) == 0 ) {
+	 // allow user to specify time step tolerance for recording
+	 loc++;
+	 if (Tcl_GetDouble(interp, argv[loc], &rTolDt) != TCL_OK)
+	   return TCL_ERROR;
+	 loc++;
+       }
 
 
        if (strcmp(argv[loc],"-file") == 0) {
@@ -698,7 +725,7 @@ extern void* OPS_NodeRecorderRMS();
        OPS_Stream *theOutput = new DataFileStream(fileName);
 
        // now construct the recorder
-       (*theRecorder) = new DamageRecorder( eleID , secIDs, dofID , dmgPTR , theDomain,echoTime,dT ,*theOutput);
+       (*theRecorder) = new DamageRecorder( eleID , secIDs, dofID , dmgPTR , theDomain,echoTime,dT, rTolDt, *theOutput);
 
      }
      //////////////////////End of ElementDamage recorder////////////////////////////
@@ -717,6 +744,7 @@ extern void* OPS_NodeRecorderRMS();
 
        int maxNumCriteria = 2;	// current maximum number of either-or criteria for an element
        double dT = 0.0;
+       double rTolDt = 0.00001;
        bool echoTime = false;
        int endEleIDs = 2;
        int numEle = endEleIDs-2;
@@ -932,7 +960,14 @@ extern void* OPS_NodeRecorderRMS();
 	   if (Tcl_GetDouble(interp, argv[loc], &dT) != TCL_OK)	
 	     return TCL_ERROR;	
 	   loc++;
-	 } 
+	 }
+	 else if (strcmp(argv[loc],"-rTolDt") == 0) {
+	   // allow user to specify time step tolerance for recording
+	   loc++;
+	   if (Tcl_GetDouble(interp, argv[loc], &rTolDt) != TCL_OK)
+	     return TCL_ERROR;
+	   loc++;
+	 }
 
 	 else if (strcmp(argv[loc],"-file") == 0) {
 	   fileName = argv[loc+1];
@@ -1107,7 +1142,8 @@ extern void* OPS_NodeRecorderRMS();
 					    theDomain,
 					    *theOutputStream,
 					    echoTime, 
-					    dT ,
+					    dT,
+					    rTolDt,
 					    fileName, 
 					    eleMass, 
 					    gAcc, 
@@ -1160,6 +1196,7 @@ extern void* OPS_NodeRecorderRMS();
        bool echoTimeFlag = false;
        int flags = 0;
        double dT = 0.0;
+       double rTolDt = 0.00001;
        int numNodes = 0;
        bool doScientific = false;
 
@@ -1305,6 +1342,12 @@ extern void* OPS_NodeRecorderRMS();
 	   pos ++;
 	   if (Tcl_GetDouble(interp, argv[pos], &dT) != TCL_OK)	
 	     return TCL_ERROR;		  
+	   pos++;
+	 }
+	 else if (strcmp(argv[pos],"-rTolDt") == 0) {
+	   pos ++;
+	   if (Tcl_GetDouble(interp, argv[pos], &rTolDt) != TCL_OK)
+	     return TCL_ERROR;
 	   pos++;
 	 }
 
@@ -1607,6 +1650,7 @@ extern void* OPS_NodeRecorderRMS();
        int perpDirn = 2;
        int pos = 2;
        double dT = 0.0;
+       double rTolDt = 0.00001;
        int precision = 6;
        bool doScientific = false;
        bool closeOnWrite = false;
@@ -1773,7 +1817,13 @@ extern void* OPS_NodeRecorderRMS();
 	     return TCL_ERROR;	
 	   pos++;
 
-	 } else 
+	 }
+    else if (strcmp(argv[pos],"-rTolDt") == 0) {
+            pos++;
+	   if (Tcl_GetDouble(interp, argv[pos], &rTolDt) != TCL_OK)
+	     return TCL_ERROR;
+	   pos++;
+        } else
 	   pos++;
        }
 
@@ -1837,6 +1887,7 @@ extern void* OPS_NodeRecorderRMS();
      int pos = 7;
      int wipeFlag = 0;
      double dT = 0.0;
+     double rTolDt = 0.00001;
      int saveToFile = 0;
 
 	 if (argc < 7) {
@@ -1865,6 +1916,12 @@ extern void* OPS_NodeRecorderRMS();
 	       return TCL_ERROR;
          pos+=2;
        }
+       // allow user to specify time step size for recording
+       else if (strcmp(argv[pos],"-rTolDt") == 0) {
+	     if (Tcl_GetDouble(interp, argv[pos+1], &rTolDt) != TCL_OK)
+	       return TCL_ERROR;
+         pos+=2;
+       }
        // save images to file
        else if (strcmp(argv[pos],"-file") == 0) {
          fileName = argv[pos+1];
@@ -1873,9 +1930,9 @@ extern void* OPS_NodeRecorderRMS();
        }
      }
      if (!saveToFile)
-	   (*theRecorder) = new TclFeViewer(argv[2], xLoc, yLoc, width, height, theDomain, wipeFlag, interp, dT);
+	   (*theRecorder) = new TclFeViewer(argv[2], xLoc, yLoc, width, height, theDomain, wipeFlag, interp, dT, rTolDt);
      else
-	   (*theRecorder) = new TclFeViewer(argv[2], xLoc, yLoc, width, height, fileName, theDomain, interp, dT);
+	   (*theRecorder) = new TclFeViewer(argv[2], xLoc, yLoc, width, height, fileName, theDomain, interp, dT, rTolDt);
 
      }
 
@@ -1899,6 +1956,7 @@ extern void* OPS_NodeRecorderRMS();
        int loc = 8;
 
        double dT = 0.0;
+       double rTolDt = 0.00001;
        loc = 8;
        ID cols(0,16);
        int numCols = 0;
@@ -1926,6 +1984,12 @@ extern void* OPS_NodeRecorderRMS();
 	     return TCL_ERROR;	
 	   loc += 2;	    
 	 }
+	 else if (strcmp(argv[loc],"-rTolDt") == 0) {
+
+	   if (Tcl_GetDouble(interp, argv[loc+1], &rTolDt) != TCL_OK)
+	     return TCL_ERROR;
+	   loc += 2;
+	 }
 	 else
 	   loc++;
        }
@@ -1933,7 +1997,7 @@ extern void* OPS_NodeRecorderRMS();
  #ifdef _NOGRAPHICS
        return TCL_OK;
  #else
-       FilePlotter *thePlotter = new FilePlotter(argv[2], argv[3], xLoc, yLoc, width, height, dT);
+       FilePlotter *thePlotter = new FilePlotter(argv[2], argv[3], xLoc, yLoc, width, height, dT, rTolDt);
        (*theRecorder) = thePlotter;    
        thePlotter->setCol(cols);
  #endif
@@ -1958,6 +2022,7 @@ extern void* OPS_NodeRecorderRMS();
 	 int loc = 9;
 
 	 double dT = 0.0;
+	 double rTolDt = 0.00001;
 	 loc = 0;
 	 ID cols(0,16);
 	 int numCols = 0;
@@ -1985,6 +2050,12 @@ extern void* OPS_NodeRecorderRMS();
 	       return TCL_ERROR;	
 	     loc += 2;	    
 	   }
+	   else if (strcmp(argv[loc],"-rTolDt") == 0) {
+
+	     if (Tcl_GetDouble(interp, argv[loc+1], &rTolDt) != TCL_OK)
+	       return TCL_ERROR;
+	     loc += 2;
+	   }
 	   else
 	     loc++;
 	 }
@@ -1992,7 +2063,7 @@ extern void* OPS_NodeRecorderRMS();
  #ifdef _NOGRAPHICS
 	 return TCL_OK;
  #else
-	 FilePlotter *thePlotter = new FilePlotter(argv[2], argv[3], argv[4], xLoc, yLoc, width, height, dT);
+	 FilePlotter *thePlotter = new FilePlotter(argv[2], argv[3], argv[4], xLoc, yLoc, width, height, dT, rTolDt);
 	 (*theRecorder) = thePlotter;    
 	 thePlotter->setCol(cols);
  #endif
@@ -2047,12 +2118,13 @@ extern void* OPS_NodeRecorderRMS();
 								    argv[2], xLoc, yLoc, width, height, 
 								    displayRecord, fileName);
 	 (*theRecorder) = thePlotter;
- #endif
+ #endif // _NOGRAPHICS
      } 
      else if (strcmp(argv[1],"pvd") == 0 || strcmp(argv[1],"PVD") == 0) {
        OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
        (*theRecorder) = (Recorder*) OPS_PVDRecorder();
      }
+
      else if (strcmp(argv[1],"vtk") == 0 || strcmp(argv[1],"VTK") == 0) {
        OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
        (*theRecorder) = (Recorder*) OPS_VTK_Recorder();
@@ -2065,17 +2137,12 @@ extern void* OPS_NodeRecorderRMS();
        OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
        (*theRecorder) = (Recorder*) OPS_NodeRecorderRMS();
      }
-     else if (strcmp(argv[1],"vtk") == 0 || strcmp(argv[1],"VTK") == 0) {
-       OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
-       (*theRecorder) = (Recorder*) OPS_VTK_Recorder();
-     }
+#ifdef _HDF5
      else if (strcmp(argv[1], "mpco") == 0) {
        OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
        (*theRecorder) = (Recorder*)OPS_MPCORecorder();
-       if (theRecorder == 0) {
-	 return TCL_ERROR;
-       }
      }
+#endif // _HDF5
      else if (strcmp(argv[1],"gmsh") == 0 || strcmp(argv[1],"GMSH") == 0) {
        OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, &theDomain);
        (*theRecorder) = (Recorder*) OPS_GmshRecorder();

@@ -129,7 +129,7 @@ int (*tclDummyLinkVarPtr)(Tcl_Interp* interp, char* a,
 
 #ifdef _WIN32
 extern "C" int	isatty _ANSI_ARGS_((int fd));
-extern "C" char* strcpy _ANSI_ARGS_((char* dst, CONST char* src)) throw();
+//extern "C" char * strcpy _ANSI_ARGS_((char *dst, CONST char *src)) throw();
 #endif
 static char* tclStartupScriptFileName = NULL;
 
@@ -205,6 +205,7 @@ char* TclGetStartupScriptFileName()
  */
 
 extern bool OPS_suppressOpenSeesOutput;
+extern bool OPS_showHeader;
 
 void
 g3TclMain(int argc, char** argv, Tcl_AppInitProc* appInitProc, int rank, int np)
@@ -221,29 +222,33 @@ g3TclMain(int argc, char** argv, Tcl_AppInitProc* appInitProc, int rank, int np)
 	int numParam;
 
 
-	DummyStream dummy;
-	for (int i = 0; i < argc; i++) {
-		if (strcmp(argv[i], "-suppressOutput") == 0) {
-			opserrPtr = &dummy;
-			OPS_suppressOpenSeesOutput = true;
-		}
-	}
+    DummyStream dummy;
+    for (int i=0; i<argc; i++) {
+      if (strcmp(argv[i],"-suppressOutput") == 0) {
+		opserrPtr = & dummy;
+		OPS_suppressOpenSeesOutput = true;
+		OPS_showHeader = false;
+	  }
+	  else if (strcmp(argv[i], "-noHeader") == 0) {
+		OPS_showHeader = false;
+	  }
+    }	
 
 #ifdef _PARALLEL_INTERPRETERS
 	if (theMachineBroker->getPID() == 0) {
 #endif
 
-		/* fmk - beginning of modifications for OpenSees */
-		if (OPS_suppressOpenSeesOutput == false) {
-			fprintf(stderr, "\n\n");
-			fprintf(stderr, "         OpenSees -- Open System For Earthquake Engineering Simulation\n");
-			fprintf(stderr, "                 Pacific Earthquake Engineering Research Center\n");
-			fprintf(stderr, "                        Version %s %s\n\n", OPS_VERSION, WIN_ARCH);
-
-			fprintf(stderr, "      (c) Copyright 1999-2016 The Regents of the University of California\n");
-			fprintf(stderr, "                              All Rights Reserved\n");
-			fprintf(stderr, "  (Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)\n\n\n");
-		}
+	/* fmk - beginning of modifications for OpenSees */
+      if (OPS_showHeader) {
+	fprintf(stderr,"\n\n");
+	fprintf(stderr,"         OpenSees -- Open System For Earthquake Engineering Simulation\n");
+	fprintf(stderr,"                 Pacific Earthquake Engineering Research Center\n");
+	fprintf(stderr,"                        Version %s %s\n\n", OPS_VERSION, WIN_ARCH);
+	
+	fprintf(stderr,"      (c) Copyright 1999-2016 The Regents of the University of California\n");
+	fprintf(stderr,"                              All Rights Reserved\n");
+	fprintf(stderr,"  (Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)\n\n\n");
+      }
 #ifdef _PARALLEL_INTERPRETERS
 	}
 #endif
@@ -251,7 +256,9 @@ g3TclMain(int argc, char** argv, Tcl_AppInitProc* appInitProc, int rank, int np)
 
 	Tcl_FindExecutable(argv[0]);
 
-	interp = Tcl_CreateInterp();
+    interp = Tcl_CreateInterp();
+    Tcl_Eval(interp, "rename load import;");
+	Tcl_Eval(interp, "interp alias {} load {} import;");
 
 	numParam = OpenSeesParseArgv(argc, argv);
 

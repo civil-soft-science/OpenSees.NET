@@ -84,28 +84,29 @@ OPS_NodeRecorder()
 
     bool echoTimeFlag = false;
     double dT = 0.0;
+    double rTolDt = 0.00001;
     bool doScientific = false;
-    
+
     int precision = 6;
-    
+
     bool closeOnWrite = false;
-    
+
     const char *inetAddr = 0;
     int inetPort;
-    
+
     int gradIndex = -1;
-    
+
     TimeSeries **theTimeSeries = 0;
-    
+
     ID nodes(0, 6);
     ID dofs(0, 6);
     ID timeseries(0, 6);
-    
+
     while (OPS_GetNumRemainingInputArgs() > 0) {
-        
+
         const char* option = OPS_GetString();
         responseID = option;
-        
+
         if (strcmp(option, "-time") == 0) {
             echoTimeFlag = true;
         }
@@ -166,6 +167,15 @@ OPS_NodeRecorder()
                 int num = 1;
                 if (OPS_GetDoubleInput(&num, &dT) < 0) {
                     opserr << "WARNING: failed to read dT\n";
+                    return 0;
+                }
+            }
+        }
+        else if (strcmp(option, "-rTolDt") == 0) {
+            if (OPS_GetNumRemainingInputArgs() > 0) {
+                int num = 1;
+                if (OPS_GetDoubleInput(&num, &rTolDt) < 0) {
+                    opserr << "WARNING: failed to read rTolDt\n";
                     return 0;
                 }
             }
@@ -299,9 +309,9 @@ OPS_NodeRecorder()
         theOutputStream = new TCP_Stream(inetPort, inetAddr);
     else
         theOutputStream = new StandardStream();
-    
+
     theOutputStream->setPrecision(precision);
-    
+
     Domain* domain = OPS_GetDomain();
     if (domain == 0)
         return 0;
@@ -318,10 +328,10 @@ OPS_NodeRecorder()
 
 NodeRecorder::NodeRecorder()
 :Recorder(RECORDER_TAGS_NodeRecorder),
- theDofs(0), theNodalTags(0), theNodes(0), response(0), 
+ theDofs(0), theNodalTags(0), theNodes(0), response(0),
  theDomain(0), theOutputHandler(0),
- echoTimeFlag(true), dataFlag(0), 
- deltaT(0), nextTimeStampToRecord(0.0), 
+ echoTimeFlag(true), dataFlag(0),
+ deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0),
  gradIndex(-1),
  initializationDone(false), numValidNodes(0), addColumnInfo(0), theTimeSeries(0), timeSeriesValues(0)
 {
@@ -329,8 +339,8 @@ NodeRecorder::NodeRecorder()
 }
 
 
-NodeRecorder::NodeRecorder(const ID &dofs, 
-			   const ID *nodes, 
+NodeRecorder::NodeRecorder(const ID &dofs,
+			   const ID *nodes,
 			   int pgradIndex,
 			   const char *dataToStore,
 			   Domain &theDom,
@@ -342,7 +352,7 @@ NodeRecorder::NodeRecorder(const ID &dofs,
 			   bool timeFlag,
 			   TimeSeries **theSeries)
 :Recorder(RECORDER_TAGS_NodeRecorder),
- theDofs(0), theNodalTags(0), theNodes(0), response(0), 
+ theDofs(0), theNodalTags(0), theNodes(0), response(0),
  theDomain(&theDom), theOutputHandler(&theOutput),
  echoTimeFlag(timeFlag), dataFlag(0), 
  deltaT(dT), nextTimeStampToRecord(0.0), 
@@ -383,7 +393,7 @@ NodeRecorder::NodeRecorder(const ID &dofs,
       }
   }
 
-  // 
+  //
   // create memory to hold nodal ID's
   //
 
@@ -395,7 +405,7 @@ NodeRecorder::NodeRecorder(const ID &dofs,
 	opserr << "NodeRecorder::NodeRecorder - out of memory\n";
       }
     }
-  } 
+  }
 
 #ifndef _CSS
   if (theTimeSeries != 0) {
@@ -570,7 +580,7 @@ NodeRecorder::~NodeRecorder()
 }
 
 
-int 
+int
 NodeRecorder::record(int commitTag, double timeStamp)
 {
 #ifdef _CSS
@@ -1012,7 +1022,7 @@ NodeRecorder::record(int commitTag, double timeStamp)
 }
 
 
-int 
+int
 NodeRecorder::setDomain(Domain &theDom)
 {
   theDomain = &theDom;
@@ -1020,7 +1030,7 @@ NodeRecorder::setDomain(Domain &theDom)
 }
 
 
-int 
+int
 NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
 {
   addColumnInfo = 1;
@@ -1034,7 +1044,7 @@ NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
 
   int numDOF = theDofs->Size();
 
-  static ID idData(8); 
+  static ID idData(8);
   idData.Zero();
   if (theDofs != 0)
     idData(0) = numDOF;
@@ -1043,7 +1053,7 @@ NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
   if (theOutputHandler != 0) {
     idData(2) = theOutputHandler->getClassTag();
   }
-  
+
   if (echoTimeFlag == true)
     idData(3) = 1;
   else
@@ -1064,7 +1074,7 @@ NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
     return -1;
   }
 
-  if (theDofs != 0) 
+  if (theDofs != 0)
     if (theChannel.sendID(0, commitTag, *theDofs) < 0) {
       opserr << "NodeRecorder::sendSelf() - failed to send dof id's\n";
       return -1;
@@ -1101,9 +1111,9 @@ NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
     if (theChannel.sendID(0, commitTag, timeSeriesTags) < 0) {
       opserr << "EnvelopeNodeRecorder::sendSelf() - failed to send time series tags\n";
       return -1;
-    }    
+    }
     for (int i=0; i<numDOF; i++) {
-      if (theTimeSeries[i] != 0) {	
+      if (theTimeSeries[i] != 0) {
 	if (theTimeSeries[i]->sendSelf(commitTag, theChannel) < 0) {
 	  opserr << "EnvelopeNodeRecorder::sendSelf() - time series failed in send\n";
 	  return -1;
@@ -1118,8 +1128,8 @@ NodeRecorder::sendSelf(int commitTag, Channel &theChannel)
 }
 
 
-int 
-NodeRecorder::recvSelf(int commitTag, Channel &theChannel, 
+int
+NodeRecorder::recvSelf(int commitTag, Channel &theChannel,
 		       FEM_ObjectBroker &theBroker)
 {
   addColumnInfo = 1;
@@ -1129,7 +1139,7 @@ NodeRecorder::recvSelf(int commitTag, Channel &theChannel,
     return -1;
   }
 
-  static ID idData(8); 
+  static ID idData(8);
   if (theChannel.recvID(0, commitTag, idData) < 0) {
     opserr << "NodeRecorder::recvSelf() - failed to send idData\n";
     return -1;
@@ -1144,7 +1154,7 @@ NodeRecorder::recvSelf(int commitTag, Channel &theChannel,
   if (idData(3) == 1)
     echoTimeFlag = true;
   else
-    echoTimeFlag = false;    
+    echoTimeFlag = false;
 
   dataFlag = idData(4);
   gradIndex = idData(5);
@@ -1162,14 +1172,14 @@ NodeRecorder::recvSelf(int commitTag, Channel &theChannel,
       if (theDofs == 0 || theDofs->Size() != numDOFs) {
 	opserr << "NodeRecorder::recvSelf() - out of memory\n";
 	return -1;
-      }	
+      }
     }
   }
   if (theDofs != 0)
     if (theChannel.recvID(0, commitTag, *theDofs) < 0) {
       opserr << "NodeRecorder::recvSelf() - failed to recv dof data\n";
       return -1;
-    } 
+    }
 
   //
   // get the NODAL tag data
@@ -1184,14 +1194,14 @@ NodeRecorder::recvSelf(int commitTag, Channel &theChannel,
       if (theNodalTags == 0 || theNodalTags->Size() != numNodes) {
 	opserr << "NodeRecorder::recvSelf() - out of memory\n";
 	return -1;
-      }	
+      }
     }
   }
   if (theNodalTags != 0)
     if (theChannel.recvID(0, commitTag, *theNodalTags) < 0) {
       opserr << "NodeRecorder::recvSelf() - failed to recv dof data\n";
       return -1;
-    } 
+    }
 
 
   static Vector data(2);
