@@ -314,7 +314,7 @@ EnvelopeElementRecorder::EnvelopeElementRecorder(const ID *ele,
 							 Domain &theDom, 
 							 OPS_Stream &theOutputHandler,
 #ifdef _CSS
-                      int procMethod,
+                      int procMethod, int procGrpN,
 #endif // _CSS
 							 double dT, 
 							 bool echoTime,
@@ -325,7 +325,7 @@ EnvelopeElementRecorder::EnvelopeElementRecorder(const ID *ele,
   data(0), currentData(0), first(true),
   initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(echoTime), addColumnInfo(0)
 #ifdef _CSS
-    , procDataMethod(procMethod), Modified(0)
+    , procDataMethod(procMethod), procGrpNum(procGrpN), Modified(0)
 #endif // _CSS
 {
 
@@ -462,7 +462,18 @@ EnvelopeElementRecorder::record(int commitTag, double timeStamp)
             }
             for (int j = 0; j < respSize; j++)
             {
-                double val = 0, val1;
+                int nProcOuts = numEle / procGrpNum;
+                if (nProcOuts * procGrpNum < numEle)
+                    nProcOuts++;
+                if (procGrpNum == 1)
+                    nProcOuts = 1;
+                double* vals = 0, * val, val1 = 0;
+                vals = new double[nProcOuts];
+                for (int i = 0; i < nProcOuts; i++)
+                    vals[i] = 0;
+                int iGrpN = 0;
+                int nextGrpN = procGrpNum;
+                val = &vals[iGrpN];
                 for (int i = 0; i < numEle; i++) {
                     if (theResponses[i] == 0)
                         continue;
@@ -474,21 +485,32 @@ EnvelopeElementRecorder::record(int commitTag, double timeStamp)
                     if (index >= eleData.Size())
                         continue;
                     val1 = eleData(index);
+                    if (procGrpNum != 1 && i == nextGrpN)
+                    {
+                        iGrpN++;
+                        nextGrpN += procGrpNum;
+                        val = &vals[iGrpN];
+                    }
 
                     if (i == 0 && procDataMethod != 1)
-                        val = fabs(val1);
+                        *val = fabs(val1);
                     if (procDataMethod == 1)
-                        val += val1;
-                    else if (procDataMethod == 2 && val1 > val)
-                        val = val1;
-                    else if (procDataMethod == 3 && val1 < val)
-                        val = val1;
-                    else if (procDataMethod == 4 && fabs(val1) > val)
-                        val = fabs(val1);
-                    else if (procDataMethod == 5 && fabs(val1) < val)
-                        val = fabs(val1);
+                        *val += val1;
+                    else if (procDataMethod == 2 && val1 > *val)
+                        *val = val1;
+                    else if (procDataMethod == 3 && val1 < *val)
+                        *val = val1;
+                    else if (procDataMethod == 4 && fabs(val1) > *val)
+                        *val = fabs(val1);
+                    else if (procDataMethod == 5 && fabs(val1) < *val)
+                        *val = fabs(val1);
                 }
-                (*currentData)(loc++) = val;
+                for (int i = 0; i < nProcOuts; i++)
+                {
+                    val = &vals[i];
+                    (*currentData)(loc++) = *val;
+                }
+                delete[] vals;
             }
         }
         else
@@ -1001,10 +1023,16 @@ EnvelopeElementRecorder::initialize(void)
                     dataSize = size;
             }
         }
+        int nProcOuts = numEle / procGrpNum;
+        if (nProcOuts * procGrpNum < numEle)
+            nProcOuts++;
+        if (procGrpNum == 1)
+            nProcOuts = 1;
         if (numDOF == 0)
-            numDbColumns += dataSize;
+            numDbColumns = dataSize * nProcOuts;
         else
-            numDbColumns += numDOF;
+            numDbColumns += numDOF * nProcOuts;
+
         if (addColumnInfo == 1) {
             for (int j = 0; j < numDbColumns; j++)
                 responseOrder[responseCount++] = 1;

@@ -53,6 +53,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifndef _CSS
 void*
 OPS_EnvelopeNodeRecorder()
 {
@@ -88,9 +89,6 @@ OPS_EnvelopeNodeRecorder()
 
     const char *inetAddr = 0;
     int inetPort;
-#ifdef _CSS
-    int procDataMethod = 0;
-#endif // _CSS
 
     TimeSeries **theTimeSeries = 0;
 
@@ -273,19 +271,6 @@ OPS_EnvelopeNodeRecorder()
                 dofs[numDOF++] = dof - 1;
             }
         }
-#ifdef _CSS
-        else if (strcmp(option, "-process") == 0) {
-        const char* procType = OPS_GetString();
-        if (strcmp(procType, "sum") == 0)
-            procDataMethod = 1;
-        else if (strcmp(procType, "max") == 0)
-            procDataMethod = 2;
-        else if (strcmp(procType, "min") == 0)
-            procDataMethod = 3;
-        else
-            opserr << "unrecognized element result process method: " << procType << endln;
-        }
-#endif // _CSS
     }
 
     // data handler
@@ -313,14 +298,11 @@ OPS_EnvelopeNodeRecorder()
         return 0;
     EnvelopeNodeRecorder* recorder = new EnvelopeNodeRecorder(dofs, &nodes,
         responseID, *domain, *theOutputStream,
-#ifdef _CSS
-        procDataMethod,
-#endif // _CSS
         dT, echoTimeFlag, theTimeSeries);
 
     return recorder;
 }
-
+#endif _CSS
 
 EnvelopeNodeRecorder::EnvelopeNodeRecorder()
 :Recorder(RECORDER_TAGS_EnvelopeNodeRecorder),
@@ -340,7 +322,7 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder(const ID &dofs,
 					   Domain &theDom,
 					   OPS_Stream &theOutputHandler,
 #ifdef _CSS
-    int procMethod,
+    int procMethod, int procGrpN,
 #endif // _CSS
     double dT,
 					   bool echoTime,
@@ -353,7 +335,7 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder(const ID &dofs,
  first(true), initializationDone(false), numValidNodes(0), echoTimeFlag(echoTime), 
  addColumnInfo(0), theTimeSeries(theSeries), timeSeriesValues(0)
 #ifdef _CSS
-    , procDataMethod(procMethod), Modified(0)
+    , procDataMethod(procMethod), procGrpNum(procGrpN), Modified(0)
 #endif // _CSS
 {
   // verify dof are valid 
@@ -626,10 +608,21 @@ EnvelopeNodeRecorder::record(int commitTag, double timeStamp)
         Modified = 0;
         if (procDataMethod != 0)
         {
-            double val = 0, val1 = 0;
+            int cnt = 0;
             for (int j = 0; j < numDOF; j++) {
+                int nProcOuts = numValidNodes / procGrpNum;
+                if (nProcOuts * procGrpNum < numValidNodes)
+                    nProcOuts++;
+                if (procGrpNum == 1)
+                    nProcOuts = 1;
+                double* vals = 0, * val, val1 = 0;
+                vals = new double[nProcOuts];
+                for (int i = 0; i < nProcOuts; i++)
+                    vals[i] = 0;
+                int iGrpN = 0;
+                int nextGrpN = procGrpNum;
+                val = &vals[iGrpN];
                 int dof = (*theDofs)(j);
-                int cnt = j;
                 for (int i = 0; i < numValidNodes; i++) {
                     Node* theNode = theNodes[i];
                     if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
@@ -652,20 +645,31 @@ EnvelopeNodeRecorder::record(int commitTag, double timeStamp)
                     else if (dataFlag == 999999)
                         val1 = theNode->getDampEnergy();
 
+                    if (procGrpNum != 1 && i == nextGrpN)
+                    {
+                        iGrpN++;
+                        nextGrpN += procGrpNum;
+                        val = &vals[iGrpN];
+                    }
                     if (i == 0 && procDataMethod != 1)
-                        val = fabs(val1);
+                        *val = fabs(val1);
                     if (procDataMethod == 1)
-                        val += val1;
-                    else if (procDataMethod == 2 && val1 > val)
-                        val = val1;
-                    else if (procDataMethod == 3 && val1 < val)
-                        val = val1;
-                    else if (procDataMethod == 4 && fabs(val1) > val)
-                        val = fabs(val1);
-                    else if (procDataMethod == 5 && fabs(val1) < val)
-                        val = fabs(val1);
+                        *val += val1;
+                    else if (procDataMethod == 2 && val1 > *val)
+                        *val = val1;
+                    else if (procDataMethod == 3 && val1 < *val)
+                        *val = val1;
+                    else if (procDataMethod == 4 && fabs(val1) > *val)
+                        *val = fabs(val1);
+                    else if (procDataMethod == 5 && fabs(val1) < *val)
+                        *val = fabs(val1);
                 }
-                (*currentData)(cnt) = val;
+                for (int i = 0; i < nProcOuts; i++)
+                {
+                    val = &vals[i];
+                    (*currentData)(cnt++) = *val;
+                }
+                delete[] vals;
             }
         }
         else
@@ -1311,8 +1315,11 @@ EnvelopeNodeRecorder::initialize(void)
   //
 
 #ifdef _CSS
-  int numValidResponse = numValidNodes * numDOF;
-  if (procDataMethod != 0)
+  int nProcOuts = numValidNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numValidNodes)
+      nProcOuts++;
+  int numValidResponse = nProcOuts * numDOF;
+  if (procDataMethod && procGrpNum == 1)
       numValidResponse = numDOF;
 #else
   int numDOF = theDofs->Size();

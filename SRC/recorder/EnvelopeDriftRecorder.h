@@ -46,7 +46,7 @@ class EnvelopeDriftRecorder: public Recorder
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
 #ifdef _CSS
-        int procDataMethod = 0,
+        int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 			bool echoTime = false);
   
@@ -54,7 +54,7 @@ class EnvelopeDriftRecorder: public Recorder
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
 #ifdef _CSS
-        int procDataMethod = 0,
+        int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 			bool echoTime = false);
   
@@ -80,6 +80,7 @@ class EnvelopeDriftRecorder: public Recorder
 								  //3: minimum of results
 								  //4: maximum absolute of results
 								  //5: minimum absolute of results
+   int procGrpNum;
 	  virtual int getModified() { return Modified; }
 	  int Modified;
 #endif // _CSS

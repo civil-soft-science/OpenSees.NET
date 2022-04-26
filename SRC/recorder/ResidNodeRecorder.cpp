@@ -64,7 +64,7 @@ ResidNodeRecorder::ResidNodeRecorder(const ID &dofs,
 					   Domain &theDom,
 					   OPS_Stream &theOutputHandler,
 #ifdef _CSS
-                  int procMethod,
+                  int procMethod, int procGrpN,
 #endif // _CSS
 					   bool echoTime,
 					   TimeSeries **theSeries)
@@ -75,7 +75,7 @@ ResidNodeRecorder::ResidNodeRecorder(const ID &dofs,
  initializationDone(false), numValidNodes(0), echoTimeFlag(echoTime), 
  addColumnInfo(0), theTimeSeries(theSeries), timeSeriesValues(0)
 #ifdef _CSS
-    , procDataMethod(procMethod)
+    , procDataMethod(procMethod), procGrpNum(procGrpN)
 #endif // _CSS
 {
   // verify dof are valid 
@@ -345,10 +345,21 @@ if (dataFlag == 9)
 #ifdef _CSS
 if (procDataMethod != 0)
 {
-    double val = 0, val1 = 0;
+    int cnt = iCnt;
     for (int j = 0; j < numDOF; j++) {
+        int nProcOuts = numValidNodes / procGrpNum;
+        if (nProcOuts * procGrpNum < numValidNodes)
+            nProcOuts++;
+        if (procGrpNum == 1)
+            nProcOuts = 1;
+        double* vals = 0, * val, val1 = 0;
+        vals = new double[nProcOuts];
+        for (int i = 0; i < nProcOuts; i++)
+            vals[i] = 0;
+        int iGrpN = 0;
+        int nextGrpN = procGrpNum;
+        val = &vals[iGrpN];
         int dof = (*theDofs)(j);
-        int cnt = j + iCnt;
         for (int i = 0; i < numValidNodes; i++) {
             Node* theNode = theNodes[i];
             if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
@@ -371,20 +382,31 @@ if (procDataMethod != 0)
             else if (dataFlag == 999999)
                 val1 = theNode->getDampEnergy();
 
+            if (procGrpNum != 1 && i == nextGrpN)
+            {
+                iGrpN++;
+                nextGrpN += procGrpNum;
+                val = &vals[iGrpN];
+            }
             if (i == 0 && procDataMethod != 1)
-                val = fabs(val1);
+                *val = fabs(val1);
             if (procDataMethod == 1)
-                val += val1;
-            else if (procDataMethod == 2 && val1 > val)
-                val = val1;
-            else if (procDataMethod == 3 && val1 < val)
-                val = val1;
-            else if (procDataMethod == 4 && fabs(val1) > val)
-                val = fabs(val1);
-            else if (procDataMethod == 5 && fabs(val1) < val)
-                val = fabs(val1);
+                *val += val1;
+            else if (procDataMethod == 2 && val1 > *val)
+                *val = val1;
+            else if (procDataMethod == 3 && val1 < *val)
+                *val = val1;
+            else if (procDataMethod == 4 && fabs(val1) > *val)
+                *val = fabs(val1);
+            else if (procDataMethod == 5 && fabs(val1) < *val)
+                *val = fabs(val1);
         }
-        (*data)(0, cnt) = val;
+        for (int i = 0; i < nProcOuts; i++)
+        {
+            val = &vals[i];
+            (*data)(0, cnt++) = *val;
+        }
+        delete[] vals;
     }
 }
 else
@@ -876,8 +898,11 @@ ResidNodeRecorder::initialize(void)
   //
 
 #ifdef _CSS
-  int numValidResponse = numValidNodes * numDOF;
-  if (procDataMethod)
+  int nProcOuts = numValidNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numValidNodes)
+      nProcOuts++;
+  int numValidResponse = nProcOuts * numDOF;
+  if (procDataMethod && procGrpNum == 1)
       numValidResponse = numDOF;
 #else
   int numDOF = theDofs->Size();

@@ -46,7 +46,7 @@ class DriftRecorder: public Recorder
 		Domain &theDomain, 
 		OPS_Stream &theHandler,
 #ifdef _CSS
-		int procDataMethod = 0,
+		int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 		bool echoTime = false,
 		double dT = 0.0,
@@ -56,7 +56,7 @@ class DriftRecorder: public Recorder
 		Domain &theDomain, 
 		OPS_Stream &theHandler,
 #ifdef _CSS
-		int procDataMethod = 0,
+		int procDataMethod = 0,  int procGrpNum = 1,
 #endif // _CSS
 		bool echoTime = false,
 		double dT = 0.0,
@@ -84,6 +84,7 @@ class DriftRecorder: public Recorder
 								  //2: maximum of results
 								  //3: minimum of results
 								  //4: maximum absolute of results
+   int procGrpNum;
 #endif // _CSS
 	  int initialize(void);
 

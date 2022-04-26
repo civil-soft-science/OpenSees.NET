@@ -45,14 +45,14 @@ class ConditionalDriftRecorder: public Recorder
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
 			int rcrdrTag,
-		int dataProcMethod,
+			int dataProcMethod,  int procGrpNum = 1,
 			bool echoTime = false);
   
   ConditionalDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
 			int rcrdrTag,
-		int dataProcMethod,
+			int dataProcMethod, int procGrpNum = 1,
 			bool echoTime = false);
   
   ~ConditionalDriftRecorder();
@@ -75,6 +75,7 @@ class ConditionalDriftRecorder: public Recorder
 								//3: minimum of results
 								//4: maximum absolute of results
 								//5: minimum absolute of results
+   int procGrpNum;
 	 int envRcrdrTag;
   Recorder* envRcrdr;
   int initialize(void);

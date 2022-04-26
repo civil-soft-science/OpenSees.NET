@@ -44,13 +44,13 @@ class ResidDriftRecorder: public Recorder
   ResidDriftRecorder(int ndI, int ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
-		  int dataProcMethod,
+		  int dataProcMethod, int procGrpNum = 1,
 		bool echoTime = false);
   
   ResidDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
 			OPS_Stream &theHandler,
-		int dataProcMethod,
+		int dataProcMethod, int procGrpNum = 1,
 		bool echoTime = false);
   
   ~ResidDriftRecorder();
@@ -74,6 +74,7 @@ class ResidDriftRecorder: public Recorder
 								  //3: minimum of results
 								  //4: maximum absolute of results
 								  //5: minimum absolute of results
+   int procGrpNum;
 #endif // _CSS
 	  int initialize(void);
 

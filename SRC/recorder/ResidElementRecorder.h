@@ -52,7 +52,7 @@ class ResidElementRecorder: public Recorder
 			    Domain &theDomain, 
 			    OPS_Stream &theOutputHandler,
 #ifdef _CSS
-          int procMethod = 0,
+          int procMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 			    bool echoTimeFlag = true,
 			    const ID *dof =0); 
@@ -74,6 +74,7 @@ class ResidElementRecorder: public Recorder
                         //1: summate results
                         //2: maximize results
                         //3: minimize results
+   int procGrpNum;
 #endif // _CSS
 
   protected:

@@ -55,6 +55,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifndef _CSS
 void*
 OPS_NodeRecorder()
 {
@@ -78,9 +79,6 @@ OPS_NodeRecorder()
     const int DATA_STREAM_ADD = 7;
     
     int eMode = STANDARD_STREAM;
-#ifdef _CSS
-    int procDataMethod = 0;
-#endif // _CSS
 
     bool echoTimeFlag = false;
     double dT = 0.0;
@@ -277,19 +275,6 @@ OPS_NodeRecorder()
                 dofs[numDOF++] = dof - 1;
             }
         }
-#ifdef _CSS
-        else if (strcmp(option, "-process") == 0) {
-        const char* procType = OPS_GetString();
-        if (strcmp(procType, "sum") == 0)
-            procDataMethod = 1;
-        else if (strcmp(procType, "max") == 0)
-            procDataMethod = 2;
-        else if (strcmp(procType, "min") == 0)
-            procDataMethod = 3;
-        else
-            opserr << "unrecognized element result process method: " << procType << endln;
-        }
-#endif // _CSS
     }
     
     // data handler
@@ -317,13 +302,11 @@ OPS_NodeRecorder()
         return 0;
     NodeRecorder* recorder = new NodeRecorder(dofs, &nodes, gradIndex,
         responseID, *domain, *theOutputStream,
-#ifdef _CSS
-        procDataMethod,
-#endif // _CSS
         dT, echoTimeFlag, theTimeSeries);
     
     return recorder;
 }
+#endif // !_CSS
 
 
 NodeRecorder::NodeRecorder()
@@ -346,7 +329,7 @@ NodeRecorder::NodeRecorder(const ID &dofs,
 			   Domain &theDom,
 			   OPS_Stream &theOutput,
 #ifdef _CSS
-            int procMethod,
+            int procMethod, int procGrpN,
 #endif // _CSS
     double dT,
 			   bool timeFlag,
@@ -360,7 +343,7 @@ NodeRecorder::NodeRecorder(const ID &dofs,
 	gradIndex(pgradIndex),
 	theTimeSeries(theSeries), timeSeriesValues(0)
 #ifdef _CSS
-	, procDataMethod(procMethod)
+	, procDataMethod(procMethod), procGrpNum(procGrpN)
 #endif // _CSS
 
 {
@@ -655,12 +638,23 @@ NodeRecorder::record(int commitTag, double timeStamp)
 #ifdef _CSS
             if (procDataMethod != 0)
             {
-                double val = 0, val1 = 0;
+                int cnt = timeOffset;
                 for (int j = 0; j < numDOF; j++) {
+                    int nProcOuts = numValidNodes / procGrpNum;
+                    if (nProcOuts * procGrpNum < numValidNodes)
+                        nProcOuts++;
+                    if (procGrpNum == 1)
+                        nProcOuts = 1;
+                    double* vals = 0, * val, val1 = 0;
+                    vals = new double[nProcOuts];
+                    for (int i = 0; i < nProcOuts; i++)
+                        vals[i] = 0;
+                    int iGrpN = 0;
+                    int nextGrpN = procGrpNum;
+                    val = &vals[iGrpN];
                     int dof = 0;
                     if (theDofs != 0)
                         dof = (*theDofs)(j);
-                    int cnt = j + timeOffset;
                     for (int i = 0; i < numValidNodes; i++) {
                         Node* theNode = theNodes[i];
                         if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
@@ -683,20 +677,31 @@ NodeRecorder::record(int commitTag, double timeStamp)
                         else if (dataFlag == 999999)
                             val1 = theNode->getDampEnergy();
 
+                        if (procGrpNum != 1 && i == nextGrpN)
+                        {
+                            iGrpN++;
+                            nextGrpN += procGrpNum;
+                            val = &vals[iGrpN];
+                        }
                         if (i == 0 && procDataMethod != 1)
-                            val = fabs(val1);
+                            *val = fabs(val1);
                         if (procDataMethod == 1)
-                            val += val1;
-                        else if (procDataMethod == 2 && val1 > val)
-                            val = val1;
-                        else if (procDataMethod == 3 && val1 < val)
-                            val = val1;
-                        else if (procDataMethod == 4 && fabs(val1) > val)
-                            val = fabs(val1);
-                        else if (procDataMethod == 5 && fabs(val1) < val)
-                            val = fabs(val1);
+                            *val += val1;
+                        else if (procDataMethod == 2 && val1 > *val)
+                            *val = val1;
+                        else if (procDataMethod == 3 && val1 < *val)
+                            *val = val1;
+                        else if (procDataMethod == 4 && fabs(val1) > *val)
+                            *val = fabs(val1);
+                        else if (procDataMethod == 5 && fabs(val1) < *val)
+                            *val = fabs(val1);
                     }
-                    response(cnt) = val;
+                    for (int i = 0; i < nProcOuts; i++)
+                    {
+                        val = &vals[i];
+                        response(cnt++) = *val;
+                    }
+                    delete[] vals;
                 }
             }
             else
@@ -1332,8 +1337,11 @@ NodeRecorder::initialize(void)
   if (echoTimeFlag == true)
     timeOffset = 1;
 #ifdef _CSS
-  int numValidResponse = numValidNodes * numDOF + timeOffset;
-  if (procDataMethod)
+  int nProcOuts = numValidNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numValidNodes)
+      nProcOuts++;
+  int numValidResponse = nProcOuts * numDOF + timeOffset;
+  if (procDataMethod && procGrpNum == 1)
       numValidResponse = numDOF + timeOffset;
 #else
   int numDOF = theDofs->Size();

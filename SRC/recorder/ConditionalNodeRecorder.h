@@ -58,7 +58,7 @@ class ConditionalNodeRecorder: public Recorder
 			 Domain &theDomain,
 			 OPS_Stream &theOutputHandler,
 			int rcrdrTag,
-			int procMethod = 0,
+			int procMethod = 0, int procGrpNum = 1,
 			 bool echoTimeFlag = false,
 			 TimeSeries **theTimeSeries =0); 
     
@@ -83,6 +83,7 @@ class ConditionalNodeRecorder: public Recorder
                            //1: summate results
                            //2: maximize results
                            //3: minimize results
+   int procGrpNum;
       int initialize(void);
 
     ID *theDofs;

@@ -56,7 +56,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(int ni,
 					     Domain &theDom, 
 					     OPS_Stream &theCurrentDataOutputHandler,
 #ifdef _CSS
-                    int procMethod,
+                    int procMethod, int procGrpN,
 #endif // _CSS
 					     bool timeFlag)
   :Recorder(RECORDER_TAGS_EnvelopeDriftRecorder),
@@ -64,7 +64,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(int ni,
    theDomain(&theDom), theOutputHandler(&theCurrentDataOutputHandler),
    initializationDone(false), numNodes(0), echoTimeFlag(timeFlag)
 #ifdef _CSS
-    , procDataMethod(procMethod), Modified(0)
+    , procDataMethod(procMethod), procGrpNum(procGrpN), Modified(0)
 #endif // _CSS
 {
   ndI = new ID(1);
@@ -84,7 +84,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(const ID &nI,
 					     Domain &theDom, 
 					     OPS_Stream &theDataOutputHandler,
 #ifdef _CSS
-                    int procMethod,
+                    int procMethod, int procGrpN,
 #endif // _CSS
 					     bool timeFlag)
   :Recorder(RECORDER_TAGS_EnvelopeDriftRecorder),
@@ -92,7 +92,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(const ID &nI,
    theDomain(&theDom), theOutputHandler(&theDataOutputHandler),
    initializationDone(false), numNodes(0), echoTimeFlag(timeFlag)
 #ifdef _CSS
-    , procDataMethod(procMethod), Modified(0)
+    , procDataMethod(procMethod), procGrpNum(procGrpN), Modified(0)
 #endif // _CSS
 {
   ndI = new ID(nI);
@@ -164,7 +164,19 @@ EnvelopeDriftRecorder::record(int commitTag, double timeStamp)
     Modified = 0;
     if (procDataMethod)
     {
-        double val = 0, val1 = 0;
+        int nProcOuts = numNodes / procGrpNum;
+        if (nProcOuts * procGrpNum < numNodes)
+            nProcOuts++;
+        if (procGrpNum == 1)
+            nProcOuts = 1;
+        double* vals = 0, * val, val1 = 0;
+        vals = new double[nProcOuts];
+        for (int i = 0; i < nProcOuts; i++)
+            vals[i] = 0;
+        int iGrpN = 0;
+        int nextGrpN = procGrpNum;
+        val = &vals[iGrpN];
+        int loc = 0;
         for (int i = 0; i < numNodes; i++) {
             Node* nodeI = theNodes[2 * i];
             Node* nodeJ = theNodes[2 * i + 1];
@@ -180,21 +192,32 @@ EnvelopeDriftRecorder::record(int commitTag, double timeStamp)
             }
             else
                 val1 = 0.0;
+            if (procGrpNum != 1 && i == nextGrpN)
+            {
+                iGrpN++;
+                nextGrpN += procGrpNum;
+                val = &vals[iGrpN];
+            }
 
             if (i == 0 && procDataMethod != 1)
-                val = fabs(val1);
+                *val = fabs(val1);
             if (procDataMethod == 1)
-                val += val1;
-            else if (procDataMethod == 2 && val1 > val)
-                val = val1;
-            else if (procDataMethod == 3 && val1 < val)
-                val = val1;
-            else if (procDataMethod == 4 && fabs(val1) > val)
-                val = fabs(val1);
-            else if (procDataMethod == 5 && fabs(val1) < val)
-                val = fabs(val1);
+                *val += val1;
+            else if (procDataMethod == 2 && val1 > *val)
+                *val = val1;
+            else if (procDataMethod == 3 && val1 < *val)
+                *val = val1;
+            else if (procDataMethod == 4 && fabs(val1) > *val)
+                *val = fabs(val1);
+            else if (procDataMethod == 5 && fabs(val1) < *val)
+                *val = fabs(val1);
         }
-        (*currentData)(0) = val;
+        for (int i = 0; i < nProcOuts; i++)
+        {
+            val = &vals[i];
+            (*currentData)(loc++) = *val;
+        }
+        delete[] vals;
     }
     else
 #endif // _CSS
@@ -522,33 +545,30 @@ EnvelopeDriftRecorder::initialize(void)
   // allocate memory
   //
 #ifdef _CSS
-  if (procDataMethod)
-  {
-      if (echoTimeFlag)
-      {
-          data = new Matrix(3, 2);
-          currentData = new Vector(2); // additional data allocated for time 
-      }
-      else
-      {
-          data = new Matrix(3, 1);
-          currentData = new Vector(1); // additional data allocated for time  
-      }
+  int nProcOuts = numNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numNodes)
+      nProcOuts++;
+  if (procDataMethod && procGrpNum == 1)
+      nProcOuts = 1;
+  if (echoTimeFlag == true) {
+    currentData = new Vector(nProcOuts *2); // additional data allocated for time  
+    data = new Matrix(3, nProcOuts *2);
   }
-  else if (echoTimeFlag == true) {
-    currentData = new Vector(numNodes*2); // additional data allocated for time  
-    data = new Matrix(3, numNodes*2);
+  else
+  {
+      currentData = new Vector(nProcOuts);
+      data = new Matrix(3, nProcOuts);
   }
 #else
   if (echoTimeFlag == true) {
     currentData = new Vector(numNodes*2); // additional data allocated for time  
     data = new Matrix(3, numNodes*2);
   }
-#endif // _CSS
   else {
     currentData = new Vector(numNodes); // data(0) allocated for time  
     data = new Matrix(3, numNodes);
   }
+#endif // _CSS
 
   data->Zero();
   theNodes = new Node *[2*numNodes];

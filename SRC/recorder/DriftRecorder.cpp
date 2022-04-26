@@ -56,7 +56,7 @@ DriftRecorder::DriftRecorder(int ni,
 			     Domain &theDom, 
 			     OPS_Stream &theDataOutputHandler,
 #ifdef _CSS
-    int procMethod,
+    int procMethod, int procGrpN,
 #endif // _CSS
     bool timeFlag,
 	double dT,
@@ -67,7 +67,7 @@ DriftRecorder::DriftRecorder(int ni,
    initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT), relDeltaTTol(rTolDt),
 	nextTimeStampToRecord(0.0)
 #ifdef _CSS
-    , procDataMethod(procMethod)
+    , procDataMethod(procMethod), procGrpNum(procGrpN)
 #endif // _CSS
 {
   ndI = new ID(1);
@@ -87,7 +87,7 @@ DriftRecorder::DriftRecorder(const ID &nI,
 			     Domain &theDom, 
 			     OPS_Stream &theDataOutputHandler,
 #ifdef _CSS
-            int procMethod,
+            int procMethod, int procGrpN,
 #endif // _CSS
 			     bool timeFlag,
 			     double dT,
@@ -98,7 +98,7 @@ DriftRecorder::DriftRecorder(const ID &nI,
    initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT),
 	relDeltaTTol(rTolDt)
 #ifdef _CSS
-    , procDataMethod(procMethod)
+    , procDataMethod(procMethod), procGrpNum(procGrpN)
 #endif // _CSS
 {
   ndI = new ID(nI);
@@ -166,7 +166,19 @@ DriftRecorder::record(int commitTag, double timeStamp)
 #ifdef _CSS
     if (procDataMethod)
     {
-        double val = 0, val1 = 0;
+        int nProcOuts = numNodes / procGrpNum;
+        if (nProcOuts * procGrpNum < numNodes)
+            nProcOuts++;
+        if (procGrpNum == 1)
+            nProcOuts = 1;
+        double* vals = 0, * val, val1 = 0;
+        vals = new double[nProcOuts];
+        for (int i = 0; i < nProcOuts; i++)
+            vals[i] = 0;
+        int iGrpN = 0;
+        int nextGrpN = procGrpNum;
+        val = &vals[iGrpN];
+        int loc = timeOffset;
         for (int i = 0; i < numNodes; i++) {
             Node* nodeI = theNodes[2 * i];
             Node* nodeJ = theNodes[2 * i + 1];
@@ -183,20 +195,31 @@ DriftRecorder::record(int commitTag, double timeStamp)
             else
                 val1 = 0.0;
 
+            if (procGrpNum != 1 && i == nextGrpN)
+            {
+                iGrpN++;
+                nextGrpN += procGrpNum;
+                val = &vals[iGrpN];
+            }
             if (i == 0 && procDataMethod != 1)
-                val = fabs(val1);
+                *val = fabs(val1);
             if (procDataMethod == 1)
-                val += val1;
-            else if (procDataMethod == 2 && val1 > val)
-                val = val1;
-            else if (procDataMethod == 3 && val1 < val)
-                val = val1;
-            else if (procDataMethod == 4 && fabs(val1) > val)
-                val = fabs(val1);
-            else if (procDataMethod == 5 && fabs(val1) < val)
-                val = fabs(val1);
+                *val += val1;
+            else if (procDataMethod == 2 && val1 > *val)
+                *val = val1;
+            else if (procDataMethod == 3 && val1 < *val)
+                *val = val1;
+            else if (procDataMethod == 4 && fabs(val1) > *val)
+                *val = fabs(val1);
+            else if (procDataMethod == 5 && fabs(val1) < *val)
+                *val = fabs(val1);
         }
-        (*data)(timeOffset) = val;
+        for (int i = 0; i < nProcOuts; i++)
+        {
+            val = &vals[i];
+            (*data)(loc++) = *val;
+        }
+        delete[] vals;
     }
     else
 #endif // _CSS
@@ -466,11 +489,15 @@ DriftRecorder::initialize(void)
   theNodes = new Node *[2*numNodes];
   oneOverL = new Vector(numNodes);
 #ifdef _CSS
-  if (procDataMethod)
-    data = new Vector(1 + timeOffset); // data(0) allocated for time
-  else
-#endif // _CSS
+  int nProcOuts = numNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numNodes)
+      nProcOuts++;
+  if (procDataMethod && procGrpNum == 1)
+      nProcOuts = 1;
+  data = new Vector(nProcOuts + timeOffset); // data(0) allocated for time
+#else
   data = new Vector(numNodes+timeOffset); // data(0) allocated for time
+#endif // _CSS
   if (theNodes == 0  || oneOverL == 0 || data == 0) {
     opserr << "DriftRecorder::initialize() - out of memory\n";
     return -3;

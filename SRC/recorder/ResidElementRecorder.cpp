@@ -61,7 +61,7 @@ ResidElementRecorder::ResidElementRecorder(const ID *ele,
 							 Domain &theDom, 
 							 OPS_Stream &theOutputHandler,
 #ifdef _CSS
-    int procMethod,
+    int procMethod, int procGrpN,
 #endif // _CSS
     bool echoTime,
 							 const ID *indexValues)
@@ -70,7 +70,7 @@ ResidElementRecorder::ResidElementRecorder(const ID *ele,
   theHandler(&theOutputHandler), data(0), 
   initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(echoTime), addColumnInfo(0)
 #ifdef _CSS
-    , procDataMethod(procMethod)
+    , procDataMethod(procMethod), procGrpNum(procGrpN)
 #endif // _CSS
 {
 
@@ -205,7 +205,18 @@ ResidElementRecorder::record(int commitTag, double timeStamp)
         }
         for (int j = 0; j < respSize; j++)
         {
-            double val = 0, val1 = 0;
+			int nProcOuts = numEle / procGrpNum;
+            if (nProcOuts * procGrpNum < numEle)
+                nProcOuts++;
+            if (procGrpNum == 1)
+                nProcOuts = 1;
+            double* vals = 0, *val, val1 = 0;
+			vals = new double[nProcOuts];
+			for (int i = 0; i < nProcOuts; i++)
+				vals[i] = 0;
+			int iGrpN = 0;
+			int nextGrpN = procGrpNum;
+			val = &vals[iGrpN];
             for (int i = 0; i < numEle; i++) {
                 if (theResponses[i] == 0)
                     continue;
@@ -217,21 +228,31 @@ ResidElementRecorder::record(int commitTag, double timeStamp)
                 if (index >= eleData.Size())
                     continue;
                 val1 = eleData(index);
-
+				if (procGrpNum != 1 && i == nextGrpN)
+				{
+					iGrpN++;
+					nextGrpN += procGrpNum;
+					val = &vals[iGrpN];
+				}
                 if (i == 0 && procDataMethod != 1)
-                    val = fabs(val1);
+                    *val = fabs(val1);
                 if (procDataMethod == 1)
-                    val += val1;
-                else if (procDataMethod == 2 && val1 > val)
-                    val = val1;
-                else if (procDataMethod == 3 && val1 < val)
-                    val = val1;
-                else if (procDataMethod == 4 && fabs(val1) > val)
-                    val = fabs(val1);
-                else if (procDataMethod == 5 && fabs(val1) < val)
-                    val = fabs(val1);
+                    *val += val1;
+                else if (procDataMethod == 2 && val1 > *val)
+                    *val = val1;
+                else if (procDataMethod == 3 && val1 < *val)
+                    *val = val1;
+                else if (procDataMethod == 4 && fabs(val1) > *val)
+                    *val = fabs(val1);
+                else if (procDataMethod == 5 && fabs(val1) < *val)
+                    *val = fabs(val1);
             }
-            (*data)(0,loc++) = val;
+			for (int i = 0; i < nProcOuts; i++)
+			{
+				val = &vals[i];
+				(*data)(0, loc++) = *val;
+			}
+			delete[] vals;
         }
     }
     else
@@ -600,7 +621,7 @@ ResidElementRecorder::initialize(void)
             return -1;
         }
 
-        if (procDataMethod != 0)
+        if (procDataMethod != 0 && procGrpNum == 1)
         {
             int dataSize = 0;
             for (i = 0; i < numEle; i++) {
@@ -632,60 +653,61 @@ ResidElementRecorder::initialize(void)
                     responseOrder[responseCount++] = 1;
             }
         }
-        else
+		else
+		{
+			for (int ii = 0; ii < numEle; ii++) {
+				Element* theEle = theDomain->getElement((*eleID)(ii));
+				if (theEle == 0) {
+					theResponses[ii] = 0;
+				}
+				else {
+					if (echoTimeFlag == true)
+						theHandler->tag("ResidualElementOutput");
 
-            for (int ii = 0; ii < numEle; ii++) {
-                Element* theEle = theDomain->getElement((*eleID)(ii));
-                if (theEle == 0) {
-                    theResponses[ii] = 0;
-                }
-                else {
-                    if (echoTimeFlag == true)
-                        theHandler->tag("ResidualElementOutput");
+					theResponses[ii] = theEle->setResponse((const char**)responseArgs, numArgs, *theHandler);
+					if (theResponses[ii] != 0) {
+						// from the response type determine no of cols for each      
+						Information& eleInfo = theResponses[ii]->getInformation();
+						const Vector& eleData = eleInfo.getData();
+						int dataSize = eleData.Size();
+						//	  numDbColumns += dataSize;
+						if (numDOF == 0)
+							numDbColumns += dataSize;
+						else
+							numDbColumns += numDOF;
 
-                    theResponses[ii] = theEle->setResponse((const char**)responseArgs, numArgs, *theHandler);
-                    if (theResponses[ii] != 0) {
-                        // from the response type determine no of cols for each      
-                        Information& eleInfo = theResponses[ii]->getInformation();
-                        const Vector& eleData = eleInfo.getData();
-                        int dataSize = eleData.Size();
-                        //	  numDbColumns += dataSize;
-                        if (numDOF == 0)
-                            numDbColumns += dataSize;
-                        else
-                            numDbColumns += numDOF;
+						if (addColumnInfo == 1) {
+							if (echoTimeFlag == true) {
+								if (numDOF == 0)
+									for (int j = 0; j < 2 * dataSize; j++)
+										responseOrder[responseCount++] = i + 1;
+								else
+									for (int j = 0; j < 2 * numDOF; j++)
+										responseOrder[responseCount++] = i + 1;
+							}
+							else {
+								if (numDOF == 0)
+									for (int j = 0; j < dataSize; j++)
+										responseOrder[responseCount++] = i + 1;
+								else
+									for (int j = 0; j < numDOF; j++)
+										responseOrder[responseCount++] = i + 1;
+							}
+						}
 
-                        if (addColumnInfo == 1) {
-                            if (echoTimeFlag == true) {
-                                if (numDOF == 0)
-                                    for (int j = 0; j < 2 * dataSize; j++)
-                                        responseOrder[responseCount++] = i + 1;
-                                else
-                                    for (int j = 0; j < 2 * numDOF; j++)
-                                        responseOrder[responseCount++] = i + 1;
-                            }
-                            else {
-                                if (numDOF == 0)
-                                    for (int j = 0; j < dataSize; j++)
-                                        responseOrder[responseCount++] = i + 1;
-                                else
-                                    for (int j = 0; j < numDOF; j++)
-                                        responseOrder[responseCount++] = i + 1;
-                            }
-                        }
-
-                        if (echoTimeFlag == true) {
-                            for (int i = 0; i < eleData.Size(); i++) {
-                                theHandler->tag("TimeOutput");
-                                theHandler->tag("ResponseType", "time");
-                                theHandler->endTag();
-                            }
-                            theHandler->endTag();
-                        }
-                    }
-                }
-            }
-
+						if (echoTimeFlag == true) {
+							for (int i = 0; i < eleData.Size(); i++) {
+								theHandler->tag("TimeOutput");
+								theHandler->tag("ResponseType", "time");
+								theHandler->endTag();
+							}
+							theHandler->endTag();
+						}
+					}
+				}
+			}
+			numDbColumns /= procGrpNum;
+		}
         theHandler->setOrder(responseOrder);
 
     }

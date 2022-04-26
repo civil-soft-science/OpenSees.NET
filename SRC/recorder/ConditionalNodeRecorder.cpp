@@ -64,7 +64,7 @@ ConditionalNodeRecorder::ConditionalNodeRecorder(const ID &dofs,
 					   Domain &theDom,
 					   OPS_Stream &theOutputHandler,
 						int rcrdrTag,
-						int procMethod,
+						int procMethod, int procGrpN,
 					   bool echoTime,
 					   TimeSeries **theSeries)
 :Recorder(RECORDER_TAGS_ConditionalNodeRecorder),
@@ -73,14 +73,10 @@ ConditionalNodeRecorder::ConditionalNodeRecorder(const ID &dofs,
  theDomain(&theDom), theHandler(&theOutputHandler),
  initializationDone(false), numValidNodes(0), echoTimeFlag(echoTime), 
  addColumnInfo(0), theTimeSeries(theSeries), timeSeriesValues(0)
-    , procDataMethod(procMethod), envRcrdrTag(rcrdrTag)
+    , procDataMethod(procMethod), procGrpNum(procGrpN), envRcrdrTag(rcrdrTag)
 {
   // verify dof are valid 
-#ifndef _CSS
-    int numDOF = dofs.Size();
-#else
     numDOF = dofs.Size();
-#endif // !_CSS
     theDofs = new ID(0, numDOF);
 
   int count = 0;
@@ -110,14 +106,6 @@ ConditionalNodeRecorder::ConditionalNodeRecorder(const ID &dofs,
       }
     }
   } 
-
-#ifndef _CSS
-  if (theTimeSeries != 0) {
-    timeSeriesValues = new double [numDOF];
-    for (int i=0; i<numDOF; i++)
-      timeSeriesValues[i] = 0.0;
-  }
-#endif // !_CSS
 
   //
   // set the data flag used as a switch to get the response in a record
@@ -177,7 +165,6 @@ ConditionalNodeRecorder::ConditionalNodeRecorder(const ID &dofs,
     else
       dataFlag = 10;
   }
-#ifdef _CSS
   else if ((strcmp(dataToStore, "motionEnergy") == 0) || (strcmp(dataToStore, "MotionEnergy") == 0)) {
       dataFlag = 999997;
       numDOF = 1;
@@ -189,20 +176,16 @@ ConditionalNodeRecorder::ConditionalNodeRecorder(const ID &dofs,
   else if ((strcmp(dataToStore, "dampingEnergy") == 0) || (strcmp(dataToStore, "DampingEnergy") == 0)) {
       dataFlag = 999999;
       numDOF = 1;
-#endif _CSS
-
   } else {
     dataFlag = 10;
     opserr << "ConditionalNodeRecorder::ConditionalNodeRecorder - dataToStore " << dataToStore;
     opserr << "not recognized (disp, vel, accel, incrDisp, incrDeltaDisp)\n";
   }
-#ifdef _CSS
   if (theTimeSeries != 0) {
       timeSeriesValues = new double[numDOF];
       for (int i = 0; i < numDOF; i++)
           timeSeriesValues[i] = 0.0;
   }
-#endif // !_CSS
 }
 
 
@@ -274,16 +257,9 @@ ConditionalNodeRecorder::~ConditionalNodeRecorder()
 int 
 ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 {
-#ifdef _CSS
     if (theDomain == 0) {
         return 0;
     }
-#else
-    if (theDomain == 0 || theDofs == 0) {
-        return 0;
-    }
-#endif // _CSS
-
 
   if (theHandler == 0) {
     opserr << "ConditionalNodeRecorder::record() - no DataOutputHandler has been set\n";
@@ -317,10 +293,6 @@ ConditionalNodeRecorder::record(int commitTag, double timeStamp)
     }
 
 
-#ifndef _CSS
-  int numDOF = theDofs->Size();
-#endif // !_CSS
-
 double timeSeriesTerm = 0.0;
 
 if (theTimeSeries != 0) {
@@ -342,13 +314,24 @@ else if (dataFlag == 8)
 if (dataFlag == 9)
     theDomain->calculateNodalReactions(2);
 
-#ifdef _CSS
 if (procDataMethod != 0)
 {
     double val = 0, val1 = 0;
+    int cnt = iCnt;
     for (int j = 0; j < numDOF; j++) {
+        int nProcOuts = numValidNodes / procGrpNum;
+        if (nProcOuts * procGrpNum < numValidNodes)
+            nProcOuts++;
+        if (procGrpNum == 1)
+            nProcOuts = 1;
+        double* vals = 0, * val, val1 = 0;
+        vals = new double[nProcOuts];
+        for (int i = 0; i < nProcOuts; i++)
+            vals[i] = 0;
+        int iGrpN = 0;
+        int nextGrpN = procGrpNum;
+        val = &vals[iGrpN];
         int dof = (*theDofs)(j);
-        int cnt = j + iCnt;
         for (int i = 0; i < numValidNodes; i++) {
             Node* theNode = theNodes[i];
             if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
@@ -371,24 +354,34 @@ if (procDataMethod != 0)
             else if (dataFlag == 999999)
                 val1 = theNode->getDampEnergy();
 
+            if (procGrpNum != 1 && i == nextGrpN)
+            {
+                iGrpN++;
+                nextGrpN += procGrpNum;
+                val = &vals[iGrpN];
+            }
             if (i == 0 && procDataMethod != 1)
-                val = fabs(val1);
+                *val = fabs(val1);
             if (procDataMethod == 1)
-                val += val1;
-            else if (procDataMethod == 2 && val1 > val)
-                val = val1;
-            else if (procDataMethod == 3 && val1 < val)
-                val = val1;
-            else if (procDataMethod == 4 && fabs(val1) > val)
-                val = fabs(val1);
-            else if (procDataMethod == 5 && fabs(val1) < val)
-                val = fabs(val1);
+                *val += val1;
+            else if (procDataMethod == 2 && val1 > *val)
+                *val = val1;
+            else if (procDataMethod == 3 && val1 < *val)
+                *val = val1;
+            else if (procDataMethod == 4 && fabs(val1) > *val)
+                *val = fabs(val1);
+            else if (procDataMethod == 5 && fabs(val1) < *val)
+                *val = fabs(val1);
         }
-        (*data)(0, cnt) = val;
+        for (int i = 0; i < nProcOuts; i++)
+        {
+            val = &vals[i];
+            (*data)(0, cnt++) = *val;
+        }
+        delete[] vals;
     }
 }
 else
-#endif //_CSS
 
 for (int i=0; i<numValidNodes; i++) {
     int cnt = i*numDOF + iCnt;
@@ -875,14 +868,12 @@ ConditionalNodeRecorder::initialize(void)
   // resize the output matrix
   //
 
-#ifdef _CSS
-  int numValidResponse = numValidNodes * numDOF;
-  if (procDataMethod)
+  int nProcOuts = numValidNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numValidNodes)
+      nProcOuts++;
+  int numValidResponse = nProcOuts * numDOF;
+  if (procDataMethod && procGrpNum == 1)
       numValidResponse = numDOF;
-#else
-  int numDOF = theDofs->Size();
-  int numValidResponse = numValidNodes*numDOF;
-#endif // _CSS
 
   if (dataFlag == 10000)
     numValidResponse = numValidNodes;  

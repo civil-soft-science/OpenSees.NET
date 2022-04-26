@@ -56,7 +56,7 @@ class NodeRecorder: public Recorder
 		 Domain &theDomain,
 		 OPS_Stream &theOutputHandler,
 #ifdef _CSS
-        int procDataMethod = 0,
+        int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
         double deltaT = 0.0,
 		 bool echoTimeFlag = true,
@@ -91,6 +91,7 @@ class NodeRecorder: public Recorder
                           //2: maximum of results
                           //3: minimum of results
                           //4: maximum absolute of results
+   int procGrpNum;
 #endif // _CSS
 
     int initialize(void);

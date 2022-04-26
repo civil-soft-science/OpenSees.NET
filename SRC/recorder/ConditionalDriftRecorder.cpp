@@ -58,12 +58,13 @@ ConditionalDriftRecorder::ConditionalDriftRecorder(int ni,
 					     int dirn,
 					     Domain &theDom, 
 					     OPS_Stream &theCurrentDataOutputHandler,
-						 int rcrdrTag, int dataProcMethod,
+						 int rcrdrTag, int dataProcMethod, int procGrpN,
 					     bool timeFlag)
   :Recorder(RECORDER_TAGS_ResidDriftRecorder),
    ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0),
    theDomain(&theDom), theOutputHandler(&theCurrentDataOutputHandler), data(0),
-   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), envRcrdrTag(rcrdrTag), procDataMethod(dataProcMethod)
+   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), envRcrdrTag(rcrdrTag),
+   procDataMethod(dataProcMethod), procGrpNum(procGrpN)
 {
   ndI = new ID(1);
   ndJ = new ID (1);
@@ -81,12 +82,13 @@ ConditionalDriftRecorder::ConditionalDriftRecorder(const ID &nI,
 					     int dirn,
 					     Domain &theDom, 
 					     OPS_Stream &theDataOutputHandler,
-						 int rcrdrTag, int dataProcMethod,
+						 int rcrdrTag, int dataProcMethod, int procGrpN,
 					     bool timeFlag)
   :Recorder(RECORDER_TAGS_ResidDriftRecorder),
    ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0),
    theDomain(&theDom), theOutputHandler(&theDataOutputHandler), data(0),
-   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), envRcrdrTag(rcrdrTag), procDataMethod(dataProcMethod)
+   initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), envRcrdrTag(rcrdrTag),
+   procDataMethod(dataProcMethod), procGrpNum(procGrpN)
 {
   ndI = new ID(nI);
   ndJ = new ID (nJ);
@@ -159,7 +161,19 @@ ConditionalDriftRecorder::record(int commitTag, double timeStamp)
 
   if (procDataMethod)
   {
-      double val = 0, val1 = 0;
+      int nProcOuts = numNodes / procGrpNum;
+      if (nProcOuts * procGrpNum < numNodes)
+          nProcOuts++;
+      if (procGrpNum == 1)
+          nProcOuts = 1;
+      double* vals = 0, * val, val1 = 0;
+      vals = new double[nProcOuts];
+      for (int i = 0; i < nProcOuts; i++)
+          vals[i] = 0;
+      int iGrpN = 0;
+      int nextGrpN = procGrpNum;
+      val = &vals[iGrpN];
+      int loc = iStart;
       for (int i = 0; i < numNodes; i++) {
           Node* nodeI = theNodes[2 * i];
           Node* nodeJ = theNodes[2 * i + 1];
@@ -175,21 +189,31 @@ ConditionalDriftRecorder::record(int commitTag, double timeStamp)
           }
           else
               val1 = 0.0;
-
+          if (procGrpNum != 1 && i == nextGrpN)
+          {
+              iGrpN++;
+              nextGrpN += procGrpNum;
+              val = &vals[iGrpN];
+          }
           if (i == 0 && procDataMethod != 1)
-              val = fabs(val1);
+              *val = fabs(val1);
           if (procDataMethod == 1)
-              val += val1;
-          else if (procDataMethod == 2 && val1 > val)
-              val = val1;
-          else if (procDataMethod == 3 && val1 < val)
-              val = val1;
-          else if (procDataMethod == 4 && fabs(val1) > val)
-              val = fabs(val1);
-          else if (procDataMethod == 5 && fabs(val1) < val)
-              val = fabs(val1);
+              *val += val1;
+          else if (procDataMethod == 2 && val1 > *val)
+              *val = val1;
+          else if (procDataMethod == 3 && val1 < *val)
+              *val = val1;
+          else if (procDataMethod == 4 && fabs(val1) > *val)
+              *val = fabs(val1);
+          else if (procDataMethod == 5 && fabs(val1) < *val)
+              *val = fabs(val1);
       }
-      (*data)(0,iStart) = val;
+      for (int i = 0; i < nProcOuts; i++)
+      {
+          val = &vals[i];
+          (*data)(0,loc++) = *val;
+      }
+      delete[] vals;
   }
   else
 
@@ -408,12 +432,16 @@ ConditionalDriftRecorder::initialize(void)
   //
   // allocate memory
   //
+  int timeOffset = 0;
+  if (echoTimeFlag == true)
+      timeOffset = 1;
 
-  if (echoTimeFlag == true) {
-    data = new Matrix(1, numNodes+1);
-  } else {
-    data = new Matrix(1, numNodes);
-  }
+  int nProcOuts = numNodes / procGrpNum;
+  if (nProcOuts * procGrpNum < numNodes)
+      nProcOuts++;
+  if (procDataMethod && procGrpNum == 1)
+      nProcOuts = 1;
+  data = new Matrix(1, nProcOuts + timeOffset);
   data->Zero();
   theNodes = new Node *[2*numNodes];
   oneOverL = new Vector(numNodes);

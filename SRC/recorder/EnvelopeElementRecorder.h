@@ -52,7 +52,7 @@ class EnvelopeElementRecorder: public Recorder
 			    Domain &theDomain, 
 			    OPS_Stream &theOutputHandler,
 #ifdef _CSS
-          int procMethod = 0,
+          int procMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 			    double deltaT = 0.0,
 			    bool echoTimeFlag = true,
@@ -76,6 +76,7 @@ class EnvelopeElementRecorder: public Recorder
                         //1: summate results
                         //2: maximize results
                         //3: minimize results
+   int procGrpNum;
    virtual int getModified() { return Modified; }
    int Modified;
 #endif // _CSS

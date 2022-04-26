@@ -58,7 +58,7 @@ class ResidNodeRecorder: public Recorder
 			 Domain &theDomain,
 			 OPS_Stream &theOutputHandler,
 #ifdef _CSS
-          int procDataMethod = 0,
+          int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
 			 bool echoTimeFlag = false,
 			 TimeSeries **theTimeSeries =0); 
@@ -83,6 +83,7 @@ class ResidNodeRecorder: public Recorder
                            //1: summate results
                            //2: maximize results
                            //3: minimize results
+   int procGrpNum;
 #endif // _CSS
       int initialize(void);
 

@@ -182,6 +182,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 
 #ifdef _CSS
 			int procDataMethod = 0;
+			int nProcGrp = 1;
 			int cntrlRcrdrTag = 0;
 #endif // _CSS
 				 int numEle = 0;
@@ -252,19 +253,26 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 	 else if (strcmp(argv[loc], "-process") == 0) {
 		  const char* procType = argv[loc + 1];
 		  if (strcmp(procType, "sum") == 0)
-				procDataMethod = 1;
+			  procDataMethod = 1;
 		  else if (strcmp(procType, "max") == 0)
-				procDataMethod = 2;
+			  procDataMethod = 2;
 		  else if (strcmp(procType, "min") == 0)
-				procDataMethod = 3;
+			  procDataMethod = 3;
 		  else if (strcmp(procType, "maxAbs") == 0)
-				procDataMethod = 4;
+			  procDataMethod = 4;
 		  else if (strcmp(procType, "minAbs") == 0)
-				procDataMethod = 5;
+			  procDataMethod = 5;
 		  else
 				opserr << "unrecognized element result process method: " << procType << endln;
 		  loc += 2;
 	 }
+	 else if (strcmp(argv[loc], "-procGrpNum") == 0) {
+		if (Tcl_GetInt(interp, argv[loc+1], &nProcGrp) != TCL_OK) {
+			opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << argv[loc+1] << endln;
+			return TCL_ERROR;
+		}
+		loc += 2;
+	}
 #endif // _CSS
 	 else if (strcmp(argv[loc],"-eleRange") == 0) {
 
@@ -528,7 +536,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 					      theDomain, 
 					      *theOutputStream,
 #ifdef _CSS
-							procDataMethod,
+							procDataMethod, nProcGrp,
 #endif // _CSS
 					      dT,
 					      rTolDt,
@@ -542,7 +550,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 						      theDomain, 
 						      *theOutputStream,
 #ifdef _CSS
-							procDataMethod,
+							procDataMethod, nProcGrp,
 #endif // _CSS
 						      dT, 
 						      echoTime,
@@ -569,7 +577,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 			   argc - eleData,
 			   theDomain,
 			   *theOutputStream,
-				 procDataMethod,
+				procDataMethod, nProcGrp,
 				 echoTime,
 			   specificIndices);
 
@@ -582,7 +590,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 			   theDomain,
 			   *theOutputStream,
 				 cntrlRcrdrTag,
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 				 echoTime,
 			   specificIndices);
 	   }
@@ -1184,9 +1192,10 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
        TCL_Char *responseID = 0;
 
 #ifdef _CSS
-		 int procDataMethod = 0;
-		 int cntrlRcrdrTag = 0;
-		 outputMode eMode = No_Output;
+		int procDataMethod = 0;
+		int nProcGrp = 1;
+		int cntrlRcrdrTag = 0;
+		outputMode eMode = No_Output;
 #else
 		 outputMode eMode = STANDARD_STREAM;
 #endif // _CSS
@@ -1248,6 +1257,13 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 				opserr << "unrecognized element result process method: " << procType << endln;
 		  pos += 2;
 	 }
+	 else if (strcmp(argv[pos], "-procGrpNum") == 0) {
+		if (Tcl_GetInt(interp, argv[pos+1], &nProcGrp) != TCL_OK) {
+			opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << argv[pos+1] << endln;
+			return TCL_ERROR;
+		}
+		pos += 2;
+	}
 #endif // _CSS
 
 	 else if (strcmp(argv[pos],"-load") == 0) {
@@ -1556,7 +1572,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 			   responseID,
 			   theDomain,
 			   *theOutputStream,
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 				 echoTimeFlag,
 			   theTimeSeries);
 
@@ -1568,7 +1584,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 			   theDomain,
 			   *theOutputStream,
 				 cntrlRcrdrTag,
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 				 echoTimeFlag,
 			   theTimeSeries);
 
@@ -1584,7 +1600,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 					   theDomain, 
 					   *theOutputStream, 
 #ifdef _CSS
-	   			 procDataMethod,
+	   			 procDataMethod, nProcGrp,
 #endif // _CSS
 					   dT, 
 					   echoTimeFlag,
@@ -1598,7 +1614,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 						   theDomain,
 						   *theOutputStream,
 #ifdef _CSS
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 #endif // _CSS
 						   dT, 
 						   echoTimeFlag,
@@ -1655,8 +1671,9 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
        bool doScientific = false;
        bool closeOnWrite = false;
 #ifdef _CSS
-		 int cntrlRcrdrTag = 0;
-		 int procDataMethod = 0;
+		int cntrlRcrdrTag = 0;
+		int procDataMethod = 0;
+		int nProcGrp = 1;
 #endif // _CSS
 
        while (pos < argc) {
@@ -1700,6 +1717,13 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 				opserr << "unrecognized element result process method: " << procType << endln;
 		  pos += 2;
 	 }
+	 else if (strcmp(argv[pos], "-procGrpNum") == 0) {
+		if (Tcl_GetInt(interp, argv[pos+1], &nProcGrp) != TCL_OK) {
+			opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << argv[pos+1] << endln;
+			return TCL_ERROR;
+		}
+		pos += 2;
+	}
 #endif // _CSS
 	 else if (strcmp(argv[pos],"-fileCSV") == 0) {
 	   fileName = argv[pos+1];
@@ -1852,12 +1876,12 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 	   if (strcmp(argv[1], "ResidDrift") == 0)
 		   (*theRecorder) = new ResidDriftRecorder(iNodes, jNodes, dof - 1, perpDirn - 1,
 			   theDomain, *theOutputStream,
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 				 echoTimeFlag);
 	   else if (strcmp(argv[1], "ConditionalDrift") == 0)
 		   (*theRecorder) = new ConditionalDriftRecorder(iNodes, jNodes, dof - 1, perpDirn - 1,
 			   theDomain, *theOutputStream, cntrlRcrdrTag,
-				 procDataMethod,
+				 procDataMethod, nProcGrp,
 				 echoTimeFlag);
 	   else
 #endif // _CSS
@@ -1866,7 +1890,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 	 (*theRecorder) = new DriftRecorder(iNodes, jNodes, dof-1, perpDirn-1,
 					    theDomain, *theOutputStream,
 #ifdef _CSS
-		  procDataMethod,
+		  procDataMethod, nProcGrp,
 #endif // _CSS
 
 		  echoTimeFlag, dT);
@@ -1874,7 +1898,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 	 (*theRecorder) = new EnvelopeDriftRecorder(iNodes, jNodes, dof-1, perpDirn-1,
 						    theDomain, *theOutputStream,
 #ifdef _CSS
-		  procDataMethod,
+		  procDataMethod, nProcGrp,
 #endif // _CSS
 		  echoTimeFlag);
 
