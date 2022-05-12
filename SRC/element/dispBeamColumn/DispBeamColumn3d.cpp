@@ -1477,6 +1477,10 @@ DispBeamColumn3d::setResponse(const char **argv, int argc, OPS_Stream &output)
   {
   theResponse = new ElementResponse(this, 14, 0.0);
   }
+	else if (strcmp(argv[0], "basicForce") == 0 || strcmp(argv[0], "basicForces") == 0)
+  {
+  theResponse = new ElementResponse(this, 15, Vector(6));
+  }
 #endif // _CSS
   if (theResponse == 0)
 	  theResponse = crdTransf->setResponse(argv, argc, output);
@@ -1596,6 +1600,9 @@ DispBeamColumn3d::getResponse(int responseID, Information &eleInfo)
             max = mu;
 	  }
 	  return eleInfo.setDouble(max);
+  }
+  else if (responseID == 15) {
+	  return eleInfo.setVector(q);
   }
 #endif // _CSS
 
