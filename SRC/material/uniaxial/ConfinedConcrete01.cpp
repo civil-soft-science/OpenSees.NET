@@ -111,6 +111,10 @@ ConfinedConcrete01::ConfinedConcrete01(int tag, std::vector<double> *eps, std::v
 {
   this->sigmac = sigmac;
   this->eps = eps;
+#ifdef _CSS
+  isCopy = 1;
+#endif // _CSS
+
 }
 
 ConfinedConcrete01::ConfinedConcrete01(int tag, int secType, int dim, std::vector<double> semiLength, 
@@ -120,11 +124,29 @@ ConfinedConcrete01::ConfinedConcrete01(int tag, int secType, int dim, std::vecto
 				       std::vector<double> As, std::vector<double> Is, 
 				       double rhos, double fpc, double stRatio, double Ec, 
 				       int epscuOption, double epscu, double epscuLimit, int nuOption, double nuc, 
-				       double phiLon, int concrType, int aggrType, double tol, int maxNumIter)
+				       double phiLon, int concrType, int aggrType, double tol, int maxNumIter
+#ifdef _CSS
+	 , double facToMpa
+#endif
+)
   :UniaxialMaterial(tag, MAT_TAG_ConfinedConcrete01),
    CminStrain(0.0), CendStrain(0.0),
    Cstrain(0.0), Cstress(0.0) 
 {
+#ifdef _CSS
+	 convFacToMpa = facToMpa;
+	 for (int i = 0; i < fyh.size(); i++)
+	 {
+		  fyh[i] *= convFacToMpa;
+		  Es0[i] *= convFacToMpa;
+	 }
+	 fpc *= convFacToMpa;
+	 Ec *= convFacToMpa;
+	 //sigmac = 0;
+	 //eps = 0;
+	 isCopy = 0;
+#endif // _CSS
+
   int ii;
   /*
   opserr << tag << " " <<  secType << " " << dim << " " << rhos << " " << fpc << " " << stRatio << " " << Ec << endln;
@@ -149,18 +171,22 @@ ConfinedConcrete01::ConfinedConcrete01(int tag, int secType, int dim, std::vecto
 		     epsc, fc, epsic, fic, ft, fpl,alpha, Eti);
 
 
-  opserr << fpc << " " << stRatio << " " << Ec << " " << aggrType << " " << concrType<< " " << epsc << " " << fc << " " << epsic << " " << fic << " " << ft << " " << fpl << " " << alpha << Eti << endln;
+#ifndef _CSS
+  opserr << fpc << " " << stRatio << " " << Ec << " " << aggrType << " " << concrType<< " " << epsc << " " << fc << " " << epsic << " " << fic << " " << ft << " " << fpl << " " << alpha << " " << Eti << endln;
+#endif // !_CSS
 
   bglModel (semiLength, epscu, epscuOption, epscuLimit, nuOption, nuc, epsc, fc, epsic,
 	    fic, ft, fpl, alpha, Eti, phis, As, Is, S, fyh, mueps, Es0, haRatio, 
 	    phiLon, secType, dim, tol, maxNumIter);
 
+#ifndef _CSS
   opserr  << epscu  << " " << epscuOption << " " << epscuLimit;
   opserr << " " << nuOption << " " << nuc << " " << epsc << " ";
   opserr << fc << " " << epsic << " " << fic << " " << ft << " ";
   //  opserr << fpl << " " << alpha << " " << Eti << " ";
   // opserr << phis << " " << As << " " << Is << " " << fyh << " " << mueps << " " << Es0 << " " << haRatio << " " 
   opserr << phiLon << " " << secType << " " << dim << " " << tol << " " << maxNumIter << endln;
+#endif // !_CSS
 
   
   // Make all concrete parameters negative
@@ -203,6 +229,15 @@ ConfinedConcrete01::ConfinedConcrete01(int tag, int secType, int dim, std::vecto
 ConfinedConcrete01::~ConfinedConcrete01 ()
 {
   // Does nothing
+#ifdef _CSS
+	 if (!isCopy)
+	 {
+		  if (eps != 0)
+				delete eps;
+		  if (sigmac != 0)
+				delete sigmac;
+	 }
+#endif
 }
 
 void ConfinedConcrete01::setupAttardSetunge(double fpc, double stRatio, double Ec, double aggrType, 
@@ -231,12 +266,11 @@ void ConfinedConcrete01::setupAttardSetunge(double fpc, double stRatio, double E
 	} else if (fpc <= 20) {
 		alpha = 1.17;
 	} else {
-		alpha = 1.17-0.17*(fpc-20)/(100-20);
+		alpha = 1.17-0.17*(fpc-20.0)/(100.0-20.0);
 	}
 	
 	Eti = alpha*Ec;
 	this->Ec0 = Eti;
-
 	//Strain at stress peak
 	if (aggrType == 0) {
 		epsc = (fpc/Ec)*4.26/pow(fpc,0.25);
@@ -254,6 +288,7 @@ void ConfinedConcrete01::setupAttardSetunge(double fpc, double stRatio, double E
 	} else {
 		ft = 0.9*(0.62*pow(fc,0.5));  // with silica fume
 	}
+	opserr << epsic << " "<< fic << " " << ft << " "<< epsc << endln;
 }
 
 void ConfinedConcrete01::bglModel(std::vector<double> semiLength, double & epscu, int epscuOption, double epscuLimit,
@@ -893,7 +928,11 @@ int ConfinedConcrete01::setTrialStrain (double strain, double strainRate)
     Tstress = 0.0;
     Ttangent = 0.0;
   }
-  
+#ifdef _CSS
+  Tstress /= convFacToMpa;
+  Ttangent /= convFacToMpa;
+#endif // _CSS
+
   return 0;
 }
 
@@ -964,10 +1003,15 @@ ConfinedConcrete01::setTrial (double strain, double &stress, double &tangent, do
   }
   
   //opserr << "Concrete01::setTrial() " << strain << " " << tangent << " " << strain << endln;
+#ifdef _CSS
+  Tstress /= convFacToMpa;
+  Ttangent /= convFacToMpa;
+#endif // _CSS
   
   stress = Tstress;
   tangent =  Ttangent;
   
+
   return 0;
 }
 
@@ -1770,8 +1814,13 @@ OPS_ConfinedConcrete01Material()
     <-wrap $cover $Am $Sw $ful $Es0w>			   
     <-gravel> <-silica> <-tol $tol> <-maxNumIter $maxNumIter>  <-epscuLimit $epscuLimit> 
     <-stRatio $stRatio>
-
+	 _CSS:
+	 <-convFacToMPa $fac>
 */
+#ifdef _CSS
+  double facToMPa = 1;
+#endif // _CSS
+
   int argLoc = 4;
   int numReq = 12;
   double temp;
@@ -2231,13 +2280,22 @@ OPS_ConfinedConcrete01Material()
 	return 0;	
       }
       
-    } else if (strcmp(argvLoc, "-maxNumIter") == 0) {
-      if (OPS_GetInt(&numData, &maxNumIter) != 0) {
-	opserr << "WARNING invalid maxNumIter\n";
-	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
-	return 0;	
-      }
-      
+	 }
+	 else if (strcmp(argvLoc, "-maxNumIter") == 0) {
+		  if (OPS_GetInt(&numData, &maxNumIter) != 0) {
+				opserr << "WARNING invalid maxNumIter\n";
+				opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
+				return 0;
+		  }
+#ifdef _CSS
+	 } else if (strcmp(argvLoc, "-convFacToMPa") == 0) {
+			 if (OPS_GetDouble(&numData, &facToMPa) != 0) {
+				  opserr << "WARNING invalid convFacToMPa\n";
+				  opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
+				  return 0;
+			 }
+
+#endif
     } else {
       opserr << "WARNING invalid argument(s) :" << argvLoc << endln;
       return 0;
@@ -2296,7 +2354,11 @@ OPS_ConfinedConcrete01Material()
   // Parsing was successful, allocate the material
   theMaterial = new ConfinedConcrete01(tag, secType, dim, semiLength, phis, S, fyh, 
 				       Es0, haRatio, mueps, As, Is, rhos, fpc, stRatio, Ec, epscuOption, epscu, epscuLimit,
-				       nuOption, nuc, phiLon, concrType, aggrType, tol, maxNumIter);
+				       nuOption, nuc, phiLon, concrType, aggrType, tol, maxNumIter
+#ifdef _CSS
+		, facToMPa
+#endif
+  );
   
   return theMaterial;
 }

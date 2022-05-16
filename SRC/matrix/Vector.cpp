@@ -98,6 +98,23 @@ Vector::Vector(double *data, int size)
 // Vector(const Vector&):
 //	Constructor to init a vector from another.
 
+#ifdef _CSS
+Vector::Vector(const std::vector<double>& other)
+: sz(other.size()),theData(0),fromFree(0)
+{
+  if (sz != 0) {
+    theData = new (nothrow) double [sz];    
+    
+    if (theData == 0) {
+      opserr << "Vector::Vector(std::vector) - out of memory creating vector of size " << sz << endln;
+    }
+  }
+  // copy the component data
+  for (int i=0; i<sz; i++)
+    theData[i] = other[i];
+}
+#endif
+
 Vector::Vector(const Vector &other)
 : sz(other.sz),theData(0),fromFree(0)
 {

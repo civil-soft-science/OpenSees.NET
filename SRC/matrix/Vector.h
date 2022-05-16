@@ -32,6 +32,9 @@
 #define Vector_h 
 
 #include <OPS_Globals.h>
+#ifdef _CSS
+#include <vector>
+#endif
 
 #define VECTOR_VERY_LARGE_VALUE 1.0e200
 
@@ -52,6 +55,9 @@ class Vector
 #endif
 
     Vector(double *data, int size);
+#ifdef _CSS
+    Vector(const std::vector<double>& v);
+#endif // _CSS
     ~Vector();
 
     // utility methods

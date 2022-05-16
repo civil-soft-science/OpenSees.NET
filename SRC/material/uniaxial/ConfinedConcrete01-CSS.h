@@ -49,20 +49,13 @@
 class ConfinedConcrete01 : public UniaxialMaterial
 {
  public:
-  ConfinedConcrete01(int tag, std::vector<double> *eps, std::vector<double> *sigmac);
-  
-  ConfinedConcrete01(int tag, int secType, int dim, std::vector<double> semiLength, 
-		     std::vector<double> phis, std::vector<double> S, 
-		     std::vector<double> fyh, std::vector<double> Es0, 
-		     std::vector<double> haRatio, std::vector<double> mueps, 
-		     std::vector<double> As, std::vector<double> Is, 
-		     double rhos, double fpc, double stRatio, double Ec, 
-		     int epscuOption, double epscu, double epscuLimit,
-		     int nuOption, double nuc, double phiLon, int concrType, 
-		     int aggrType, double tol, int maxNumIter
-#ifdef _CSS
-		, double facToMpa
-#endif
+	  ConfinedConcrete01(int tag, Vector e, Vector s);
+
+  ConfinedConcrete01(int tag, int secType, int dim, Vector semiLength, 
+		     Vector phis, Vector S, Vector fyh, Vector Es0, Vector haRatio, Vector mueps, 
+		     Vector As, Vector Is, double rhos, double fpc, double stRatio, double Ec, 
+		     int epscuOption, double epscu, double epscuLimit, int nuOption, double nuc, double phiLon, int concrType, 
+		     int aggrType, double tol, int maxNumIter, double facToMpa
   );
   ConfinedConcrete01 ();
   ~ConfinedConcrete01();
@@ -101,65 +94,9 @@ class ConfinedConcrete01 : public UniaxialMaterial
  protected:
   
  private:
-  void setupAttardSetunge(double fpc, double stRatio, double Ec, double aggrType, 
-			  double concrType, double &epsc, double &fc, 
-			  double &epsic, double &fic, double &ft, double &fpl,
-			  double &alpha, double &Eti);
-  
-  void bglModel(std::vector<double> semiLength, double & epscu, int epscuOption, double epscuLimit,
-		int nuOption, double nuc, double epsc, double fc, 
-		double epsic, double fic, double ft, double fpl, 
-		double alpha, double Eti, std::vector<double> phis, 
-		std::vector<double> As, std::vector<double> Is,
-		std::vector<double> S, 
-		std::vector<double> fyh, std::vector<double> mueps, 
-		std::vector<double> Es0, std::vector<double> haRatio, double phiLon, 
-		int secType, int dim, double tol, double maxNumIter);
-  
-  double confAlongCol (double semiLength, double phis, double S, int dim, double phiLon);
-  
-  void airyConSqSec (double semiLength, double Ecz, double nuz, double As, 
-		     double Is, double Esz, double S, double epsz, double & Az,
-		     double & Bz);
-  
-  void trReinfModSqSec (double syh, double duc, double Eel, double Atr,
-			double Str, double DimSec, double hard, double CA,
-			double CB, double& etr, double& sgtr, double& Essec);
-  
-  void trReinfModCircSec (double syh, double duc, double Eel, double Atr,
-			  double DimSec, double hard, double CB, double & etr,
-			  double & sgtr, double & Essec);
-  
-  double airyConCircSec (double R, double Ecz, double nuz, double As, 
-			 double Esz, double S, double epsz);
-  
-  double confPressSqSec (double semiLength, double Bz, double k);
-  
-  double confPressCircSec (double S, double q, double k);
-  
-  void superPosConfPress (std::vector<std::vector<double> > B, std::vector<double> semiLength, 
-			  std::vector<std::vector<double> > & frm, int secType, int dim, int i);
-  
-  void attSet(double epsc, 
-	      double fc, 
-	      double epsic, 
-	      double fic,
-	      double ft, 
-	      double fpl, 
-	      double alpha, 
-	      double Eti, 
-	      double epsz, 
-	      double fr,
-	      double &sigmaci,
-	      double &Eczi,
-	      double fcu, 
-	      double &epscu, 
-	      double epscuOption, 
-	      double epscuLimit);
 
   /*** Envelope curve ***/
-    std::vector<double> *eps, *sigmac;
-  
+ Vector eps, sigmac;
   
   /*** Material Properties ***/
   double fpc;    // Compressive strength
@@ -189,9 +126,7 @@ class ConfinedConcrete01 : public UniaxialMaterial
   double Tstress;
   double Ttangent; // Not really a state variable, but declared here
   // for convenience
-  
-  void determineTrialState (double dStrain);
-  
+    
   void reload();
   void unload();
   void envelope();
@@ -200,11 +135,8 @@ class ConfinedConcrete01 : public UniaxialMaterial
   int parameterID;
   Matrix *SHVs;
   // AddingSensitivity:END ///////////////////////////////////////////
-#ifdef _CSS
-  double convFacToMpa;
-  int isCopy;
-#endif // _CSS
 
+  double convFacToMpa;
 };
 
 
