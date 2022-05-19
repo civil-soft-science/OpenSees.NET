@@ -601,10 +601,10 @@ bool DomainModalProperties::compute(Domain* domain)
             const std::vector<int>& uflags = nodemap.node_u_flags[i];
             npos.resize(static_cast<size_t>(iD.Size()));
             std::fill(npos.begin(), npos.end(), i);
-            const Matrix& iV = node->getEigenvectors();
+            const Matrix* iV = node->getEigenvectors();
             const Matrix& iM = node->getMass();
             addM(iM, iD, uflags, npos);
-            addV(iV, iD);
+            addV(*iV, iD);
         }
     }
 

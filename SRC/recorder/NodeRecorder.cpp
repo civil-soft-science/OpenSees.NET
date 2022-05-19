@@ -914,13 +914,15 @@ NodeRecorder::record(int commitTag, double timeStamp)
                     int mode = dataFlag - 10;
                     int column = mode - 1;
 
-                    const Matrix& theEigenvectors = theNode->getEigenvectors();
-                    if (theEigenvectors.noCols() > column) {
-                        int noRows = theEigenvectors.noRows();
+                    const Matrix* theEigenvectors = theNode->getEigenvectors();
+                    if (theEigenvectors == 0)
+                        opserr << "NodeRecorder::record: zero eigen vector faced\n";
+                    else if (theEigenvectors->noCols() > column) {
+                        int noRows = theEigenvectors->noRows();
                         for (int j = 0; j < numDOF; j++) {
                             int dof = (*theDofs)(j);
                             if (noRows > dof) {
-                                response(cnt) = theEigenvectors(dof, column);
+                                response(cnt) = (*theEigenvectors)(dof, column);
                             }
                             else
                                 response(cnt) = 0.0;
@@ -995,8 +997,12 @@ NodeRecorder::record(int commitTag, double timeStamp)
         else { // output all eigenvalues
 
             Node* theNode = theNodes[0];
-            const Matrix& theEigenvectors = theNode->getEigenvectors();
-            int numValidModes = theEigenvectors.noCols();
+            int numValidModes = 0;
+            const Matrix* theEigenvectors = theNode->getEigenvectors();
+            if (theEigenvectors == 0)
+                opserr << "NodeRecorder::record: zero eigen vector faced\n";
+            else
+                numValidModes = theEigenvectors->noCols();
 
             for (int mode = 0; mode < numValidModes; mode++) {
 
@@ -1005,7 +1011,7 @@ NodeRecorder::record(int commitTag, double timeStamp)
                     theNode = theNodes[i];
                     int column = mode;
 
-                    const Matrix& theEigenvectors = theNode->getEigenvectors();
+                    const Matrix& theEigenvectors = *theNode->getEigenvectors();
                     if (theEigenvectors.noCols() > column) {
                         int noRows = theEigenvectors.noRows();
                         for (int j = 0; j < numDOF; j++) {

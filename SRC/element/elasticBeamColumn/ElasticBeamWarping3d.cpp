@@ -953,8 +953,8 @@ ElasticBeamWarping3d::displaySelf(Renderer &theViewer, int displayMode, float fa
       }
     } else {
       int mode = displayMode * -1;
-      const Matrix &eigen1 = theNodes[0]->getEigenvectors();
-      const Matrix &eigen2 = theNodes[1]->getEigenvectors();
+      const Matrix &eigen1 = *theNodes[0]->getEigenvectors();
+      const Matrix &eigen2 = *theNodes[1]->getEigenvectors();
       if (eigen1.noCols() >= mode) {
 	for (int i = 0; i < 3; i++) {
 	  v1(i) = end1Crd(i) + eigen1(i,mode-1)*fact;

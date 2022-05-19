@@ -796,7 +796,7 @@ DOF_Group::getEigenvectors(void)
     exit(-1);
   }
 
-  return myNode->getEigenvectors();
+  return *myNode->getEigenvectors();
 }
 
 
@@ -1016,7 +1016,7 @@ DOF_Group::getDampingBetaFactor(int mode, double ratio, double wn)
   // to return 2.0 * ratio * wn * phi(mode)' * M * v
   double beta = 0;
   const Matrix & mass = myNode->getMass();
-  const Matrix & eigenVectors = myNode->getEigenvectors();
+  const Matrix & eigenVectors = *myNode->getEigenvectors();
   const Vector & vel = myNode->getTrialVel();
   int numDOF = eigenVectors.noRows();
   int numMode = eigenVectors.noCols();
@@ -1033,7 +1033,7 @@ DOF_Group::getDampingBetaForce(int mode, double beta)
 {
   // to return beta * M * phi(mode)
   const Matrix & mass = myNode->getMass();
-  const Matrix & eigenVectors = myNode->getEigenvectors();
+  const Matrix & eigenVectors = *myNode->getEigenvectors();
   int numDOF = eigenVectors.noRows();
 
   Vector eigenvector(numDOF);

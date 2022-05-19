@@ -842,13 +842,15 @@ EnvelopeNodeRecorder::record(int commitTag, double timeStamp)
                 else if (dataFlag > 10) {
                     int mode = dataFlag - 10;
                     int column = mode - 1;
-                    const Matrix& theEigenvectors = theNode->getEigenvectors();
-                    if (theEigenvectors.noCols() > column) {
-                        int noRows = theEigenvectors.noRows();
+                    const Matrix* theEigenvectors = theNode->getEigenvectors();
+                    if (theEigenvectors == 0)
+                        opserr << "EnvelopeNodeRecorder::record: zero eigen vector faced\n";
+                    else if (theEigenvectors->noCols() > column) {
+                        int noRows = theEigenvectors->noRows();
                         for (int j = 0; j < numDOF; j++) {
                             int dof = (*theDofs)(j);
                             if (noRows > dof) {
-                                (*currentData)(cnt) = theEigenvectors(dof, column);
+                                (*currentData)(cnt) = (*theEigenvectors)(dof, column);
                             }
                             else
                                 (*currentData)(cnt) = 0.0;

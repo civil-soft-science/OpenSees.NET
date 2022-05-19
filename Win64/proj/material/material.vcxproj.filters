@@ -1446,6 +1446,9 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\BoucWenInfill.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete02.cpp">
+      <Filter>uniaxial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\AxialSp.h">
@@ -2650,7 +2653,7 @@
     <ClInclude Include="..\..\..\SRC\material\uniaxial\SteelFractureDI.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\..\SRC\material\uniaxial\BucklingMaterial.h">
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\BucklingMaterial.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\IMKJ.h">

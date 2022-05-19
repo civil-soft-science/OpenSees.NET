@@ -560,13 +560,15 @@ for (int i=0; i<numValidNodes; i++) {
     else if (dataFlag > 10) {
 		int mode = dataFlag - 10;
 		int column = mode - 1;
-		const Matrix &theEigenvectors = theNode->getEigenvectors();
-		if (theEigenvectors.noCols() > column) {
-			int noRows = theEigenvectors.noRows();
+      const Matrix* theEigenvectors = theNode->getEigenvectors();
+      if (theEigenvectors == 0)
+          opserr << "ResidNodeRecorder::record: zero eigen vector faced\n";
+      else if (theEigenvectors->noCols() > column) {
+			int noRows = theEigenvectors->noRows();
 			for (int j=0; j<numDOF; j++) {
 				int dof = (*theDofs)(j);
 				if (noRows > dof) {
-					(*data)(0,cnt) = theEigenvectors(dof,column);
+					(*data)(0,cnt) = (*theEigenvectors)(dof,column);
 				} else 
 					(*data)(0,cnt) = 0.0;
 				cnt++;		

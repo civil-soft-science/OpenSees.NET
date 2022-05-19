@@ -6620,7 +6620,7 @@ nodeEigenvector(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **
     
     dof--; eigenvector--;
     Node *theNode = theDomain.getNode(tag);
-    const Matrix &theEigenvectors = theNode->getEigenvectors();
+    const Matrix &theEigenvectors = *theNode->getEigenvectors();
 
     int size = theEigenvectors.noRows();
     int numEigen = theEigenvectors.noCols();

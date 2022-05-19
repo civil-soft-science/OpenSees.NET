@@ -347,7 +347,7 @@ void ResponseSpectrumAnalysis::solveMode()
 
 		// get the nodal eigenvector, according to the ndf of modal properties
 		// and its scaling
-		const Matrix& node_evec = node->getEigenvectors();
+		const Matrix& node_evec = *node->getEigenvectors();
 		int node_ndf = node_evec.noRows();
 
 		// for each DOF...

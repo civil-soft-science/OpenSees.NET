@@ -1432,16 +1432,16 @@ Node::setEigenvector(int mode, const Vector &eigenVector)
 
   return 0;
 }
-const Matrix &
+const Matrix*
 Node::getEigenvectors(void)
 {
-  // check the eigen vectors have been set
-	if (theEigenvectors == 0) {
-    opserr << "Node::getEigenvectors() - eigenvectors have not been set\n";
-	exit(0);
-	}
-  
-  return *theEigenvectors;
+    // check the eigen vectors have been set
+    if (theEigenvectors == 0) {
+        opserr << "Node::getEigenvectors() - eigenvectors have not been set\n";
+        return 0;
+    }
+
+    return theEigenvectors;
 }
 
 

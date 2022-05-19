@@ -769,7 +769,7 @@ PVDRecorder::savePart0(int nodendf)
 	theFile<<" format="<<quota<<"ascii"<<quota<<">\n";
 	this->incrLevel();
 	for(int i=0; i<(int)nodes.size(); i++) {
-	    const Matrix& eigens = nodes[i]->getEigenvectors();
+	    const Matrix& eigens = *nodes[i]->getEigenvectors();
 	    if(k >= eigens.noCols()) {
 		opserr<<"WARNING: eigenvector "<<k+1<<" is too large\n";
 		return -1;
@@ -1666,7 +1666,7 @@ PVDRecorder::savePart(int partno, int ctag, int nodendf)
 	theFile<<" format="<<quota<<"ascii"<<quota<<">\n";
 	this->incrLevel();
 	for(int i=0; i<ndtags.Size(); i++) {
-	    const Matrix& eigens = nodes[i]->getEigenvectors();
+	    const Matrix& eigens = *nodes[i]->getEigenvectors();
 	    if(k >= eigens.noCols()) {
 		opserr<<"WARNING: eigenvector "<<k+1<<" is too large\n";
 		return -1;

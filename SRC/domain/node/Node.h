@@ -126,7 +126,7 @@ class Node : public DomainComponent
     // public methods for eigen vector
     virtual int setNumEigenvectors(int numVectorsToStore);
     virtual int setEigenvector(int mode, const Vector &eigenVector);
-    virtual const Matrix &getEigenvectors(void);
+    virtual const Matrix* getEigenvectors(void);
     
     // public methods for output
     virtual int sendSelf(int commitTag, Channel &theChannel);

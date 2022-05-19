@@ -2602,10 +2602,10 @@ int MVLEM_3D::displaySelf(Renderer& theViewer, int displayMode, float fact, cons
 
 		int mode = displayMode  *  -1;
 
-		const Matrix &eigen1 = theNodes[0]->getEigenvectors();
-		const Matrix &eigen2 = theNodes[1]->getEigenvectors();
-		const Matrix &eigen3 = theNodes[2]->getEigenvectors();
-		const Matrix &eigen4 = theNodes[3]->getEigenvectors();
+		const Matrix &eigen1 = *theNodes[0]->getEigenvectors();
+		const Matrix &eigen2 = *theNodes[1]->getEigenvectors();
+		const Matrix &eigen3 = *theNodes[2]->getEigenvectors();
+		const Matrix &eigen4 = *theNodes[3]->getEigenvectors();
 
 		if (eigen1.noCols() >= mode) {
 

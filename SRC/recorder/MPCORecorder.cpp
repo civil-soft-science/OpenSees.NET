@@ -2065,7 +2065,7 @@ namespace mpco {
 			virtual void bufferResponse(mpco::ProcessInfo &info, std::vector<Node*> &nodes, std::vector<double> &buffer)const {
 				for (size_t i = 0; i < nodes.size(); i++) {
 					size_t j = i * m_ndim;
-					const Matrix &inode_eigenvec = nodes[i]->getEigenvectors();
+					const Matrix &inode_eigenvec = *nodes[i]->getEigenvectors();
 					buffer[j] = inode_eigenvec(0, m_current_mode_to_buffer);
 					if (m_ndim > 1) {
 						buffer[j + 1] = inode_eigenvec(1, m_current_mode_to_buffer);
@@ -2107,7 +2107,7 @@ namespace mpco {
 		protected:
 			virtual void bufferResponse(mpco::ProcessInfo &info, std::vector<Node*> &nodes, std::vector<double> &buffer)const {
 				for (size_t i = 0; i < nodes.size(); i++) {
-					const Matrix &inode_eigenvec = nodes[i]->getEigenvectors();
+					const Matrix &inode_eigenvec = *nodes[i]->getEigenvectors();
 					if (m_ndim == 2 && inode_eigenvec.noRows() > 2) {
 						size_t j = i;
 						buffer[j] = inode_eigenvec(2, m_current_mode_to_buffer);

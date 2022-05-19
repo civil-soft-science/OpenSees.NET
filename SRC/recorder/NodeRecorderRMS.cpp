@@ -677,7 +677,7 @@ NodeRecorderRMS::record(int commitTag, double timeStamp)
       } else if (dataFlag > 10) {
 	int mode = dataFlag - 10;
 	int column = mode - 1;
-	const Matrix &theEigenvectors = theNode->getEigenvectors();
+	const Matrix &theEigenvectors = *theNode->getEigenvectors();
 	if (theEigenvectors.noCols() > column) {
 	  int noRows = theEigenvectors.noRows();
 	  for (int j=0; j<numDOF; j++) {
