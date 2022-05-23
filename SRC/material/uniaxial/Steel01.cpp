@@ -59,7 +59,7 @@ OPS_Steel01()
   double dData[7];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel01 tag" << endln;
     return 0;
   }
@@ -71,7 +71,7 @@ OPS_Steel01()
     return 0;
   }
 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial Steel01 " << iData[0] << " fy? E? b? <a1? a2? a3? a4?>>" << endln;
     return 0;
   }

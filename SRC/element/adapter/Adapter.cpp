@@ -56,7 +56,7 @@ void* OPS_Adapter()
     // tags
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING: invalid tag\n";
         return 0;
     }
@@ -73,7 +73,7 @@ void* OPS_Adapter()
         int node;
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata, &node) < 0) {
+        if (OPS_GetIntInput(numdata, &node) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -100,7 +100,7 @@ void* OPS_Adapter()
             int dof;
             numdata = 1;
             int numArgs = OPS_GetNumRemainingInputArgs();
-            if (OPS_GetIntInput(&numdata, &dof) < 0) {
+            if (OPS_GetIntInput(numdata, &dof) < 0) {
                 if (numArgs > OPS_GetNumRemainingInputArgs()) {
                     // move current arg back by one
                     OPS_ResetCurrentInputArg(-1);
@@ -132,7 +132,7 @@ void* OPS_Adapter()
     numdata = 1;
     for (int i = 0; i < numDOF; i++) {
         for (int j = 0; j < numDOF; j++) {
-            if (OPS_GetDoubleInput(&numdata, &kb(i, j)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &kb(i, j)) < 0) {
                 opserr << "WARNING invalid stiffness value\n";
                 return 0;
             }
@@ -141,7 +141,7 @@ void* OPS_Adapter()
     // ipPort
     int ipPort;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &ipPort) < 0) {
+    if (OPS_GetIntInput(numdata, &ipPort) < 0) {
         opserr << "WARNING: invalid ipPort\n";
         return 0;
     }
@@ -175,7 +175,7 @@ void* OPS_Adapter()
             mb = new Matrix(numDOF, numDOF);
             for (int i = 0; i < numDOF; i++) {
                 for (int j = 0; j < numDOF; j++) {
-                    if (OPS_GetDoubleInput(&numdata, &mij) < 0) {
+                    if (OPS_GetDoubleInput(numdata, &mij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete mb;
                         return 0;

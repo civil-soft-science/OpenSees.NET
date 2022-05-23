@@ -49,25 +49,25 @@ OPS_RAFourSteelRCPlaneStressMaterial()
   int numData = 0;
 
   numData = 1;
-  if (OPS_GetInt(&numData, &tag) != 0) {
+  if (OPS_GetInt(numData, &tag) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RAFourSteelRCPPlaneStress tag" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDouble(&numData, &rho) != 0) {
+  if (OPS_GetDouble(numData, &rho) != 0) {
     opserr << "Invalid Arg rho: uniaxialMaterial RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;	
   }
 
   numData = 6;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;
   }
 
   numData = 12;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid data RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;
   }

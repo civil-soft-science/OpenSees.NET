@@ -70,14 +70,14 @@ void* OPS_LimiStateMaterial()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double sp12[4];
     numdata = 4;
-    if (OPS_GetDoubleInput(&numdata,sp12) < 0) {
+    if (OPS_GetDoubleInput(numdata,sp12) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -85,7 +85,7 @@ void* OPS_LimiStateMaterial()
     double sp3[2];
     if (argc > 16) {
 	numdata = 2;
-	if (OPS_GetDoubleInput(&numdata,sp3) < 0) {
+	if (OPS_GetDoubleInput(numdata,sp3) < 0) {
 	    opserr << "WARNING invalid double inputs\n";
 	    return 0;
 	}
@@ -93,7 +93,7 @@ void* OPS_LimiStateMaterial()
 
     double sn12[4];
     numdata = 4;
-    if (OPS_GetDoubleInput(&numdata,sn12) < 0) {
+    if (OPS_GetDoubleInput(numdata,sn12) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -101,7 +101,7 @@ void* OPS_LimiStateMaterial()
     double sn3[2];
     if (argc > 16) {
 	numdata = 2;
-	if (OPS_GetDoubleInput(&numdata,sn3) < 0) {
+	if (OPS_GetDoubleInput(numdata,sn3) < 0) {
 	    opserr << "WARNING invalid double inputs\n";
 	    return 0;
 	}
@@ -109,7 +109,7 @@ void* OPS_LimiStateMaterial()
 
     double data[4];
     numdata = 4;
-    if (OPS_GetDoubleInput(&numdata,data) < 0) {
+    if (OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -117,7 +117,7 @@ void* OPS_LimiStateMaterial()
     double beta = 0.0;
     numdata = 1;
     if (argc == 20 || argc == 16 || argc >= 22 ) {
-	if (OPS_GetDoubleInput(&numdata,&beta) < 0) {
+	if (OPS_GetDoubleInput(numdata,&beta) < 0) {
 	    opserr << "WARNING invalid beta\n";
 	    return 0;
 	}
@@ -128,7 +128,7 @@ void* OPS_LimiStateMaterial()
 
 	double curveData[2];
 	numdata = 2;
-	if (OPS_GetDoubleInput(&numdata,curveData) < 0) {
+	if (OPS_GetDoubleInput(numdata,curveData) < 0) {
 	    opserr << "WARNING invalid int inputs\n";
 	    return 0;
 	}
@@ -146,7 +146,7 @@ void* OPS_LimiStateMaterial()
     
 	if (argc == 23) {
 	    numdata = 1;
-	    if (OPS_GetIntInput(&numdata,&degrade) < 0) {
+	    if (OPS_GetIntInput(numdata,&degrade) < 0) {
 		opserr << "WARNING invalid degrade\n";
 		return 0;
 	    }

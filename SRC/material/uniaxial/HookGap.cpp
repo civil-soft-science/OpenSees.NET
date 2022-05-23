@@ -57,7 +57,7 @@ OPS_HookGap(void)
   int iData[1];
   double dData[3];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial HookGapMaterial" << endln;
     return 0;
   }
@@ -65,13 +65,13 @@ OPS_HookGap(void)
   numData = OPS_GetNumRemainingInputArgs();
   if (numData >= 3) {
     numData = 3;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid data for uniaxialMaterial HookGap " << iData[0] << endln;
       return 0;	
     }
   } else {
     numData = 2;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid data for uniaxialMaterial HookGap " << iData[0] << endln;
       return 0;	
     }

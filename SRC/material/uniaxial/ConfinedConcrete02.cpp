@@ -65,7 +65,7 @@ OPS_ConfinedConcrete02()
 	double dData[21];
 	int numData = 1;
 
-	if (OPS_GetIntInput(&numData, iData) != 0)
+	if (OPS_GetIntInput(numData, iData) != 0)
 	{
 		opserr << "WARNING invalid uniaxialMaterial ConfinedConcrete02 tag" << endln;
 		return 0;
@@ -81,7 +81,7 @@ OPS_ConfinedConcrete02()
 		return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numData, dData) != 0)
+	if (OPS_GetDoubleInput(numData, dData) != 0)
 	{
 		opserr << "Invalid #args for ConfinedConcrete02 with tag:" << iData[0] << "; want:\n";
 		opserr << "uniaxialMaterial ConfinedConcrete02 tag fc0 epsc0 fcu double epscu rat ft Ets \n";

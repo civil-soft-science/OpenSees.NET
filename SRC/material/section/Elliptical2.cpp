@@ -42,14 +42,14 @@ void* OPS_Elliptical2()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid Elliptical tag" << endln;
 	return 0;
     }
 
     numdata = 7;
     double data[7];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "section Elliptical: " << tag << endln;
 	return 0;

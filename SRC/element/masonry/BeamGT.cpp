@@ -76,24 +76,24 @@ void* OPS_BeamGT()
   int numData;
 
   numData = 3;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
     int eleTag = iData[0];
  
   numData =1;
-  if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[3]) != 0) {
     opserr << "WARNING error reading element material 1 tag for element " << eleTag << endln;
     return 0;
   }
       numData =1;
-  if (OPS_GetIntInput(&numData, &iData[4]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[4]) != 0) {
     opserr << "WARNING error reading element material 2 tag for element " << eleTag << endln;
     return 0;
   }
       numData =1;
-  if (OPS_GetIntInput(&numData, &iData[5]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[5]) != 0) {
     opserr << "WARNING error reading element material 3 tag for element " << eleTag << endln;
     return 0;
   }
@@ -102,7 +102,7 @@ void* OPS_BeamGT()
   int matID3 = iData[5];
  
   numData =8 ;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
    opserr << "WARNING error reading Elastic properties for element" << eleTag << endln;
    return 0;
   }

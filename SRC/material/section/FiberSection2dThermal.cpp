@@ -57,7 +57,7 @@ void* OPS_FiberSection2dThermal()
 
     numData = 1;
     int tag;
-    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     int num = 30;
     return new FiberSection2dThermal(tag,num);

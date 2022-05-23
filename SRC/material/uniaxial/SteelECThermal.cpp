@@ -55,7 +55,7 @@ OPS_SteelECThermal(void)
   const char *typeChar = new char[20];
   int numData = 1;
   
- if (OPS_GetIntInput(&numData, iData) != 0) 
+ if (OPS_GetIntInput(numData, iData) != 0) 
  {
     opserr << "WARNING invalid uniaxialMaterial SteelECThermal tag?" << endln;
     return 0;
@@ -97,7 +97,7 @@ OPS_SteelECThermal(void)
     return 0;
   }
 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial SteelECThermal " << iData[0] << " fy? E? b? <a1? a2? a3? a4?>>" << endln;
     return 0;
   }

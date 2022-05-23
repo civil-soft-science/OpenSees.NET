@@ -52,14 +52,14 @@ void* OPS_KikuchiAikenLRB()
 
     int idata[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid KikuchiAikenHDR tag\n";
 	return 0;
     }
 
     double ddata[7];
     numdata = 7;
-    if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -73,7 +73,7 @@ void* OPS_KikuchiAikenLRB()
 	if (strcmp(opt, "-coKQ") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() >= 2) {
 		numdata = 2;
-		if (OPS_GetDoubleInput(&numdata, ddata2) < 0) {
+		if (OPS_GetDoubleInput(numdata, ddata2) < 0) {
 		    opserr << "WARNING invalid double inputs\n";
 		    return 0;
 		}
@@ -81,7 +81,7 @@ void* OPS_KikuchiAikenLRB()
 	} else if (strcmp(opt, "-coMSS") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() >= 2) {
 		numdata = 2;
-		if (OPS_GetDoubleInput(&numdata, ddata3) < 0) {
+		if (OPS_GetDoubleInput(numdata, ddata3) < 0) {
 		    opserr << "WARNING invalid double inputs\n";
 		    return 0;
 		}
@@ -89,7 +89,7 @@ void* OPS_KikuchiAikenLRB()
 	} else if (strcmp(opt, "-T") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() >= 1) {
 		numdata = 1;
-		if (OPS_GetDoubleInput(&numdata, &temp) < 0) {
+		if (OPS_GetDoubleInput(numdata, &temp) < 0) {
 		    opserr << "WARNING invalid temp\n";
 		    return 0;
 		}

@@ -45,14 +45,14 @@ void* OPS_MembranePlateFiberSection()
     
     int idata[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING: invalid tags\n";
 	return 0;
     }
 
     double h;
     numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+    if (OPS_GetDoubleInput(numdata, &h) < 0) {
 	opserr << "WARNING: invalid h\n";
 	return 0;
     }

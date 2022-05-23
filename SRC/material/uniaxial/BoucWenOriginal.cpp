@@ -52,7 +52,7 @@ void* OPS_BoucWenOriginal()
     
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING invalid tag\n";
         return 0;
     }
@@ -62,7 +62,7 @@ void* OPS_BoucWenOriginal()
     if (numdata > 9) {
         numdata = 9;
     }
-    if (OPS_GetDoubleInput(&numdata, data)) {
+    if (OPS_GetDoubleInput(numdata, data)) {
         opserr << "WARNING invalid double inputs\n";
         return 0;
     }
@@ -71,7 +71,7 @@ void* OPS_BoucWenOriginal()
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 0) {
         numdata = 1;
-        if (OPS_GetIntInput(&numdata, &maxIter) < 0) {
+        if (OPS_GetIntInput(numdata, &maxIter) < 0) {
             opserr << "WARNING invalid int inputs\n";
             return 0;
         }

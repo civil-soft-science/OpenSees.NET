@@ -36,7 +36,7 @@ void* OPS_NormDispOrUnbalance()
 
     if (OPS_GetNumRemainingInputArgs() >= 2) {
 	int numdata = 2;
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr << "WARNING NormDispOrUnbalance failed to get tolerance\n";
 	    return 0;
 	}
@@ -45,7 +45,7 @@ void* OPS_NormDispOrUnbalance()
     int idata[4] = {0,0,2,-1};
     if (OPS_GetNumRemainingInputArgs() >= 4) {
 	int numdata = 4;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING NormDispOrUnbalance failed to get int values\n";
 	    return 0;
 	}

@@ -84,7 +84,7 @@ void *OPS_HDR()
     int numData;
     
     numData = 3;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid element data\n";
         return 0;
     }
@@ -92,7 +92,7 @@ void *OPS_HDR()
     int eleTag = iData[0];
     
     numData = 17;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "WARNING error reading element properties for element" << eleTag << endln;
         return 0;
     }
@@ -114,7 +114,7 @@ void *OPS_HDR()
         x.resize(3);
         numData = 1;
         for (int i=0; i<3; i++) {
-            if (OPS_GetDoubleInput(&numData, &value) != 0) {
+            if (OPS_GetDoubleInput(numData, &value) != 0) {
                 opserr << "WARNING invalid orientation value for element" << eleTag << endln;
                 return 0;
             } else {
@@ -122,7 +122,7 @@ void *OPS_HDR()
             }
         }
         for (int i=0; i<3; i++) {
-            if (OPS_GetDoubleInput(&numData, &value) != 0) {
+            if (OPS_GetDoubleInput(numData, &value) != 0) {
                 opserr << "WARNING invalid orientation value for element" << eleTag << endln;
                 return 0;
             } else {
@@ -131,37 +131,37 @@ void *OPS_HDR()
         }
         if (numArgs >= 27) {
             numData = 1;
-            if (OPS_GetDoubleInput(&numData, &kl) != 0) {
+            if (OPS_GetDoubleInput(numData, &kl) != 0) {
                 opserr << "WARNING error reading element property cavitation parameter for element" << eleTag << endln;
                 return 0;
             }
             if (numArgs >= 28) {
                 numData = 1;
-                if (OPS_GetDoubleInput(&numData, &phi) != 0) {
+                if (OPS_GetDoubleInput(numData, &phi) != 0) {
                     opserr << "WARNING error reading element property damage index for element" << eleTag << endln;
                     return 0;
                 }
                 if (numArgs >= 29) {
                     numData = 1;
-                    if (OPS_GetDoubleInput(&numData, &al) != 0) {
+                    if (OPS_GetDoubleInput(numData, &al) != 0) {
                         opserr << "WARNING error reading element property strength degradation parameter for element" << eleTag << endln;
                         return 0;
                     }
                     if (numArgs >= 30) {
                         numData = 1;
-                        if (OPS_GetDoubleInput(&numData, &sDratio) != 0) {
+                        if (OPS_GetDoubleInput(numData, &sDratio) != 0) {
                             opserr << "WARNING error reading element property shear distance ratio for element" << eleTag << endln;
                             return 0;
                         }
                         if (numArgs >= 31) {
                             numData = 1;
-                            if (OPS_GetDoubleInput(&numData, &m) != 0) {
+                            if (OPS_GetDoubleInput(numData, &m) != 0) {
                                 opserr << "WARNING error reading element property mass for element" << eleTag << endln;
                                 return 0;
                             }
                             if (numArgs == 32) {
                                 numData = 1;
-                                if (OPS_GetDoubleInput(&numData, &tc1) != 0) {
+                                if (OPS_GetDoubleInput(numData, &tc1) != 0) {
                                     opserr << "WARNING error reading element property cover thickness for element" << eleTag << endln;
                                     return 0;
                                 }

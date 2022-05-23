@@ -66,7 +66,7 @@ void* OPS_FiberSectionWarping3d()
     
     numData = 1;
     int tag;
-    if (OPS_GetIntInput(&numData, &tag) < 0) return 0;
+    if (OPS_GetIntInput(numData, &tag) < 0) return 0;
 
     if (OPS_GetNumRemainingInputArgs() < 2) {
       opserr << "WARNING torsion not specified for FiberSection\n";
@@ -86,7 +86,7 @@ void* OPS_FiberSectionWarping3d()
       if (strcmp(opt, "-GJ") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
 	numData = 1;
 	double GJ;
-	if (OPS_GetDoubleInput(&numData, &GJ) < 0) {
+	if (OPS_GetDoubleInput(numData, &GJ) < 0) {
 	  opserr << "WARNING: failed to read GJ\n";
 	  return 0;
 	}
@@ -96,7 +96,7 @@ void* OPS_FiberSectionWarping3d()
       if (strcmp(opt, "-torsion") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
 	numData = 1;
 	int torsionTag;
-	if (OPS_GetIntInput(&numData, &torsionTag) < 0) {
+	if (OPS_GetIntInput(numData, &torsionTag) < 0) {
 	  opserr << "WARNING: failed to read torsion\n";
 	  return 0;
 	}

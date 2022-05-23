@@ -68,10 +68,10 @@ void* OPS_FiberSectionAsym3d()
     
     numData = 1;
     int tag;
-    if (OPS_GetIntInput(&numData, &tag) < 0) return 0;
+    if (OPS_GetIntInput(numData, &tag) < 0) return 0;
     numData = 2;
     double dData[2];
-    if (OPS_GetDoubleInput(&numData, dData) < 0) return 0;
+    if (OPS_GetDoubleInput(numData, dData) < 0) return 0;
 
     double GJ = 0.0;
     UniaxialMaterial *torsion = 0;
@@ -80,7 +80,7 @@ void* OPS_FiberSectionAsym3d()
         const char* opt = OPS_GetString();
         if (strcmp(opt, "-GJ") == 0) {
             numData = 1;
-            if (OPS_GetDoubleInput(&numData, &GJ) < 0) return 0;
+            if (OPS_GetDoubleInput(numData, &GJ) < 0) return 0;
             torsion = new ElasticMaterial(0, GJ);
             deleteTorsion = true;
         }

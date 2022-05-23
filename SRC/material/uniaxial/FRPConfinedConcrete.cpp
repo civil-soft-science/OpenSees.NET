@@ -69,14 +69,14 @@ OPS_FRPConfinedConcrete(void)
   }
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial FRPConfinedConcrete tag" << endln;
     return 0;
   }
 
 
   numData = 18;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
 	  opserr << "WARNING invalid Material Properties: fpc1: Concrete Core Compressive Strength \n";
 	  opserr << "fpc2: Concrete Cover Compressive Strength \n";
 	  opserr << "epsc0: Strain Corresponding to Unconfined Concrete Strength \n";

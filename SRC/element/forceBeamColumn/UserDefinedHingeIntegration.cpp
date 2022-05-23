@@ -43,12 +43,12 @@ void* OPS_UserHingeBeamIntegration(int& integrationTag, ID& secTags)
     // inputs: 
     int numData = 1;
     int secTagE;
-    if(OPS_GetIntInput(&numData,&integrationTag) < 0) return 0;
-    if(OPS_GetIntInput(&numData,&secTagE) < 0) return 0;
+    if(OPS_GetIntInput(numData,&integrationTag) < 0) return 0;
+    if(OPS_GetIntInput(numData,&secTagE) < 0) return 0;
 
     // npL
     int npL;
-    if(OPS_GetIntInput(&numData,&npL) < 0) return 0;
+    if(OPS_GetIntInput(numData,&npL) < 0) return 0;
     if(npL <= 0) npL = 1;
 
     ID secTagL(npL);
@@ -59,17 +59,17 @@ void* OPS_UserHingeBeamIntegration(int& integrationTag, ID& secTags)
     }
 
     int *secptr = &secTagL(0);
-    if(OPS_GetIntInput(&npL,secptr) < 0) return 0;
+    if(OPS_GetIntInput(npL,secptr) < 0) return 0;
 
     double *locptr = &ptL(0);
-    if(OPS_GetDoubleInput(&npL,locptr) < 0) return 0;
+    if(OPS_GetDoubleInput(npL,locptr) < 0) return 0;
 
     double *wtptr = &wtL(0);
-    if(OPS_GetDoubleInput(&npL,wtptr) < 0) return 0;
+    if(OPS_GetDoubleInput(npL,wtptr) < 0) return 0;
 
     // npR
     int npR;
-    if(OPS_GetIntInput(&numData,&npR) < 0) return 0;
+    if(OPS_GetIntInput(numData,&npR) < 0) return 0;
     if(npR <= 0) npR = 1;
     
     ID secTagR(npR);
@@ -80,13 +80,13 @@ void* OPS_UserHingeBeamIntegration(int& integrationTag, ID& secTags)
     }
 
     secptr = &secTagR(0);
-    if(OPS_GetIntInput(&npR,secptr) < 0) return 0;
+    if(OPS_GetIntInput(npR,secptr) < 0) return 0;
 
     locptr = &ptR(0);
-    if(OPS_GetDoubleInput(&npR,locptr) < 0) return 0;
+    if(OPS_GetDoubleInput(npR,locptr) < 0) return 0;
 
     wtptr = &wtR(0);
-    if(OPS_GetDoubleInput(&npR,wtptr) < 0) return 0;
+    if(OPS_GetDoubleInput(npR,wtptr) < 0) return 0;
 
     // secTags
     secTags.resize(npL+npR+2);

@@ -54,7 +54,7 @@ void* OPS_Newmark1()
     }
 
     double data[6] = {0,0,0,0,0,0};
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING integrator Newmark1 invalid double inputs\n";	  
 	return 0;
     }

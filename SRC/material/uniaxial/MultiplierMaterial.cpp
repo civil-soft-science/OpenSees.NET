@@ -63,7 +63,7 @@ OPS_MultiplierMaterial(void)
   }
 
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) < 0) {
+  if (OPS_GetIntInput(numData, iData) < 0) {
     opserr << "WARNING invalid uniaxialMaterial Multiplier $tag $otherTag $multiplier" << endln;
     return 0;
   }
@@ -76,7 +76,7 @@ OPS_MultiplierMaterial(void)
 
   double multiplier = 1.0;
   numData = 1;
-  if (OPS_GetDouble(&numData,&multiplier) < 0) {
+  if (OPS_GetDouble(numData,&multiplier) < 0) {
     opserr << "WARNING invalid input uniaxialMaterial Multiplier tag: " << iData[0] << endln;
     return 0;
   }

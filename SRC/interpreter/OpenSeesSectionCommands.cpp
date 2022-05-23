@@ -153,7 +153,7 @@ namespace {
 
 	numData = 1;
 	int tag;
-	if (OPS_GetIntInput(&numData, &tag) < 0) {
+	if (OPS_GetIntInput(numData, &tag) < 0) {
 	    opserr<<"WARNING: failed to read tag\n";
 	    return 0;
 	}
@@ -164,7 +164,7 @@ namespace {
 	bool deleteTorsion = false;
 	if (strcmp(opt, "-GJ") == 0) {
 	  double GJ;
-	  if (OPS_GetDoubleInput(&numData, &GJ) < 0) {
+	  if (OPS_GetDoubleInput(numData, &GJ) < 0) {
 	    opserr << "WARNING: failed to read GJ\n";
 	    return 0;
 	  }
@@ -173,7 +173,7 @@ namespace {
 	}
 	if (strcmp(opt, "-torsion") == 0) {
 	  int torsionTag;
-	  if (OPS_GetIntInput(&numData, &torsionTag) < 0) {
+	  if (OPS_GetIntInput(numData, &torsionTag) < 0) {
 	    opserr << "WARNING: failed to read torsion\n";
 	    return 0;
 	  }
@@ -284,7 +284,7 @@ namespace {
 
 	int data[2];
 	numdata = 2;
-	if (OPS_GetIntInput(&numdata, data) < 0) {
+	if (OPS_GetIntInput(numdata, data) < 0) {
 	    opserr << "WARNING invalid integer" << endln;
 	    return 0;
 	}
@@ -344,35 +344,35 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section Tube tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section Tube matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &D) < 0) {
+	if (OPS_GetDoubleInput(numdata, &D) < 0) {
 	    opserr << "WARNING invalid D" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &t) < 0) {
+	if (OPS_GetDoubleInput(numdata, &t) < 0) {
 	    opserr << "WARNING invalid t" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfw) < 0) {
+	if (OPS_GetIntInput(numdata, &nfw) < 0) {
 	    opserr << "WARNING invalid nfw" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfr) < 0) {
+	if (OPS_GetIntInput(numdata, &nfr) < 0) {
 	    opserr << "WARNING invalid nfr" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
@@ -386,7 +386,7 @@ namespace {
 
 	    double shape = 1.0;
 	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 		    opserr << "WARNING invalid shape" << endln;
 		    opserr << "Tube section: " << tag << endln;
 		    return 0;
@@ -456,47 +456,47 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &d) < 0) {
+	if (OPS_GetDoubleInput(numdata, &d) < 0) {
 	    opserr << "WARNING invalid d" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &tw) < 0) {
+	if (OPS_GetDoubleInput(numdata, &tw) < 0) {
 	    opserr << "WARNING invalid tw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &bf) < 0) {
+	if (OPS_GetDoubleInput(numdata, &bf) < 0) {
 	    opserr << "WARNING invalid bf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &tf) < 0) {
+	if (OPS_GetDoubleInput(numdata, &tf) < 0) {
 	    opserr << "WARNING invalid tf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfdw) < 0) {
+	if (OPS_GetIntInput(numdata, &nfdw) < 0) {
 	    opserr << "WARNING invalid nfdw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nftf) < 0) {
+	if (OPS_GetIntInput(numdata, &nftf) < 0) {
 	    opserr << "WARNING invalid nftf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
@@ -510,7 +510,7 @@ namespace {
 
 	    double shape = 1.0;
 	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 		    opserr << "WARNING invalid shape" << endln;
 		    opserr << "WFSection2d section: " << tag << endln;
 		    return 0;
@@ -576,7 +576,7 @@ namespace {
 	// int
 	int numdata = 4;
 	int idata[4];
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCSection2d int inputs" << endln;
 	    return 0;
 	}
@@ -589,7 +589,7 @@ namespace {
 	// double
 	numdata = 6;
 	double data[6];
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr << "WARNING invalid section RCSection2d double inputs" << endln;
 	    opserr << "RCSection2d section: " << tag << endln;
 	    return 0;
@@ -604,7 +604,7 @@ namespace {
 
 	// int
 	numdata = 3;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCSection2d int inputs" << endln;
 	    opserr << "RCSection2d section: " << tag << endln;
 	    return 0;
@@ -666,7 +666,7 @@ namespace {
 	// int
 	int numdata = 4;
 	int idata[6];
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
 	    return 0;
 	}
@@ -678,7 +678,7 @@ namespace {
 	// double
 	numdata = 8;
 	double data[8];
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr << "WARNING invalid double inputs" << endln;
 	    opserr << "RCTBeamSection2d section: " << tag << endln;
 	    return 0;
@@ -695,7 +695,7 @@ namespace {
 
 	// int
 	numdata = 6;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
 	    return 0;
 	}
@@ -787,7 +787,7 @@ namespace {
 	// int
 	int numdata = 4;
 	int idata[6];
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
 	    return 0;
 	}
@@ -799,7 +799,7 @@ namespace {
 	// double
 	numdata = 8;
 	double data[8];
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr << "WARNING invalid double inputs" << endln;
 	    opserr << "RCTBeamSection2d section: " << tag << endln;
 	    return 0;
@@ -816,7 +816,7 @@ namespace {
 
 	// int
 	numdata = 6;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
 	    return 0;
 	}
@@ -881,19 +881,19 @@ namespace {
 	double ddata[3];
 
 	int numdata = 4;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCCircularSection input\n";
 	    return 0;
 	}
 
 	numdata = 3;
-	if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+	if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	    opserr << "WARNING invalid section RCCircularSection input\n";
 	    return 0;
 	}
 
 	numdata = 4;
-	if (OPS_GetIntInput(&numdata, &idata[4]) < 0) {
+	if (OPS_GetIntInput(numdata, &idata[4]) < 0) {
 	    opserr << "WARNING invalid section RCCircularSection input\n";
 	    return 0;
 	}
@@ -943,7 +943,7 @@ namespace {
 	bool deleteTorsion = false;
 	if (strcmp(opt, "-GJ") == 0) {
 	  double GJ;
-	  if (OPS_GetDoubleInput(&numdata, &GJ) < 0) {
+	  if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
 	    opserr << "WARNING: failed to read GJ\n";
 	    return 0;
 	  }
@@ -952,7 +952,7 @@ namespace {
 	}
 	if (strcmp(opt, "-torsion") == 0) {
 	  int torsionTag;
-	  if (OPS_GetIntInput(&numdata, &torsionTag) < 0) {
+	  if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
 	    opserr << "WARNING: failed to read torsion\n";
 	    return 0;
 	  }
@@ -986,19 +986,19 @@ namespace {
 	double ddata[6];
 
 	int numdata = 3;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid section RCTunnelSection input\n";
 	    return 0;
 	}
 
 	numdata = 6;
-	if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+	if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	    opserr << "WARNING invalid section RCTunnelSection input\n";
 	    return 0;
 	}
 
 	numdata = 4;
-	if (OPS_GetIntInput(&numdata, &idata[4]) < 0) {
+	if (OPS_GetIntInput(numdata, &idata[4]) < 0) {
 	    opserr << "WARNING invalid section RCTunnelSection input\n";
 	    return 0;
 	}
@@ -1040,7 +1040,7 @@ namespace {
 	bool deleteTorsion = false;
 	if (strcmp(opt, "-GJ") == 0) {
 	  double GJ;
-	  if (OPS_GetDoubleInput(&numdata, &GJ) < 0) {
+	  if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
 	    opserr << "WARNING: failed to read GJ\n";
 	    return 0;
 	  }
@@ -1049,7 +1049,7 @@ namespace {
 	}
 	if (strcmp(opt, "-torsion") == 0) {
 	  int torsionTag;
-	  if (OPS_GetIntInput(&numdata, &torsionTag) < 0) {
+	  if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
 	    opserr << "WARNING: failed to read torsion\n";
 	    return 0;
 	  }

@@ -67,7 +67,7 @@ OPS_EmbeddedEPBeamInterface(void)
     int iData[1];
     int eleTag = 0;
     int numData = 1;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid integer data: element EmbeddedEPBeamInterface" << endln;
         return 0;
     }

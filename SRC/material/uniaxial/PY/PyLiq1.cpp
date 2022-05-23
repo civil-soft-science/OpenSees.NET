@@ -98,14 +98,14 @@ void* OPS_PyLiq1()
 
     int idata[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
 
     double ddata[5];
     numdata = 5;
-    if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -117,7 +117,7 @@ void* OPS_PyLiq1()
     if (strcmp(arg, "-timeSeries") == 0) {
 	int tsTag;
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tsTag) < 0) {
+	if (OPS_GetIntInput(numdata, &tsTag) < 0) {
 	    opserr << "WARNING invalid time series tag\n";
 	    return 0;
 	}
@@ -133,7 +133,7 @@ void* OPS_PyLiq1()
 	
 	int eleTags[2];
 	numdata = 2;
-	if (OPS_GetIntInput(&numdata, eleTags) < 0) {
+	if (OPS_GetIntInput(numdata, eleTags) < 0) {
 	    opserr << "WARNING invalid element tags\n";
 	    return 0;
 	}

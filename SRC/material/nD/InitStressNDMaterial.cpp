@@ -56,7 +56,7 @@ OPS_InitStressNDMaterial(void)
   double dData[1];
   int    dim[1];
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid nDMaterial InitStressNDMaterial $tag $otherTag $nDim" << endln;
     return 0;
   }
@@ -68,13 +68,13 @@ OPS_InitStressNDMaterial(void)
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Args want: nDMaterial InitStress $tag $otherTag $nDim $sig0" << endln;
     return 0;	
   }
 
   if (numArgs == 4) {
-    if (OPS_GetIntInput(&numData, dim) != 0) {
+    if (OPS_GetIntInput(numData, dim) != 0) {
         return 0;
     }
   } else {

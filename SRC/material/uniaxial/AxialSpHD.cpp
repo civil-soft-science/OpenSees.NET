@@ -57,14 +57,14 @@ void* OPS_AxialSpHD()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid AxialSp tag\n";
 	return 0;
     }
 
     double data[3];
     numdata = 3;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -72,7 +72,7 @@ void* OPS_AxialSpHD()
     double opt[6] = {1,1,1,1,0,1};
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 6) numdata = 6;
-    if (OPS_GetDoubleInput(&numdata, opt) < 0) {
+    if (OPS_GetDoubleInput(numdata, opt) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

@@ -53,7 +53,7 @@ void *OPS_PFEMContact2D(const ID &info) {
 
         // tag, nd1, nd2, nd3
         numdata = 4;
-        if (OPS_GetIntInput(&numdata, idata) < 0) {
+        if (OPS_GetIntInput(numdata, idata) < 0) {
             opserr << "WARNING: failed to read tag, nd1, nd2, nd3\n";
             return 0;
         }
@@ -69,7 +69,7 @@ void *OPS_PFEMContact2D(const ID &info) {
 
         // k, thk, mu, beta, Dc, alpha, E, rho
         numdata = 8;
-        if (OPS_GetDoubleInput(&numdata, &fdata[0]) < 0) {
+        if (OPS_GetDoubleInput(numdata, &fdata[0]) < 0) {
             opserr << "WARNING: failed to read kdoverAd, thk, mu, beta, Dc, alpha, E, rho\n";
             return 0;
         }

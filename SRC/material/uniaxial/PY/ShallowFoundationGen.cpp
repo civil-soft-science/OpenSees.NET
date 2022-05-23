@@ -67,7 +67,7 @@ int OPS_ShallowFoundationGen()
 
     int tags[2];
     int num = 2;
-    if (OPS_GetIntInput(&num,tags) < 0) {
+    if (OPS_GetIntInput(num,tags) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return -1;
     }
@@ -76,7 +76,7 @@ int OPS_ShallowFoundationGen()
 
     int ftype;
     num = 1;
-    if (OPS_GetIntInput(&num,&ftype) < 0) {
+    if (OPS_GetIntInput(num,&ftype) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return -1;
     }

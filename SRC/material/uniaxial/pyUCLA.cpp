@@ -63,13 +63,13 @@ OPS_pyUCLA(void)
   double dData[3];
 
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag or soilType uniaxialMaterial pyUCLAMaterial" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid pyData data for material uniaxial pyUCLA " << iData[0] << endln;
     return 0;	
   }

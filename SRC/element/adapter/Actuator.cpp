@@ -69,7 +69,7 @@ void* OPS_Actuator()
     // get the id and end nodes
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid actuator int inputs" << endln;
 	return 0;
     }
@@ -80,7 +80,7 @@ void* OPS_Actuator()
     // stiffness
     double EA;
     numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &EA) < 0) {
+    if (OPS_GetDoubleInput(numdata, &EA) < 0) {
 	opserr << "WARNING invalid actuator EA" << endln;
 	return 0;
     }
@@ -88,7 +88,7 @@ void* OPS_Actuator()
     // ipPort
     int ipPort;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &ipPort) < 0) {
+    if (OPS_GetIntInput(numdata, &ipPort) < 0) {
 	opserr << "WARNING invalid actuator ipPort" << endln;
 	return 0;
     }
@@ -112,7 +112,7 @@ void* OPS_Actuator()
 		else if (strcmp(flag, "-rho") == 0) {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
 				numdata = 1;
-				if (OPS_GetDoubleInput(&numdata, &rho) < 0) {
+				if (OPS_GetDoubleInput(numdata, &rho) < 0) {
 					opserr << "WARNING invalid rho\n";
 					opserr << "actuator element: " << tag << endln;
 					return 0;

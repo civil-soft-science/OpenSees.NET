@@ -83,13 +83,13 @@ OPS_CycLiqCPMaterial(void)
   double dData[12];
 
   int numData = 1;
-  if (OPS_GetInt(&numData, &tag) != 0) {
+  if (OPS_GetInt(numData, &tag) != 0) {
     opserr << "WARNING invalid nDMaterial CycLiqCP material  tag" << endln;
     return 0;
   }
   if (numArgs == 12) {
   numData = 11;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial CycLiqCP  with tag: " << tag << endln;
     return 0;
   }
@@ -98,7 +98,7 @@ OPS_CycLiqCPMaterial(void)
   }
   else if (numArgs > 12) {
   numData = 12;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial CycLiqCP  with tag: " << tag << endln;
     return 0;
   }

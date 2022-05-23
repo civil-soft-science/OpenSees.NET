@@ -41,7 +41,7 @@ int OPS_ParticleGroup() {
     // get mesh tag
     int tag;
     int num = 1;
-    if (OPS_GetIntInput(&num, &tag) < 0) {
+    if (OPS_GetIntInput(num, &tag) < 0) {
         opserr << "WARNING: failed to get mesh tag\n";
         return -1;
     }
@@ -74,26 +74,26 @@ int OPS_ParticleGroup() {
         }
 
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p1[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p1[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for first point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p2[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p2[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for second point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p3[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p3[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for third point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p4[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p4[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for fouth point\n";
             return -1;
         }
 
         // num of particles
         int numdata = 2;
-        if (OPS_GetIntInput(&numdata, &nump[0]) < 0) {
+        if (OPS_GetIntInput(numdata, &nump[0]) < 0) {
             opserr << "WARNING: failed to get particle mesh size\n";
             return -1;
         }
@@ -104,12 +104,12 @@ int OPS_ParticleGroup() {
             return -1;
         }
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p1[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p1[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for the "
                       "lower point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p7[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p7[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for the "
                       "upper point\n";
             return -1;
@@ -132,7 +132,7 @@ int OPS_ParticleGroup() {
         // num of particles
         int numdata = 3;
         nump.resize(numdata);
-        if (OPS_GetIntInput(&numdata, &nump[0]) < 0) {
+        if (OPS_GetIntInput(numdata, &nump[0]) < 0) {
             opserr << "WARNING: failed to get particle mesh size\n";
             return -1;
         }
@@ -145,44 +145,44 @@ int OPS_ParticleGroup() {
         }
 
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p1[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p1[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for first "
                         "bottom point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p2[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p2[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for second "
                         "bottom point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p3[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p3[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for third "
                         "bottom point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p4[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p4[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for fouth "
                         "bottom point\n";
             return -1;
         }
 
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p5[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p5[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for first "
                         "top point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p6[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p6[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for second "
                         "top point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p7[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p7[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for third "
                         "top point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p8[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p8[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for fouth "
                         "top point\n";
             return -1;
@@ -191,7 +191,7 @@ int OPS_ParticleGroup() {
         // num of particles
         int numdata = 3;
         nump.resize(numdata);
-        if (OPS_GetIntInput(&numdata, &nump[0]) < 0) {
+        if (OPS_GetIntInput(numdata, &nump[0]) < 0) {
             opserr << "WARNING: failed to get particle mesh size\n";
             return -1;
         }
@@ -204,22 +204,22 @@ int OPS_ParticleGroup() {
         }
 
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p1[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p1[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for first point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p2[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p2[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for second point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p3[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p3[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for third point\n";
             return -1;
         }
 
         // num of particles
         int numdata = 2;
-        if (OPS_GetIntInput(&numdata, &nump[0]) < 0) {
+        if (OPS_GetIntInput(numdata, &nump[0]) < 0) {
             opserr << "WARNING: failed to get particle mesh size\n";
             return -1;
         }
@@ -230,18 +230,18 @@ int OPS_ParticleGroup() {
         }
 
         // node coord
-        if (OPS_GetDoubleInput(&ndm, &p1[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p1[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for first point\n";
             return -1;
         }
-        if (OPS_GetDoubleInput(&ndm, &p2[0]) < 0) {
+        if (OPS_GetDoubleInput(ndm, &p2[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for second point\n";
             return -1;
         }
 
         // num of particles
         int numdata = 1;
-        if (OPS_GetIntInput(&numdata, &nump[0]) < 0) {
+        if (OPS_GetIntInput(numdata, &nump[0]) < 0) {
             opserr << "WARNING: failed to get number of particles\n";
             return -1;
         }
@@ -250,7 +250,7 @@ int OPS_ParticleGroup() {
         if (numdata < 1) {
             group->pointlist(pointdata);
             numdata = (int) pointdata.size(); 
-            if (OPS_SetDoubleOutput(&numdata, &pointdata[0], false) < 0) {
+            if (OPS_SetDoubleOutput(numdata, &pointdata[0], false) < 0) {
                 opserr << "WARNING: failed to set output\n";
                 return -1;
             }
@@ -260,7 +260,7 @@ int OPS_ParticleGroup() {
         // number of points
         int num_point = 0;
         numdata = 1;
-        if (OPS_GetIntInput(&numdata, &num_point) < 0) {
+        if (OPS_GetIntInput(numdata, &num_point) < 0) {
             opserr << "WARNING: failed to get number of points\n";
             return -1;
         }
@@ -276,7 +276,7 @@ int OPS_ParticleGroup() {
 
         // node coord
         pointdata.resize(numdata);
-        if (OPS_GetDoubleInput(&numdata, &pointdata[0]) < 0) {
+        if (OPS_GetDoubleInput(numdata, &pointdata[0]) < 0) {
             opserr << "WARNING: failed to get cooridnates for points\n";
             return -1;
         }
@@ -309,7 +309,7 @@ int OPS_ParticleGroup() {
             }
 
             // node vel
-            if (OPS_GetDoubleInput(&ndm, &vel0[0]) < 0) {
+            if (OPS_GetDoubleInput(ndm, &vel0[0]) < 0) {
                 opserr << "WARNING: failed to get initial velocity\n";
                 return -1;
             }
@@ -323,7 +323,7 @@ int OPS_ParticleGroup() {
 
             // node pressure
             int numdata = 1;
-            if (OPS_GetDoubleInput(&numdata, &p0) < 0) {
+            if (OPS_GetDoubleInput(numdata, &p0) < 0) {
                 opserr << "WARNING: failed to get initial pressure\n";
                 return -1;
             }

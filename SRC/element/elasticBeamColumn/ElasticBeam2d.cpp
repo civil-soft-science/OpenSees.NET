@@ -99,7 +99,7 @@ to get element tag and node tags
 
         // inputs:
         int numData = 3;
-        if (OPS_GetIntInput(&numData, &iData[0]) < 0) {
+        if (OPS_GetIntInput(numData, &iData[0]) < 0) {
             opserr << "WARNING failed to read integers\n";
             return 0;
         }
@@ -113,14 +113,14 @@ to get element data
         if (OPS_GetNumRemainingInputArgs() > 3) {
             // Read A, E, Iz
             numData = 3;
-            if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+            if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
                 opserr << "WARNING failed to read doubles\n";
                 return 0;
             }
         } else {
             // Read a section tag
             numData = 1;
-            if (OPS_GetIntInput(&numData, &sectionTag) < 0) {
+            if (OPS_GetIntInput(numData, &sectionTag) < 0) {
                 opserr << "WARNING sectionTag is not integer\n";
                 return 0;
             }
@@ -130,7 +130,7 @@ to get element data
           opserr << "WARNING: transfTag is needed\n";
         }
         numData = 1;
-        if (OPS_GetIntInput(&numData, &transfTag) < 0) {
+        if (OPS_GetIntInput(numData, &transfTag) < 0) {
             opserr << "WARNING transfTag is not integer\n";
             return 0;
         }
@@ -140,21 +140,21 @@ to get element data
             std::string type = OPS_GetString();
             if (type == "-alpha") {
                 if (OPS_GetNumRemainingInputArgs() > 0) {
-                    if (OPS_GetDoubleInput(&numData, &alpha) < 0) {
+                    if (OPS_GetDoubleInput(numData, &alpha) < 0) {
                         opserr << "WARNING: failed to get alpha";
                         return 0;
                     }
                 }
             } else if (type == "-depth") {
                 if (OPS_GetNumRemainingInputArgs() > 0) {
-                    if (OPS_GetDoubleInput(&numData, &depth) < 0) {
+                    if (OPS_GetDoubleInput(numData, &depth) < 0) {
                         opserr << "WARNING: failed to get depth";
                         return 0;
                     }
                 }
             } else if (type == "-release") {
                 if (OPS_GetNumRemainingInputArgs() > 0) {
-                    if (OPS_GetIntInput(&numData, &release) < 0) {
+                    if (OPS_GetIntInput(numData, &release) < 0) {
                         opserr << "WARNING: failed to get release";
                         return 0;
                     }
@@ -162,7 +162,7 @@ to get element data
 
             } else if (type == "-mass") {
                 if (OPS_GetNumRemainingInputArgs() > 0) {
-                    if (OPS_GetDoubleInput(&numData, &mass) < 0) {
+                    if (OPS_GetDoubleInput(numData, &mass) < 0) {
                         opserr << "WARNING: failed to get mass";
                         return 0;
                     }
@@ -260,11 +260,11 @@ int OPS_ElasticBeam2d(Domain& theDomain, const ID& elenodes, ID& eletags)
     // inputs: 
     double data[3];
     int numData = 3;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return -1;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return -1;
 
     numData = 1;
     int transfTag;
-    if(OPS_GetIntInput(&numData,&transfTag) < 0) return -1;
+    if(OPS_GetIntInput(numData,&transfTag) < 0) return -1;
     
     // options
     double mass = 0.0, alpha=0.0, depth=0.0;
@@ -274,20 +274,20 @@ int OPS_ElasticBeam2d(Domain& theDomain, const ID& elenodes, ID& eletags)
 	std::string type = OPS_GetString();
 	if(type == "-alpha") {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&alpha) < 0) return -1;
+		if(OPS_GetDoubleInput(numData,&alpha) < 0) return -1;
 	    }
 	} else if(type == "-depth") {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&depth) < 0) return -1;
+		if(OPS_GetDoubleInput(numData,&depth) < 0) return -1;
 	    }
 	} else if(type == "-release") {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetIntInput(&numData,&release) < 0) return -1;
+		if(OPS_GetIntInput(numData,&release) < 0) return -1;
 	    }	    
 
 	} else if(type == "-mass") {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&mass) < 0) return -1;
+		if(OPS_GetDoubleInput(numData,&mass) < 0) return -1;
 	    }
 	} else if(type == "-cMass") {
 	    cMass = 1;

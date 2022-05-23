@@ -81,7 +81,7 @@ void* OPS_ZeroLength()
     // eleTag, iNode, jNode
     int idata [3];
     numdata = 3;
-    if (OPS_GetIntInput(&numdata,idata) < 0) {
+    if (OPS_GetIntInput(numdata,idata) < 0) {
         opserr << "WARNING: failed to get integer data\n";
         return 0;
     }
@@ -108,7 +108,7 @@ void* OPS_ZeroLength()
         numdata = 1;
 	// the first one not an int
 	int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata,&mtag) < 0) {
+        if (OPS_GetIntInput(numdata,&mtag) < 0) {
 	    if (numArgs > OPS_GetNumRemainingInputArgs()) {
 		// move current arg back by one
 		OPS_ResetCurrentInputArg(-1); 
@@ -154,7 +154,7 @@ void* OPS_ZeroLength()
     }
     
     ID dirs(numMats);
-    if (OPS_GetIntInput(&numMats,&dirs(0)) < 0) {
+    if (OPS_GetIntInput(numMats,&dirs(0)) < 0) {
 	opserr << "WARNING invalid dir\n";
 	return 0;
     }
@@ -174,7 +174,7 @@ void* OPS_ZeroLength()
 	    doRayleighDamping = 1;
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
 		numdata = 1;
-		if (OPS_GetIntInput(&numdata,&doRayleighDamping) < 0) {
+		if (OPS_GetIntInput(numdata,&doRayleighDamping) < 0) {
 		    opserr<<"WARNING: invalid integer\n";
 		    return 0;
 		}
@@ -185,7 +185,7 @@ void* OPS_ZeroLength()
 	  int matType;
 	  for (int i=0; i<numMats; i++) {
 	    // the first one not an int
-	    if (OPS_GetIntInput(&numdata,&matType) < 0) {
+	    if (OPS_GetIntInput(numdata,&matType) < 0) {
 	      UniaxialMaterial *theMat = OPS_getUniaxialMaterial(matType);
 	      if (theMat == 0) {
 		opserr << "WARNING no damp material material " << matType << " for zeroLength ele: " << idata[0] << endln;
@@ -202,11 +202,11 @@ void* OPS_ZeroLength()
 		return 0;
 	    }
 	    numdata = 3;
-	    if (OPS_GetDoubleInput(&numdata,&x(0)) < 0) {
+	    if (OPS_GetDoubleInput(numdata,&x(0)) < 0) {
 		opserr<<"WARNING: invalid double input\n";
 		return 0;
 	    }
-	    if (OPS_GetDoubleInput(&numdata,&y(0)) < 0) {
+	    if (OPS_GetDoubleInput(numdata,&y(0)) < 0) {
 		opserr<<"WARNING: invalid double input\n";
 		return 0;
 	    }

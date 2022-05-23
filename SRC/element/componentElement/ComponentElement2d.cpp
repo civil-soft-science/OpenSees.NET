@@ -61,19 +61,19 @@ OPS_ComponentElement2d(void)
   int iData[6];
   double dData[3];  
   int numData = 3;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING ElasticComponent2d - invalids ints" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING ElasticComponent2d - invalids double" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[3]) != 0) {
     opserr << "WARNING ElasticComponent2d - invalids second set ints" << endln;
     return 0;
   }
@@ -85,7 +85,7 @@ OPS_ComponentElement2d(void)
     if(type == "-rho") {
       int numData = 1;
       if(OPS_GetNumRemainingInputArgs() > 0) {
-	if(OPS_GetDoubleInput(&numData,&mass) < 0) return 0;
+	if(OPS_GetDoubleInput(numData,&mass) < 0) return 0;
       }
     } else if(type == "-cMass") {
       cMass = 1;

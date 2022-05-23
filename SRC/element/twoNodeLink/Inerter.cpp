@@ -66,7 +66,7 @@ void* OPS_Inerter()
     // tags
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
         opserr << "WARNING: invalid integer data\n";
         return 0;
     }
@@ -83,7 +83,7 @@ void* OPS_Inerter()
         int dir;
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata, &dir) < 0) {
+        if (OPS_GetIntInput(numdata, &dir) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -112,7 +112,7 @@ void* OPS_Inerter()
     Matrix ib(numDIR, numDIR);
     for (int i = 0; i < numDIR; i++) {
         for (int j = 0; j < numDIR; j++) {
-            if (OPS_GetDoubleInput(&numdata, &ib(i, j)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &ib(i, j)) < 0) {
                 opserr << "WARNING invalid inertance value\n";
                 return 0;
             }
@@ -138,7 +138,7 @@ void* OPS_Inerter()
             }
             numdata = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
                 opserr << "WARNING: invalid -orient values\n";
                 return 0;
             }
@@ -148,7 +148,7 @@ void* OPS_Inerter()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -167,7 +167,7 @@ void* OPS_Inerter()
                 opserr << "WARNING: insufficient data for -pDelta\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(&numdata, ptr) < 0) {
+            if (OPS_GetDoubleInput(numdata, ptr) < 0) {
                 opserr << "WARNING: invalid -pDelta value\n";
                 return 0;
             }
@@ -185,7 +185,7 @@ void* OPS_Inerter()
             cb = new Matrix(numDIR, numDIR);
             for (int i = 0; i < numDIR; i++) {
                 for (int j = 0; j < numDIR; j++) {
-                    if (OPS_GetDoubleInput(&numdata, &cij) < 0) {
+                    if (OPS_GetDoubleInput(numdata, &cij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete cb;
                         return 0;
@@ -200,7 +200,7 @@ void* OPS_Inerter()
                 return 0;
             }
             numdata = 1;
-            if (OPS_GetDoubleInput(&numdata, &mass) < 0) {
+            if (OPS_GetDoubleInput(numdata, &mass) < 0) {
                 opserr << "WANRING: invalid -mass value\n";
                 return 0;
             }

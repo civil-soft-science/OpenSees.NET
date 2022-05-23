@@ -90,13 +90,13 @@ OPS_SSPquadUP(void)
     // LM change
 
     int numData = 6;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid integer data: element SSPquadUP " << iData[0] << endln;
         return 0;
     }
 
     numData = 7;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "WARNING invalid double data: element SSPquadUP " << iData[0] << endln;
         return 0;
     }
@@ -112,13 +112,13 @@ OPS_SSPquadUP(void)
     // LM change
     if (numRemainingInputArgs == 15) {
     	numData = 2;
-    	if (OPS_GetDoubleInput(&numData, &dData[7]) != 0) {
+    	if (OPS_GetDoubleInput(numData, &dData[7]) != 0) {
       		opserr << "WARNING invalid optional data: element SSPquadUP " << iData[0] << endln;
 	  		return 0;
     	}
   	} else if (numRemainingInputArgs == 19) {
         numData = 6;
-        if (OPS_GetDoubleInput(&numData, &dData[7]) != 0) {
+        if (OPS_GetDoubleInput(numData, &dData[7]) != 0) {
             opserr << "WARNING invalid optional data: element SSPquadUP " << iData[0] << endln;
             return 0;
         }

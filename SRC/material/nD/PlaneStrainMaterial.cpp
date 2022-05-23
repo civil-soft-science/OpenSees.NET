@@ -46,7 +46,7 @@ void* OPS_PlaneStrain()
 
     int tag[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata,tag)<0) {
+    if (OPS_GetIntInput(numdata,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlaneStrain tags" << endln;
 	return 0;
     }

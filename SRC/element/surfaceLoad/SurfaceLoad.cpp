@@ -70,13 +70,13 @@ OPS_SurfaceLoad(void)
   double dData[1];
 
   int numData = 5;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element SurfaceLoadElement" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data: element SurfaceLoad " << iData[0] << endln;
     return 0;	
   }

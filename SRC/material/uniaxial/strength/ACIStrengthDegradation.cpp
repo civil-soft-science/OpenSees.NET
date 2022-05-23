@@ -53,13 +53,13 @@ OPS_ACIStrengthDegradation(void)
   double dData[4];
   
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for strengthDegradation ACI" << endln;
     return 0;
   }
 
   numData = 4;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data for strengthDegradation ACI" << endln;
     return 0;
   }

@@ -71,7 +71,7 @@ OPS_Newmark(void)
   int dispFlag = 1;
   double dData[2];
   int numData = 2;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING - invalid args want Newmark $gamma $beta <-form $typeUnknown>\n";
     return 0;
   }

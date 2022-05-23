@@ -75,7 +75,7 @@ OPS_SSPquad(void)
     double dData[3] = { 1.0,0.0,0.0 };
 
   	int numData = 6;
-  	if (OPS_GetIntInput(&numData, iData) != 0) {
+  	if (OPS_GetIntInput(numData, iData) != 0) {
     	opserr << "WARNING invalid integer data: element SSPquad " << iData[0] << endln;
 		return 0;
   	}
@@ -83,7 +83,7 @@ OPS_SSPquad(void)
 	theType = OPS_GetString();
 
 	numData = 1;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "WARNING invalid thickness data: element SSPquad " << iData[0] << endln;
 		return 0;
 	}
@@ -98,7 +98,7 @@ OPS_SSPquad(void)
 
 	if (numRemainingInputArgs == 10) {
     	numData = 2;
-    	if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+    	if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
       		opserr << "WARNING invalid optional data: element SSPquad " << iData[0] << endln;
 	  		return 0;
     	}

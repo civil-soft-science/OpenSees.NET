@@ -52,7 +52,7 @@ int OPS_TriMesh() {
     // get tag and number lines
     int num = 2;
     int idata[2];
-    if (OPS_GetIntInput(&num, idata) < 0) {
+    if (OPS_GetIntInput(num, idata) < 0) {
         opserr << "WARNING: failed to read mesh tag and number of lines\n";
         return -1;
     }
@@ -72,7 +72,7 @@ int OPS_TriMesh() {
     // get line tags
     num = idata[1];
     ID ltags(num);
-    if (OPS_GetIntInput(&num, &ltags(0)) < 0) {
+    if (OPS_GetIntInput(num, &ltags(0)) < 0) {
         opserr << "WARNING: failed to read line tags\n";
         return -1;
     }
@@ -81,7 +81,7 @@ int OPS_TriMesh() {
     // get id and ndf
     num = 2;
     int data[2];
-    if (OPS_GetIntInput(&num, data) < 0) {
+    if (OPS_GetIntInput(num, data) < 0) {
         opserr << "WARNING: failed to read id and ndf\n";
         return -1;
     }
@@ -91,7 +91,7 @@ int OPS_TriMesh() {
     // get size
     num = 1;
     double size;
-    if (OPS_GetDoubleInput(&num, &size) < 0) {
+    if (OPS_GetDoubleInput(num, &size) < 0) {
         opserr << "WARNING: failed to read mesh size\n";
         return -1;
     }

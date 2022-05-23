@@ -57,7 +57,7 @@ OPS_LinearSeries(void)
 
     if (numRemainingArgs == 1 || numRemainingArgs == 3) {
       numData = 1;
-      if (OPS_GetIntInput(&numData, &tag) != 0) {
+      if (OPS_GetIntInput(numData, &tag) != 0) {
 	opserr << "WARNING invalid series tag in LinearSeries tag? <-factor factor?>" << endln;
 	return 0;
       }
@@ -71,7 +71,7 @@ OPS_LinearSeries(void)
 		return 0;
 	  }
       numData = 1;
-      if (OPS_GetDouble(&numData, &cFactor) != 0) {
+      if (OPS_GetDouble(numData, &cFactor) != 0) {
 	opserr << "WARNING invalid factor in LinearSeries with tag: " << tag << endln;
 	return 0;
       }

@@ -84,19 +84,19 @@ void *OPS_ElasticTimoshenkoBeam3d()
     dData[8] = 0.0;   // mass per unit length
     
     numData = 3;
-    if (OPS_GetIntInput(&numData, iData) != 0)  {
+    if (OPS_GetIntInput(numData, iData) != 0)  {
         opserr << "WARNING invalid element data (tag, iNode, jNode) element ElasticTimoshenkoBeam3d.\n";
         return 0;
     }
     
     numData = 8;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "WARNING error reading element data (E, G, A, Jx, Iy, Iz, Avy, Avz) element ElasticTimoshenkoBeam3d " << iData[0] << endln;
         return 0;
     }
     
     numData = 1;
-    if (OPS_GetIntInput(&numData, &iData[3]) != 0)  {
+    if (OPS_GetIntInput(numData, &iData[3]) != 0)  {
         opserr << "WARNING invalid element data (transTag) element ElasticTimoshenkoBeam3d " << iData[0] << endln;
         return 0;
     }
@@ -114,7 +114,7 @@ void *OPS_ElasticTimoshenkoBeam3d()
         
         if ((strcmp(argvLoc, "-mass") == 0) || (strcmp(argvLoc, "mass") == 0) ||
             (strcmp(argvLoc, "-rho") == 0) || (strcmp(argvLoc, "rho") == 0))  {
-            if (OPS_GetDoubleInput(&numData, &dData[8]) != 0)  {
+            if (OPS_GetDoubleInput(numData, &dData[8]) != 0)  {
                 opserr << "WARNING error reading element data (mass) element ElasticTimoshenkoBeam3d " << iData[0] << endln;
                 return 0;
             }

@@ -72,7 +72,7 @@ void* OPS_Joint2D()
   // Joint2DId, iNode, jNode, kNode, lNode, CenterNodeTag
   int idata[6];
   int num = 6;
-  if (OPS_GetIntInput(&num, idata) < 0) {
+  if (OPS_GetIntInput(num, idata) < 0) {
     opserr << "WARNING: invalid integer data\n";
     return 0;
   }
@@ -109,13 +109,13 @@ void* OPS_Joint2D()
     {
       int PanelMatId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelMatId) < 0) {
+      if (OPS_GetIntInput(num, &PanelMatId) < 0) {
         opserr << "WARNING invalid matID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
       }
 
-      if (OPS_GetIntInput(&num, &LargeDisp) < 0) {
+      if (OPS_GetIntInput(num, &LargeDisp) < 0) {
         // use 0 as default
         LargeDisp = 0;
       }
@@ -134,7 +134,7 @@ void* OPS_Joint2D()
     {
       int MatIid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatIid) < 0) {
+      if (OPS_GetIntInput(num, &MatIid) < 0) {
         opserr << "WARNING invalid material ID for spring I\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -155,7 +155,7 @@ void* OPS_Joint2D()
 
       int MatJid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatJid) < 0) {
+      if (OPS_GetIntInput(num, &MatJid) < 0) {
         opserr << "WARNING invalid material ID for spring J\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -177,7 +177,7 @@ void* OPS_Joint2D()
 
       int MatKid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatKid) < 0) {
+      if (OPS_GetIntInput(num, &MatKid) < 0) {
         opserr << "WARNING invalid material ID for spring K\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -197,7 +197,7 @@ void* OPS_Joint2D()
 
       int MatLid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatLid) < 0) {
+      if (OPS_GetIntInput(num, &MatLid) < 0) {
         opserr << "WARNING invalid material ID for spring L\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -217,7 +217,7 @@ void* OPS_Joint2D()
 
       int PanelMatId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelMatId) < 0) {
+      if (OPS_GetIntInput(num, &PanelMatId) < 0) {
         opserr << "WARNING invalid matID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -232,7 +232,7 @@ void* OPS_Joint2D()
       }
 
       num = 1;
-      if (OPS_GetIntInput(&num, &LargeDisp) < 0) {
+      if (OPS_GetIntInput(num, &LargeDisp) < 0) {
         // use 0 as default
         LargeDisp = 0;
       }
@@ -263,14 +263,14 @@ void* OPS_Joint2D()
     {
       int PanelMatId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelMatId) < 0) {
+      if (OPS_GetIntInput(num, &PanelMatId) < 0) {
         opserr << "WARNING invalid matID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
       }
 
       num = 1;
-      if (OPS_GetIntInput(&num, &LargeDisp) < 0) {
+      if (OPS_GetIntInput(num, &LargeDisp) < 0) {
         // use 0 as default
         LargeDisp = 0;
       }
@@ -296,7 +296,7 @@ void* OPS_Joint2D()
 
       int PanelDamageId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelDamageId) < 0) {
+      if (OPS_GetIntInput(num, &PanelDamageId) < 0) {
         opserr << "WARNING invalid damageID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -317,7 +317,7 @@ void* OPS_Joint2D()
     {
       int MatIid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatIid) < 0) {
+      if (OPS_GetIntInput(num, &MatIid) < 0) {
         opserr << "WARNING invalid material ID for spring I\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -338,7 +338,7 @@ void* OPS_Joint2D()
 
       int MatJid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatJid) < 0) {
+      if (OPS_GetIntInput(num, &MatJid) < 0) {
         opserr << "WARNING invalid material ID for spring J\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -360,7 +360,7 @@ void* OPS_Joint2D()
 
       int MatKid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatKid) < 0) {
+      if (OPS_GetIntInput(num, &MatKid) < 0) {
         opserr << "WARNING invalid material ID for spring K\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
 
@@ -381,7 +381,7 @@ void* OPS_Joint2D()
 
       int MatLid;
       num = 1;
-      if (OPS_GetIntInput(&num, &MatLid) < 0) {
+      if (OPS_GetIntInput(num, &MatLid) < 0) {
         opserr << "WARNING invalid material ID for spring L\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -401,7 +401,7 @@ void* OPS_Joint2D()
 
       int PanelMatId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelMatId) < 0) {
+      if (OPS_GetIntInput(num, &PanelMatId) < 0) {
         opserr << "WARNING invalid matID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -416,7 +416,7 @@ void* OPS_Joint2D()
       }
 
       num = 1;
-      if (OPS_GetIntInput(&num, &LargeDisp) < 0) {
+      if (OPS_GetIntInput(num, &LargeDisp) < 0) {
         // use 0 as default
         LargeDisp = 0;
       }
@@ -433,7 +433,7 @@ void* OPS_Joint2D()
 
       int DmgIid;
       num = 1;
-      if (OPS_GetIntInput(&num, &DmgIid) < 0) {
+      if (OPS_GetIntInput(num, &DmgIid) < 0) {
         opserr << "WARNING invalid damage model ID for spring I\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -455,7 +455,7 @@ void* OPS_Joint2D()
 
       int DmgJid;
       num = 1;
-      if (OPS_GetIntInput(&num, &DmgJid) < 0) {
+      if (OPS_GetIntInput(num, &DmgJid) < 0) {
         opserr << "WARNING invalid damage model ID for spring J\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -477,7 +477,7 @@ void* OPS_Joint2D()
 
       int DmgKid;
       num = 1;
-      if (OPS_GetIntInput(&num, &DmgKid) < 0) {
+      if (OPS_GetIntInput(num, &DmgKid) < 0) {
         opserr << "WARNING invalid damage model ID for spring K\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -499,7 +499,7 @@ void* OPS_Joint2D()
 
       int DmgLid;
       num = 1;
-      if (OPS_GetIntInput(&num, &DmgLid) < 0) {
+      if (OPS_GetIntInput(num, &DmgLid) < 0) {
         opserr << "WARNING invalid damage model ID for spring L\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;
@@ -520,7 +520,7 @@ void* OPS_Joint2D()
 
       int PanelDmgId;
       num = 1;
-      if (OPS_GetIntInput(&num, &PanelDmgId) < 0) {
+      if (OPS_GetIntInput(num, &PanelDmgId) < 0) {
         opserr << "WARNING invalid panel DmgID\n";
         opserr << "Joint2D element: " << Joint2DId << endln;
         return 0;

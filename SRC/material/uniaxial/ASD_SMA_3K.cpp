@@ -76,7 +76,7 @@ void* OPS_ASD_SMA_3K()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
@@ -86,7 +86,7 @@ void* OPS_ASD_SMA_3K()
     if (numdata > 5) {
 	numdata = 5;
     }
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

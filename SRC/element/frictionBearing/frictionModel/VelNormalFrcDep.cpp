@@ -53,12 +53,12 @@ OPS_VelNormalFrcDep(void)
     int tag[1];
     double dData[8];
     int numData = 1;
-    if (OPS_GetIntInput(&numData, tag) != 0) {
+    if (OPS_GetIntInput(numData, tag) != 0) {
         opserr << "WARNING invalid tag for frictionModel VelNormalFrcDep\n";
         return 0;
     }
     numData = 8;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "Invalid data for frictionModel VelNormalFrcDep " << tag[0] << endln;
         return 0;
     }

@@ -54,14 +54,14 @@ OPS_BraceMaterial(void)
   double dData[17];
   int numData = 1;
   // Check Tag and number of Fingers
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  Cast Fuse tag" << endln;
     return 0;
   }
   
   int numRemaining = OPS_GetNumRemainingInputArgs();
   if (numRemaining == 17 || numRemaining == 13) {
-    if (OPS_GetDoubleInput(&numRemaining, dData) != 0) {
+    if (OPS_GetDoubleInput(numRemaining, dData) != 0) {
       opserr << "Invalid Args want: uniaxialMaterial BraceMaterial tag? m1p r1p m2p r2p <m3p r3p> m1n r1n m2n r2n <m3n r3n> px py d1 d2 b";
       return 0;	
     }

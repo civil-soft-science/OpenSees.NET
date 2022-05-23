@@ -66,7 +66,7 @@ void* OPS_TwoNodeLink()
     // tags
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
         opserr << "WARNING: invalid integer data\n";
         return 0;
     }
@@ -82,7 +82,7 @@ void* OPS_TwoNodeLink()
         int mattag;
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata, &mattag) < 0) {
+        if (OPS_GetIntInput(numdata, &mattag) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -110,7 +110,7 @@ void* OPS_TwoNodeLink()
         return 0;
     }
     numdata = dirs.Size();
-    if (OPS_GetIntInput(&numdata, &dirs(0)) < 0) {
+    if (OPS_GetIntInput(numdata, &dirs(0)) < 0) {
         opserr << "WARNING invalid direction ID\n";
         return 0;
     }
@@ -135,7 +135,7 @@ void* OPS_TwoNodeLink()
             }
             numdata = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
                 opserr << "WARNING: invalid -orient values\n";
                 return 0;
             }
@@ -145,7 +145,7 @@ void* OPS_TwoNodeLink()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -164,7 +164,7 @@ void* OPS_TwoNodeLink()
                 opserr << "WARNING: insufficient data for -pDelta\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(&numdata, ptr) < 0) {
+            if (OPS_GetDoubleInput(numdata, ptr) < 0) {
                 opserr << "WARNING: invalid -pDelta value\n";
                 return 0;
             }
@@ -180,7 +180,7 @@ void* OPS_TwoNodeLink()
                 opserr << "WARNING: insufficient data for -shearDist\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(&numdata, &sDistI(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &sDistI(0)) < 0) {
                 opserr << "WARNING: invalid -shearDist value\n";
                 return 0;
             }
@@ -194,7 +194,7 @@ void* OPS_TwoNodeLink()
                 return 0;
             }
             numdata = 1;
-            if (OPS_GetDoubleInput(&numdata, &mass) < 0) {
+            if (OPS_GetDoubleInput(numdata, &mass) < 0) {
                 opserr << "WANRING: invalid -mass value\n";
                 return 0;
             }

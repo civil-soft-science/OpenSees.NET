@@ -68,7 +68,7 @@ void* OPS_FatigueMaterial()
 
     int idata[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata,idata)<0) {
+    if (OPS_GetIntInput(numdata,idata)<0) {
 	opserr<<"WARNING invlid int inputs\n";
 	return 0;
     }
@@ -83,27 +83,27 @@ void* OPS_FatigueMaterial()
     while(OPS_GetNumRemainingInputArgs() > 1) {
 	const char* type = OPS_GetString();
 	if (strcmp(type,"-Dmax")==0) {
-	    if (OPS_GetDouble(&numdata,&Dmax)<0) {
+	    if (OPS_GetDouble(numdata,&Dmax)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-E0")==0) {
-	    if (OPS_GetDouble(&numdata,&E0)<0) {
+	    if (OPS_GetDouble(numdata,&E0)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-m")==0) {
-	    if (OPS_GetDouble(&numdata,&m)<0) {
+	    if (OPS_GetDouble(numdata,&m)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-min")==0) {
-	    if (OPS_GetDouble(&numdata,&epsmin)<0) {
+	    if (OPS_GetDouble(numdata,&epsmin)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-max")==0) {
-	    if (OPS_GetDouble(&numdata,&epsmax)<0) {
+	    if (OPS_GetDouble(numdata,&epsmax)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }

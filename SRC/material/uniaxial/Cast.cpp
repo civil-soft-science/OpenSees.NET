@@ -65,7 +65,7 @@ OPS_Cast(void)
 	double dData[14];
 	int numData = 1;
 	// Check Tag and number of Fingers
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial  Cast Fuse tag" << endln;
 		return 0;
 	}
@@ -75,7 +75,7 @@ OPS_Cast(void)
 	    opserr << "WARNING insufficient number of args want  uniaxialMaterial CastFuse tag? NLegs? bo? h? Fy? E? L? b? R0? cR1? cR2? a1? a2? a3? a4\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "Invalid Args want: uniaxialMaterial CastFuse tag? NLegs? bo? h? Fy? E? L? b? R0? cR1? cR2? a1? a2? a3? a4?";
 		return 0;	
 	}

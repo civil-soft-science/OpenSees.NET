@@ -107,19 +107,19 @@ void* OPS_YamamotoBiaxialHDR()
 
 
 	//argv[2~8]
-	if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+	if (OPS_GetIntInput(numdata, &eleTag) < 0) {
 	    opserr << "WARNING invalid YamamotoBiaxialHDR eleTag\n";
 	    ifNoError = false;
 	}
 
 	// iNode
-	if (OPS_GetIntInput(&numdata, &iNode) < 0) {
+	if (OPS_GetIntInput(numdata, &iNode) < 0) {
 	    opserr << "WARNING invalid iNode\n";
 	    ifNoError = false;
 	}
 
 	// jNode
-	if (OPS_GetIntInput(&numdata, &jNode) < 0) {
+	if (OPS_GetIntInput(numdata, &jNode) < 0) {
 	    opserr << "WARNING invalid jNode\n";
 	    ifNoError = false;
 	}
@@ -134,19 +134,19 @@ void* OPS_YamamotoBiaxialHDR()
 	}
 
 	// DDo
-	if (OPS_GetDoubleInput(&numdata, &DDo) < 0 || DDo <= 0.0) {
+	if (OPS_GetDoubleInput(numdata, &DDo) < 0 || DDo <= 0.0) {
 	    opserr << "WARNING invalid YamamotoBiaxialHDR DDo" << endln;
 	    ifNoError = false;
 	}
 
 	// DDi
-	if (OPS_GetDoubleInput(&numdata, &DDi) < 0 || DDi < 0.0) {
+	if (OPS_GetDoubleInput(numdata, &DDi) < 0 || DDi < 0.0) {
 	    opserr << "WARNING invalid YamamotoBiaxialHDR DDi" << endln;
 	    ifNoError = false;
 	}
 
 	// Hr
-	if (OPS_GetDoubleInput(&numdata, &Hr) < 0 || Hr <= 0.0) {
+	if (OPS_GetDoubleInput(numdata, &Hr) < 0 || Hr <= 0.0) {
 	    opserr << "WARNING invalid YamamotoBiaxialHDR Hr" << endln;
 	    ifNoError = false;
 	}
@@ -170,7 +170,7 @@ void* OPS_YamamotoBiaxialHDR()
 
 		// x1, x2, x3
 		for (int j=1; j<=3; j++) {
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -180,7 +180,7 @@ void* OPS_YamamotoBiaxialHDR()
 	
 		// yp1, yp2, yp3
 		for (int j=1; j<=3; j++) {
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -191,7 +191,7 @@ void* OPS_YamamotoBiaxialHDR()
 	    } else if (strcmp(flag,"-orient")==0 && OPS_GetNumRemainingInputArgs() >= 3) { // <-orient yp1? yp2? yp3?>
 	
 		for (int j=1; j<=3; j++) {
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -201,17 +201,17 @@ void* OPS_YamamotoBiaxialHDR()
 	
 	    } else if (strcmp(flag,"-mass")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-mass m?>
 
-		if (OPS_GetDoubleInput(&numdata, &mass) < 0 || mass <= 0) {
+		if (OPS_GetDoubleInput(numdata, &mass) < 0 || mass <= 0) {
 		    opserr << "WARNING invalid mass\n";
 		    ifNoError = false;
 		}
 
 	    } else if (strcmp(flag,"-coRS")==0 && OPS_GetNumRemainingInputArgs()>=2) { // <-coRS cr? cs?>
-		if (OPS_GetDoubleInput(&numdata, &Cr) < 0 || Cr <= 0) {
+		if (OPS_GetDoubleInput(numdata, &Cr) < 0 || Cr <= 0) {
 		    opserr << "WARNING invalid cr\n";
 		    ifNoError = false;
 		}
-		if (OPS_GetDoubleInput(&numdata, &Cs) < 0 || Cs <= 0) {
+		if (OPS_GetDoubleInput(numdata, &Cs) < 0 || Cs <= 0) {
 		    opserr << "WARNING invalid cs\n";
 		    ifNoError = false;
 		}

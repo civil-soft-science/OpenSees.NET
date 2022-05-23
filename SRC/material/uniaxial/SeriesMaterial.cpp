@@ -61,7 +61,7 @@ OPS_SeriesMaterial(void)
   int *iData = new int[numArgs];
   UniaxialMaterial **theMats = new UniaxialMaterial *[numArgs-1];
     
-  if (OPS_GetIntInput(&numArgs, iData) != 0) {
+  if (OPS_GetIntInput(numArgs, iData) != 0) {
     opserr << "WARNING invalid data for uniaxialMaterial Series" << endln;
     return 0;
   }

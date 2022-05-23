@@ -54,7 +54,7 @@ void* OPS_Backbone()
     // tag, bbTag;
     int idata[2];
     int numdata = 2;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid tags\n";
 	opserr << "Backbone material: " << idata[0] << "\n";
 	return 0;

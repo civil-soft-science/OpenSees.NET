@@ -71,13 +71,13 @@ OPS_TriSurfaceLoad(void)
   double dData[1];
 
   int numData = 4;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element TriSurfaceLoadElement" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data: element TriSurfaceLoad " << iData[0] << endln;
     return 0;	
   }
@@ -88,7 +88,7 @@ OPS_TriSurfaceLoad(void)
   if (num_args_remaining > 0)
   {
     numData = 1;
-    OPS_GetDoubleInput(&numData, &rhoH);
+    OPS_GetDoubleInput(numData, &rhoH);
   }
 
 

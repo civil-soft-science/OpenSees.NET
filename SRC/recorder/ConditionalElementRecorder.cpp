@@ -59,14 +59,14 @@ ConditionalElementRecorder::ConditionalElementRecorder(const ID *ele,
 							 const char **argv, 
 							 int argc,
 							 Domain &theDom, 
-							 OPS_Stream &theOutputHandler,
+							 OPS_Stream *theOutputHandler,
 							int rcrdrTag,
 							int procMethod, int procGrpN,
 							bool echoTime,
 							 const ID *indexValues)
  :Recorder(RECORDER_TAGS_ConditionalElementRecorder),
   numEle(0), eleID(0), numDOF(0), dof(0), theResponses(0), theDomain(&theDom),
-  theHandler(&theOutputHandler), data(0), 
+  theHandler(theOutputHandler), data(0), 
   initializationDone(false), responseArgs(0), numArgs(0), echoTimeFlag(echoTime), addColumnInfo(0)
   , procDataMethod(procMethod), procGrpNum(procGrpN), envRcrdrTag(rcrdrTag)
 {
@@ -305,119 +305,120 @@ ConditionalElementRecorder::setDomain(Domain &theDom)
 }
 
 int
-ConditionalElementRecorder::sendSelf(int commitTag, Channel &theChannel)
+ConditionalElementRecorder::sendSelf(int commitTag, Channel& theChannel)
 {
-  addColumnInfo = 1;
+    addColumnInfo = 1;
 
-  if (theChannel.isDatastore() == 1) {
-    opserr << "ConditionalElementRecorder::sendSelf() - does not send data to a datastore\n";
-    return -1;
-  }
-  initializationDone = false;
-  //
-  // into an ID, place & send eleID size, numArgs and length of all responseArgs
-  //
+    if (theChannel.isDatastore() == 1) {
+        opserr << "ConditionalElementRecorder::sendSelf() - does not send data to a datastore\n";
+        return -1;
+    }
+    initializationDone = false;
+    //
+    // into an ID, place & send eleID size, numArgs and length of all responseArgs
+    //
 
-  static ID idData(7);
-  if (eleID != 0)
-    idData(0) = eleID->Size();
-  else
-    idData(0) = 0;
+    static ID idData(7);
+    if (eleID != 0)
+        idData(0) = eleID->Size();
+    else
+        idData(0) = 0;
 
-  idData(1) = numArgs;
+    idData(1) = numArgs;
 
-  idData(5) = this->getTag();
-  idData(6) = numDOF;
+    idData(5) = this->getTag();
+    idData(6) = numDOF;
 
-  int msgLength = 0;
-  for (int i=0; i<numArgs; i++) 
-    msgLength += strlen(responseArgs[i])+1;
-  idData(2) = msgLength;
-
-
-  if (theHandler != 0) {
-    idData(3) = theHandler->getClassTag();
-  } else 
-    idData(3) = 0;
-
-  if (echoTimeFlag == true)
-    idData(4) = 1;
-  else
-    idData(4) = 0;
-
-  if (theChannel.sendID(0, commitTag, idData) < 0) {
-    opserr << "ConditionalElementRecorder::sendSelf() - failed to send idData\n";
-    return -1;
-  }
+    int msgLength = 0;
+    for (int i = 0; i < numArgs; i++)
+        msgLength += strlen(responseArgs[i]) + 1;
+    idData(2) = msgLength;
 
 
+    if (theHandler != 0) {
+        idData(3) = theHandler->getClassTag();
+    }
+    else
+        idData(3) = 0;
 
+    if (echoTimeFlag == true)
+        idData(4) = 1;
+    else
+        idData(4) = 0;
 
-  //
-  // send the eleID
-  //
-
-  if (eleID != 0)
-    if (theChannel.sendID(0, commitTag, *eleID) < 0) {
-      opserr << "ConditionalElementRecorder::sendSelf() - failed to send idData\n";
-      return -1;
+    if (theChannel.sendID(0, commitTag, idData) < 0) {
+        opserr << "ConditionalElementRecorder::sendSelf() - failed to send idData\n";
+        return -1;
     }
 
-  // send dof
-  if (dof != 0)
-    if (theChannel.sendID(0, commitTag, *dof) < 0) {
-      opserr << "ElementRecorder::sendSelf() - failed to send dof\n";
-      return -1;
+
+
+
+    //
+    // send the eleID
+    //
+
+    if (eleID != 0)
+        if (theChannel.sendID(0, commitTag, *eleID) < 0) {
+            opserr << "ConditionalElementRecorder::sendSelf() - failed to send idData\n";
+            return -1;
+        }
+
+    // send dof
+    if (dof != 0)
+        if (theChannel.sendID(0, commitTag, *dof) < 0) {
+            opserr << "ElementRecorder::sendSelf() - failed to send dof\n";
+            return -1;
+        }
+
+    //
+    // create a single char array holding all strings
+    //    will use string terminating character to differentiate strings on other side
+    //
+
+    if (msgLength == 0) {
+        opserr << "ConditionalElementRecorder::sendSelf() - no data to send!!\n";
+        return -1;
     }
 
-  //
-  // create a single char array holding all strings
-  //    will use string terminating character to differentiate strings on other side
-  //
+    char* allResponseArgs = new char[msgLength];
+    if (allResponseArgs == 0) {
+        opserr << "ConditionalElementRecorder::sendSelf() - out of memory\n";
+        return -1;
+    }
 
-  if (msgLength ==  0) {
-    opserr << "ConditionalElementRecorder::sendSelf() - no data to send!!\n";
-    return -1;
-  }
+    char* currentLoc = allResponseArgs;
+    for (int j = 0; j < numArgs; j++) {
+        strcpy(currentLoc, responseArgs[j]);
+        currentLoc += strlen(responseArgs[j]);
+        currentLoc++;
+    }
 
-  char *allResponseArgs = new char[msgLength];
-  if (allResponseArgs == 0) {
-    opserr << "ConditionalElementRecorder::sendSelf() - out of memory\n";
-    return -1;
-  }
+    //
+    // send this single char array
+    //
 
-  char *currentLoc = allResponseArgs;
-  for (int j=0; j<numArgs; j++) {
-    strcpy(currentLoc, responseArgs[j]);
-    currentLoc += strlen(responseArgs[j]);
-    currentLoc++;
-  }
+    Message theMessage(allResponseArgs, msgLength);
+    if (theChannel.sendMsg(0, commitTag, theMessage) < 0) {
+        opserr << "ConditionalElementRecorder::sendSelf() - failed to send message\n";
+        return -1;
+    }
 
-  //
-  // send this single char array
-  //
+    //
+    // invoke sendSelf() on the output handler
+    //
+    if (theHandler != 0)
+        if (theHandler->sendSelf(commitTag, theChannel) < 0) {
+            opserr << "ConditionalElementRecorder::sendSelf() - failed to send the DataOutputHandler\n";
+            return -1;
+        }
 
-  Message theMessage(allResponseArgs, msgLength);
-  if (theChannel.sendMsg(0, commitTag, theMessage) < 0) {
-    opserr << "ConditionalElementRecorder::sendSelf() - failed to send message\n";
-    return -1;
-  }
+    //
+    // clean up & return success
+    //
 
-  //
-  // invoke sendSelf() on the output handler
-  //
-
-  if (theHandler == 0 || theHandler->sendSelf(commitTag, theChannel) < 0) {
-    opserr << "ConditionalElementRecorder::sendSelf() - failed to send the DataOutputHandler\n";
-    return -1;
-  }
-
-  //
-  // clean up & return success
-  //
-
-  delete [] allResponseArgs;
-  return 0;
+    delete[] allResponseArgs;
+    return 0;
 }
 
 
@@ -558,8 +559,8 @@ ConditionalElementRecorder::recvSelf(int commitTag, Channel &theChannel,
   }
 
   if (theHandler->recvSelf(commitTag, theChannel, theBroker) < 0) {
-    opserr << "NodeRecorder::sendSelf() - failed to send the DataOutputHandler\n";
-    return -1;
+      delete theHandler;
+      theHandler = 0;
   }
 
   //
@@ -607,7 +608,7 @@ ConditionalElementRecorder::initialize(void)
                 xmlOrder[eleCount++] = i + 1;
             }
         }
-
+        if (theHandler != 0)
         theHandler->setOrder(xmlOrder);
 
         //
@@ -667,7 +668,8 @@ ConditionalElementRecorder::initialize(void)
                 }
                 else {
                     if (echoTimeFlag == true)
-                        theHandler->tag("ResidualElementOutput");
+                        if (theHandler != 0)
+                            theHandler->tag("ResidualElementOutput");
 
                     theResponses[ii] = theEle->setResponse((const char**)responseArgs, numArgs, *theHandler);
                     if (theResponses[ii] != 0) {
@@ -700,19 +702,22 @@ ConditionalElementRecorder::initialize(void)
                             }
                         }
 
-                        if (echoTimeFlag == true) {
-                            for (int i = 0; i < eleData.Size(); i++) {
-                                theHandler->tag("TimeOutput");
-                                theHandler->tag("ResponseType", "time");
+                        if (theHandler != 0)
+                            if (echoTimeFlag == true) {
+                                for (int i = 0; i < eleData.Size(); i++) {
+                                    theHandler->tag("TimeOutput");
+                                    theHandler->tag("ResponseType", "time");
+                                    theHandler->endTag();
+                                }
                                 theHandler->endTag();
+
                             }
-                            theHandler->endTag();
-                        }
                     }
                 }
             }
 
-        theHandler->setOrder(responseOrder);
+        if (theHandler != 0)
+            theHandler->setOrder(responseOrder);
 
     }
     else {
@@ -771,13 +776,14 @@ ConditionalElementRecorder::initialize(void)
                 }
                 numResponse++;
 
-                if (echoTimeFlag == true) {
-                    for (int i = 0; i < eleData.Size(); i++) {
-                        theHandler->tag("TimeOutput");
-                        theHandler->tag("ResponseType", "time");
-                        theHandler->endTag(); // TimeOutput
+                if (theHandler != 0)
+                    if (echoTimeFlag == true) {
+                        for (int i = 0; i < eleData.Size(); i++) {
+                            theHandler->tag("TimeOutput");
+                            theHandler->tag("ResponseType", "time");
+                            theHandler->endTag(); // TimeOutput
+                        }
                     }
-                }
             }
         }
         numEle = numResponse;

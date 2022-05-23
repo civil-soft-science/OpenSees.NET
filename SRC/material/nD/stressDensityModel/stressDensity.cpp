@@ -61,13 +61,13 @@ OPS_StressDensityMaterial(void)
     double dData[26];
 
     int numData = 1;
-    if (OPS_GetInt(&numData, &tag) != 0) {
+    if (OPS_GetInt(numData, &tag) != 0) {
         opserr << "WARNING: invalied nDMaterial stressDensity material tag" << endln;
         return 0;
     }
 
     numData = numArgs-1;
-    if (OPS_GetDouble(&numData, dData) !=0) {
+    if (OPS_GetDouble(numData, dData) !=0) {
         opserr << "WARNING: invalid material data for nDMaterial stressDensity with tag: " << tag << endln;
         return 0;
     }

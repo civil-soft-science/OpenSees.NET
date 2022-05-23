@@ -73,13 +73,13 @@ void *OPS_ConcreteCM(void)
   double dData[9];
   
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial ConcreteCM ConcreteCM" << endln;
     return 0;
   }
   
   numData = 9;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid data for uniaxialMaterial ConcreteCM ConcreteCM " << iData[0] << endln;
     return 0;
   }
@@ -92,7 +92,7 @@ void *OPS_ConcreteCM(void)
     
     numData = 1;
     int mon;
-    if (OPS_GetIntInput(&numData, &mon) != 0) {
+    if (OPS_GetIntInput(numData, &mon) != 0) {
       opserr << "Invalid $mon parameter for uniaxialMaterial ConcreteCM with tag  " << iData[0] << endln;
       return 0;
     }
@@ -112,7 +112,7 @@ void *OPS_ConcreteCM(void)
     const char *str = OPS_GetString();
     // OPS_GetStringCopy(&str);
     if (strcmp(str, "-GapClose") == 0) {
-      if (OPS_GetIntInput(&numData, &gap) != 0) {
+      if (OPS_GetIntInput(numData, &gap) != 0) {
 		opserr << "Invalid $gap parameter for uniaxialMaterial ConcreteCM with tag  " << iData[0] << endln;
 		return 0;
       }

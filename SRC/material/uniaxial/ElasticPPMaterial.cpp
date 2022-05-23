@@ -58,13 +58,13 @@ OPS_ElasticPPMaterial(void)
   dData[3] = 0.0; // setting default eps0 to 0.
 
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial ElasticPP" << endln;
     return 0;
   }
 
   numData = numArgs-1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid data for uniaxial ElasticPP " << iData[0] << endln;
     return 0;	
   }

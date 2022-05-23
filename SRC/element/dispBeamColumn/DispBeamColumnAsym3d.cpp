@@ -77,7 +77,7 @@ void* OPS_DispBeamColumnAsym3d()
     // inputs: 
     int iData[5];
     int numData = 5;
-    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -95,7 +95,7 @@ void* OPS_DispBeamColumnAsym3d()
 	    cmass = 1;
 	} else if(strcmp(type,"-mass") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
+		if(OPS_GetDoubleInput(numData,&mass) < 0) {
 		    opserr<<"WARNING: invalid mass\n";
 		    return 0;
 		}
@@ -103,7 +103,7 @@ void* OPS_DispBeamColumnAsym3d()
 	} else if (strcmp(type, "-shearCenter") == 0) {
         // Get the coordinates of shear center w.r.t centroid
         numData = 2;
-        if (OPS_GetDoubleInput(&numData, dData) < 0) {
+        if (OPS_GetDoubleInput(numData, dData) < 0) {
             opserr << "WARNING: invalid ys and zs\n";
             return 0;
         }
@@ -176,7 +176,7 @@ void* OPS_DispBeamColumnAsym3dTcl() {
 
     // Get required input data
     numData = 6;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid element data - DispBeamColumnAsym3d\n";
         return 0;
     }
@@ -220,7 +220,7 @@ void* OPS_DispBeamColumnAsym3dTcl() {
         }
         else if (strcmp(sData, "-mass") == 0) {
             numData = 1;
-            if (OPS_GetDoubleInput(&numData, dData) != 0) {
+            if (OPS_GetDoubleInput(numData, dData) != 0) {
                 opserr << "WARNING invalid input, want: -mass $massDens \n";
                 return 0;
             }
@@ -247,7 +247,7 @@ void* OPS_DispBeamColumnAsym3dTcl() {
             }
             else if (strcmp(sData2, "RegularizedLobatto") == 0 || strcmp(sData2, "RegLobatto") == 0) {
                 numData = 4;
-                if (OPS_GetDoubleInput(&numData, dData) != 0) {
+                if (OPS_GetDoubleInput(numData, dData) != 0) {
                     opserr << "WARNING invalid input, want: -integration RegularizedLobatto $lpI $lpJ $zetaI $zetaJ \n";
                     return 0;
                 }
@@ -266,7 +266,7 @@ void* OPS_DispBeamColumnAsym3dTcl() {
         else if (strcmp(sData, "-shearCenter") == 0) {
             // Get the coordinates of shear center w.r.t centroid
             numData = 2;
-            if (OPS_GetDoubleInput(&numData, &dData2[0]) < 0) {
+            if (OPS_GetDoubleInput(numData, &dData2[0]) < 0) {
                 opserr << "WARNING: invalid ys and zs\n";
                 return 0;
             }

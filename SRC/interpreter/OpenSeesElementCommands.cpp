@@ -767,7 +767,7 @@ int OPS_doBlock2D()
     // numX, numY, startNodeNum, startEleNum
     int idata[4];
     int numdata = 4;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return -1;
     }
@@ -786,12 +786,12 @@ int OPS_doBlock2D()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetDoubleInput(&numdata, &thick) < 0) {
+	if (OPS_GetDoubleInput(numdata, &thick) < 0) {
 	    opserr << "WARNING invalid thick\n";
 	    return -1;
 	}
 	subtype = OPS_GetString();
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid matTag\n";
 	    return -1;
 	}
@@ -804,7 +804,7 @@ int OPS_doBlock2D()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &secTag) < 0) {
+	if (OPS_GetIntInput(numdata, &secTag) < 0) {
 	    opserr << "WARNING invalid secTag\n";
 	    return -1;
 	}
@@ -817,7 +817,7 @@ int OPS_doBlock2D()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &secTag) < 0) {
+	if (OPS_GetIntInput(numdata, &secTag) < 0) {
 	    opserr << "WARNING invalid secTag\n";
 	    return -1;
 	}
@@ -830,11 +830,11 @@ int OPS_doBlock2D()
 	    return -1;
 	}
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &thick) < 0) {
+    if (OPS_GetDoubleInput(numdata, &thick) < 0) {
         opserr << "WARNING invalid thick\n";
         return -1;
     }
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid matTag\n";
 	    return -1;
 	}
@@ -846,12 +846,12 @@ int OPS_doBlock2D()
 	    return -1;
 	}
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &thick) < 0) {
+    if (OPS_GetDoubleInput(numdata, &thick) < 0) {
         opserr << "WARNING invalid thick\n";
         return -1;
     }
 	subtype = OPS_GetString();
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid matTag\n";
 	    return -1;
 	}
@@ -863,12 +863,12 @@ int OPS_doBlock2D()
 	    return -1;
 	}
 	int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+    if (OPS_GetIntInput(numdata, &matTag) < 0) {
         opserr << "WARNING invalid matTag\n";
         return -1;
     }
 	subtype = OPS_GetString();
-    if (OPS_GetDoubleInput(&numdata, &thick) < 0) {
+    if (OPS_GetDoubleInput(numdata, &thick) < 0) {
         opserr << "WARNING invalid thick\n";
         return -1;
     }
@@ -886,7 +886,7 @@ int OPS_doBlock2D()
 	const char* opt = OPS_GetString();
 	if (strcmp(opt, "-numEleNodes") == 0) {
 	    int numdata = 1;
-	    if (OPS_GetIntInput(&numdata, &numEleNodes) < 0) {
+	    if (OPS_GetIntInput(numdata, &numEleNodes) < 0) {
 		opserr<<"WARNING invalid numEleNodes\n";
 		return -1;
 	    }
@@ -926,14 +926,14 @@ int OPS_doBlock2D()
     for (int i=0; i<numnodes; i++) {
 	int tag;
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr<<"WARNING failed to get node tag\n";
 	    return -1;
 	}
 	haveNode(tag-1) = tag;
 
 	Vector crds(ndm);
-	if (OPS_GetDoubleInput(&ndm, &crds(0)) < 0) {
+	if (OPS_GetDoubleInput(ndm, &crds(0)) < 0) {
 	    opserr<<"WARNING failed to get coordinates\n";
 	    return -1;
 	}
@@ -1146,7 +1146,7 @@ int OPS_doBlock3D()
     // numX, numY, numZ, startNodeNum, startEleNum
     int idata[5];
     int numdata = 5;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return -1;
     }
@@ -1157,7 +1157,7 @@ int OPS_doBlock3D()
     // get mattag
     int matTag=-1;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+    if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	opserr << "WARNING invalid matTag\n";
 	return -1;
     }
@@ -1181,7 +1181,7 @@ int OPS_doBlock3D()
     for (int i=0; i<numnodes; i++) {
 	int tag;
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr<<"WARNING failed to get node tag\n";
 	    return -1;
 	}
@@ -1193,7 +1193,7 @@ int OPS_doBlock3D()
 	haveNode(tag-1) = tag;
 
 	Vector crds(ndm);
-	if (OPS_GetDoubleInput(&ndm, &crds(0)) < 0) {
+	if (OPS_GetDoubleInput(ndm, &crds(0)) < 0) {
 	    opserr<<"WARNING failed to get coordinates\n";
 	    return -1;
 	}
@@ -1316,7 +1316,7 @@ void* OPS_NonlinearBeamColumn()
     // inputs: 
     int iData[6];
     int numData = 6;
-    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
@@ -1330,18 +1330,18 @@ void* OPS_NonlinearBeamColumn()
 	const char* type = OPS_GetString();
 	if(strcmp(type,"-iter") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 1) {
-		if(OPS_GetIntInput(&numData,&maxIter) < 0) {
+		if(OPS_GetIntInput(numData,&maxIter) < 0) {
 		    opserr << "WARNING invalid maxIter\n";
 		    return 0;
 		}
-		if(OPS_GetDoubleInput(&numData,&tol) < 0) {
+		if(OPS_GetDoubleInput(numData,&tol) < 0) {
 		    opserr << "WARNING invalid tol\n";
 		    return 0;
 		}
 	    }
 	} else if(strcmp(type,"-mass") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
+		if(OPS_GetDoubleInput(numData,&mass) < 0) {
 		    opserr << "WARNING invalid mass\n";
 		    return 0;
 		}

@@ -83,7 +83,7 @@ OPS_PeerMotion(void)
   // get tag if provided
   if (numRemainingArgs == 5 || numRemainingArgs == 7 || numRemainingArgs == 9) {
     numData = 1;
-    if (OPS_GetIntInput(&numData, &tag) != 0) {
+    if (OPS_GetIntInput(numData, &tag) != 0) {
       opserr << "WARNING invalid series tag in Constant tag?" << endln;
       return 0;
     }
@@ -106,7 +106,7 @@ OPS_PeerMotion(void)
   }    
 
 
-  if (OPS_GetDouble(&numData, &factor) != 0) {
+  if (OPS_GetDouble(numData, &factor) != 0) {
     opserr << "WARNING invalid facor in PeerMotion Series with tag?" << tag << endln;
     return 0;
   }

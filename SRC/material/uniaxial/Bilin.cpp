@@ -61,7 +61,7 @@ OPS_Bilin()
   double dData[24];                             // Updated: Filipe Ribeiro and Andre Barbosa
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  Bilin tag" << endln;
     return 0;
   }
@@ -77,7 +77,7 @@ OPS_Bilin()
     return 0;           // Updated: Filipe Ribeiro and Andre Barbosa
   }
  
-  //  if (OPS_GetDoubleInput(&numData, dData) != 0) {                   // Updated: Filipe Ribeiro and Andre Barbosa 
+  //  if (OPS_GetDoubleInput(numData, dData) != 0) {                   // Updated: Filipe Ribeiro and Andre Barbosa 
   //    opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? nFactor? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";         
   //    opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
   //    opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg\n";     
@@ -85,7 +85,7 @@ OPS_Bilin()
   //  }																	// Updated: Filipe Ribeiro and Andre Barbosa 
  
   if (numData == 23) {
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated: Filipe Ribeiro and Andre Barbosa 
+    if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated: Filipe Ribeiro and Andre Barbosa 
       opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";            
       opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
       opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg? <nFactor?> \n";          // Updated: Filipe Ribeiro and Andre Barbosa
@@ -100,7 +100,7 @@ OPS_Bilin()
                             dData[20], dData[21], dData[22]);           // Updated: Filipe Ribeiro and Andre Barbosa
    
   } else if (numData == 24) { // Updated: Filipe Ribeiro and Andre Barbosa 
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {             
+    if (OPS_GetDoubleInput(numData, dData) != 0) {             
       opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";            
       opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
       opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg? <nFactor?>\n";           // Updated: Filipe Ribeiro and Andre Barbosa 

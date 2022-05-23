@@ -53,35 +53,35 @@ void* OPS_TubeSection()
   SectionForceDeformation* theSection = 0;
   
   int numdata = 1;
-  if (OPS_GetIntInput(&numdata, &tag) < 0) {
+  if (OPS_GetIntInput(numdata, &tag) < 0) {
     opserr << "WARNING invalid section Tube tag" << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+  if (OPS_GetIntInput(numdata, &matTag) < 0) {
     opserr << "WARNING invalid section Tube matTag" << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &D) < 0) {
+  if (OPS_GetDoubleInput(numdata, &D) < 0) {
     opserr << "WARNING invalid D" << endln;
     opserr << "Tube section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &t) < 0) {
+  if (OPS_GetDoubleInput(numdata, &t) < 0) {
     opserr << "WARNING invalid t" << endln;
     opserr << "Tube section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nfw) < 0) {
+  if (OPS_GetIntInput(numdata, &nfw) < 0) {
     opserr << "WARNING invalid nfw" << endln;
     opserr << "Tube section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nfr) < 0) {
+  if (OPS_GetIntInput(numdata, &nfr) < 0) {
     opserr << "WARNING invalid nfr" << endln;
     opserr << "Tube section: " << tag << endln;
     return 0;
@@ -95,7 +95,7 @@ void* OPS_TubeSection()
     
     double shape = 1.0;
     if (OPS_GetNumRemainingInputArgs() > 1) {
-      if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+      if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 	opserr << "WARNING invalid shape" << endln;
 	opserr << "Tube section: " << tag << endln;
 	return 0;
@@ -156,7 +156,7 @@ void* OPS_TubeSection()
     bool deleteTorsion = false;
     if (strcmp(opt, "-GJ") == 0) {
       double GJ;
-      if (OPS_GetDoubleInput(&numdata, &GJ) < 0) {
+      if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
 	opserr << "WARNING: failed to read GJ\n";
 	return 0;
       }
@@ -165,7 +165,7 @@ void* OPS_TubeSection()
     }
     if (strcmp(opt, "-torsion") == 0) {
       int torsionTag;
-      if (OPS_GetIntInput(&numdata, &torsionTag) < 0) {
+      if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
 	opserr << "WARNING: failed to read torsion\n";
 	return 0;
       }

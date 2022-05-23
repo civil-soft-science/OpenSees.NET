@@ -83,7 +83,7 @@ OPS_ShellDKGT(void)
   
   int iData[5];
   int numData = 5;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: element ShellDKGT \n";
     return 0;
   }
@@ -103,7 +103,7 @@ OPS_ShellDKGT(void)
         num_remaining_args = 3;
     }
     if (num_remaining_args > 0) {
-        if (OPS_GetDoubleInput(&num_remaining_args, b_data) < 0) {
+        if (OPS_GetDoubleInput(num_remaining_args, b_data) < 0) {
             opserr << "WARNING: invalid double b_data\n";
             return 0;
         }

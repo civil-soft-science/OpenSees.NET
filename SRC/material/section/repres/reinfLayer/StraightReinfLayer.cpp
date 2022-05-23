@@ -45,12 +45,12 @@ void* OPS_StraightReinfLayer()
     // get idata
     int numData = 2;
     int idata[2];
-    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
 
     // get data
     double data[5];
     numData = 5;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
     static Vector pos1(2), pos2(2);
     pos1(0) = data[1];
     pos1(1) = data[2];

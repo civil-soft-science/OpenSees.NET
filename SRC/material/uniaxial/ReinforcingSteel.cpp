@@ -61,14 +61,14 @@ void* OPS_ReinforcingSteel()
 
     int tag;
     numdata = 1;
-    if(OPS_GetIntInput(&numdata,&tag) < 0) {
+    if(OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[6];
     numdata = 6;
-    if(OPS_GetDoubleInput(&numdata,data) < 0) {
+    if(OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
@@ -91,7 +91,7 @@ void* OPS_ReinforcingSteel()
 	    }
 	    buckModel = 1;
 	    numdata = 4;
-	    if(OPS_GetDoubleInput(&numdata,gabuckdata) < 0) {
+	    if(OPS_GetDoubleInput(numdata,gabuckdata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
@@ -106,7 +106,7 @@ void* OPS_ReinforcingSteel()
 	    buckModel = 2;
 	    numdata = 2;
 	    
-	    if(OPS_GetDoubleInput(&numdata,dmbuckdata) < 0) {
+	    if(OPS_GetDoubleInput(numdata,dmbuckdata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
@@ -123,7 +123,7 @@ void* OPS_ReinforcingSteel()
 		return 0;
 	    }
 	    numdata = 3;
-	    if(OPS_GetDoubleInput(&numdata,fatiguedata) < 0) {
+	    if(OPS_GetDoubleInput(numdata,fatiguedata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
@@ -136,7 +136,7 @@ void* OPS_ReinforcingSteel()
 		return 0;
 	    }
 	    numdata = 3;
-	    if (OPS_GetDoubleInput(&numdata,mpdata)) {
+	    if (OPS_GetDoubleInput(numdata,mpdata)) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
@@ -148,7 +148,7 @@ void* OPS_ReinforcingSteel()
 		return 0;
 	    }
 	    numdata = 2;
-	    if (OPS_GetDoubleInput(&numdata,isodata)) {
+	    if (OPS_GetDoubleInput(numdata,isodata)) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }

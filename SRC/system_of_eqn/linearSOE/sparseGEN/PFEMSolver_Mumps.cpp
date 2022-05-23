@@ -69,7 +69,7 @@ void* OPS_PFEMSolver_Mumps()
         if (strcmp(opt, "-relax") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetIntInput(&numdata, &relax) < 0) {
+                if (OPS_GetIntInput(numdata, &relax) < 0) {
                     opserr << "WARNING: failed to get relax\n";
                     return 0;
                 }
@@ -78,7 +78,7 @@ void* OPS_PFEMSolver_Mumps()
         } else if (strcmp(opt, "-err") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetIntInput(&numdata, &err) < 0) {
+                if (OPS_GetIntInput(numdata, &err) < 0) {
                     opserr << "WARNING: failed to get err\n";
                     return 0;
                 }
@@ -95,7 +95,7 @@ void* OPS_PFEMSolver_Mumps()
         } else if (strcmp(opt, "-added-mass") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetIntInput(&numdata, &add) < 0) {
+                if (OPS_GetIntInput(numdata, &add) < 0) {
                     opserr << "WARNING: failed to get add\n";
                     return 0;
                 }
@@ -104,7 +104,7 @@ void* OPS_PFEMSolver_Mumps()
         } else if (strcmp(opt, "-ptol") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetDoubleInput(&numdata, &ptol) < 0) {
+                if (OPS_GetDoubleInput(numdata, &ptol) < 0) {
                     opserr << "WARNING: failed to get ptol\n";
                     return 0;
                 }
@@ -113,7 +113,7 @@ void* OPS_PFEMSolver_Mumps()
         } else if (strcmp(opt, "-Bitol") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetDoubleInput(&numdata, &Bitol) < 0) {
+                if (OPS_GetDoubleInput(numdata, &Bitol) < 0) {
                     opserr << "WARNING: failed to get Bitol\n";
                     return 0;
                 }
@@ -122,7 +122,7 @@ void* OPS_PFEMSolver_Mumps()
         } else if (strcmp(opt, "-pmaxiter") == 0) {
 
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                if (OPS_GetIntInput(&numdata, &maxiter) < 0) {
+                if (OPS_GetIntInput(numdata, &maxiter) < 0) {
                     opserr << "WARNING: failed to get err\n";
                     return 0;
                 }

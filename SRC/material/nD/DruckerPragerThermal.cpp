@@ -76,7 +76,7 @@ OPS_DruckerPragerMaterialThermal(void)
 	double dData[14];
 
 	int numData = 1;
-	if (OPS_GetInt(&numData, &tag) != 0) {
+	if (OPS_GetInt(numData, &tag) != 0) {
 		opserr << "WARNING invalid nDMaterial DruckerPragerThermal material  tag" << endln;
 		return 0;
 	}
@@ -90,7 +90,7 @@ OPS_DruckerPragerMaterialThermal(void)
 		numData = 13;
 	}
 
-	if (OPS_GetDouble(&numData, dData) != 0) {
+	if (OPS_GetDouble(numData, dData) != 0) {
 		opserr << "WARNING invalid material data for nDMaterial DruckerPragerThermal material  with tag: " << tag << endln;
 		return 0;
 	}

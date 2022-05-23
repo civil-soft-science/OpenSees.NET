@@ -65,7 +65,7 @@ void* OPS_ParallelSection()
     int tag;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid section Parallel tag" << endln;
 	return 0;
     }
@@ -84,7 +84,7 @@ void* OPS_ParallelSection()
     // For each material get the tag and ensure it exists in model already
     for (int i = 0; i < numMaterials; i++) {
 	int tagI;
-	if (OPS_GetIntInput(&numdata, &tagI) < 0) {
+	if (OPS_GetIntInput(numdata, &tagI) < 0) {
 	    opserr << "WARNING invalid component tag\n";
 	    opserr << "section Parallel: " << tag << endln;
 	    return 0;

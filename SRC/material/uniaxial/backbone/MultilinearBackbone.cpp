@@ -47,7 +47,7 @@ OPS_MultilinearBackbone(void)
 
   int iData[1];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for hystereticBackbone Multilinear" << endln;
     return 0;
   }
@@ -57,7 +57,7 @@ OPS_MultilinearBackbone(void)
   Vector e(numPoints);
   Vector s(numPoints);
   double *dData = new double[numData];
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data for hystereticBackbone Multilinear" << endln;
     return 0;
   }

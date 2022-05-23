@@ -81,7 +81,7 @@ OPS_CoupledZeroLength()
   iData[6] = 0; // turn off rayleigh damping by default
 
   numData = numRemainingArgs;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }

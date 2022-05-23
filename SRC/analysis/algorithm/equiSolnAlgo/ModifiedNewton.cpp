@@ -68,7 +68,7 @@ void* OPS_ModifiedNewton()
 	if (OPS_GetNumRemainingInputArgs() == 2) {
 	  double data[2];
 	  int numData = 2;
-	  if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+	  if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
 	    opserr << "WARNING invalid data reading 2 hall factors\n";
 	    return 0;
 	  }

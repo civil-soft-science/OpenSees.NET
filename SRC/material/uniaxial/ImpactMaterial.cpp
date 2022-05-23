@@ -66,13 +66,13 @@ OPS_ImpactMaterial(void)
     double dData[4];
     int numData = 1;
 
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid uniaxialMaterial ImpactMaterial tag" << endln;
         return 0;
     }
 
     numData = 4;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "WARNING invalid double data: for ImpactMaterial tag: " << iData[0] << "\n";
         return 0;
     }

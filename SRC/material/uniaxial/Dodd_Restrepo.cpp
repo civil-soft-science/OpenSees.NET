@@ -64,13 +64,13 @@ OPS_Dodd_Restrepo(void)
   dData[8]=1.0; // Conv
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ElasticPP tag" << endln;
     return 0;
   }
 
   numData = numArgs-1;  
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid E & ep\n";
     return 0;	
   }

@@ -115,20 +115,20 @@ OPS_PM4SiltMaterial(void)
 	oData[23] = 1.0e-10;	// TolR
 
 	int numData = 1;
-	if (OPS_GetInt(&numData, &tag) != 0) {
+	if (OPS_GetInt(numData, &tag) != 0) {
 		opserr << "WARNING invalid nDMaterial PM4Silt material tag" << endln;
 		return 0;
 	}
 
 	numData = 5;
-	if (OPS_GetDouble(&numData, dData) != 0) {
+	if (OPS_GetDouble(numData, dData) != 0) {
 		opserr << "WARNING invalid material data for nDMaterial PM4Silt material  with tag: " << tag << endln;
 		return 0;
 	}
 
 	numData = numArgs - 6;
 	if (numData != 0)
-		if (OPS_GetDouble(&numData, oData) != 0) {
+		if (OPS_GetDouble(numData, oData) != 0) {
 			opserr << "WARNING invalid material data for nDMaterial PM4Silt material  with tag: " << tag << endln;
 			return 0;
 		}

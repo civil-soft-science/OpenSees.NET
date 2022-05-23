@@ -160,7 +160,7 @@ void * OPS_MixedBeamColumn2d() {
   }
 
   numData = 5;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid element data - MixedBeamColumn2d\n";
     return 0;
   }
@@ -212,7 +212,7 @@ void * OPS_MixedBeamColumn2d() {
     const char *sData = OPS_GetString();
     if ( strcmp(sData,"-mass") == 0 ) {
       numData = 1;
-      if (OPS_GetDoubleInput(&numData, dData) != 0) {
+      if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "WARNING invalid input, want: -mass $massDens \n";
       return 0;
       }
@@ -220,7 +220,7 @@ void * OPS_MixedBeamColumn2d() {
 
     } else if ( strcmp(sData,"-doRayleigh") == 0 ) {
         numData = 1;
-        if (OPS_GetInt(&numData, &doRayleigh) != 0) {
+        if (OPS_GetInt(numData, &doRayleigh) != 0) {
           opserr << "WARNING: Invalid doRayleigh in element MixedBeamColumn2d " << eleTag;
           return 0;
         }

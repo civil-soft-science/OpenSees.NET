@@ -59,7 +59,7 @@ OPS_ConstantSeries(void)
   
     if (numRemainingArgs == 1 || numRemainingArgs == 3) {
       numData = 1;
-      if (OPS_GetIntInput(&numData, &tag) != 0) {
+      if (OPS_GetIntInput(numData, &tag) != 0) {
 	opserr << "WARNING invalid series tag in ConstantSeries tag? <-factor factor?>" << endln;
 	return 0;
       }
@@ -73,7 +73,7 @@ OPS_ConstantSeries(void)
 		return 0;
 	  }
       numData = 1;
-      if (OPS_GetDouble(&numData, &cFactor) != 0) {
+      if (OPS_GetDouble(numData, &cFactor) != 0) {
 	  opserr << "WARNING invalid factor in  ConstantSeries with tag: " << tag << endln;
 	  return 0;
       }

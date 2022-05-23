@@ -68,7 +68,7 @@ void* OPS_PFEMElement2DCompressible(const ID &info)
 
 	// tag, nd1, nd2, nd3, nd4
 	numdata = 5;
-	if(OPS_GetIntInput(&numdata,idata)<0) {
+	if(OPS_GetIntInput(numdata,idata)<0) {
 	    opserr << "WARNING: failed to get tags\n";
 	    return 0;
 	}
@@ -84,7 +84,7 @@ void* OPS_PFEMElement2DCompressible(const ID &info)
 	// rho, mu, b1, b2, (thickness, kappa)
 	numdata = OPS_GetNumRemainingInputArgs();
 	if(numdata > 6) numdata = 6;
-	if(OPS_GetDoubleInput(&numdata,data) < 0) {
+	if(OPS_GetDoubleInput(numdata,data) < 0) {
 	    opserr << "WARNING: failed to get fluid properties\n";
 	    return 0;
 	}

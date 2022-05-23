@@ -88,14 +88,14 @@ int OPS_Node()
     // get tag
     int tag = 0;
     int numData = 1;
-    if(OPS_GetIntInput(&numData, &tag) < 0) {
+    if(OPS_GetIntInput(numData, &tag) < 0) {
 	opserr<<"WARNING tag is not integer\n";
 	return -1;
     }
 
     // get crds
     Vector crds(ndm);
-    if(OPS_GetDoubleInput(&ndm, &crds(0)) < 0) {
+    if(OPS_GetDoubleInput(ndm, &crds(0)) < 0) {
 	opserr<<"WARNING noda coord are not double\n";
 	return -1;
     }
@@ -112,7 +112,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    disp.resize(ndf);
-	    if(OPS_GetDoubleInput(&ndf, &disp(0)) < 0) {
+	    if(OPS_GetDoubleInput(ndf, &disp(0)) < 0) {
 		opserr << "WARNING: failed to read disp\n";
 		return -1;
 	    }
@@ -123,7 +123,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    vel.resize(ndf);
-	    if(OPS_GetDoubleInput(&ndf, &vel(0)) < 0) {
+	    if(OPS_GetDoubleInput(ndf, &vel(0)) < 0) {
 		opserr << "WARNING: failed to read vel\n";
 		return -1;
 	    }
@@ -134,7 +134,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    Vector data(ndf);
-	    if(OPS_GetDoubleInput(&ndf, &data(0)) < 0) {
+	    if(OPS_GetDoubleInput(ndf, &data(0)) < 0) {
 		opserr << "WARNING: failed to read mass\n";
 		return -1;
 	    }
@@ -150,7 +150,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    dispLoc.resize(ndm);
-	    if(OPS_GetDoubleInput(&ndm, &dispLoc(0)) < 0) {
+	    if(OPS_GetDoubleInput(ndm, &dispLoc(0)) < 0) {
 		opserr << "WARNING: failed to read dispLoc\n";
 		return -1;
 	    }
@@ -161,7 +161,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    int numdata = 1;
-	    if(OPS_GetIntInput(&numdata, &ndf) < 0) {
+	    if(OPS_GetIntInput(numdata, &ndf) < 0) {
 		opserr << "WARNING: failed to read ndf\n";
 		return -1;
 	    }

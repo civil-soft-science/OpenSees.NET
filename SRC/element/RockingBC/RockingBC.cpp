@@ -86,11 +86,11 @@ void* OPS_RockingBC()
     // inputs: 
     int iData[4];
     int numData = 4;
-    if(OPS_GetIntInput(&numData,&iData[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&iData[0]) < 0) return 0;
 
     double data[6];
 	numData = 6;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
 
 	// options
 	double convlim = 1.0e-14;
@@ -112,67 +112,67 @@ void* OPS_RockingBC()
 		std::string type = OPS_GetString();
 		if (type == "-convlim") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &convlim) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &convlim) < 0) return 0;
 			}
 		}
 		else if (type == "-maxtries") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &maxtries) < 0) return 0;
+				if (OPS_GetIntInput(numData, &maxtries) < 0) return 0;
 			}
 		}
 		else if (type == "-af") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &af) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &af) < 0) return 0;
 			}
 		}
 		else if (type == "-aflim") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &aflim) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &aflim) < 0) return 0;
 			}
 		}
 		else if (type == "-convlimmult") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &convlimmult) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &convlimmult) < 0) return 0;
 			}
 		}
 		else if (type == "-usecomstiff") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &usecomstiff) < 0) return 0;
+				if (OPS_GetIntInput(numData, &usecomstiff) < 0) return 0;
 			}
 		}
 		else if (type == "-useshear") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &useshear) < 0) return 0;
+				if (OPS_GetIntInput(numData, &useshear) < 0) return 0;
 			}
 		}
 		else if (type == "-blevery") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &blevery) < 0) return 0;
+				if (OPS_GetIntInput(numData, &blevery) < 0) return 0;
 			}
 		}
 		else if (type == "-NlimN") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &NlimN) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &NlimN) < 0) return 0;
 			}
 		}
 		else if (type == "-NlimT") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &NlimT) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &NlimT) < 0) return 0;
 			}
 		}
 		else if (type == "-Dtlim") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetDoubleInput(&numData, &Dtlim) < 0) return 0;
+				if (OPS_GetDoubleInput(numData, &Dtlim) < 0) return 0;
 			}
 		}
 		else if (type == "-errorifNexceeds") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &errorifNexceeds) < 0) return 0;
+				if (OPS_GetIntInput(numData, &errorifNexceeds) < 0) return 0;
 			}
 		}
 		else if (type == "-useUelNM") {
 			if (OPS_GetNumRemainingInputArgs() > 0) {
-				if (OPS_GetIntInput(&numData, &useUelNM) < 0) return 0;
+				if (OPS_GetIntInput(numData, &useUelNM) < 0) return 0;
 			}
 		}
 	}

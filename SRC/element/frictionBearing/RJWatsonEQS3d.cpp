@@ -63,7 +63,7 @@ void* OPS_RJWatsonEQS3d()
     // tags
     int idata[4];
     int num = 4;
-    if (OPS_GetIntInput(&num, idata) < 0) {
+    if (OPS_GetIntInput(num, idata) < 0) {
         opserr << "WARNING: invalid integer inputs\n";
         return 0;
     }
@@ -78,7 +78,7 @@ void* OPS_RJWatsonEQS3d()
     // data
     double kInit;
     num = 1;
-    if (OPS_GetDoubleInput(&num, &kInit) < 0) {
+    if (OPS_GetDoubleInput(num, &kInit) < 0) {
         opserr << "WARNING: invalid double\n";
         return 0;
     }
@@ -92,7 +92,7 @@ void* OPS_RJWatsonEQS3d()
     }
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid axial matTag\n";
         return 0;
     }
@@ -108,7 +108,7 @@ void* OPS_RJWatsonEQS3d()
         return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid shear y matTag\n";
         return 0;
     }
@@ -124,7 +124,7 @@ void* OPS_RJWatsonEQS3d()
         return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid shear z matTag\n";
         return 0;
     }
@@ -140,7 +140,7 @@ void* OPS_RJWatsonEQS3d()
         return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid torsional matTag\n";
         return 0;
     }
@@ -156,7 +156,7 @@ void* OPS_RJWatsonEQS3d()
         return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid moment y matTag\n";
         return 0;
     }
@@ -172,7 +172,7 @@ void* OPS_RJWatsonEQS3d()
         return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(&num, &matTag) < 0) {
+    if (OPS_GetIntInput(num, &matTag) < 0) {
         opserr << "WARNING: invalid moment z matTag\n";
         return 0;
     }
@@ -201,7 +201,7 @@ void* OPS_RJWatsonEQS3d()
             }
             num = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(&num, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(num, &x(0)) < 0) {
                 opserr << "WARNING: invalid orient value\n";
                 return 0;
             }
@@ -211,7 +211,7 @@ void* OPS_RJWatsonEQS3d()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(&num, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(num, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -223,7 +223,7 @@ void* OPS_RJWatsonEQS3d()
                 return 0;
             }
             num = 1;
-            if (OPS_GetDoubleInput(&num, &sDistI) < 0) {
+            if (OPS_GetDoubleInput(num, &sDistI) < 0) {
                 opserr << "WARNING: invalid shearDist\n";
                 return 0;
             }
@@ -237,7 +237,7 @@ void* OPS_RJWatsonEQS3d()
                 return 0;
             }
             num = 1;
-            if (OPS_GetDoubleInput(&num, &mass) < 0) {
+            if (OPS_GetDoubleInput(num, &mass) < 0) {
                 opserr << "WARNING: invalid mass\n";
                 return 0;
             }
@@ -248,11 +248,11 @@ void* OPS_RJWatsonEQS3d()
                 return 0;
             }
             num = 1;
-            if (OPS_GetIntInput(&num, &maxIter) < 0) {
+            if (OPS_GetIntInput(num, &maxIter) < 0) {
                 opserr << "WARNING: invalid maxIter\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(&num, &tol) < 0) {
+            if (OPS_GetDoubleInput(num, &tol) < 0) {
                 opserr << "WARNING: invalid tol\n";
                 return 0;
             }
@@ -263,7 +263,7 @@ void* OPS_RJWatsonEQS3d()
                 return 0;
             }
             num = 1;
-            if (OPS_GetDoubleInput(&num, &kFactUplift) < 0) {
+            if (OPS_GetDoubleInput(num, &kFactUplift) < 0) {
                 opserr << "WARNING: invalid kFactuplift\n";
                 return 0;
             }

@@ -1855,7 +1855,7 @@ OPS_ConfinedConcrete01Material()
   }
 
   int numData = 1;
-  if (OPS_GetInt(&numData, &tag) != 0) {
+  if (OPS_GetInt(numData, &tag) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ConfinedConcrete01 tag" << endln;
     return 0;
   }
@@ -1896,7 +1896,7 @@ OPS_ConfinedConcrete01Material()
   }
   
   // --Parse concrete properties-------------------------------------------------
-  if (OPS_GetDouble(&numData, &fpc) != 0) {
+  if (OPS_GetDouble(numData, &fpc) != 0) {
     opserr << "WARNING invalid fpc\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
@@ -1907,7 +1907,7 @@ OPS_ConfinedConcrete01Material()
   
   //printf("fpc: %f\n", fpc);
   
-  if (OPS_GetDouble(&numData, &Ec) != 0) {
+  if (OPS_GetDouble(numData, &Ec) != 0) {
     opserr << "WARNING invalid Ec\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
@@ -1940,7 +1940,7 @@ OPS_ConfinedConcrete01Material()
       return 0;
     }
     epscuOption = 2;
-    if (OPS_GetDouble(&numData, &epscu) != 0) {
+    if (OPS_GetDouble(numData, &epscu) != 0) {
       opserr << "WARNING invalid gamma\n";
       opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;
@@ -1949,7 +1949,7 @@ OPS_ConfinedConcrete01Material()
 
   } else { //Specify epscu directly
     epscuOption = 0;
-    if (OPS_GetDouble(&numData, &epscu) != 0) {
+    if (OPS_GetDouble(numData, &epscu) != 0) {
       opserr << "WARNING invalid epscu\n";
       opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;	
@@ -1980,7 +1980,7 @@ OPS_ConfinedConcrete01Material()
     nuOption = 2;
   } else {
     nuOption = 0;
-    if (OPS_GetDouble(&numData, &nuc) != 0) {
+    if (OPS_GetDouble(numData, &nuc) != 0) {
       opserr << "WARNING invalid nu\n";
       opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;	
@@ -1989,7 +1989,7 @@ OPS_ConfinedConcrete01Material()
   }
 
   // --Parse section geometry--------------------------------------------------
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid L1\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
@@ -2013,7 +2013,7 @@ OPS_ConfinedConcrete01Material()
   
   if (secType == 41 || secType == 42 || secType == 7) {
     dim++;
-    if (OPS_GetDouble(&numData, &temp) != 0) {
+    if (OPS_GetDouble(numData, &temp) != 0) {
       opserr << "WARNING invalid L2\n";
       opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;	
@@ -2024,7 +2024,7 @@ OPS_ConfinedConcrete01Material()
   if (secType == 41) {
     dim += 2;
     semiLength.push_back(semiLength[0]); //semiLength[2] = semiLength[0]
-    if (OPS_GetDouble(&numData, &temp) != 0) {
+    if (OPS_GetDouble(numData, &temp) != 0) {
       opserr << "WARNING invalid L3\n";
       opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;	
@@ -2034,7 +2034,7 @@ OPS_ConfinedConcrete01Material()
 
 
 // --Parse transverse reinforcement properties---------------------------------
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid phis\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;
@@ -2043,42 +2043,42 @@ OPS_ConfinedConcrete01Material()
   As.push_back(PI*pow(phis[0],2)/4);
   Is.push_back(PI*pow(phis[0],4)/64);
   
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid S\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
   }
   S.push_back(temp);
   
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid fyh\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
   }
   fyh.push_back(temp);
   
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid Es0\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
   }
   Es0.push_back(temp);
   
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid haRatio\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
   }
   haRatio.push_back(temp);
 
-  if (OPS_GetDouble(&numData, &temp) != 0) {
+  if (OPS_GetDouble(numData, &temp) != 0) {
     opserr << "WARNING invalid mu\n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
   }
   mueps.push_back(temp);
   
-  if (OPS_GetDouble(&numData, &phiLon) != 0) {
+  if (OPS_GetDouble(numData, &phiLon) != 0) {
     opserr << "WARNING invalid phiLon \n";
     opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
     return 0;	
@@ -2114,7 +2114,7 @@ OPS_ConfinedConcrete01Material()
     */
 
     if (strcmp(argvLoc, "-stRatio") == 0) {
-      if (OPS_GetDouble(&numData, &stRatio) != 0 || stRatio > 1.0 || stRatio < 0.0) {
+      if (OPS_GetDouble(numData, &stRatio) != 0 || stRatio > 1.0 || stRatio < 0.0) {
 	opserr << "WARNING invalid stRatio\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2122,7 +2122,7 @@ OPS_ConfinedConcrete01Material()
     }
 
     else if (strcmp(argvLoc, "-epscuLimit") == 0) {
-      if (OPS_GetDouble(&numData, &epscuLimit) != 0) {
+      if (OPS_GetDouble(numData, &epscuLimit) != 0) {
 	opserr << "WARNING invalid epscuLimit\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;
@@ -2131,7 +2131,7 @@ OPS_ConfinedConcrete01Material()
 
     // internal transverse
     else if ((strcmp(argvLoc, "-internalT") == 0) || (strcmp(argvLoc, "-internal") == 0)) {
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid phi (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2145,35 +2145,35 @@ OPS_ConfinedConcrete01Material()
 	Is[dim-1] = PI*pow(temp,4)/64;
       }
 
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid S (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       S[dim-1] = temp;
 
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid fyh (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       fyh[dim-1] = temp;
 
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid Es0 (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       Es0[dim-1] = temp;
 
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid haRatio (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       haRatio[dim-1] = temp;
 
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid mu (stirrups)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2214,7 +2214,7 @@ OPS_ConfinedConcrete01Material()
       argLoc++;
       
       // Get the cover, update semiLength vector
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid cover\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2226,28 +2226,28 @@ OPS_ConfinedConcrete01Material()
 	semiLength.push_back(semiLength[1] + phis[1]/2 + temp);
       }
       
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid As (wrapping)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       As.push_back(temp);
       
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid S (wrapping) \n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
       return 0;	
       }
       S.push_back(temp);
       
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid fyh (wrapping)\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
       }
       fyh.push_back(temp);
       
-      if (OPS_GetDouble(&numData, &temp) != 0) {
+      if (OPS_GetDouble(numData, &temp) != 0) {
 	opserr << "WARNING invalid Es0 (wrapping) \n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2274,7 +2274,7 @@ OPS_ConfinedConcrete01Material()
       
     } else if (strcmp(argvLoc, "-tol") == 0) {
       
-      if (OPS_GetDouble(&numData, &tol) != 0) {
+      if (OPS_GetDouble(numData, &tol) != 0) {
 	opserr << "WARNING invalid tol\n";
 	opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 	return 0;	
@@ -2282,14 +2282,14 @@ OPS_ConfinedConcrete01Material()
       
 	 }
 	 else if (strcmp(argvLoc, "-maxNumIter") == 0) {
-		  if (OPS_GetInt(&numData, &maxNumIter) != 0) {
+		  if (OPS_GetInt(numData, &maxNumIter) != 0) {
 				opserr << "WARNING invalid maxNumIter\n";
 				opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 				return 0;
 		  }
 #ifdef _CSS
 	 } else if (strcmp(argvLoc, "-convFacToMPa") == 0) {
-			 if (OPS_GetDouble(&numData, &facToMPa) != 0) {
+			 if (OPS_GetDouble(numData, &facToMPa) != 0) {
 				  opserr << "WARNING invalid convFacToMPa\n";
 				  opserr << "uniaxialMaterial ConfinedConcrete01: " << tag << endln;
 				  return 0;

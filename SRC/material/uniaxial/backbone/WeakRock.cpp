@@ -47,7 +47,7 @@ void *OPS_WeakRock() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) < 0) {
+  if (OPS_GetIntInput(numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "WeakRock\n";
     return 0;
@@ -56,7 +56,7 @@ void *OPS_WeakRock() {
   // get Kir pur yrm
   double data[3];
   numData = 3;
-  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "WeakRock\n";
     return 0;

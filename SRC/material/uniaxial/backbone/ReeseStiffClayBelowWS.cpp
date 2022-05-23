@@ -48,7 +48,7 @@ void *OPS_ReeseStiffClayBelowWS() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) < 0) {
+  if (OPS_GetIntInput(numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "ReeseStiffClayBelowWS\n";
     return 0;
@@ -57,7 +57,7 @@ void *OPS_ReeseStiffClayBelowWS() {
   // get Esi, y50, As, Pc
   double data[4];
   numData = 4;
-  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "ReeseStiffClayBelowWS\n";
     return 0;

@@ -76,7 +76,7 @@ void* OPS_ElasticBeam3d(void)
     // inputs: 
     int iData[3];
     int numData = 3;
-    if(OPS_GetIntInput(&numData,&iData[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&iData[0]) < 0) return 0;
 
     SectionForceDeformation* theSection = 0;
     CrdTransf* theTrans = 0;
@@ -87,8 +87,8 @@ void* OPS_ElasticBeam3d(void)
     
     if(numArgs == 5) {
 	numData = 1;
-	if(OPS_GetIntInput(&numData,&secTag) < 0) return 0;
-	if(OPS_GetIntInput(&numData,&transfTag) < 0) return 0;
+	if(OPS_GetIntInput(numData,&secTag) < 0) return 0;
+	if(OPS_GetIntInput(numData,&transfTag) < 0) return 0;
 
 	theSection = OPS_getSectionForceDeformation(secTag);
 	if(theSection == 0) {
@@ -102,9 +102,9 @@ void* OPS_ElasticBeam3d(void)
 	}
     } else {
 	numData = 6;
-	if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+	if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
 	numData = 1;
-	if(OPS_GetIntInput(&numData,&transfTag) < 0) return 0;
+	if(OPS_GetIntInput(numData,&transfTag) < 0) return 0;
 	theTrans = OPS_getCrdTransf(transfTag);
 	if(theTrans == 0) {
 	    opserr<<"no CrdTransf is found\n";
@@ -119,20 +119,20 @@ void* OPS_ElasticBeam3d(void)
 	std::string theType = OPS_GetString();
 	if (theType == "-mass") {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(&numData,&mass) < 0) return 0;
+		if(OPS_GetDoubleInput(numData,&mass) < 0) return 0;
 	    }
 	} else if (theType == "-cMass") {
 	    cMass = 1;
 	} else if (theType == "-releasez") {
 	  if (OPS_GetNumRemainingInputArgs() > 0) {
-	    if (OPS_GetIntInput(&numData, &releasez) < 0) {
+	    if (OPS_GetIntInput(numData, &releasez) < 0) {
 	      opserr << "WARNING: failed to get releasez";
 	      return 0;
 	    }
 	  }
 	} else if (theType == "-releasey") {
 	  if (OPS_GetNumRemainingInputArgs() > 0) {
-	    if (OPS_GetIntInput(&numData, &releasey) < 0) {
+	    if (OPS_GetIntInput(numData, &releasey) < 0) {
 	      opserr << "WARNING: failed to get releasey";
 	      return 0;
 	    }

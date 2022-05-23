@@ -42,7 +42,7 @@ void *OPS_VuggyLimestone() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) < 0) {
+  if (OPS_GetIntInput(numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "VuggyLimestone\n";
     return 0;
@@ -51,7 +51,7 @@ void *OPS_VuggyLimestone() {
   // get b su
   double data[2];
   numData = 2;
-  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "VuggyLimestone\n";
     return 0;

@@ -44,7 +44,7 @@ void* OPS_CTestPFEM()
     // tolerance
     double tol[6];
     int numData = 6;
-    if(OPS_GetDoubleInput(&numData,&tol[0]) < 0) {
+    if(OPS_GetDoubleInput(numData,&tol[0]) < 0) {
 	opserr << "WARNING PFEM test failed to get tolerance\n";
 	return 0;
     }
@@ -53,7 +53,7 @@ void* OPS_CTestPFEM()
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 4) numData = 4;
     int data[4] = {20,3,0,2};
-    if(OPS_GetIntInput(&numData,&data[0]) < 0) {
+    if(OPS_GetIntInput(numData,&data[0]) < 0) {
 	opserr << "WARNING PFEM test failed to get int values\n";
 	return 0;
     }

@@ -71,7 +71,7 @@ void* OPS_PFEMSolver_Umfpack()
 	} else if (strcmp(opt, "-ptol") == 0) {
 
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetDoubleInput(&numdata, &ptol) < 0) {
+		if (OPS_GetDoubleInput(numdata, &ptol) < 0) {
 		    opserr << "WARNING: failed to get ptol\n";
 		    return 0;
 		}
@@ -81,7 +81,7 @@ void* OPS_PFEMSolver_Umfpack()
 	} else if (strcmp(opt, "-pmaxiter") == 0) {
 
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetIntInput(&numdata, &maxiter) < 0) {
+		if (OPS_GetIntInput(numdata, &maxiter) < 0) {
 		    opserr << "WARNING: failed to get max iteration for pressure\n";
 		    return 0;
 		}

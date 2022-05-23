@@ -73,7 +73,7 @@ OPS_DowelType()
     int numData;
     int tag;
     numData = 1;
-    if (OPS_GetIntInput(&numData, &tag) != 0) {
+    if (OPS_GetIntInput(numData, &tag) != 0) {
         opserr << "ERROR: invalid uniaxialMaterial DowelType tag" << endln;
         return 0;
     }
@@ -81,7 +81,7 @@ OPS_DowelType()
     // parsing hysteresis data
     double dData[11];
     numData = 11;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "ERROR: expected $Fi $Kp $Ru $c $gamma $eta";
         opserr << "$Dy $alpha_p $alpha_u $alpha_r" << endln;
         return 0;
@@ -92,7 +92,7 @@ OPS_DowelType()
     if (strcmp(envstr, "-exponential") == 0) {
         numData = OPS_GetNumRemainingInputArgs();
         double eData[12];
-        if (OPS_GetDoubleInput(&numData, eData) != 0) {
+        if (OPS_GetDoubleInput(numData, eData) != 0) {
             opserr << "ERROR: expected exponential envelope parameters: ";
             opserr << "$K0 $R1 $F0 $Dc $Kd <$Du> <$K0N $R1N $F0N $DcN $KdN <$DuN>>" << endln;
             return 0;   
@@ -133,7 +133,7 @@ OPS_DowelType()
     } else if (strcmp(envstr, "-bezier") == 0) {
         numData = OPS_GetNumRemainingInputArgs();
         double eData[16];
-        if (OPS_GetDoubleInput(&numData, eData) != 0) {
+        if (OPS_GetDoubleInput(numData, eData) != 0) {
             opserr << "ERROR: expected Bezier envelope parameters: ";
             opserr << "$Db1 $Fb1 $Db2 $Fb2 $Dc $Fc $Kd <$Du> ";
             opserr << "<$Db1N $Fb1N $Db2N $Fb2N $DcN $FcN $KdN <$DuN>>" << endln;
@@ -189,7 +189,7 @@ OPS_DowelType()
             return 0;
         }
         double * eData = new double[numData];
-        if (OPS_GetDoubleInput(&numData, eData) != 0) {
+        if (OPS_GetDoubleInput(numData, eData) != 0) {
             opserr << "ERROR: piecewise envelope: cannot read coordinates.  ";
             opserr << "Expected: $D1 $F1 $D2 $F2 $D3 $F3 <$D4 $F4 ...>" << endln;
             return 0;

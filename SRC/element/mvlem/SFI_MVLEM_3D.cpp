@@ -77,13 +77,13 @@ void* OPS_SFI_MVLEM_3D(void)
 	dData[3] = 0.0;		// Density
 
 	int numData = 1;
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid tag for element SFI_MVLEM_3D" << endln;
 		return 0;
 	}
 
 	numData = 5;
-	if (OPS_GetIntInput(&numData, &iData[1]) != 0) {
+	if (OPS_GetIntInput(numData, &iData[1]) != 0) {
 		opserr << "WARNING iNode jNode kNode lNode or m for element SFI_MVLEM_3D" << iData[0] << endln;
 		return 0;
 	}
@@ -104,21 +104,21 @@ void* OPS_SFI_MVLEM_3D(void)
 		str = OPS_GetString();
 		if (strcmp(str, "-thick") == 0) {
 			numData = m;
-			if (OPS_GetDoubleInput(&numData, theThickness) != 0) {
+			if (OPS_GetDoubleInput(numData, theThickness) != 0) {
 				opserr << "Invalid thick parameter for SFI_MVLEM   " << iData[0] << endln;
 				return 0;
 			}
 		}
 		else if (strcmp(str, "-width") == 0) {
 			numData = m;
-			if (OPS_GetDoubleInput(&numData, theWidth) != 0) {
+			if (OPS_GetDoubleInput(numData, theWidth) != 0) {
 				opserr << "Invalid width value for SFI_MVLEM  " << iData[0] << endln;
 				return 0;
 			}
 		}
 		else if (strcmp(str, "-mat") == 0) {
 			numData = m;
-			if (OPS_GetIntInput(&numData, matTags) != 0) {
+			if (OPS_GetIntInput(numData, matTags) != 0) {
 				opserr << "Invalid mat tags for SFI_MVLEM  " << iData[0] << endln;
 				return 0;
 			}
@@ -135,28 +135,28 @@ void* OPS_SFI_MVLEM_3D(void)
 		// optional parameters
 		else if (strcmp(str, "-CoR") == 0) {
 			numData = 1;
-			if (OPS_GetDoubleInput(&numData, &dData[0]) != 0) {
+			if (OPS_GetDoubleInput(numData, &dData[0]) != 0) {
 				opserr << "Invalid CoR parameter for MVLEM   " << iData[0] << endln;
 				return 0;
 			}
 		}
 		else if (strcmp(str, "-ThickMod") == 0) {
 			numData = 1;
-			if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+			if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
 				opserr << "Invalid ThickMod parameter for MVLEM   " << iData[0] << endln;
 				return 0;
 			}
 		}
 		else if (strcmp(str, "-Poisson") == 0) {
 			numData = 1;
-			if (OPS_GetDoubleInput(&numData, &dData[2]) != 0) {
+			if (OPS_GetDoubleInput(numData, &dData[2]) != 0) {
 				opserr << "Invalid Poisson parameter for MVLEM   " << iData[0] << endln;
 				return 0;
 			}
 		}
 		else if (strcmp(str, "-Density") == 0) {
 			numData = 1;
-			if (OPS_GetDoubleInput(&numData, &dData[3]) != 0) {
+			if (OPS_GetDoubleInput(numData, &dData[3]) != 0) {
 				opserr << "Invalid Dens parameter for MVLEM   " << iData[0] << endln;
 				return 0;
 			}

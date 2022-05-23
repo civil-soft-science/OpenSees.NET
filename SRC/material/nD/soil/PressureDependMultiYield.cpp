@@ -101,13 +101,13 @@ void* OPS_PressureDependMultiYield()
     }
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid PressureDependMultiYield tag" << "\n";
 	return 0;
     }
 
     for (int i=3; (i<argc && i<19); i++)
-	if (OPS_GetDoubleInput(&numdata, &param[i-3]) < 0) {
+	if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
 	    opserr << "WARNING invalid " << " double " << "\n";
 	    opserr << "nDMaterial PressureDependMultiYield: " << tag << "\n";
 	    return 0;
@@ -120,7 +120,7 @@ void* OPS_PressureDependMultiYield()
 	gredu = new double[int(2*param[15])];
 
 	for (int i=0; i<2*param[15]; i++)
-	    if (OPS_GetDoubleInput(&numdata, &gredu[i]) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &gredu[i]) < 0) {
 		opserr << "WARNING invalid " << arg[i-3] << "\n";
 		opserr << "nDMaterial PressureIndependMultiYield: " << tag << "\n";
 		return 0;
@@ -129,14 +129,14 @@ void* OPS_PressureDependMultiYield()
 
     if (gredu != 0) {
 	for (int i=19+int(2*param[15]); i<argc; i++)
-	    if (OPS_GetDoubleInput(&numdata, &param[i-3-int(2*param[15])]) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &param[i-3-int(2*param[15])]) < 0) {
 		opserr << "WARNING invalid " << " double " << "\n";
 		opserr << "nDMaterial PressureDependMultiYield: " << tag << "\n";
 		return 0;
 	    }
     } else {
 	for (int i=19; i<argc; i++)
-	    if (OPS_GetDoubleInput(&numdata, &param[i-3]) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
 		opserr << "WARNING invalid " << " double " << "\n";
 		opserr << "nDMaterial PressureDependMultiYield: " << tag << "\n";
 		return 0;

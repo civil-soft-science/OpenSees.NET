@@ -50,7 +50,7 @@ class ResidElementRecorder: public Recorder
 			    const char **argv, 
 			    int argc,
 			    Domain &theDomain, 
-			    OPS_Stream &theOutputHandler,
+			    OPS_Stream *theOutputHandler,
 #ifdef _CSS
           int procMethod = 0, int procGrpNum = 1,
 #endif // _CSS

@@ -53,7 +53,7 @@ void* OPS_PlateFiberMaterial()
 
     int tag[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata,tag)<0) {
+    if (OPS_GetIntInput(numdata,tag)<0) {
 	opserr << "WARNING invalid tags\n";
 	return 0;
     }

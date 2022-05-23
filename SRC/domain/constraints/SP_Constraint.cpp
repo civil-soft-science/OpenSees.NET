@@ -57,7 +57,7 @@ int OPS_HomogeneousBC()
     // get tag and constr values
     int num = OPS_GetNumRemainingInputArgs();
     ID vals(num);
-    if(OPS_GetIntInput(&num, &vals(0)) < 0) {
+    if(OPS_GetIntInput(num, &vals(0)) < 0) {
 	opserr << "WARNING invalid int values\n";
 	return -1;
     }
@@ -107,7 +107,7 @@ int OPS_HomogeneousBC_X()
     // get the xCrd of nodes to be constrained
     double xLoc;
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &xLoc) < 0) {
+    if (OPS_GetDoubleInput(numdata, &xLoc) < 0) {
 	opserr << "WARNING invalid xLoc\n";
 	return -1;
     }
@@ -116,7 +116,7 @@ int OPS_HomogeneousBC_X()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(&numdata, &fix) < 0) {
+	if (OPS_GetIntInput(numdata, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -130,7 +130,7 @@ int OPS_HomogeneousBC_X()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(&numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }
@@ -157,7 +157,7 @@ int OPS_HomogeneousBC_Y()
     // get the yCrd of nodes to be constrained
     double yLoc;
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &yLoc) < 0) {
+    if (OPS_GetDoubleInput(numdata, &yLoc) < 0) {
 	opserr << "WARNING invalid yLoc\n";
 	return -1;
     }
@@ -166,7 +166,7 @@ int OPS_HomogeneousBC_Y()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(&numdata, &fix) < 0) {
+	if (OPS_GetIntInput(numdata, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -180,7 +180,7 @@ int OPS_HomogeneousBC_Y()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(&numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }
@@ -207,7 +207,7 @@ int OPS_HomogeneousBC_Z()
     // get the zCrd of nodes to be constrained
     double zLoc;
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &zLoc) < 0) {
+    if (OPS_GetDoubleInput(numdata, &zLoc) < 0) {
 	opserr << "WARNING invalid zLoc\n";
 	return -1;
     }
@@ -216,7 +216,7 @@ int OPS_HomogeneousBC_Z()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(&numdata, &fix) < 0) {
+	if (OPS_GetIntInput(numdata, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -230,7 +230,7 @@ int OPS_HomogeneousBC_Z()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(&numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }

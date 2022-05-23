@@ -48,7 +48,7 @@ void* OPS_RCTBeamSection2d()
   // int
   int numdata = 4;
   int idata[6];
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
     return 0;
   }
@@ -60,7 +60,7 @@ void* OPS_RCTBeamSection2d()
   // double
   numdata = 8;
   double data[8];
-  if (OPS_GetDoubleInput(&numdata, data) < 0) {
+  if (OPS_GetDoubleInput(numdata, data) < 0) {
     opserr << "WARNING invalid double inputs" << endln;
     opserr << "RCTBeamSection2d section: " << tag << endln;
     return 0;
@@ -77,7 +77,7 @@ void* OPS_RCTBeamSection2d()
   
   // int
   numdata = 6;
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
     return 0;
   }
@@ -169,7 +169,7 @@ void* OPS_RCTBeamSectionUniMat2d()
   // int
   int numdata = 4;
   int idata[6];
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCTBeamSectionUniMat2d int inputs" << endln;
     return 0;
   }
@@ -181,7 +181,7 @@ void* OPS_RCTBeamSectionUniMat2d()
   // double
   numdata = 8;
   double data[8];
-  if (OPS_GetDoubleInput(&numdata, data) < 0) {
+  if (OPS_GetDoubleInput(numdata, data) < 0) {
     opserr << "WARNING invalid double inputs" << endln;
     opserr << "RCTBeamSectionUniMat2d section: " << tag << endln;
     return 0;
@@ -198,7 +198,7 @@ void* OPS_RCTBeamSectionUniMat2d()
   
   // int
   numdata = 6;
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCTBeamSectionUniMat2d int inputs" << endln;
     return 0;
   }

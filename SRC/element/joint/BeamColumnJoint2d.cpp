@@ -63,7 +63,7 @@ void* OPS_BeamColumnJoint2d()
 
     int idata[18];
     int numdata = 18;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -71,7 +71,7 @@ void* OPS_BeamColumnJoint2d()
     double data[2] = {1.0, 1.0};
     numdata = 2;
     if (OPS_GetNumRemainingInputArgs() > 1) {
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr<<"WARNING: invalid double inputs\n";
 	    return 0;
 	}

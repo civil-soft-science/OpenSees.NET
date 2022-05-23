@@ -59,7 +59,7 @@ void* OPS_LagrangeConstraintHandler()
     double data[2] = {1,1};
     if(numData > 2) numData = 2;
     if(numData > 0) {
-	if(OPS_GetDoubleInput(&numData, &data[0]) < 0) return 0;
+	if(OPS_GetDoubleInput(numData, &data[0]) < 0) return 0;
     }
 
     return new LagrangeConstraintHandler(data[0], data[1]);

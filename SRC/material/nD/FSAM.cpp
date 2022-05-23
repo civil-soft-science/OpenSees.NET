@@ -90,28 +90,28 @@ OPS_Export void *OPS_FSAMMaterial()
 
 	// nDMaterial tag
 	numData = 1;
-	if (OPS_GetInt(&numData, &tag) != 0) {
+	if (OPS_GetInt(numData, &tag) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial FSAM tag" << endln;
 		return 0;
 	}
 
 	// nDMaterial density
 	numData = 1;
-	if (OPS_GetDouble(&numData, &rho) != 0) {
+	if (OPS_GetDouble(numData, &rho) != 0) {
 		opserr << "Invalid Arg rho: nDMaterial FSAM $mattag $rho $sX $sY $conc $rouX $rouY $nu $alfadow" << endln;
 		return 0;	
 	}
 
 	// Material tags of 2 steel (in X and Y directions) and 1 concrete materials
 	numData = 3;
-	if (OPS_GetInt(&numData, iData) != 0) {
+	if (OPS_GetInt(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial FSAM tag" << endln;
 		return 0;
 	}
 
 	// Other FSAM material parameters
 	numData = 4;
-	if (OPS_GetDouble(&numData, dData) != 0) {
+	if (OPS_GetDouble(numData, dData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial FSAM tag" << endln;
 		return 0;
 	}

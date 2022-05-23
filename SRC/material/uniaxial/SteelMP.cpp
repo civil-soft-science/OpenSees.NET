@@ -49,7 +49,7 @@ void* OPS_SteelMP()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING invalid uniaxialMaterial SteelMP tag\n";
         return 0;
     }
@@ -64,7 +64,7 @@ void* OPS_SteelMP()
 	return 0;
     }
     
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
         opserr << "WARNING invalid uniaxialMaterial SteelMP double inputs\n";
         return 0;
     }
@@ -74,7 +74,7 @@ void* OPS_SteelMP()
     double opt[5] = {20.0, 18.5, 0.15, 0, 0};
     numdata = 5;
     if (argc >6) {
-	if (OPS_GetDoubleInput(&numdata, opt) < 0) {
+	if (OPS_GetDoubleInput(numdata, opt) < 0) {
 	    opserr << "WARNING invalid uniaxialMaterial SteelMP double inputs\n";
 	    return 0;
 	}

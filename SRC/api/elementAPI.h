@@ -178,35 +178,35 @@ extern "C" int         OPS_GetNumRemainingInputArgs();
 extern "C" int         OPS_ResetCurrentInputArg(int cArg);
 //extern "C" int       OPS_ResetInput(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain, TclModelBuilder * builder);
 // extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
-extern "C" int         OPS_GetIntInput(int* numData, int* data);
-extern "C" int         OPS_SetIntOutput(int* numData, int* data, bool scalar);
-extern "C" int         OPS_GetDoubleInput(int* numData, double* data);
-extern "C" int         OPS_SetDoubleOutput(int* numData, double* data, bool scalar);
+extern "C" int         OPS_GetIntInput(int numData, int* data);
+extern "C" int         OPS_SetIntOutput(int numData, int* data, bool scalar);
+extern "C" int         OPS_GetDoubleInput(int numData, double* data);
+extern "C" int         OPS_SetDoubleOutput(int numData, double* data, bool scalar);
 extern "C" const char* OPS_GetString(); // does a strcpy
 extern "C" const char* OPS_GetStringFromAll(char* buffer, int len); // does a strcpy
 extern "C" int         OPS_SetString(const char* str);
 //extern "C" int       OPS_GetString(char *cArray, int sizeArray); // does a strcpy
 extern "C" int         OPS_GetStringCopy(char** cArray); // returns a new copy
-extern "C" matObj*     OPS_GetMaterial(int* matTag, int* matType);
+extern "C" matObj*     OPS_GetMaterial(int matTag, int matType);
 //extern "C" void      OPS_GetMaterialPtr(int *matTag, matObj *theRes);
-extern "C" eleObj*     OPS_GetElement(int* eleTag);
+extern "C" eleObj*     OPS_GetElement(int eleTag);
 extern "C" matObj*     OPS_GetMaterialType(char* type, int sizeType);
 extern "C" eleObj*     OPS_GetElementType(char* type, int sizeType);
-extern "C" int         OPS_AllocateElement(eleObject * theEle, int* matTags, int* matType);
+extern "C" int         OPS_AllocateElement(eleObject * theEle, int* matTags, int matType);
 extern "C" int         OPS_AllocateMaterial(matObject * theMat);
 extern "C" limCrvObj*  OPS_GetLimitCurveType(char* type, int sizeType);
 extern "C" int         OPS_AllocateLimitCurve(limCrvObject * theLimCrv);
 
-extern "C" int         OPS_InvokeMaterial(eleObject*, int*, modelState*, double*, double*, double*, int*);
+extern "C" int         OPS_InvokeMaterial(eleObject*, int, modelState*, double*, double*, double*, int*);
 extern "C" int         OPS_InvokeMaterialDirectly(matObject**, modelState*, double*, double*, double*, int*);
 extern "C" int         OPS_InvokeMaterialDirectly2(matObject*, modelState*, double*, double*, double*, int*);
 
-extern "C" int         OPS_GetNodeCrd(int* nodeTag, int* sizeData, double* data);
-extern "C" int         OPS_GetNodeDisp(int* nodeTag, int* sizeData, double* data);
-extern "C" int         OPS_GetNodeVel(int* nodeTag, int* sizeData, double* data);
-extern "C" int         OPS_GetNodeAccel(int* nodeTag, int* sizeData, double* data);
-extern "C" int         OPS_GetNodeIncrDisp(int* nodeTag, int* sizeData, double* data);
-extern "C" int         OPS_GetNodeIncrDeltaDisp(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeCrd(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeDisp(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeVel(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeAccel(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeIncrDisp(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeIncrDeltaDisp(int nodeTag, int sizeData, double* data);
 
 class UniaxialMaterial;
 class NDMaterial;
@@ -251,17 +251,17 @@ int     OPS_GetNDF();
 int     OPS_GetNDM();
 
 int     OPS_Error(char*, int length);
-int     OPS_GetIntInput(int* numData, int* data);
-int     OPS_GetDoubleInput(int* numData, double* data);
+int     OPS_GetIntInput(int numData, int* data);
+int     OPS_GetDoubleInput(int numData, double* data);
 int     OPS_GetString(char* cArray, int sizeArray);
 
 
-matObj* OPS_GetMaterial(int* matTag, int* matType);
-void    OPS_GetMaterialPtr(int*, matObj*);
-eleObj* OPS_GetElement(int*);
+matObj* OPS_GetMaterial(int matTag, int matType);
+void    OPS_GetMaterialPtr(int, matObj*);
+eleObj* OPS_GetElement(int);
 matObj* OPS_GetMaterialType(char* type, int sizeType);
 eleObj* OPS_GetElementType(char*, int);
-int     OPS_AllocateElement(eleObj*, int* matTags, int* maType);
+int     OPS_AllocateElement(eleObj*, int matTags, int maType);
 int     OPS_AllocateMaterial(matObj*);
 
 limCrv* OPS_GetLimitCurveType(char* type, int sizeType);//**MRL

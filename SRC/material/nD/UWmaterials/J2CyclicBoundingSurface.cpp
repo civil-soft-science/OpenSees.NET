@@ -53,7 +53,7 @@ void* OPS_J2CyclicBoundingSurfaceMaterial()
 	int tag;
 
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 		opserr << "WARNING invalid J2CyclicBoundingSurface tag\n";
 		return 0;
 	}
@@ -64,7 +64,7 @@ void* OPS_J2CyclicBoundingSurfaceMaterial()
 		opserr << "WARNING error in  J2CyclicBoundingSurface number of arg incorrect\n";
 		return 0;
 	}
-	if (OPS_GetDoubleInput(&numdata, data)) {
+	if (OPS_GetDoubleInput(numdata, data)) {
 		opserr << "WARNING invalid J2CyclicBoundingSurface double inputs\n";
 		return 0;
 	}

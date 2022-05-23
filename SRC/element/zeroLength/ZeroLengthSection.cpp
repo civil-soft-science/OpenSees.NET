@@ -62,7 +62,7 @@ void* OPS_ZeroLengthSection()
     // get eleTag,iNode,jNode,secTag
     int iData[4];
     int numData = 4;
-    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -77,18 +77,18 @@ void* OPS_ZeroLengthSection()
 	if(strcmp(type, "-orient") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 5) {
 		numData = 3;
-		if(OPS_GetDoubleInput(&numData,x_ptr) < 0) {
+		if(OPS_GetDoubleInput(numData,x_ptr) < 0) {
 		    opserr<<"WARNING: invalid double inputs\n";
 		    return 0;
 		}
-		if(OPS_GetDoubleInput(&numData,y_ptr) < 0) {
+		if(OPS_GetDoubleInput(numData,y_ptr) < 0) {
 		    opserr<<"WARNING: invalid double inputs\n";
 		    return 0;
 		}
 	    }
 	} else if(strcmp(type, "-doRayleigh") == 0) {
 	    numData = 1;
-	    if(OPS_GetIntInput(&numData,&doRayleighDamping) < 0) {
+	    if(OPS_GetIntInput(numData,&doRayleighDamping) < 0) {
 		opserr<<"WARNING: invalid integer inputs\n";
 		return 0;
 	    }

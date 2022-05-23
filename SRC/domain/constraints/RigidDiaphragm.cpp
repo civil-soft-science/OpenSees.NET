@@ -54,7 +54,7 @@ int OPS_RigidDiaphragm(Domain* theDomain)
 
     // all data
     ID data(num);
-    if(OPS_GetIntInput(&num, &data(0)) < 0) return -1;
+    if(OPS_GetIntInput(num, &data(0)) < 0) return -1;
 
     // constrained ndoes
     ID cNodes(num-2);

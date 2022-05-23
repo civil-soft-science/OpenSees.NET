@@ -71,7 +71,7 @@ void* OPS_Joint3D()
     // get the id and end nodes
     int idata[8];
     int num = 8;
-    if (OPS_GetIntInput(&num, idata) < 0) {
+    if (OPS_GetIntInput(num, idata) < 0) {
   opserr << "WARNING invalid Joint3D int inputs" << endln;
   return 0;
     }
@@ -100,7 +100,7 @@ void* OPS_Joint3D()
     UniaxialMaterial *MatX = NULL;
     int MatXid;
     num = 1;
-    if (OPS_GetIntInput(&num, &MatXid) < 0) {
+    if (OPS_GetIntInput(num, &MatXid) < 0) {
   opserr << "WARNING invalid material ID for spring X\n";
   opserr << "Joint3D element: " << Joint3DId << endln;
   return 0;
@@ -118,7 +118,7 @@ void* OPS_Joint3D()
     UniaxialMaterial *MatY = NULL;
     int MatYid;
     num = 1;
-    if (OPS_GetIntInput(&num, &MatYid) < 0) {
+    if (OPS_GetIntInput(num, &MatYid) < 0) {
   opserr << "WARNING invalid material ID for spring Y\n";
   opserr << "Joint3D element: " << Joint3DId << endln;
   return 0;
@@ -136,7 +136,7 @@ void* OPS_Joint3D()
     UniaxialMaterial *MatZ = NULL;
     int MatZid;
     num = 1;
-    if (OPS_GetIntInput(&num, &MatZid) < 0) {
+    if (OPS_GetIntInput(num, &MatZid) < 0) {
   opserr << "WARNING invalid material ID for spring Z\n";
   opserr << "Joint3D element: " << Joint3DId << endln;
   return 0;
@@ -153,7 +153,7 @@ void* OPS_Joint3D()
 
     int LargeDisp;
     num = 1;
-    if (OPS_GetIntInput(&num, &LargeDisp) < 0) {
+    if (OPS_GetIntInput(num, &LargeDisp) < 0) {
   // use 0 as default
   LargeDisp = 0;
     }

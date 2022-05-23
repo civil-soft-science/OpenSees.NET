@@ -58,7 +58,7 @@ void* OPS_GenericClient()
     // tags
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING: invalid tag\n";
         return 0;
     }
@@ -75,7 +75,7 @@ void* OPS_GenericClient()
         int node;
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata, &node) < 0) {
+        if (OPS_GetIntInput(numdata, &node) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -102,7 +102,7 @@ void* OPS_GenericClient()
             int dof;
             numdata = 1;
             int numArgs = OPS_GetNumRemainingInputArgs();
-            if (OPS_GetIntInput(&numdata, &dof) < 0) {
+            if (OPS_GetIntInput(numdata, &dof) < 0) {
                 if (numArgs > OPS_GetNumRemainingInputArgs()) {
                     // move current arg back by one
                     OPS_ResetCurrentInputArg(-1);
@@ -128,7 +128,7 @@ void* OPS_GenericClient()
         opserr << "WARNING expecting -server ipPort <ipAddr>\n";
         return 0;
     }
-    if (OPS_GetIntInput(&numdata, &ipPort) < 0) {
+    if (OPS_GetIntInput(numdata, &ipPort) < 0) {
         opserr << "WARNING: invalid ipPort\n";
         return 0;
     }
@@ -163,7 +163,7 @@ void* OPS_GenericClient()
                 return 0;
             }
             numdata = 1;
-            if (OPS_GetIntInput(&numdata, &dataSize) < 0) {
+            if (OPS_GetIntInput(numdata, &dataSize) < 0) {
                 opserr << "WARNING invalid dataSize value\n";
                 return 0;
             }

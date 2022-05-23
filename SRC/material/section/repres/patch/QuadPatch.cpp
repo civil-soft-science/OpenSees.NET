@@ -43,13 +43,13 @@ void* OPS_QuadPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
 
     // get data
     static Matrix vertexCoords(4,2);
     double data[8];
     numData = 8;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
     for(int i=0; i<4; i++) {
 	for(int j=0; j<2; j++) {
 	    vertexCoords(i,j) = data[i*2+j];
@@ -69,13 +69,13 @@ void* OPS_RectPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
 
     // get data
     static Matrix vertexCoords(4,2);
     double data[4];
     numData = 4;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
     vertexCoords(0,0) = data[0];
     vertexCoords(0,1) = data[1];
     vertexCoords(1,0) = data[2];

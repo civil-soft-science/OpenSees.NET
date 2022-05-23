@@ -45,7 +45,7 @@ void *OPS_IncrementalElasticIsotropicThreeDimensional(void)
   dData[2] = 0.0;
   
   int numData = 1;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: nDMaterial IncrementalElasticIsotropic3D \n";
     return 0;
   }
@@ -55,7 +55,7 @@ void *OPS_IncrementalElasticIsotropicThreeDimensional(void)
   else
     numData = 2;
   
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid data: nDMaterial IncrementalElasticIsotropic3D : " << iData[0] <<"\n";
     return 0;
   }  

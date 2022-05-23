@@ -40,14 +40,14 @@ void* OPS_Bidirectional()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid Bidirectional tag" << endln;
 	return 0;
     }
 
     numdata = 4;
     double data[4];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "section Bidirectional: " << tag << endln;
 	return 0;

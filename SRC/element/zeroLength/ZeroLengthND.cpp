@@ -79,7 +79,7 @@ void* OPS_ZeroLengthND()
 
     int idata [4];
     numdata = 4;
-    if (OPS_GetIntInput(&numdata,idata) < 0) {
+    if (OPS_GetIntInput(numdata,idata) < 0) {
         opserr << "WARNING: failed to get integer data\n";
         return 0;
     }
@@ -91,7 +91,7 @@ void* OPS_ZeroLengthND()
 
     UniaxialMaterial* umat = 0;
     int uniTag;
-    if (OPS_GetIntInput(&numdata,&uniTag) >= 0) {
+    if (OPS_GetIntInput(numdata,&uniTag) >= 0) {
 	umat = OPS_getUniaxialMaterial(uniTag);
 	if (umat == 0) {
 	    opserr<<"WARNING: uniaxial material "<<uniTag<<" is not defined\n";
@@ -110,11 +110,11 @@ void* OPS_ZeroLengthND()
 	    return 0;
 	}
 	numdata = 3;
-	if (OPS_GetDoubleInput(&numdata,&x(0)) < 0) {
+	if (OPS_GetDoubleInput(numdata,&x(0)) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(&numdata,&y(0)) < 0) {
+	if (OPS_GetDoubleInput(numdata,&y(0)) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}

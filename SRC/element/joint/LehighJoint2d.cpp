@@ -58,7 +58,7 @@ void *OPS_LehighJoint2d()
   // 1 ele tag, 4 node tags, 9 material tags
   int idata[14];
   int num = 14;
-  if (OPS_GetIntInput(&num, idata) < 0) {
+  if (OPS_GetIntInput(num, idata) < 0) {
     opserr<<"WARNING: invalid integer data\n";
     return 0;
   }

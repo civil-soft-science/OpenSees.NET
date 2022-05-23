@@ -490,7 +490,7 @@ OPS_ASDAbsorbingBoundary3D(void)
     // int parameters
     int iData[9];
     int numData = 9;
-    if (OPS_GetInt(&numData, iData) != 0) {
+    if (OPS_GetInt(numData, iData) != 0) {
         opserr << "ASDAbsorbingBoundary3D ERROR: Invalid integer mandatory values: element ASDAbsorbingBoundary3D wants 9 integer parameters\n" << descr;
         return 0;
     }
@@ -498,7 +498,7 @@ OPS_ASDAbsorbingBoundary3D(void)
     // double parameters
     double dData[3];
     numData = 3;
-    if (OPS_GetDouble(&numData, dData) != 0) {
+    if (OPS_GetDouble(numData, dData) != 0) {
         opserr << "ASDAbsorbingBoundary3D ERROR: Invalid double mandatory values: element ASDAbsorbingBoundary3D wants 3 double parameters\n" << descr;
         return 0;
     }
@@ -527,8 +527,8 @@ OPS_ASDAbsorbingBoundary3D(void)
         numData = 1;
         int tsTag = 0;
         // util: get x
-        auto get_fx = [&numData, &tsTag, &fx, descr]() -> bool {
-            if (OPS_GetInt(&numData, &tsTag) != 0) {
+        auto get_fx = [numData, &tsTag, &fx, descr]() -> bool {
+            if (OPS_GetInt(numData, &tsTag) != 0) {
                 opserr << "ASDAbsorbingBoundary3D ERROR: Invalid integer for -fx optional time series.\n" << descr;
                 return false;
             }
@@ -540,8 +540,8 @@ OPS_ASDAbsorbingBoundary3D(void)
             return true;
         };
         // util: get y
-        auto get_fy = [&numData, &tsTag, &fy, descr]() -> bool {
-            if (OPS_GetInt(&numData, &tsTag) != 0) {
+        auto get_fy = [numData, &tsTag, &fy, descr]() -> bool {
+            if (OPS_GetInt(numData, &tsTag) != 0) {
                 opserr << "ASDAbsorbingBoundary3D ERROR: Invalid integer for -fy optional time series.\n" << descr;
                 return false;
             }
@@ -553,8 +553,8 @@ OPS_ASDAbsorbingBoundary3D(void)
             return true;
         };
         // util: get z
-        auto get_fz = [&numData, &tsTag, &fz, descr]() -> bool {
-            if (OPS_GetInt(&numData, &tsTag) != 0) {
+        auto get_fz = [numData, &tsTag, &fz, descr]() -> bool {
+            if (OPS_GetInt(numData, &tsTag) != 0) {
                 opserr << "ASDAbsorbingBoundary3D ERROR: Invalid integer for -fz optional time series.\n" << descr;
                 return false;
             }

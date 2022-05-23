@@ -64,7 +64,7 @@ int OPS_Parameter() {
   // Figure out which parameter we are dealing with
   int paramTag;
   int num = 1;
-  if (OPS_GetIntInput(&num, &paramTag) < 0) {
+  if (OPS_GetIntInput(num, &paramTag) < 0) {
     opserr << "WARING: parameter - failed to get parameter tag\n";
     return -1;
   }
@@ -85,7 +85,7 @@ int OPS_Parameter() {
       return -1;
     }
 
-    if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+    if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
       opserr << "WARING: parameter - failed to set parameter tag\n";
       return -1;
     }
@@ -98,7 +98,7 @@ int OPS_Parameter() {
     Parameter *newParameter = new Parameter(paramTag, 0, 0, 0);
 
     double value;
-    if (OPS_GetDoubleInput(&num, &value) < 0) {
+    if (OPS_GetDoubleInput(num, &value) < 0) {
       opserr << "WARNING: failed to get paramber value\n";
       return -1;
     }
@@ -110,7 +110,7 @@ int OPS_Parameter() {
       return -1;
     }
 
-    if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+    if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
       opserr << "WARING: parameter - failed to set parameter tag\n";
       return -1;
     }
@@ -140,7 +140,7 @@ int OPS_Parameter() {
         return -1;
       }
       int tag;
-      if (OPS_GetIntInput(&num, &tag) < 0) {
+      if (OPS_GetIntInput(num, &tag) < 0) {
         opserr << "WARNING: failed to get node tag\n";
         return -1;
       }
@@ -163,7 +163,7 @@ int OPS_Parameter() {
         return -1;
       }
       int tag;
-      if (OPS_GetIntInput(&num, &tag) < 0) {
+      if (OPS_GetIntInput(num, &tag) < 0) {
         opserr << "WARNING: failed to get pattern tag\n";
         return -1;
       }
@@ -185,7 +185,7 @@ int OPS_Parameter() {
         return -1;
       }
       int tag;
-      if (OPS_GetIntInput(&num, &tag) < 0) {
+      if (OPS_GetIntInput(num, &tag) < 0) {
         opserr << "WARNING parameter -- invalid element tag\n";
         return -1;
       }
@@ -205,7 +205,7 @@ int OPS_Parameter() {
         return -1;
       }
       int rvTag;
-      if (OPS_GetIntInput(&num, &rvTag) < 0) {
+      if (OPS_GetIntInput(num, &rvTag) < 0) {
         opserr << "WARNING parameter -- invalid rv tag\n";
         return -1;
       }
@@ -231,7 +231,7 @@ int OPS_Parameter() {
       }
 
       int dof;
-      if (OPS_GetIntInput(&num, &dof) < 0) {
+      if (OPS_GetIntInput(num, &dof) < 0) {
         opserr << "WARNING: failed to get disp dof\n";
         return -1;
       }
@@ -244,7 +244,7 @@ int OPS_Parameter() {
         return -1;
       }
 
-      if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+      if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
         opserr << "WARING: parameter - failed to set parameter tag\n";
         return -1;
       }
@@ -260,7 +260,7 @@ int OPS_Parameter() {
         return -1;
       }
 
-      if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+      if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
         opserr << "WARING: parameter - failed to set parameter tag\n";
         return -1;
       }
@@ -316,7 +316,7 @@ int OPS_Parameter() {
     theDomain->addParameter(newParameter);
   }
 
-  if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+  if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
     opserr << "WARING: parameter - failed to set parameter tag\n";
     return -1;
   }
@@ -339,7 +339,7 @@ int OPS_addToParameter() {
   // Figure out which parameter we are dealing with
   int paramTag;
   int num = 1;
-  if (OPS_GetIntInput(&num, &paramTag) < 0) {
+  if (OPS_GetIntInput(num, &paramTag) < 0) {
     opserr << "WARING: parameter - failed to get parameter tag\n";
     return -1;
   }
@@ -371,7 +371,7 @@ int OPS_addToParameter() {
 
   if (strcmp(type, "element") == 0) {
     int eleTag;
-    if (OPS_GetIntInput(&num, &eleTag) < 0) {
+    if (OPS_GetIntInput(num, &eleTag) < 0) {
       opserr << "WARNING parameter -- invalid element tag\n";
       return -1;
     }
@@ -381,7 +381,7 @@ int OPS_addToParameter() {
 
   } else if (strcmp(type, "node") == 0) {
     int nodeTag;
-    if (OPS_GetIntInput(&num, &nodeTag) < 0) {
+    if (OPS_GetIntInput(num, &nodeTag) < 0) {
       opserr << "WARNING parameter -- invalid node tag\n";
       return -1;
     }
@@ -391,7 +391,7 @@ int OPS_addToParameter() {
 
   } else if (strcmp(type, "loadPattern") == 0) {
     int loadTag;
-    if (OPS_GetIntInput(&num, &loadTag) < 0) {
+    if (OPS_GetIntInput(num, &loadTag) < 0) {
       opserr << "WARNING parameter -- invalid load pattern tag\n";
       return -1;
     }
@@ -427,7 +427,7 @@ int OPS_addToParameter() {
     delete[] argv;
   }
 
-  if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+  if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
     opserr << "WARING: parameter - failed to set parameter tag\n";
     return -1;
   }
@@ -450,7 +450,7 @@ int OPS_updateParameter() {
   // Figure out which parameter we are dealing with
   int paramTag;
   int num = 1;
-  if (OPS_GetIntInput(&num, &paramTag) < 0) {
+  if (OPS_GetIntInput(num, &paramTag) < 0) {
     opserr << "WARING: parameter - failed to get parameter tag\n";
     return -1;
   }
@@ -471,14 +471,14 @@ int OPS_updateParameter() {
 
   // update values
   double newValue;
-  if (OPS_GetDouble(&num, &newValue) < 0) {
+  if (OPS_GetDouble(num, &newValue) < 0) {
     opserr << "WARNING updateParameter -- invalid parameter value\n";
     return -1;
   }
 
   theDomain->updateParameter(paramTag, newValue);
 
-  if (OPS_SetIntOutput(&num, &paramTag, true) < 0) {
+  if (OPS_SetIntOutput(num, &paramTag, true) < 0) {
     opserr << "WARING: parameter - failed to set parameter tag\n";
     return -1;
   }
@@ -505,7 +505,7 @@ int OPS_getParamTags() {
     data = &tags[0];
   }
 
-  if (OPS_SetIntOutput(&size, data, false) < 0) {
+  if (OPS_SetIntOutput(size, data, false) < 0) {
     opserr << "WARNING failed to set outputs\n";
     return -1;
   }
@@ -525,7 +525,7 @@ int OPS_getParamValue() {
   int paramTag;
   int numdata = 1;
 
-  if (OPS_GetIntInput(&numdata, &paramTag) < 0) {
+  if (OPS_GetIntInput(numdata, &paramTag) < 0) {
     opserr << "WARNING getParamValue -- could not read paramTag \n";
     return -1;
   }
@@ -538,7 +538,7 @@ int OPS_getParamValue() {
 
   double value = theParam->getValue();
 
-  if (OPS_SetDoubleOutput(&numdata, &value, true) < 0) {
+  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
     opserr << "WARNING failed to set output\n";
     return -1;
   }
@@ -556,7 +556,7 @@ int OPS_setParameter() {
 
   int numdata = 1;
   if (strcmp(opt, "-val") == 0) {
-    if (OPS_GetDoubleInput(&numdata, &newValue) < 0) {
+    if (OPS_GetDoubleInput(numdata, &newValue) < 0) {
       opserr << "WARNING: failed to get paramber value\n";
       return -1;
     }
@@ -577,7 +577,7 @@ int OPS_setParameter() {
 
     int eleTag;
     while (OPS_GetNumRemainingInputArgs() > 0) {
-      if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+      if (OPS_GetIntInput(numdata, &eleTag) < 0) {
         // back on arg
         OPS_ResetCurrentInputArg(-1);
         break;
@@ -604,12 +604,12 @@ int OPS_setParameter() {
     //
 
     int start, end;
-    if (OPS_GetIntInput(&numdata, &start) < 0) {
+    if (OPS_GetIntInput(numdata, &start) < 0) {
       opserr << "WARNING recorder Element -eleRange start? end? - invalid "
                 "start\n";
       return -1;
     }
-    if (OPS_GetIntInput(&numdata, &end) < 0) {
+    if (OPS_GetIntInput(numdata, &end) < 0) {
       opserr << "WARNING recorder Element -eleRange start? end? - invalid "
                 "end\n ";
       return -1;

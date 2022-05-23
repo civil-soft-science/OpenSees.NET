@@ -49,7 +49,7 @@ OPS_SimpleFractureMaterial(void)
   }
 
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial SimpleFracture $tag $otherTag $maxStrain" << endln;
     return 0;
   }
@@ -61,7 +61,7 @@ OPS_SimpleFractureMaterial(void)
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &maxStrain) != 0) {
+  if (OPS_GetDoubleInput(numData, &maxStrain) != 0) {
     opserr << "WARNING invalid maxStrain: uniaxialMaterial  SimpleFracture $tag $otherTag $maxStrain" << endln;
     return 0;
   }

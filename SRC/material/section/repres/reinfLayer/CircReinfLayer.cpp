@@ -45,13 +45,13 @@ void* OPS_CircReinfLayer()
     // get idata
     int numData = 2;
     int idata[2];
-    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
 
     // get data
     double data[6] = {0,0,0,0,0,0};
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 6) numData = 6;
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
     static Vector cpos(2);
     cpos(0) = data[1];
     cpos(1) = data[2];

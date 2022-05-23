@@ -51,14 +51,14 @@ OPS_IMKBilin(void)
 	double dData[21];
 	int numData = 1;
 
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial IMKBilin tag" << endln;
 		return 0;
 	}
 
 	numData = 21;
 
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "Invalid Args want: uniaxialMaterial IMKBilin tag? Ke? ";
 		opserr << "Theta_p_pos? Theta_pc_pos? Theta_u_pos? Mpe_pos? MmaxMpe_pos? ResM_pos? ";
 		opserr << "Theta_p_neg? Theta_pc_neg? Theta_u_neg? Mpe_neg? MmaxMpe_neg? ResM_neg? ";

@@ -69,13 +69,13 @@ OPS_HyperbolicGapMaterial()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
         return 0;
     }
 
     double data[5];
     numdata = 5;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
         return 0;
     }
 

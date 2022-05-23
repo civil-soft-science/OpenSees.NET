@@ -42,7 +42,7 @@ void* OPS_CTestNormUnbalance()
     // tolerance
     double tol = 1e-6;
     int numData = 1;
-    if(OPS_GetDoubleInput(&numData,&tol) < 0) {
+    if(OPS_GetDoubleInput(numData,&tol) < 0) {
 	opserr << "WARNING NormUnbalance failed to read tol\n";
 	return 0;
     }
@@ -51,7 +51,7 @@ void* OPS_CTestNormUnbalance()
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 4) numData = 4;
     int data[4] = {0,0,2,-1};
-    if(OPS_GetIntInput(&numData,&data[0]) < 0) {
+    if(OPS_GetIntInput(numData,&data[0]) < 0) {
 	opserr << "WARNING NormUnbalance failed to read int values\n";
 	return 0;
     }
@@ -60,7 +60,7 @@ void* OPS_CTestNormUnbalance()
     double maxTol = OPS_MAXTOL;
     if(OPS_GetNumRemainingInputArgs() > 0) {
 	numData = 1;
-	if(OPS_GetDoubleInput(&numData,&maxTol) < 0) {
+	if(OPS_GetDoubleInput(numData,&maxTol) < 0) {
 	    opserr << "WARNING NormUnbalance failed to read maxTol\n";
 	    return 0;
 	}

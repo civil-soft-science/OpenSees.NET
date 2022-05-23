@@ -60,13 +60,13 @@ OPS_BucklingMaterial(void)
     dData[i] = 0.0;
 
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial BucklingMaterial" << endln;
     return 0;
   }
 
   numData = numArgs-1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid data for uniaxial BucklingMaterial " << iData[0] << endln;
     return 0;	
   }

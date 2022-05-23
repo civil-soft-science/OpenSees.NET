@@ -89,7 +89,7 @@ void* OPS_MultiYieldSurfaceClay()
     
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid MultiYieldSurfaceClay tag\n";
 	return 0;
     }
@@ -100,7 +100,7 @@ void* OPS_MultiYieldSurfaceClay()
     param[8] = 0.0;
     param[9] = 20;
     numdata = 10;
-    if (OPS_GetDoubleInput(&numdata, param) < 0) {
+    if (OPS_GetDoubleInput(numdata, param) < 0) {
 	opserr << "WARNING invalid MultiYieldSurfaceClay double inputs\n";
 	return 0;
     }
@@ -111,7 +111,7 @@ void* OPS_MultiYieldSurfaceClay()
 	param[9] = -int(param[9]);
 	numdata = int(2*param[9]);
 	gredu = new double[numdata];
-	if (OPS_GetDoubleInput(&numdata, gredu) < 0) {
+	if (OPS_GetDoubleInput(numdata, gredu) < 0) {
 	    opserr << "WARNING invalid MultiYieldSurfaceClay double inputs\n";
 	    return 0;
 	}

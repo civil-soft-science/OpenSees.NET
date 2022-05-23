@@ -50,10 +50,10 @@ void* OPS_ENTMaterial()
 
     int tag;
     int num = 1;
-    if(OPS_GetIntInput(&num, &tag) < 0) return 0;
+    if(OPS_GetIntInput(num, &tag) < 0) return 0;
 
     double E;
-    if(OPS_GetDoubleInput(&num, &E) < 0) return 0;
+    if(OPS_GetDoubleInput(num, &E) < 0) return 0;
 
     UniaxialMaterial* mat = new ENTMaterial(tag,E);
     if(mat == 0) return 0;

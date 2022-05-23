@@ -37,20 +37,20 @@ OPS_TendonL01Material(void)
   double dData[7];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial TendonL01 tag" << endln;
     return 0;
   }
 
   numRemainingArgs = OPS_GetNumRemainingInputArgs();
   if (numRemainingArgs == 5) {
-    if (OPS_GetDoubleInput(&numRemainingArgs, dData) != 0) {
+    if (OPS_GetDoubleInput(numRemainingArgs, dData) != 0) {
       opserr << "Invalid Args want: uniaxialMaterial TendonL01 tag? fpy? Eps? fpu? rou? epsp? <ac?> <rc?>" << endln;
       return 0;	
     } else
       theMaterial = new TendonL01(iData[0], dData[0], dData[1], dData[2], dData[3], dData[4]);
   } else if (numRemainingArgs == 7) {
-    if (OPS_GetDoubleInput(&numRemainingArgs, dData) != 0) {
+    if (OPS_GetDoubleInput(numRemainingArgs, dData) != 0) {
       opserr << "Invalid Args want: uniaxialMaterial TendonL01 tag? fpy? Eps? fpu? rou? epsp? <ac?> <rc?>" << endln;
       return 0;	
     } else

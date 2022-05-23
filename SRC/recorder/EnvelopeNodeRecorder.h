@@ -52,17 +52,10 @@ class EnvelopeNodeRecorder: public Recorder
 {
   public:
     EnvelopeNodeRecorder();
-    EnvelopeNodeRecorder(const ID &theDof, 
-			 const ID *theNodes, 
-			 const char *dataToStore,
-			 Domain &theDomain,
-			 OPS_Stream &theOutputHandler,
-#ifdef _CSS
-          int procDataMethod = 0, int procGrpNum = 1,
-#endif // _CSS
-        double deltaT = 0.0,
-			 bool echoTimeFlag = false,
-			 TimeSeries **theTimeSeries =0); 
+    EnvelopeNodeRecorder(const ID &theDof, const ID *theNodes, const char *dataToStore,
+			 Domain &theDomain, OPS_Stream *theOutputHandler,
+          int procDataMethod = 0, int procGrpNum = 1, double deltaT = 0.0,
+			 bool echoTimeFlag = false, TimeSeries **theTimeSeries =0); 
     
     ~EnvelopeNodeRecorder();
 

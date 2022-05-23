@@ -58,11 +58,11 @@ void* OPS_ArcLength1()
     }
 
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &arcLength) < 0) {
+    if (OPS_GetDoubleInput(numdata, &arcLength) < 0) {
 	opserr << "WARNING integrator ArcLength failed to read arc length\n";
 	return 0;
     }
-    if (OPS_GetDoubleInput(&numdata, &alpha) < 0) {
+    if (OPS_GetDoubleInput(numdata, &alpha) < 0) {
 	opserr << "WARNING integrator ArcLength failed to read alpha\n";
 	return 0;
     }

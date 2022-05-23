@@ -56,7 +56,7 @@ class ConditionalNodeRecorder: public Recorder
 			 const ID *theNodes, 
 			 const char *dataToStore,
 			 Domain &theDomain,
-			 OPS_Stream &theOutputHandler,
+			 OPS_Stream *theOutputHandler,
 			int rcrdrTag,
 			int procMethod = 0, int procGrpNum = 1,
 			 bool echoTimeFlag = false,

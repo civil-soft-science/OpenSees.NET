@@ -111,7 +111,7 @@ void* OPS_MultiaxialCyclicPlasticity()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid MultiaxialCyclicPlasticity tag\n";
 	return 0;
     }
@@ -122,7 +122,7 @@ void* OPS_MultiaxialCyclicPlasticity()
     if (numdata > 10) {
 	numdata = 10;
     }
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid MultiaxialCyclicPlasticity double inputs\n";
 	return 0;
     }

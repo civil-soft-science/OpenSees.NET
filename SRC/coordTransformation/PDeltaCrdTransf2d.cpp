@@ -57,7 +57,7 @@ void* OPS_PDeltaCrdTransf2d()
     // get tag
     int tag;
     int numData = 1;
-    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     // get option
     Vector jntOffsetI(2), jntOffsetJ(2);
@@ -66,8 +66,8 @@ void* OPS_PDeltaCrdTransf2d()
 	std::string type = OPS_GetString();
 	if(type == "-jntOffset") {
 	    numData = 2;
-	    if(OPS_GetDoubleInput(&numData,iptr) < 0) return 0;
-	    if(OPS_GetDoubleInput(&numData,jptr) < 0) return 0;
+	    if(OPS_GetDoubleInput(numData,iptr) < 0) return 0;
+	    if(OPS_GetDoubleInput(numData,jptr) < 0) return 0;
 	}
     }
 

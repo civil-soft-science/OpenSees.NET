@@ -66,13 +66,13 @@ OPS_CFSSSWP(void)
   double dData[16];
   int numData;
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial CFSSSWP tag" << endln;
     return 0;
   }
 
   numData = 15;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid Material parameters\n";
     return 0;	
   }

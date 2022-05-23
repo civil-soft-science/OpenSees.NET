@@ -58,7 +58,7 @@ OPS_Steel02()
   double dData[12];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel02 tag" << endln;
     return 0;
   }
@@ -72,7 +72,7 @@ OPS_Steel02()
   }
 
   if (numData == 3) {
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid double: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -82,7 +82,7 @@ OPS_Steel02()
     theMaterial = new Steel02(iData[0], dData[0], dData[1], dData[2]);    
 
   } else if (numData == 6) {
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid int: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -92,7 +92,7 @@ OPS_Steel02()
     theMaterial = new Steel02(iData[0], dData[0], dData[1], dData[2], dData[3], dData[4], dData[5]);    
 
   } else if (numData == 10) {
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -104,7 +104,7 @@ OPS_Steel02()
 			      dData[7], dData[8], dData[9]);    
 
   } else if (numData == 11) {
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;

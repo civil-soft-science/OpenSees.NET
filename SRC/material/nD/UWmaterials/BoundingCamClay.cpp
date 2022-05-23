@@ -68,12 +68,12 @@ OPS_BoundingCamClayMaterial(void)
     double dData[9];
   
     int numData = 1;
-    if (OPS_GetInt(&numData, &tag) != 0) {
+    if (OPS_GetInt(numData, &tag) != 0) {
       opserr << "WARNING invalid nDMaterial BoundingCamClay material tag" << endln;
       return 0;
     }
     numData = 9;
-    if (OPS_GetDouble(&numData, dData) != 0) {
+    if (OPS_GetDouble(numData, dData) != 0) {
       opserr << "WARNING invalid material data for nDMaterial BoundingCamClay material with tag: " << tag << endln;
       return 0;
     }

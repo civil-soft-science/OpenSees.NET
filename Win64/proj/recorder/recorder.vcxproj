@@ -211,6 +211,7 @@
     <ClCompile Include="..\..\..\SRC\recorder\NodeRecorderRMS.cpp" />
     <ClCompile Include="..\..\..\SRC\recorder\NormElementRecorder.cpp" />
     <ClCompile Include="..\..\..\SRC\recorder\NormEnvelopeElementRecorder.cpp" />
+    <ClCompile Include="..\..\..\SRC\recorder\OpsRecorderCommands.cpp" />
     <ClCompile Include="..\..\..\SRC\recorder\PatternRecorder.cpp" />
     <ClCompile Include="..\..\..\SRC\recorder\PVDRecorder.cpp" />
     <ClCompile Include="..\..\..\SRC\recorder\Recorder.cpp" />

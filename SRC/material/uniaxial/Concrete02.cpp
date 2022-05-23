@@ -59,7 +59,7 @@ OPS_Concrete02()
   double dData[7];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Concrete02 tag" << endln;
     return 0;
   }
@@ -71,7 +71,7 @@ OPS_Concrete02()
     return 0;
   }
 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial Concrete02 " << iData[0] << " fpc? epsc0? fpcu? epscu? <rat? ft? Ets?>\n";
     return 0;
   }

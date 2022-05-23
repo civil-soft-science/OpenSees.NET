@@ -59,7 +59,7 @@ OPS_AC3D8HexWithSensitivity(void){
     return 0;
   }
 
-  if (OPS_GetIntInput(&argc, idData) != 0) {
+  if (OPS_GetIntInput(argc, idData) != 0) {
     opserr << "element AC3D8Hex error reading integers\n";
     return 0;
   }  

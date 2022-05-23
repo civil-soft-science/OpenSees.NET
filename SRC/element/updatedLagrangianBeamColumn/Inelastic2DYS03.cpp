@@ -17,7 +17,7 @@ void* OPS_Inelastic2DYS03()
 
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid element2dYS int inputs" << endln;
 	return 0;
     }
@@ -28,7 +28,7 @@ void* OPS_Inelastic2DYS03()
 
     double data[5];
     numdata = 5;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid element2dYS double inputs" << endln;
 	return 0;
     }
@@ -41,7 +41,7 @@ void* OPS_Inelastic2DYS03()
 
 
     numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid element2dYS int inputs" << endln;
 	return 0;
     }

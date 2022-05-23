@@ -64,7 +64,7 @@ void* OPS_UniaxialFiber2d()
     // get data
     int numData = 3;
     double data[3];
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
 	opserr<<"WARNING failed to read double\n";
 	return 0;
     }
@@ -72,7 +72,7 @@ void* OPS_UniaxialFiber2d()
     // get mat tag
     int tag;
     numData = 1;
-    if(OPS_GetIntInput(&numData,&tag) < 0) {
+    if(OPS_GetIntInput(numData,&tag) < 0) {
 	opserr<<"WARNING failed to read int\n";
 	return 0;
     }

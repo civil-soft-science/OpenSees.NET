@@ -69,11 +69,11 @@ void* OPS_ShearCurve()
     double delta =0.0;
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid limitCurve Shear tag" << endln;
 	return 0;
     }
-    if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+    if (OPS_GetIntInput(numdata, &eleTag) < 0) {
 	opserr << "WARNING invalid element tag for associated beam-column element (eleTag)\n";
 	opserr << "LimitCurve Shear: " << tag << endln;
 	return 0;
@@ -81,7 +81,7 @@ void* OPS_ShearCurve()
 
     numdata = 8;
     double data[8];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "limitCurve Shear: " << tag << endln;
 	return 0;
@@ -96,12 +96,12 @@ void* OPS_ShearCurve()
     Fres = data[7];
 
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &defType) < 0) {
+    if (OPS_GetIntInput(numdata, &defType) < 0) {
 	opserr << "WARNING invalid deformation type defType\n";
 	opserr << "LimitCurve Shear: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetIntInput(&numdata, &forType) < 0) {
+    if (OPS_GetIntInput(numdata, &forType) < 0) {
 	opserr << "WARNING invalid force type forType\n";
 	opserr << "LimitCurve Shear: " << tag << endln;
 	return 0;
@@ -117,22 +117,22 @@ void* OPS_ShearCurve()
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &ndI) < 0) {
+	if (OPS_GetIntInput(numdata, &ndI) < 0) {
 	    opserr << "WARNING invalid node I\n";
 	    opserr << "LimitCurve Shear: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(&numdata, &ndJ) < 0) {
+	if (OPS_GetIntInput(numdata, &ndJ) < 0) {
 	    opserr << "WARNING invalid node J\n";
 	    opserr << "LimitCurve Shear: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(&numdata, &dof) < 0) {
+	if (OPS_GetIntInput(numdata, &dof) < 0) {
 	    opserr << "WARNING invalid degree of freedom for drift\n";
 	    opserr << "LimitCurve Shear: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(&numdata, &perpDirn) < 0) {
+	if (OPS_GetIntInput(numdata, &perpDirn) < 0) {
 	    opserr << "WARNING invalid direction for column length\n";
 	    opserr << "LimitCurve Shear: " << tag << endln;
 	    return 0;
@@ -140,7 +140,7 @@ void* OPS_ShearCurve()
     }
     
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetDoubleInput(&numdata, &delta) < 0) {
+	if (OPS_GetDoubleInput(numdata, &delta) < 0) {
 	    opserr << "WARNING invalid shift in drift surface (delta)\n";
 	    opserr << "LimitCurve Shear: " << tag << endln;
 	    return 0;

@@ -73,7 +73,7 @@ void* OPS_TzSimple2()
     
     int idata[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
@@ -81,7 +81,7 @@ void* OPS_TzSimple2()
     double ddata[3] = {0,0,0};
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 3) numdata = 3;
-    if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

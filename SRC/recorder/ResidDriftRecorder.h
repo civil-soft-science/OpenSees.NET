@@ -43,13 +43,13 @@ class ResidDriftRecorder: public Recorder
   ResidDriftRecorder();
   ResidDriftRecorder(int ndI, int ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
-			OPS_Stream &theHandler,
+			OPS_Stream *theHandler,
 		  int dataProcMethod, int procGrpNum = 1,
 		bool echoTime = false);
   
   ResidDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
-			OPS_Stream &theHandler,
+			OPS_Stream *theHandler,
 		int dataProcMethod, int procGrpNum = 1,
 		bool echoTime = false);
   

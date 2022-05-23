@@ -51,14 +51,14 @@ void* OPS_Concrete07()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[8];
     numdata = 8;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }

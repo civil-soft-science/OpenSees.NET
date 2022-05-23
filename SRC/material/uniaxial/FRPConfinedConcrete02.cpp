@@ -46,7 +46,7 @@ OPS_FRPConfinedConcrete02()
   int    iData[1];
   int numData = 1;
   
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial FRPConfinedConcrete02 tag" << endln;
     return 0;
   }
@@ -63,7 +63,7 @@ OPS_FRPConfinedConcrete02()
   if (numData == 6){ // Input for unconfined concrete
     int numData1 = 6;
     double dData[6];
-    if (OPS_GetDoubleInput(&numData1, dData) != 0) {
+    if (OPS_GetDoubleInput(numData1, dData) != 0) {
       opserr << "Invalid #args, want: uniaxialMaterial FRPConfinedConcrete02 " << iData[0] << "fc0? ec0? Ec? ft? Ets? Unit?" << endln;
       return 0;	
     }
@@ -73,7 +73,7 @@ OPS_FRPConfinedConcrete02()
     double dData[8];
     int numData1 = 3;
     int numData2 = 5;
-    if (OPS_GetDoubleInput(&numData1, dData) != 0) {
+    if (OPS_GetDoubleInput(numData1, dData) != 0) {
       opserr << "Invalid #args, want: uniaxialMaterial FRPConfinedConcrete02 " << iData[0] << "fc0? ec0? Ec? -Ultimate fcc? ecu? ft? Ets? Unit?" << endln;
       return 0;	
     }
@@ -81,7 +81,7 @@ OPS_FRPConfinedConcrete02()
     const char *str = OPS_GetString();
     // OPS_GetStringCopy(&str);
     if (strcmp(str, "-Ultimate") == 0) {
-      if (OPS_GetDoubleInput(&numData2, dData+3) != 0) {
+      if (OPS_GetDoubleInput(numData2, dData+3) != 0) {
 	opserr << "Invalid #args, want: uniaxialMaterial FRPConfinedConcrete02 " << iData[0] << "fc0? ec0? Ec? -Ultimate fcc? ecu? ft? Ets? Unit?" << endln;
 	return 0;
       }
@@ -94,7 +94,7 @@ OPS_FRPConfinedConcrete02()
     double dData[10];
     int numData1 = 3;
     int numData2 = 7;
-    if (OPS_GetDoubleInput(&numData1, dData) != 0) {
+    if (OPS_GetDoubleInput(numData1, dData) != 0) {
       opserr << "Invalid #args, want: uniaxialMaterial FRPConfinedConcrete02 " << iData[0] << "fc0? ec0? Ec? -JacketC tfrp? Efrp? erup? R? ft? Ets? Unit?" << endln;
       return 0;	
     }
@@ -102,7 +102,7 @@ OPS_FRPConfinedConcrete02()
     const char *str = OPS_GetString();
     //OPS_GetStringCopy(&str);
     if (strcmp(str, "-JacketC") == 0) {
-      if (OPS_GetDoubleInput(&numData2, dData+3) != 0) {
+      if (OPS_GetDoubleInput(numData2, dData+3) != 0) {
 	opserr << "Invalid #args, want: uniaxialMaterial FRPConfinedConcrete02 " << iData[0] << "fc0? ec0? Ec? -JacketC tfrp? Efrp? erup? R? ft? Ets? Unit?" << endln;
 	return 0;
       }

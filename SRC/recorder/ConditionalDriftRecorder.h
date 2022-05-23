@@ -43,14 +43,14 @@ class ConditionalDriftRecorder: public Recorder
   ConditionalDriftRecorder();
   ConditionalDriftRecorder(int ndI, int ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
-			OPS_Stream &theHandler,
+			OPS_Stream *theHandler,
 			int rcrdrTag,
 			int dataProcMethod,  int procGrpNum = 1,
 			bool echoTime = false);
   
   ConditionalDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
-			OPS_Stream &theHandler,
+			OPS_Stream *theHandler,
 			int rcrdrTag,
 			int dataProcMethod, int procGrpNum = 1,
 			bool echoTime = false);

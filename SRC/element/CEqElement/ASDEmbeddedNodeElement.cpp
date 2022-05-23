@@ -209,7 +209,7 @@ OPS_ASDEmbeddedNodeElement(void)
     // mandatory parameters
     int iData[5];
     int numData = 5;
-    if (OPS_GetInt(&numData, iData) != 0) {
+    if (OPS_GetInt(numData, iData) != 0) {
         opserr << "ASDEmbeddedNodeElement ERROR: Invalid integer mandatory values: element ASDEmbeddedNodeElement wants at least 5 integer parameters\n" << descr;
         return 0;
     }
@@ -231,7 +231,7 @@ OPS_ASDEmbeddedNodeElement(void)
             }
             ++i;
             numData = 1;
-            if (OPS_GetDouble(&numData, &K) != 0) {
+            if (OPS_GetDouble(numData, &K) != 0) {
                 opserr << "ASDEmbeddedNodeElement ERROR invalid floating point number for -K keyword.\n";
                 return 0;
             }

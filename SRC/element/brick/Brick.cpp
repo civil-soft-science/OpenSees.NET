@@ -59,7 +59,7 @@ void* OPS_Brick()
 
     int idata[10];
     int num = 10;
-    if (OPS_GetIntInput(&num,idata)<0) {
+    if (OPS_GetIntInput(num,idata)<0) {
 	opserr<<"WARNING: invalid integer data\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_Brick()
 	num = 3;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(&num,data) < 0) {
+	if (OPS_GetDoubleInput(num,data) < 0) {
 	    opserr<<"WARNING: invalid double data\n";
 	    return 0;
 	}	

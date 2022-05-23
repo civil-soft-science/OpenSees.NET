@@ -34,7 +34,7 @@ void* OPS_SymSparseLinSolver()
     int lSparse = 1;
     int numdata = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetIntInput(&numdata, &lSparse) < 0) {
+	if (OPS_GetIntInput(numdata, &lSparse) < 0) {
 	    opserr << "WARNING SparseSPD failed to read lSparse\n";
 	    return 0;
 	}

@@ -60,7 +60,7 @@ void* OPS_KikuchiAikenHDR()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid KikuchiAikenHDR tag\n";
 	return 0;
     }
@@ -86,7 +86,7 @@ void* OPS_KikuchiAikenHDR()
 
     double ddata[2];
     numdata = 2;
-    if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -99,7 +99,7 @@ void* OPS_KikuchiAikenHDR()
 	if (strcmp(opt, "-coGHU") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() >= 3) {
 		numdata = 3;
-		if (OPS_GetDoubleInput(&numdata, ddata2) < 0) {
+		if (OPS_GetDoubleInput(numdata, ddata2) < 0) {
 		    opserr << "WARNING invalid double inputs\n";
 		    return 0;
 		}
@@ -107,7 +107,7 @@ void* OPS_KikuchiAikenHDR()
 	} else if (strcmp(opt, "-coMSS") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() >= 2) {
 		numdata = 2;
-		if (OPS_GetDoubleInput(&numdata, ddata3) < 0) {
+		if (OPS_GetDoubleInput(numdata, ddata3) < 0) {
 		    opserr << "WARNING invalid double inputs\n";
 		    return 0;
 		}

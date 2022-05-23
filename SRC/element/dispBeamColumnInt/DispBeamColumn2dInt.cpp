@@ -82,7 +82,7 @@ void* OPS_DispBeamColumn2dInt()
 
     int idata[4];
     int numdata = 4;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid dispBeamColumn int inputs" << endln;
 	return 0;
     }
@@ -100,7 +100,7 @@ void* OPS_DispBeamColumn2dInt()
 	int section;
 	numdata = 1;
 	for (int i = 0; i < nIP; i++) {
-	    if (OPS_GetIntInput(&numdata, &section) < 0) {
+	    if (OPS_GetIntInput(numdata, &section) < 0) {
 		opserr << "WARNING invalid secTag - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 		return 0;
 	    }
@@ -112,7 +112,7 @@ void* OPS_DispBeamColumn2dInt()
 	OPS_ResetCurrentInputArg(-1);
 	int section;
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata, &section) < 0) {
+	if (OPS_GetIntInput(numdata, &section) < 0) {
 	    opserr << "WARNING invalid secTag - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 	    return 0;
 	}
@@ -122,14 +122,14 @@ void* OPS_DispBeamColumn2dInt()
 	
     if (OPS_GetNumRemainingInputArgs() > 0) {
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata, &transfTag) < 0) {
+	if (OPS_GetIntInput(numdata, &transfTag) < 0) {
 	    opserr << "WARNING invalid transfTag? - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 	    return 0;
 	}
     }
 
     numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &C1) < 0) {
+    if (OPS_GetDoubleInput(numdata, &C1) < 0) {
 	opserr << "WARNING invalid dispBeamColumn C1" << endln;
 	return 0;
     }
@@ -141,7 +141,7 @@ void* OPS_DispBeamColumn2dInt()
 	const char* massarg = OPS_GetString();
 	if (strcmp(massarg,"-mass") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
 	    numdata = 1;
-	    if (OPS_GetDoubleInput(&numdata, &massDens) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &massDens) < 0) {
 		opserr << "WARNING invalid massDens - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag? C1? t? NStrip?\n";
 		return 0;
 	    }

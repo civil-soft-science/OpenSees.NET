@@ -69,13 +69,13 @@ OPS_SteelDRC()
 	}
 	int tag;
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 		opserr << "WARNING invalid tag\n";
 		return 0;
 	}
 	double data[5];
 	numdata = 5;
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	}
@@ -92,56 +92,56 @@ OPS_SteelDRC()
 		const char * type = OPS_GetString();
 		if (strcmp(type, "-Psh") == 0 || strcmp(type, "-psh") == 0 || strcmp(type, "-PSh") == 0 || strcmp(type, "-PSH") == 0) {
 			numdata = 1;
-			if (OPS_GetDoubleInput(&numdata, &Psh) < 0) {
+			if (OPS_GetDoubleInput(numdata, &Psh) < 0) {
 				opserr << "WARNING invalid double data for -Psh\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-shPoint") == 0 || strcmp(type, "-SHpoint") == 0 || strcmp(type, "-shpoint") == 0) {
 			numdata = 2;
-			if (OPS_GetDoubleInput(&numdata, temp) < 0) {
+			if (OPS_GetDoubleInput(numdata, temp) < 0) {
 				opserr << "WARNING invalid double input for -shPoint\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-omegaFactor") == 0 || strcmp(type,"-omegaFac") == 0 || strcmp(type, "-OmegaFactor") == 0 || strcmp(type, "-omegafactor") == 0 || strcmp(type, "-OmegaFac") == 0 || strcmp(type, "-omegafac") == 0) {
 			numdata = 1;
-			if (OPS_GetDoubleInput(&numdata, &omegaFac) < 0) {
+			if (OPS_GetDoubleInput(numdata, &omegaFac) < 0) {
 				opserr << "WARNING invalid double data for -omegaFactor\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-fractStrain") == 0 || strcmp(type, "-FractStrain") == 0 || strcmp(type, "-fractstrain") == 0) {
 			numdata = 1;
-			if (OPS_GetDoubleInput(&numdata, &efract) < 0) {
+			if (OPS_GetDoubleInput(numdata, &efract) < 0) {
 				opserr << "WARNING invalid double data for -fractStrain\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-bausch") == 0 || strcmp(type, "-Bausch") == 0) {
 			numdata = 1;
-			if (OPS_GetIntInput(&numdata, &bauschType) < 0) {
+			if (OPS_GetIntInput(numdata, &bauschType) < 0) {
 				opserr << "WARNING invalid int data for -bausch\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-stiffOutput")== 0 || strcmp(type, "-StiffOutput") == 0 || strcmp(type, "-stiffoutput") == 0) {
 			numdata = 1;
-			if (OPS_GetIntInput(&numdata, &stiffopt) < 0) {
+			if (OPS_GetIntInput(numdata, &stiffopt) < 0) {
 				opserr << "WARNING invalid int data for -stiffOutput\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-viscousDamper") == 0 || strcmp(type, "-ViscousDamper") == 0 || strcmp(type, "-viscousdamper") == 0) {
 			numdata = 2;
-			if (OPS_GetDoubleInput(&numdata, temp1) < 0) {
+			if (OPS_GetDoubleInput(numdata, temp1) < 0) {
 				opserr << "WARNING invalid double data for -ViscousDamper\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-Dfu") == 0 || strcmp(type, "-dfu") == 0 || strcmp(type, "-DFu") == 0) {
 			numdata = 1;
-			if (OPS_GetDoubleInput(&numdata, &Dfu) < 0) {
+			if (OPS_GetDoubleInput(numdata, &Dfu) < 0) {
 				opserr << "WARNING invalid double data for -Dfu\n";
 				return 0;
 			}

@@ -59,7 +59,7 @@ OPS_MinMaxMaterial(void)
   }
 
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial MinMaxMaterial $tag $otherTag" << endln;
     return 0;
   }
@@ -82,12 +82,12 @@ OPS_MinMaxMaterial(void)
     numData = 1;
 
     if ((strcmp(argvLoc, "-min") == 0) || (strcmp(argvLoc, "-Min") == 0) || (strcmp(argvLoc, "-MIN") == 0)) {
-      if (OPS_GetDouble(&numData, &minStrain) != 0) {      
+      if (OPS_GetDouble(numData, &minStrain) != 0) {      
 	opserr << "WARNING invalid min value  uniaxialMaterial MinMax tag: " << iData[0] << endln;	
 	return 0;
       }
     } else if ((strcmp(argvLoc, "-max") == 0) || (strcmp(argvLoc, "-Max") == 0) || (strcmp(argvLoc, "-MAX") == 0)) {
-      if (OPS_GetDouble(&numData, &maxStrain) != 0) {      
+      if (OPS_GetDouble(numData, &maxStrain) != 0) {      
 	opserr << "WARNING invalid min value  uniaxialMaterial MinMax tag: " << iData[0] << endln;  
 	return 0;
       }

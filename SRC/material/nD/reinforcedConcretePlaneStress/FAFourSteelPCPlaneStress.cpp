@@ -53,25 +53,25 @@ pc? fy1? fy2? E0? epsc0?\n";
   int numData = 0;
 
   numData = 1;
-  if (OPS_GetInt(&numData, &tag) != 0) {
+  if (OPS_GetInt(numData, &tag) != 0) {
     opserr << "WARNING invalid uniaxialMaterial FAFourSteelPCPlaneStress tag" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDouble(&numData, &rho) != 0) {
+  if (OPS_GetDouble(numData, &rho) != 0) {
     opserr << "Invalid Arg rho: uniaxialMaterial FAFourSteelPCPlaneStress tag: " << tag << endln;
     return 0;	
   }
 
   numData = 6;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial FAFourSteelPCPlaneStress tag:" << tag << endln;
     return 0;
   }
 
   numData = 15;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid data FAFourSteelPCPlaneStress tag:" << tag << endln;
     return 0;
   }

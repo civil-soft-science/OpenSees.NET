@@ -67,7 +67,7 @@ void* OPS_ZeroLengthContact2D()
     // eleTag, iNode, jNode;
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata,idata) < 0) {
+    if (OPS_GetIntInput(numdata,idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -75,7 +75,7 @@ void* OPS_ZeroLengthContact2D()
     // Kn, Kt, fs
     double data[3];
     numdata = 3;
-    if (OPS_GetDoubleInput(&numdata,data) < 0) {
+    if (OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -89,7 +89,7 @@ void* OPS_ZeroLengthContact2D()
 
     Vector normaldir(2);
     numdata = 2;
-    if (OPS_GetDoubleInput(&numdata, &normaldir(0)) < 0) {
+    if (OPS_GetDoubleInput(numdata, &normaldir(0)) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }

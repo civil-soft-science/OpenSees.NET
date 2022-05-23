@@ -47,13 +47,13 @@ void* OPS_FluidSolidPorousMaterial()
     }
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid FluidSolidPorous tag" << endln;
 	return 0;
     }
 
     for (int i=3; i<6; i++)
-	if (OPS_GetDoubleInput(&numdata, &param[i-3]) < 0) {
+	if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
 	    opserr << "WARNING invalid " << " double" << "\n";
 	    opserr << "nDMaterial FluidSolidPorous: " << tag << endln;
 	    return 0;
@@ -68,7 +68,7 @@ void* OPS_FluidSolidPorousMaterial()
 
     param[3] = 101.;
     if (argc == 7) {
-	if (OPS_GetDoubleInput(&numdata, &param[3]) < 0) {
+	if (OPS_GetDoubleInput(numdata, &param[3]) < 0) {
 	    opserr << "WARNING invalid " << " double" << "\n";
 	    opserr << "nDMaterial FluidSolidPorous: " << tag << endln;
 	    return 0;

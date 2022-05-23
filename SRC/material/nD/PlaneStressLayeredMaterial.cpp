@@ -39,12 +39,12 @@ void* OPS_PlaneStressLayeredMaterial(void)
     NDMaterial **theMats;
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid tag: nDMaterial planeStressLayeredMaterial $tag" << endln;
 	return 0;
     }
 
-    if (OPS_GetIntInput(&numdata, &nLayers) < 0) {
+    if (OPS_GetIntInput(numdata, &nLayers) < 0) {
 	opserr << "WARNING invalid nLayers" << endln;
 	opserr << "WARNING invalid tag: nDMaterial planeStressLayeredMaterial: " << 
 	  tag << endln;	    	    
@@ -66,7 +66,7 @@ void* OPS_PlaneStressLayeredMaterial(void)
 	    opserr << " WARNING must provide " << 2*nLayers <<" inputs\n";
 	    return 0;
 	}
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	  opserr << "nDMaterial planeStressLayeredMaterial tag: " << tag;
 	  opserr << " WARNING invalid matTag" << endln;
 	  return 0;
@@ -79,7 +79,7 @@ void* OPS_PlaneStressLayeredMaterial(void)
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+	if (OPS_GetDoubleInput(numdata, &h) < 0) {
 	  opserr << "nDMaterial planeStressLayeredMaterial tag: " << tag 
 		 << " invalid h\n";
 	    return 0;

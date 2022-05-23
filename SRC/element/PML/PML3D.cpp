@@ -59,13 +59,13 @@ void* OPS_PML3D()
 
 	int idata[9];
 	int num = 9;
-	if (OPS_GetIntInput(&num, idata) < 0) {
+	if (OPS_GetIntInput(num, idata) < 0) {
 		opserr << "WARNING: invalid integer data\n";
 		return 0;
 	}
 
 	double dData[PML3D_NUM_PROPS]; num = PML3D_NUM_PROPS;
-	if (OPS_GetDoubleInput(&num, dData) < 0) {
+	if (OPS_GetDoubleInput(num, dData) < 0) {
 		opserr << "WARNING: invalid double data\n";
 		return 0;
 	}

@@ -44,7 +44,7 @@ class DriftRecorder: public Recorder
   DriftRecorder();
   DriftRecorder(int ndI, int ndJ, int dof, int perpDirn,
 		Domain &theDomain, 
-		OPS_Stream &theHandler,
+		OPS_Stream *theHandler,
 #ifdef _CSS
 		int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS
@@ -54,7 +54,7 @@ class DriftRecorder: public Recorder
 
   DriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 		Domain &theDomain, 
-		OPS_Stream &theHandler,
+		OPS_Stream *theHandler,
 #ifdef _CSS
 		int procDataMethod = 0,  int procGrpNum = 1,
 #endif // _CSS

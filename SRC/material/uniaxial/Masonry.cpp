@@ -45,12 +45,12 @@ void* OPS_Masonry()
   double dData[21]; 
   int numData; 
   numData = 1; 
-  if (OPS_GetIntInput(&numData, iData) != 0) { 
+  if (OPS_GetIntInput(numData, iData) != 0) { 
     opserr << "WARNING invalid uniaxialMaterial Masonry tag" << endln; 
     return 0; 
   } 
   numData = 21; 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) { 
+  if (OPS_GetDoubleInput(numData, dData) != 0) { 
     opserr << "WARNING invalid Masonry Material Parameters\n"; 
     return 0;   
   } 

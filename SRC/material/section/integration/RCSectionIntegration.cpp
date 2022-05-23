@@ -45,7 +45,7 @@ void* OPS_RCSection2d()
   // int
   int numdata = 4;
   int idata[4];
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCSection2d int inputs" << endln;
     return 0;
   }
@@ -58,7 +58,7 @@ void* OPS_RCSection2d()
   // double
   numdata = 6;
   double data[6];
-  if (OPS_GetDoubleInput(&numdata, data) < 0) {
+  if (OPS_GetDoubleInput(numdata, data) < 0) {
     opserr << "WARNING invalid section RCSection2d double inputs" << endln;
     opserr << "RCSection2d section: " << tag << endln;
     return 0;
@@ -73,7 +73,7 @@ void* OPS_RCSection2d()
   
   // int
   numdata = 3;
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCSection2d int inputs" << endln;
     opserr << "RCSection2d section: " << tag << endln;
     return 0;

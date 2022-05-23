@@ -48,19 +48,19 @@ void* OPS_RCTunnelSection()
   double ddata[6];
   
   int numdata = 3;
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid section RCTunnelSection input\n";
     return 0;
   }
   
   numdata = 6;
-  if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+  if (OPS_GetDoubleInput(numdata, ddata) < 0) {
     opserr << "WARNING invalid section RCTunnelSection input\n";
     return 0;
   }
   
   numdata = 4;
-  if (OPS_GetIntInput(&numdata, &idata[4]) < 0) {
+  if (OPS_GetIntInput(numdata, &idata[4]) < 0) {
     opserr << "WARNING invalid section RCTunnelSection input\n";
     return 0;
   }
@@ -108,7 +108,7 @@ void* OPS_RCTunnelSection()
   bool deleteTorsion = false;
   if (strcmp(opt, "-GJ") == 0) {
     double GJ;
-    if (OPS_GetDoubleInput(&numdata, &GJ) < 0) {
+    if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
       opserr << "WARNING: failed to read GJ\n";
       return 0;
     }
@@ -117,7 +117,7 @@ void* OPS_RCTunnelSection()
   }
   if (strcmp(opt, "-torsion") == 0) {
     int torsionTag;
-    if (OPS_GetIntInput(&numdata, &torsionTag) < 0) {
+    if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
       opserr << "WARNING: failed to read torsion\n";
       return 0;
     }

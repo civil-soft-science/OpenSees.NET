@@ -58,7 +58,7 @@ void *OPS_ElasticPowerFunc()
     const char *paraStr;
     
     int numData = 1;
-    if (OPS_GetIntInput(&numData,tag) != 0)  {
+    if (OPS_GetIntInput(numData,tag) != 0)  {
         opserr << "WARNING invalid uniaxialMaterial ElasticPowerFunc tag\n";
         return 0;
     }
@@ -66,7 +66,7 @@ void *OPS_ElasticPowerFunc()
     // check if eta is provided (odd number of inputs)
     if ((argc-3)%2 == 1)  {
         numData = 1;
-        if (OPS_GetDoubleInput(&numData,&eta) != 0)  {
+        if (OPS_GetDoubleInput(numData,&eta) != 0)  {
             opserr << "WARNING invalid eta\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;
@@ -80,7 +80,7 @@ void *OPS_ElasticPowerFunc()
     if (strcmp(paraStr,"-coeff") == 0 ||
         strcmp(paraStr, "-coefficient") == 0 ||
         strcmp(paraStr, "-coefficients") == 0)  {
-        if (OPS_GetDoubleInput(&numData,coeffData) != 0)  {
+        if (OPS_GetDoubleInput(numData,coeffData) != 0)  {
             opserr << "WARNING invalid coefficients\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;
@@ -97,7 +97,7 @@ void *OPS_ElasticPowerFunc()
     if (strcmp(paraStr,"-exp") == 0 ||
         strcmp(paraStr, "-exponent") == 0 ||
         strcmp(paraStr, "-exponents") == 0)  {
-        if (OPS_GetDoubleInput(&numData, expData) != 0)  {
+        if (OPS_GetDoubleInput(numData, expData) != 0)  {
             opserr << "WARNING invalid exponents\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;

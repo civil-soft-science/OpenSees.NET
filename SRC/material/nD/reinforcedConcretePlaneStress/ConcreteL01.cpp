@@ -39,13 +39,13 @@ OPS_ConcreteL01Material(void)
   }
 
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ConcreteL01 tag" << endln;
     return 0;
   }
 
   numData = 2;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Args want: uniaxialMaterial ConcreteL01 tag? fpc? epsc0?" << endln;
     return 0;	
   }

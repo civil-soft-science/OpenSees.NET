@@ -57,13 +57,13 @@ void* OPS_LinearCrdTransf3d()
     // get tag
     int tag;
     int numData = 1;
-    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     // get vector
     Vector vec(3);
     double* vptr = &vec(0);
     numData = 3;
-    if(OPS_GetDoubleInput(&numData,vptr) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,vptr) < 0) return 0;
 
     // get option
     Vector jntOffsetI(3), jntOffsetJ(3);
@@ -71,8 +71,8 @@ void* OPS_LinearCrdTransf3d()
     while(OPS_GetNumRemainingInputArgs() > 6) {
 	std::string type = OPS_GetString();
 	if(type == "-jntOffset") {
-	    if(OPS_GetDoubleInput(&numData,iptr) < 0) return 0;
-	    if(OPS_GetDoubleInput(&numData,jptr) < 0) return 0;
+	    if(OPS_GetDoubleInput(numData,iptr) < 0) return 0;
+	    if(OPS_GetDoubleInput(numData,jptr) < 0) return 0;
 	}
     }
 

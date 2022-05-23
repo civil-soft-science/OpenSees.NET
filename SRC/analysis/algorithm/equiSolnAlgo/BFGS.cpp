@@ -54,7 +54,7 @@ void* OPS_BFGS()
 	    
 	} else if (strcmp(flag,"-count") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 	    int numdata = 1;
-	    if (OPS_GetIntInput(&numdata, &count) < 0) {
+	    if (OPS_GetIntInput(numdata, &count) < 0) {
 		opserr << "WARNING Broyden failed to read count\n";
 		return 0;
 	    }

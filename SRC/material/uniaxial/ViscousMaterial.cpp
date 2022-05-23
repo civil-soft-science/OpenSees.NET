@@ -60,13 +60,13 @@ OPS_ViscousMaterial(void)
   dData[2] = 1.0e-11; // setting default minVel
 
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Viscous" << endln;
     return 0;
   }
 
   numData = numArgs-1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid data for uniaxial Viscous " << iData[0] << endln;
     return 0;	
   }

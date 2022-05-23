@@ -56,7 +56,7 @@ void* OPS_PathSeries()
     // get tag
     int tag =0;
     int numData = 1;
-    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     // get other inputs
     double factor = 1.0, dt = 1.0;
@@ -76,7 +76,7 @@ void* OPS_PathSeries()
 	    return 0;
 	}
 	numData = 1;
-	if(OPS_GetDoubleInput(&numData,&dt) < 0) return 0;
+	if(OPS_GetDoubleInput(numData,&dt) < 0) return 0;
 	
 	// get values
 	numData = OPS_GetNumRemainingInputArgs();
@@ -98,7 +98,7 @@ void* OPS_PathSeries()
 	    // get number of values
 	    numData = 1;
 	    int nval;
-	    if(OPS_GetIntInput(&numData,&nval) < 0) return 0;
+	    if(OPS_GetIntInput(numData,&nval) < 0) return 0;
 	    
 	    // get value list
 	    numData = OPS_GetNumRemainingInputArgs();
@@ -107,7 +107,7 @@ void* OPS_PathSeries()
 		return 0;
 	    }
 	    values.resize(nval);
-	    if(OPS_GetDoubleInput(&nval,&values(0)) < 0) return 0;
+	    if(OPS_GetDoubleInput(nval,&values(0)) < 0) return 0;
 	    
 	} else if(strcmp(type,"-filePath") == 0) {
 	    // value file
@@ -124,7 +124,7 @@ void* OPS_PathSeries()
 	if(numData > 1) {
 	    if(strcmp(OPS_GetString(),"-factor") == 0) {
 		numData = 1;
-		if(OPS_GetDoubleInput(&numData,&factor) < 0) return 0;
+		if(OPS_GetDoubleInput(numData,&factor) < 0) return 0;
 	    }
 	}
 
@@ -145,7 +145,7 @@ void* OPS_PathSeries()
 	// get number time points
 	int ntime;
 	numData = 1;
-	if(OPS_GetIntInput(&numData,&ntime) < 0) return 0;
+	if(OPS_GetIntInput(numData,&ntime) < 0) return 0;
 	    
 	// get time ponts
 	numData = OPS_GetNumRemainingInputArgs();
@@ -154,7 +154,7 @@ void* OPS_PathSeries()
 	    return 0;
 	}
 	times.resize(ntime);
-	if(OPS_GetDoubleInput(&ntime,&times(0)) < 0) return 0;
+	if(OPS_GetDoubleInput(ntime,&times(0)) < 0) return 0;
 
 	// get values
 	numData = OPS_GetNumRemainingInputArgs();
@@ -164,7 +164,7 @@ void* OPS_PathSeries()
 	}
 	numData = 1;
 	int nval;
-	if(OPS_GetIntInput(&numData,&nval) < 0) return 0;
+	if(OPS_GetIntInput(numData,&nval) < 0) return 0;
 
 	// get value list
 	numData = OPS_GetNumRemainingInputArgs();
@@ -173,14 +173,14 @@ void* OPS_PathSeries()
 	    return 0;
 	}
 	values.resize(nval);
-	if(OPS_GetDoubleInput(&nval,&values(0)) < 0) return 0;
+	if(OPS_GetDoubleInput(nval,&values(0)) < 0) return 0;
 
 	// get factor
 	numData = OPS_GetNumRemainingInputArgs();
 	if(numData > 1) {
 	    if(strcmp(OPS_GetString(),"-factor") == 0) {
 		numData = 1;
-		if(OPS_GetDoubleInput(&numData,&factor) < 0) return 0;
+		if(OPS_GetDoubleInput(numData,&factor) < 0) return 0;
 	    }
 	}
 
@@ -201,7 +201,7 @@ void* OPS_PathSeries()
 	if(numData > 1) {
 	    if(strcmp(OPS_GetString(),"-factor") == 0) {
 		numData = 1;
-		if(OPS_GetDoubleInput(&numData,&factor) < 0) return 0;
+		if(OPS_GetDoubleInput(numData,&factor) < 0) return 0;
 	    }
 	}
 	theSeries = new PathTimeSeries(tag,timefile,valfile,factor);

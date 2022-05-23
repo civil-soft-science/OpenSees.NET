@@ -65,7 +65,7 @@ OPS_ASDShellQ4(void)
 
     int iData[6];
     int numData = 6;
-    if (OPS_GetInt(&numData, iData) != 0) {
+    if (OPS_GetInt(numData, iData) != 0) {
         opserr << "WARNING invalid integer tag: element ASDShellQ4 \n";
         return 0;
     }

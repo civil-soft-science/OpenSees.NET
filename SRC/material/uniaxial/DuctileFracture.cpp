@@ -56,7 +56,7 @@ void* OPS_DuctileFracture()
   // material tags
 	int idata[2];
 	numdata = 2;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 		opserr << "WARNING invlid int inputs\n";
 		return 0;
 	}
@@ -82,85 +82,85 @@ void* OPS_DuctileFracture()
 	while (OPS_GetNumRemainingInputArgs() > 1) {
 		const char* type = OPS_GetString();
 		if (strcmp(type, "-FImax") == 0) {
-			if (OPS_GetDouble(&numdata, &FImax) < 0) {
+			if (OPS_GetDouble(numdata, &FImax) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_mono") == 0) {
-			if (OPS_GetDouble(&numdata, &c_mono) < 0) {
+			if (OPS_GetDouble(numdata, &c_mono) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_cycl") == 0) {
-			if (OPS_GetDouble(&numdata, &c_cycl) < 0) {
+			if (OPS_GetDouble(numdata, &c_cycl) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_symm") == 0) {
-			if (OPS_GetDouble(&numdata, &c_symm) < 0) {
+			if (OPS_GetDouble(numdata, &c_symm) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-E_s") == 0) {
-			if (OPS_GetDouble(&numdata, &E_s) < 0) {
+			if (OPS_GetDouble(numdata, &E_s) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-esu") == 0) {
-			if (OPS_GetDouble(&numdata, &esu) < 0) {
+			if (OPS_GetDouble(numdata, &esu) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-k1") == 0) {
-			if (OPS_GetDouble(&numdata, &k1) < 0) {
+			if (OPS_GetDouble(numdata, &k1) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-k2") == 0) {
-			if (OPS_GetDouble(&numdata, &k2) < 0) {
+			if (OPS_GetDouble(numdata, &k2) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-db") == 0) {
-			if (OPS_GetDouble(&numdata, &db) < 0) {
+			if (OPS_GetDouble(numdata, &db) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-b1") == 0) {
-			if (OPS_GetDouble(&numdata, &b1) < 0) {
+			if (OPS_GetDouble(numdata, &b1) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-b2") == 0) {
-			if (OPS_GetDouble(&numdata, &b2) < 0) {
+			if (OPS_GetDouble(numdata, &b2) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_dete") == 0) {
-			if (OPS_GetDouble(&numdata, &c_dete) < 0) {
+			if (OPS_GetDouble(numdata, &c_dete) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
     else if (strcmp(type, "-minStrain") == 0) {
-			if (OPS_GetDouble(&numdata, &epsmin) < 0) {
+			if (OPS_GetDouble(numdata, &epsmin) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-maxStrain") == 0) {
-			if (OPS_GetDouble(&numdata, &epsmax) < 0) {
+			if (OPS_GetDouble(numdata, &epsmax) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}

@@ -66,13 +66,13 @@ void *
 		double ecc = 0;
 
 		int numData = 1;
-		if (OPS_GetIntInput(&numData, &tag) != 0) {
+		if (OPS_GetIntInput(numData, &tag) != 0) {
 			opserr << "WARNING invalid uniaxialMaterial Steel01 tag" << endln;
 			return 0;
 		}  
 
 		numData = 11;
-		if (OPS_GetDoubleInput(&numData, dData) != 0) {
+		if (OPS_GetDoubleInput(numData, dData) != 0) {
 			opserr << "WARNING invalid uniaxialMaterial Steel01 tag" << endln;
 			return 0;
 		}  
@@ -86,46 +86,46 @@ void *
 		  optionFlag = OPS_GetString();
 		  if (strcmp(optionFlag,"-beta") == 0) {
 		    numData = 4;
-		    if (OPS_GetDoubleInput(&numData, bData) != 0) {
+		    if (OPS_GetDoubleInput(numData, bData) != 0) {
 		      opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument of -beta for tag " << tag << endln;
 		      return 0;
 		    }
 		    total -= 5;
 		  } else if (strcmp(optionFlag,"-lambda") == 0) {
 				numData = 1;
-				if (OPS_GetDoubleInput(&numData, &lambda) != 0) {
+				if (OPS_GetDoubleInput(numData, &lambda) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument of -lambda for tag " << tag << endln;
 					return 0;
 				}
 				total -= 2;
 			} else if (strcmp(optionFlag,"-alpha") == 0) {
 				numData = 1;
-				if (OPS_GetDoubleInput(&numData, &alpha) != 0) {
+				if (OPS_GetDoubleInput(numData, &alpha) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument of -alpha for tag " << tag << endln;
 					return 0;
 				}
 				total -= 2;
 			} else if (strcmp(optionFlag,"-M") == 0) {
 				numData = 1;
-				if (OPS_GetDoubleInput(&numData, &M) != 0) {
+				if (OPS_GetDoubleInput(numData, &M) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument of -M for tag " << tag << endln;
 					return 0;
 				}
 				total -= 2;
 			} else if (strcmp(optionFlag,"-E") == 0) {
 				numData = 1;
-				if (OPS_GetDoubleInput(&numData, &E0) != 0) {
+				if (OPS_GetDoubleInput(numData, &E0) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument of -E for tag " << tag << endln;
 					return 0;
 				}
 				total -= 2;
 			} else if (strcmp(optionFlag,"-conf") == 0) {
 				numData = 1;
-				if (OPS_GetDoubleInput(&numData, &fcc) != 0) {
+				if (OPS_GetDoubleInput(numData, &fcc) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument 1 of -conf for tag " << tag << endln;
 					return 0;
 				}
-				if (OPS_GetDoubleInput(&numData, &ecc) != 0) {
+				if (OPS_GetDoubleInput(numData, &ecc) != 0) {
 					opserr << "WARNING invalid uniaxialMaterial ConcretewBeta argument 2 of -conf for tag " << tag << endln;
 					return 0;
 				}

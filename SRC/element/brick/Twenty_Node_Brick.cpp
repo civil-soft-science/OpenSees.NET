@@ -63,7 +63,7 @@ void* OPS_Twenty_Node_Brick()
     // brickId, Nod[20], matID
     int idata[22];
     int num = 22;
-    if (OPS_GetIntInput(&num,idata)<0) {
+    if (OPS_GetIntInput(num,idata)<0) {
 	opserr<<"WARNING: invalid integer data\n";
 	return 0;
     }
@@ -82,7 +82,7 @@ void* OPS_Twenty_Node_Brick()
 	num = 3;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(&num,data) < 0) {
+	if (OPS_GetDoubleInput(num,data) < 0) {
 	    opserr<<"WARNING: invalid double data\n";
 	    return 0;
 	}

@@ -54,13 +54,13 @@ OPS_DuctilityStiffnessDegradation(void)
   double dData[2];
   
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for stiffnessDegradation Ductility" << endln;
     return 0;
   }
 
   numData = 2;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data for stiffnessDegradation Ductility" << endln;
     return 0;
   }

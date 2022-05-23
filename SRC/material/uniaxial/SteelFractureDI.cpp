@@ -53,7 +53,7 @@ OPS_SteelFractureDI()
 	double dData[15];
 	int numData = 1;
 
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial SteelFractureDI tag" << endln;
 		return 0;
 	}
@@ -66,7 +66,7 @@ OPS_SteelFractureDI()
 		return 0;
 	}
 	else {
-		if (OPS_GetDoubleInput(&numData, dData) != 0) {
+		if (OPS_GetDoubleInput(numData, dData) != 0) {
 			opserr << "Invalid arggs: uniaxialMaterial SteelFractureDI " << iData[0] <<
 				" Fy? FyC? E? b? R0? cR1? cR2? a1? a2? a3? a4? sigcr? m? sigmin? FI_lim?" << endln;
 			return 0;

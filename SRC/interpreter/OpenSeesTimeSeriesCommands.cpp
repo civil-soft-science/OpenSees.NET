@@ -79,7 +79,7 @@ namespace {
 	// get tag
 	int tag =0;
 	int numdata = 1;
-	if(OPS_GetIntInput(&numdata,&tag) < 0) return 0;
+	if(OPS_GetIntInput(numdata,&tag) < 0) return 0;
 
 	// get other inputs
 	double factor = -1.0, dt = -1.0;
@@ -101,7 +101,7 @@ namespace {
 		    opserr << "WARNING no dt is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(&numdata, &dt) < 0) {
+		if (OPS_GetDoubleInput(numdata, &dt) < 0) {
 		    opserr << "WARNING invalid dt\n";
 		    return 0;
 		}
@@ -110,7 +110,7 @@ namespace {
 	    } else if (strcmp(arg, "-values") == 0) {
 		while(OPS_GetNumRemainingInputArgs() > 0) {
 		    double val;
-		    if (OPS_GetDoubleInput(&numdata, &val) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &val) < 0) {
 			OPS_ResetCurrentInputArg(loc);
 			break;
 		    }
@@ -123,7 +123,7 @@ namespace {
 		    opserr << "WARNING no factor is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(&numdata, &factor) < 0) {
+		if (OPS_GetDoubleInput(numdata, &factor) < 0) {
 		    opserr << "WARNING invalid factor\n";
 		    return 0;
 		}
@@ -140,7 +140,7 @@ namespace {
 		    opserr << "WARNING no start time is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(&numdata, &startTime) < 0) {
+		if (OPS_GetDoubleInput(numdata, &startTime) < 0) {
 		    opserr << "WARNING invalid start time\n";
 		    return 0;
 		}
@@ -165,7 +165,7 @@ namespace {
 	    } else if (strcmp(arg, "-time") == 0) {
 		while(OPS_GetNumRemainingInputArgs() > 0) {
 		    double val;
-		    if (OPS_GetDoubleInput(&numdata, &val) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &val) < 0) {
 			OPS_ResetCurrentInputArg(loc);
 			break;
 		    }

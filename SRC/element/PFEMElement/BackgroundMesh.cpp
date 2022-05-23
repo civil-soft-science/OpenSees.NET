@@ -87,7 +87,7 @@ int OPS_BgMesh() {
         return -1;
     }
     int num = 1;
-    if (OPS_GetDoubleInput(&num, &size) < 0) {
+    if (OPS_GetDoubleInput(num, &size) < 0) {
         opserr << "WARNING: failed to get basic size\n";
         return -1;
     }
@@ -100,12 +100,12 @@ int OPS_BgMesh() {
     // get range
     VDouble lower(ndm), upper(ndm);
     double* ptr = &lower[0];
-    if (OPS_GetDoubleInput(&ndm, ptr) < 0) {
+    if (OPS_GetDoubleInput(ndm, ptr) < 0) {
         opserr << "WARNING: failed to get min\n";
         return -1;
     }
     ptr = &upper[0];
-    if (OPS_GetDoubleInput(&ndm, ptr) < 0) {
+    if (OPS_GetDoubleInput(ndm, ptr) < 0) {
         opserr << "WARNING: failed to get max\n";
         return -1;
     }
@@ -122,7 +122,7 @@ int OPS_BgMesh() {
                 return -1;
             }
             double tol;
-            if (OPS_GetDoubleInput(&num, &tol) < 0) {
+            if (OPS_GetDoubleInput(num, &tol) < 0) {
                 opserr << "WARNING: failed to read tolerance\n";
                 return -1;
             }
@@ -141,7 +141,7 @@ int OPS_BgMesh() {
 
             int numl;
             num = 1;
-            if (OPS_GetIntInput(&num, &numl) < 0) {
+            if (OPS_GetIntInput(num, &numl) < 0) {
                 opserr << "WARNING: failed to read numl\n";
                 return -1;
             }
@@ -154,7 +154,7 @@ int OPS_BgMesh() {
                 }
 
                 VDouble locs(num);
-                if (OPS_GetDoubleInput(&num, &locs[0]) < 0) {
+                if (OPS_GetDoubleInput(num, &locs[0]) < 0) {
                     opserr << "WARNING: failed to read wave recording "
                               "locations\n";
                     return -1;
@@ -169,7 +169,7 @@ int OPS_BgMesh() {
             }
             int numsub;
             num = 1;
-            if (OPS_GetIntInput(&num, &numsub) < 0) {
+            if (OPS_GetIntInput(num, &numsub) < 0) {
                 opserr << "WARNING: failed to read numsub\n";
                 return -1;
             }
@@ -183,11 +183,11 @@ int OPS_BgMesh() {
             }
             int sid, numnodes;
             num = 1;
-            if (OPS_GetIntInput(&num, &sid) < 0) {
+            if (OPS_GetIntInput(num, &sid) < 0) {
                 opserr << "WARNING: failed to read sid\n";
                 return -1;
             }
-            if (OPS_GetIntInput(&num, &numnodes) < 0) {
+            if (OPS_GetIntInput(num, &numnodes) < 0) {
                 opserr << "WARNING: failed to read numnodes\n";
                 return -1;
             }
@@ -198,7 +198,7 @@ int OPS_BgMesh() {
             }
             if (numnodes > 0) {
                 VInt snodes(numnodes);
-                if (OPS_GetIntInput(&numnodes, &snodes[0]) < 0) {
+                if (OPS_GetIntInput(numnodes, &snodes[0]) < 0) {
                     opserr << "WARNING: failed to read structural nodes\n";
                     return -1;
                 }
@@ -213,7 +213,7 @@ int OPS_BgMesh() {
             }
             num = 8;
             VDouble data(num);
-            if (OPS_GetDoubleInput(&num, &data[0]) < 0) {
+            if (OPS_GetDoubleInput(num, &data[0]) < 0) {
                 opserr << "WARNING: failed to get kdoverAd, thk, mu, "
                           "beta, Dc, alpha, E, rho\n";
                 return -1;
@@ -227,13 +227,13 @@ int OPS_BgMesh() {
             }
             num = 1;
             int sid;
-            if (OPS_GetIntInput(&num, &sid) < 0) {
+            if (OPS_GetIntInput(num, &sid) < 0) {
                 opserr << "WARNING: failed to get sid\n";
                 return -1;
             }
 
             double alpha = 0.0;
-            if (OPS_GetDoubleInput(&num, &alpha) < 0) {
+            if (OPS_GetDoubleInput(num, &alpha) < 0) {
                 opserr << "WARNING: failed to get alphaS\n";
                 return -1;
             }

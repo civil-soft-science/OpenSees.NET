@@ -64,7 +64,7 @@ int OPS_Pressure_Constraint() {
     // get node tags
     int tags[2];
     int num = 2;
-    if (OPS_GetIntInput(&num, &tags[0]) < 0) {
+    if (OPS_GetIntInput(num, &tags[0]) < 0) {
         opserr << "WARNING: invalid node tag\n";
         return -1;
     }

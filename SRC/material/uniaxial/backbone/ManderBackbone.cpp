@@ -86,13 +86,13 @@ OPS_ManderBackbone(void)
   double dData[3];
   
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for hystereticBackbone Mander" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data for hystereticBackbone Mander" << endln;
     return 0;
   }

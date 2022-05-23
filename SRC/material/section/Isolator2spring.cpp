@@ -50,7 +50,7 @@ void* OPS_Isolator2spring()
 	  
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid Iso2spring tag" << endln;
 	return 0;
     }
@@ -58,7 +58,7 @@ void* OPS_Isolator2spring()
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 8) numdata = 8;
     double data[8] = {0,0,0,0,0,0,0,0};
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "section Iso2spring: " << tag << endln;
 	return 0;

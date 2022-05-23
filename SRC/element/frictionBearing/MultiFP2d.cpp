@@ -66,7 +66,7 @@ OPS_MultiFP2d()
   // get the id and end nodes 
   int iData[5];
   int numData = 3;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING::MultiFP2d invalid element data\n";
     return 0;
   }
@@ -98,14 +98,14 @@ OPS_MultiFP2d()
     else if (strcmp(nextArg, "-material") == 0) {
       if (numRemainingArgs == 3) { //user defined material
 	numData = 2;
-	if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
+	if (OPS_GetIntInput(numData, &iData[3]) != 0) {
 	  opserr << "WARNING invalid element data\n";
 	  return 0;
 	}
 	
 	double dData[1];
 	numData = 1;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 	  opserr << "WARNING error reading element area for element" << eleTag << endln;
 	  return 0;
 	}
@@ -132,7 +132,7 @@ OPS_MultiFP2d()
 	int type = 3;
 	double dData[17];
 	numData = 17;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 	  opserr << "WARNING error reading element area for element" << eleTag << endln;
 	  return 0;
 	}

@@ -63,7 +63,7 @@ void *OPS_TrigSeries(void)
     // get tag if provided
     if (numRemainingArgs == 4 || numRemainingArgs == 6 || numRemainingArgs == 8 || numRemainingArgs == 10) {
         numData = 1;
-        if (OPS_GetIntInput(&numData, &tag) != 0) {
+        if (OPS_GetIntInput(numData, &tag) != 0) {
             opserr << "WARNING invalid series tag in Trig tag?" << endln;
             return 0;
         }
@@ -71,7 +71,7 @@ void *OPS_TrigSeries(void)
     }
 
     numData = 3;
-    if (OPS_GetDouble(&numData, dData) != 0) {
+    if (OPS_GetDouble(numData, dData) != 0) {
         opserr << "WARNING invalid double data in Trig Series with tag: " << tag << endln;
         return 0;
     }
@@ -83,19 +83,19 @@ void *OPS_TrigSeries(void)
 
       if (strcmp(argvS,"-shift") == 0 || strcmp(argvS,"-phaseShift") == 0) {
 	numData = 1;
-	if (OPS_GetDouble(&numData, &dData[3]) != 0) {
+	if (OPS_GetDouble(numData, &dData[3]) != 0) {
 	  opserr << "WARNING invalid phase shift in Trig Series with tag?" << tag << endln;
                 return 0;
 	}
       } else if (strcmp(argvS,"-factor") == 0) {
 	numData = 1;
-            if (OPS_GetDouble(&numData, &dData[4]) != 0) {
+            if (OPS_GetDouble(numData, &dData[4]) != 0) {
                 opserr << "WARNING invalid factor in Trig Series with tag?" << tag << endln;
                 return 0;
             }
         } else if (strcmp(argvS,"-zeroShift") == 0) {
             numData = 1;
-            if (OPS_GetDouble(&numData, &dData[5]) != 0) {
+            if (OPS_GetDouble(numData, &dData[5]) != 0) {
                 opserr << "WARNING invalid zero shift in Trig Series with tag?" << tag << endln;
                 return 0;
             }

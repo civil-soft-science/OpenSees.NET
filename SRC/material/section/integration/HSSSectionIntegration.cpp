@@ -58,41 +58,41 @@ void* OPS_HSSSection()
   SectionForceDeformation* theSection = 0;
   
   int numdata = 1;
-  if (OPS_GetIntInput(&numdata, &tag) < 0) {
+  if (OPS_GetIntInput(numdata, &tag) < 0) {
     opserr << "WARNING invalid section HSS tag" << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+  if (OPS_GetIntInput(numdata, &matTag) < 0) {
     opserr << "WARNING invalid section HSS matTag" << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+  if (OPS_GetDoubleInput(numdata, &h) < 0) {
     opserr << "WARNING invalid h" << endln;
     opserr << "HSS section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &b) < 0) {
+  if (OPS_GetDoubleInput(numdata, &b) < 0) {
     opserr << "WARNING invalid b" << endln;
     opserr << "HSS section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &t) < 0) {
+  if (OPS_GetDoubleInput(numdata, &t) < 0) {
     opserr << "WARNING invalid t" << endln;
     opserr << "HSS section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nfh) < 0) {
+  if (OPS_GetIntInput(numdata, &nfh) < 0) {
     opserr << "WARNING invalid nfh" << endln;
     opserr << "HSS section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nfb) < 0) {
+  if (OPS_GetIntInput(numdata, &nfb) < 0) {
     opserr << "WARNING invalid nfb" << endln;
     opserr << "HSS section: " << tag << endln;
     return 0;
@@ -111,7 +111,7 @@ void* OPS_HSSSection()
       isND = true;
     // read <-shape shape>
     if (strcmp(flag,"-shape") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
-      if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+      if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 	opserr << "WARNING invalid shape" << endln;
 	opserr << "HSS section: " << tag << endln;
 	return 0;
@@ -121,7 +121,7 @@ void* OPS_HSSSection()
     // read <-GJ GJ>
     if (strcmp(flag,"-GJ") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
       double GJ;
-      if (OPS_GetDoubleInput(&numdata, &GJ) < 0) {
+      if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
 	opserr << "WARNING: failed to read GJ\n";
 	return 0;
       }
@@ -131,7 +131,7 @@ void* OPS_HSSSection()
     // read <-torsion tag>
     if (strcmp(flag,"-torsion") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
       int torsionTag;
-      if (OPS_GetIntInput(&numdata, &torsionTag) < 0) {
+      if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
 	opserr << "WARNING: failed to read torsion\n";
 	return 0;
       }

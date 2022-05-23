@@ -56,13 +56,13 @@ void* OPS_ECC01()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	return 0;
     }
 
     double data[14];
     numdata = 14;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	return 0;
     }
 

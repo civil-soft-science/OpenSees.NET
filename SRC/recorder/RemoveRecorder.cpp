@@ -131,7 +131,7 @@ void *OPS_RemoveRecorder() {
                 return 0;
             }
             int num = 1;
-            if (OPS_GetIntInput(&num, &nodeTag) < 0) {
+            if (OPS_GetIntInput(num, &nodeTag) < 0) {
                 opserr << "WARNING recorder Collapse -node - invalid node "
                           "tag\n";
                 return 0;
@@ -154,7 +154,7 @@ void *OPS_RemoveRecorder() {
                 return 0;
             }
             int data[3], num = 3;
-            if (OPS_GetIntInput(&num, &data[0]) < 0) {
+            if (OPS_GetIntInput(num, &data[0]) < 0) {
                 opserr << "WARNING recorder Collapse -node - invalid "
                           "nTagbotn "
                           "nTagmidn, or nTagtopn \n";
@@ -170,7 +170,7 @@ void *OPS_RemoveRecorder() {
                 return 0;
             }
             int num = 1;
-            if (OPS_GetIntInput(&num, &globgrav) < 0) {
+            if (OPS_GetIntInput(num, &globgrav) < 0) {
                 opserr << "WARNING recorder Collapse -global_gravaxis - "
                           "invalid global axis for gravity \n";
                 return 0;
@@ -205,7 +205,7 @@ void *OPS_RemoveRecorder() {
                 while (OPS_GetNumRemainingInputArgs() > 0) {
                     int num = 1;
                     int eleTag;
-                    if (OPS_GetIntInput(&num, &eleTag) < 0) {
+                    if (OPS_GetIntInput(num, &eleTag) < 0) {
                         OPS_ResetCurrentInputArg(-1);
                         break;
                     }
@@ -232,7 +232,7 @@ void *OPS_RemoveRecorder() {
             //
             int startend[2];
             int num = 2;
-            if (OPS_GetIntInput(&num, &startend[0]) < 0) {
+            if (OPS_GetIntInput(num, &startend[0]) < 0) {
                 opserr << "WARNING recorder Element -eleRange start? end? "
                           "- invalid start or end\n";
                 return 0;
@@ -261,7 +261,7 @@ void *OPS_RemoveRecorder() {
             }
             int tag;
             int num = 1;
-            if (OPS_GetIntInput(&num, &tag) < 0) {
+            if (OPS_GetIntInput(num, &tag) < 0) {
                 opserr << "WARNING recorder Element -region tag? - "
                           "invalid tag \n";
                 return 0;
@@ -295,7 +295,7 @@ void *OPS_RemoveRecorder() {
                 return 0;
             }
             int num = 1;
-            if (OPS_GetDoubleInput(&num, &dT) < 0) {
+            if (OPS_GetDoubleInput(num, &dT) < 0) {
                 opserr << "WARNING: failed to get dT\n";
                 return 0;
             }
@@ -317,7 +317,7 @@ void *OPS_RemoveRecorder() {
             }
             eleMass.resize(numEle);
             eleMass.Zero();
-            if (OPS_GetDoubleInput(&numEle, &eleMass(0)) < 0) {
+            if (OPS_GetDoubleInput(numEle, &eleMass(0)) < 0) {
                 opserr << "WARNING: failed to get mass\n";
                 return 0;
             }
@@ -330,7 +330,7 @@ void *OPS_RemoveRecorder() {
             }
             int num = 3;
             double data[3];
-            if (OPS_GetDoubleInput(&num, &data[0]) < 0) {
+            if (OPS_GetDoubleInput(num, &data[0]) < 0) {
                 opserr << "WARNING: failed to read gAcc, gDir, gPat\n";
                 return 0;
             }
@@ -346,7 +346,7 @@ void *OPS_RemoveRecorder() {
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 int num = 1;
                 int secID;
-                if (OPS_GetIntInput(&num, &secID) < 0) {
+                if (OPS_GetIntInput(num, &secID) < 0) {
                     OPS_ResetCurrentInputArg(-1);
                     break;
                 }
@@ -395,7 +395,7 @@ void *OPS_RemoveRecorder() {
                     return 0;
                 }
                 int num = 1;
-                if (OPS_GetDoubleInput(&num, &critValue) < 0) {
+                if (OPS_GetDoubleInput(num, &critValue) < 0) {
                     opserr << "WARNING recorder Remove -crit critTag? "
                               "critValue?... invalid critValue \n";
                     return 0;

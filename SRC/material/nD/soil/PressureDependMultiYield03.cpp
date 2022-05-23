@@ -111,7 +111,7 @@ void* OPS_PressureDependMultiYield03()
     }
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING invalid PressureDependMultiYield03 tag"
                << "\n";
         return 0;
@@ -119,7 +119,7 @@ void* OPS_PressureDependMultiYield03()
 
     int in = 22;
     for (int i = 3; (i < argc && i < in); i++) {
-        if (OPS_GetDoubleInput(&numdata, &param[i - 3]) < 0) {
+        if (OPS_GetDoubleInput(numdata, &param[i - 3]) < 0) {
             opserr << "WARNING invalid " << arg[i - 3] << "\n";
             opserr << "nDMaterial PressureDependMultiYield03: " << tag << "\n";
             return 0;
@@ -134,7 +134,7 @@ void* OPS_PressureDependMultiYield03()
         gredu = new double[int(2 * param[numParam])];
 
         for (int i = 0; i < 2 * param[numParam]; i++) {
-            if (OPS_GetDoubleInput(&numdata, &gredu[i]) < 0) {
+            if (OPS_GetDoubleInput(numdata, &gredu[i]) < 0) {
                 opserr << "WARNING invalid " << arg[i - 3]
                        << "\n";
                 opserr << "nDMaterial PressureIndependMultiYield03: "
@@ -146,7 +146,7 @@ void* OPS_PressureDependMultiYield03()
 
     if (gredu != 0) {
         for (int i = in + int(2 * param[numParam]); i < argc; i++) {
-            if (OPS_GetDoubleInput(&numdata, &param[i - 3 - int(2 * param[numParam])]) < 0) {
+            if (OPS_GetDoubleInput(numdata, &param[i - 3 - int(2 * param[numParam])]) < 0) {
                 opserr << "WARNING invalid "
                        << arg[i - 3 - int(2 * param[numParam])]
                        << "\n";
@@ -156,7 +156,7 @@ void* OPS_PressureDependMultiYield03()
         }
     } else {
         for (int i = in; i < argc; i++) {
-            if (OPS_GetDoubleInput(&numdata, &param[i - 3]) < 0) {
+            if (OPS_GetDoubleInput(numdata, &param[i - 3]) < 0) {
                 opserr << "WARNING invalid "
                        << arg[i - 3 - int(2 * param[numParam])]
                        << "\n";

@@ -62,7 +62,7 @@ OPS_ZeroLengthImpact3D(void)
   int numData;
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &iData[0]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[0]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D tag\n";
     return 0;
   }
@@ -70,74 +70,74 @@ OPS_ZeroLengthImpact3D(void)
   int eleTag = iData[0];
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &iData[1]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[1]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D 1st node " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &iData[2]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[2]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D 2nd node " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[3]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D direction " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[0]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[0]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D initial gap input " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D frictionRatio " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[2]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[2]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D Ktangent " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[3]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[3]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D Knormal " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[4]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[4]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D Kn2 Input " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[5]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[5]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D Delta_y Input " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[6]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[6]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D cohesion " << eleTag << endln;
     return 0;
   }
 
   /*
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[7]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[7]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D origin X " << eleTag << endln;
     return 0;
   }
   
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &dData[8]) != 0) {
+  if (OPS_GetDoubleInput(numData, &dData[8]) != 0) {
     opserr << "WARNING ZeroLengthImpact3D origin Y " << eleTag << endln;
     return 0;
   }

@@ -115,13 +115,13 @@ OPS_SAniSandMSMaterial(void)
 
 
 	int numData = 1;
-	if (OPS_GetInt(&numData, &tag) != 0) {
+	if (OPS_GetInt(numData, &tag) != 0) {
 		opserr << "WARNING 1: invalid nDMaterial SAniSandMS material tag" << endln;
 		return 0;
 	}
 
 	numData = 19;
-	if (OPS_GetDouble(&numData, dData) != 0) {
+	if (OPS_GetDouble(numData, dData) != 0) {
 		opserr << "WARNING 2: invalid material data for nDMaterial SAniSandMS material  with tag: " << tag << endln;
 		return 0;
 	}
@@ -135,18 +135,18 @@ OPS_SAniSandMSMaterial(void)
 		int pos = 0;
 		while (pos < std::min(numData, 3))
 		{
-			OPS_GetInt(&one, &flags[pos]);
+			OPS_GetInt(one, &flags[pos]);
 			++pos;
 		}
 		numData -= 5;
 		pos = 0;
 		while (pos < std::min(numData, 2))
 		{
-			OPS_GetDouble(&one, &oData[pos]);
+			OPS_GetDouble(one, &oData[pos]);
 			++pos;
 		}
 	}
-	// if (OPS_GetDouble(&numData, oData) != 0) {
+	// if (OPS_GetDouble(numData, oData) != 0) {
 	//     opserr << "WARNING 3 invalid material data for nDMaterial SAniSandMS material  with tag: " << tag << endln;
 	//     return 0;
 	// }

@@ -57,7 +57,7 @@ void* OPS_UniaxialJ2Plasticity()
       
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial UniaxialJ2Plasticity tag\n";
 	return 0;	
     }

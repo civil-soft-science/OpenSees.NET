@@ -53,7 +53,7 @@ void* OPS_BoucWenMaterial()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
@@ -63,7 +63,7 @@ void* OPS_BoucWenMaterial()
     if (numdata > 10) {
 	numdata = 10;
     }
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -72,7 +72,7 @@ void* OPS_BoucWenMaterial()
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 0) {
 	numdata = 1;
-	if (OPS_GetIntInput(&numdata,&maxNumIter) < 0) {
+	if (OPS_GetIntInput(numdata,&maxNumIter) < 0) {
 	    opserr << "WARNING invalid int inputs\n";
 	    return 0;
 	}

@@ -66,7 +66,7 @@ OPS_EmbeddedBeamInterfaceL(void)
 
     int iData[1];
     int numData = 1;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid integer data: element EmbeddedBeamInterfaceL" << endln;
         return 0;
     }

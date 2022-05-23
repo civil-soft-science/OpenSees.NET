@@ -20,7 +20,7 @@ void * OPS_ResilienceLow(void) {
   int    iData[1];
   double dData[5];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterialtag" << endln;
     return 0;
   }
@@ -30,7 +30,7 @@ void * OPS_ResilienceLow(void) {
     return 0;
   }
 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial ResilienceLow " << iData[0] << "  PY DPmax Pmax Ke Kd" << endln;
     return 0;
   }

@@ -46,7 +46,7 @@ void* OPS_ConcreteS()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid nDMaterial ConcreteS tag" << endln;
 	return 0;
     }
@@ -54,7 +54,7 @@ void* OPS_ConcreteS()
     // double E, nu, fc, ft, Es;
     double data[5];
     numdata = 5;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs" << endln;
 	opserr << "ConcreteS: " << tag << endln;
 	return 0;

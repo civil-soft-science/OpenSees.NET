@@ -119,16 +119,16 @@ void* OPS_GmshRecorder()
                 opserr << "WARNING: eigen needs 'numEigenvector'\n";
                 return 0;
             }
-            numdata = 1;
-            if (OPS_GetIntInput(&numdata, &nodedata.numeigen) < 0) return 0;
+
+            if (OPS_GetIntInput(1, &nodedata.numeigen) < 0) return 0;
         } else if (type == "-precision") {
             numdata = OPS_GetNumRemainingInputArgs();
             if (numdata < 1) {
                 opserr << "WARNING: needs precision \n";
                 return 0;
             }
-            numdata = 1;
-            if (OPS_GetIntInput(&numdata, &precision) < 0) return 0;
+
+            if (OPS_GetIntInput(1, &precision) < 0) return 0;
         } else if (type == "eleResponse") {
             numdata = OPS_GetNumRemainingInputArgs();
             if (numdata < 1) {

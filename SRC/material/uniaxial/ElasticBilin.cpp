@@ -53,14 +53,14 @@ OPS_ElasticBilin(void)
   double dData[6];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ElasticBilin tag" << endln;
     return 0;
   }
   
   argc--;
   numData = argc;;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid double data: uniaxialMaterial ElasticBilin tag E2P eps2P <E2N? eps2N?>" << endln;
     return 0;	
   }

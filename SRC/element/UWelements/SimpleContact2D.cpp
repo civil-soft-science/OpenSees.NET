@@ -78,13 +78,13 @@ OPS_SimpleContact2D(void)
   double dData[2];
 
   int numData = 6;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element SimpleContact2DElement" << endln;
     return 0;
   }
 
   numData = 2;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data: element SimpleContact2D " << iData[0] << endln;
     return 0;	
   }

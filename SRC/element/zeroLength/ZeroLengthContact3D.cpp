@@ -67,7 +67,7 @@ void* OPS_ZeroLengthContact3D()
     // get the ele tag
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "ZeroLengthContact3D::WARNING invalied int inputs\n";
 	return 0;
     }
@@ -78,7 +78,7 @@ void* OPS_ZeroLengthContact3D()
     // read the material properties
     double ddata[4];
     numdata = 4;
-    if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
 	opserr << "ZeroLengthContact3D::WARNING invalied double inputs\n";
 	return 0;
     }
@@ -89,7 +89,7 @@ void* OPS_ZeroLengthContact3D()
 
     int dir;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &dir) < 0) {
+    if (OPS_GetIntInput(numdata, &dir) < 0) {
 	opserr << "ZeroLengthContact3D::WARNING invalied direction\n";
 	return 0;
     }
@@ -104,11 +104,11 @@ void* OPS_ZeroLengthContact3D()
   
     if (dir==0) {
 	if (OPS_GetNumRemainingInputArgs() > 1) {
-	    if (OPS_GetDoubleInput(&numdata, &originX) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &originX) < 0) {
 		opserr << "ZeroLengthContact3D::WARNING invalied originX\n";
 		return 0;
 	    }
-	    if (OPS_GetDoubleInput(&numdata, &originY) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &originY) < 0) {
 		opserr << "ZeroLengthContact3D::WARNING invalied originY\n";
 		return 0;
 	    }

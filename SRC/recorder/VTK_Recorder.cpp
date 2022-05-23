@@ -166,7 +166,7 @@ void* OPS_VTK_Recorder()
 	    }
 	    numdata = 1;
 	    int mode;
-	    if(OPS_GetIntInput(&numdata,&mode) < 0) {
+	    if(OPS_GetIntInput(numdata,&mode) < 0) {
 		opserr << "WARNING: failed to read numeigen\n";
 		return 0;
 	    }
@@ -181,7 +181,7 @@ void* OPS_VTK_Recorder()
 		return 0;
 	    }
 	    numdata = 1;
-	    if(OPS_GetIntInput(&numdata,&precision) < 0) {
+	    if(OPS_GetIntInput(numdata,&precision) < 0) {
 		opserr << "WARNING: failed to read precision\n";
 		return 0;
 	    }
@@ -206,7 +206,7 @@ void* OPS_VTK_Recorder()
 		return 0;
 	    }
 	    numdata = 1;
-	    if(OPS_GetDoubleInput(&numdata,&dT) < 0) {
+	    if(OPS_GetDoubleInput(numdata,&dT) < 0) {
 		opserr << "WARNING: failed to read dT\n";
 		return 0;
 	    }
@@ -218,7 +218,7 @@ void* OPS_VTK_Recorder()
 		return 0;
 	    }
 	    numdata = 1;
-	    if(OPS_GetDoubleInput(&numdata,&rTolDt) < 0) {
+	    if(OPS_GetDoubleInput(numdata,&rTolDt) < 0) {
 		opserr << "WARNING: failed to read rTolDt\n";
 		return 0;
 	    }

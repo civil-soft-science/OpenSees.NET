@@ -64,21 +64,21 @@ void* OPS_MinUnbalDispNorm()
     }
 
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &lambda11) < 0) {
+    if (OPS_GetDoubleInput(numdata, &lambda11) < 0) {
 	opserr << "WARNING integrator MinUnbalDispNorm invalid lambda11\n";
 	return 0;
     }
 
     if (OPS_GetNumRemainingInputArgs() >= 3) {
-	if (OPS_GetIntInput(&numdata, &numIter) < 0) {
+	if (OPS_GetIntInput(numdata, &numIter) < 0) {
 	    opserr << "WARNING integrator MinUnbalDispNorm invalid numIter\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(&numdata, &minlambda) < 0) {
+	if (OPS_GetDoubleInput(numdata, &minlambda) < 0) {
 	    opserr << "WARNING integrator MinUnbalDispNorm invalid minlambda\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(&numdata, &maxlambda) < 0) {
+	if (OPS_GetDoubleInput(numdata, &maxlambda) < 0) {
 	    opserr << "WARNING integrator MinUnbalDispNorm invalid maxlambda\n";
 	    return 0;
 	}

@@ -53,7 +53,7 @@ void* OPS_PFEMElement2DQuasi()
     // tag, nd1, nd2, nd3
     numdata = 4;
     int idata[4];
-    if(OPS_GetIntInput(&numdata,idata)<0) {
+    if(OPS_GetIntInput(numdata,idata)<0) {
 	opserr << "WARNING: failed to read integers -- PFEMElement2DQuasi\n";
 	return 0;
     }
@@ -62,7 +62,7 @@ void* OPS_PFEMElement2DQuasi()
     numdata = OPS_GetNumRemainingInputArgs();
     if(numdata > 6) numdata = 6;
     double data[6] = {0,0,0,0,1.0,2.15e9};
-    if(OPS_GetDoubleInput(&numdata,data) < 0) {
+    if(OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- PFEMElement2DQuasi\n";
 	return 0;
     }
@@ -84,7 +84,7 @@ int OPS_PFEMElement2DQuasi(Domain& theDomain, const ID& elenodes, ID& eletags)
     numdata = OPS_GetNumRemainingInputArgs();
     if(numdata > 6) numdata = 6;
     double data[6] = {0,0,0,0,1.0,2.15e9};
-    if(OPS_GetDoubleInput(&numdata,data) < 0) {
+    if(OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- PFEMElement2DQuasi\n";
 	return 0;
     }

@@ -58,14 +58,14 @@ void* OPS_Concrete04()
 
     int tag;
     numdata = 1;
-    if(OPS_GetIntInput(&numdata,&tag) < 0) {
+    if(OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[4];
     numdata = 4;
-    if(OPS_GetDoubleInput(&numdata,data) < 0) {
+    if(OPS_GetDoubleInput(numdata,data) < 0) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
@@ -74,7 +74,7 @@ void* OPS_Concrete04()
     double data2[2];
     if (numdata > 1) {
 	numdata = 2;
-	if (OPS_GetDoubleInput(&numdata,data2)<0) {
+	if (OPS_GetDoubleInput(numdata,data2)<0) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}
@@ -85,7 +85,7 @@ void* OPS_Concrete04()
     double beta;
     if (numdata > 0) {
 	numdata = 1;
-	if (OPS_GetDoubleInput(&numdata,&beta)) {
+	if (OPS_GetDoubleInput(numdata,&beta)) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}

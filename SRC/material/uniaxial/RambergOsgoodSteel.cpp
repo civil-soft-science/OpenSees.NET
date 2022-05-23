@@ -64,14 +64,14 @@ OPS_RambergOsgoodSteel(void)
   int numData;
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RambergOsgoodSteel tag" << endln;
     return 0;
   }
 
  
   numData = 4;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid E & ep\n";
     return 0;  
   }

@@ -61,7 +61,7 @@ int OPS_EqualDOF()
     // get all data
     int num = OPS_GetNumRemainingInputArgs();
     ID data(num);
-    if(OPS_GetIntInput(&num, &data(0)) < 0) {
+    if(OPS_GetIntInput(num, &data(0)) < 0) {
 	opserr<<"WARNING invalid int inputs\n";
 	return -1;
     }
@@ -109,18 +109,18 @@ int OPS_EqualDOF_Mixed()
     int RnodeID, CnodeID, dofIDR, dofIDC, numDOF;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &RnodeID) < 0) {
+    if (OPS_GetIntInput(numdata, &RnodeID) < 0) {
 	opserr << "WARNING invalid RnodeID: "
 	       << " equalDOF RnodeID? CnodeID? numDOF? RDOF1? CDOF1? ...";
 	return -1;
     }
-    if (OPS_GetIntInput(&numdata, &CnodeID) < 0) {
+    if (OPS_GetIntInput(numdata, &CnodeID) < 0) {
 	opserr << "WARNING invalid CnodeID: "
 	       << " equalDOF RnodeID? CnodeID? numDOF? RDOF1? CDOF1? ...";
 	return -1;
     }
 
-    if (OPS_GetIntInput(&numdata, &numDOF) < 0) {
+    if (OPS_GetIntInput(numdata, &numDOF) < 0) {
 	opserr << "WARNING invalid numDOF: "
 	       << " equalDOF RnodeID? CnodeID? numDOF? RDOF1? CDOF1? ...";
 	return -1;
@@ -145,12 +145,12 @@ int OPS_EqualDOF_Mixed()
 
     // Read the degrees of freedom which are to be coupled
     for (int k = 0; k < numDOF; k++) {
-	if (OPS_GetIntInput(&numdata, &dofIDR) < 0) {
+	if (OPS_GetIntInput(numdata, &dofIDR) < 0) {
 	    opserr << "WARNING invalid dofID: "
 		   << " equalDOF RnodeID? CnodeID? DOF1? DOF2? ...";
 	    return -1;
 	}
-	if (OPS_GetIntInput(&numdata, &dofIDC) < 0) {
+	if (OPS_GetIntInput(numdata, &dofIDC) < 0) {
 	    opserr << "WARNING invalid dofID: "
 		   << " equalDOF RnodeID? CnodeID? DOF1? DOF2? ...";
 	    return -1;
@@ -189,7 +189,7 @@ int OPS_EqualDOF_Mixed()
 
     // output
     // int mpTag = theMP->getTag();
-    // if (OPS_SetIntOutput(&numdata, &mpTag) < 0) {
+    // if (OPS_SetIntOutput(numdata, &mpTag) < 0) {
     // 	opserr << "WARNING failed to set output\n";
     // 	return -1;
     // }

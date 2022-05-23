@@ -57,7 +57,7 @@ OPS_VelDepMultiLinear(void)
     double frnData[64];
     const char *paraStr;
     int numData = 1;
-    if (OPS_GetIntInput(&numData, tag) != 0) {
+    if (OPS_GetIntInput(numData, tag) != 0) {
         opserr << "WARNING invalid tag for frictionModel VelDepMultiLinear\n";
         return 0;
     }
@@ -66,7 +66,7 @@ OPS_VelDepMultiLinear(void)
     numData = (argc - 3) / 2;
     paraStr = OPS_GetString();
     if (strcmp(paraStr, "-vel") == 0) {
-        if (OPS_GetDoubleInput(&numData, velData) != 0) {
+        if (OPS_GetDoubleInput(numData, velData) != 0) {
             opserr << "WARNING invalid velocityPoints\n";
             opserr << "frictionModel VelDepMultiLinear: " << tag[0] << endln;
             return 0;
@@ -82,7 +82,7 @@ OPS_VelDepMultiLinear(void)
     // get friction data points
     paraStr = OPS_GetString();
     if (strcmp(paraStr, "-frn") == 0) {
-        if (OPS_GetDoubleInput(&numData, frnData) != 0) {
+        if (OPS_GetDoubleInput(numData, frnData) != 0) {
             opserr << "WARNING invalid frictionPoints\n";
             opserr << "frictionModel VelDepMultiLinear: " << tag[0] << endln;
             return 0;

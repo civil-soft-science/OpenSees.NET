@@ -66,13 +66,13 @@ OPS_VS3D4WuadWithSensitivity(void) {
   }
 
   int numData = 5;
-  if (OPS_GetIntInput(&numData, idData) != 0) {
+  if (OPS_GetIntInput(numData, idData) != 0) {
     opserr << "element Vs3D4 error reading first 5 integers\n";
     return 0;
   }
 
   numData = argc-5;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "element Vs3D4 error reading last few doubles for element" << idData[0] << endln;
     return 0;
   }

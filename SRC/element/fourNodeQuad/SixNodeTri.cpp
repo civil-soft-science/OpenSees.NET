@@ -61,14 +61,14 @@ void* OPS_SixNodeTri()
 	// nNode, mNode
     int idata[7];
     int num = 7;
-    if (OPS_GetIntInput(&num,idata) < 0) {
+    if (OPS_GetIntInput(num,idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
 
     double thk = 1.0;
     num = 1;
-    if (OPS_GetDoubleInput(&num,&thk) < 0) {
+    if (OPS_GetDoubleInput(num,&thk) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_SixNodeTri()
 
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(&num,&matTag) < 0) {
+    if (OPS_GetIntInput(num,&matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -97,7 +97,7 @@ void* OPS_SixNodeTri()
 	num = 4;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(&num,data) < 0) {
+	if (OPS_GetDoubleInput(num,data) < 0) {
 	    opserr<<"WARNING: invalid integer data\n";
 	    return 0;
 	}

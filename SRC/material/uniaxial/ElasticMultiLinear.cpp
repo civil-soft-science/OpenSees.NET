@@ -58,7 +58,7 @@ void *OPS_ElasticMultiLinear()
     const char *paraStr;
     
     int numData = 1;
-    if (OPS_GetIntInput(&numData,tag) != 0)  {
+    if (OPS_GetIntInput(numData,tag) != 0)  {
         opserr << "WARNING invalid uniaxialMaterial ElasticMultiLinear tag\n";
         return 0;
     }
@@ -66,7 +66,7 @@ void *OPS_ElasticMultiLinear()
     // check if eta is provided (odd number of inputs)
     if ((argc-3)%2 == 1)  {
         numData = 1;
-        if (OPS_GetDoubleInput(&numData,&eta) != 0)  {
+        if (OPS_GetDoubleInput(numData,&eta) != 0)  {
             opserr << "WARNING invalid eta\n";
             opserr << "uniaxialMaterial ElasticMultiLinear: " << tag[0] << endln;
             return 0;
@@ -78,7 +78,7 @@ void *OPS_ElasticMultiLinear()
     numData = (argc - 3)/2;
     paraStr = OPS_GetString();
     if (strcmp(paraStr,"-strain") == 0)  {
-        if (OPS_GetDoubleInput(&numData,strainData) != 0)  {
+        if (OPS_GetDoubleInput(numData,strainData) != 0)  {
             opserr << "WARNING invalid strainPoints\n";
             opserr << "uniaxialMaterial ElasticMultiLinear: " << tag[0] << endln;
             return 0;
@@ -93,7 +93,7 @@ void *OPS_ElasticMultiLinear()
     // get stress data points
     paraStr = OPS_GetString();
     if (strcmp(paraStr,"-stress") == 0)  {
-        if (OPS_GetDoubleInput(&numData, stressData) != 0)  {
+        if (OPS_GetDoubleInput(numData, stressData) != 0)  {
             opserr << "WARNING invalid stressPoints\n";
             opserr << "uniaxialMaterial ElasticMultiLinear: " << tag[0] << endln;
             return 0;

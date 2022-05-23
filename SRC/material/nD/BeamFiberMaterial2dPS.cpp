@@ -52,7 +52,7 @@ void* OPS_BeamFiberMaterial2dPS()
 
     int tags[2];
     int numdata = 2;
-    if (OPS_GetIntInput(&numdata, tags) < 0) {
+    if (OPS_GetIntInput(numdata, tags) < 0) {
 	opserr << "WARNING invalid nDMaterial BeamFiber2dPS tag or matTag" << endln;
 	return 0;
     }

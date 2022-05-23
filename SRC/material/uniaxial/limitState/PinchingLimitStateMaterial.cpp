@@ -104,12 +104,12 @@ OPS_PinchingLimitState(void)
   int numData;
   
   numData = 1;
-  if (OPS_GetIntInput(&numData, iTagData) != 0) {
+  if (OPS_GetIntInput(numData, iTagData) != 0) {
     opserr << "WARNING PinchingLimitStateMaterial -- invalid uniaxialMaterial matTag?\n" << endln;
     return 0;
   }
   numData = 3;
-  if (OPS_GetIntInput(&numData, iNodeData) != 0) {
+  if (OPS_GetIntInput(numData, iNodeData) != 0) {
     opserr << "WARNING PinchingLimitStateMaterial -- invalid nodeT? nodeB? driftAxis?\n" << endln;
     return 0;
   }
@@ -139,7 +139,7 @@ OPS_PinchingLimitState(void)
     return 0;
   }
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dKelasData) != 0) {
+  if (OPS_GetDoubleInput(numData, dKelasData) != 0) {
     opserr << "WARNING PinchingLimitStateMaterial -- invalid Kelas?\n";
     return 0;	
   }
@@ -158,7 +158,7 @@ OPS_PinchingLimitState(void)
     return 0;
   }
   numData = 2;
-  if (OPS_GetIntInput(&numData, iCrvData) != 0) {
+  if (OPS_GetIntInput(numData, iCrvData) != 0) {
     opserr << "WARNING PinchingLimitStateMaterial -- invalid crvTyp? crvTag?\n" << endln;
     return 0;
   }
@@ -184,34 +184,34 @@ OPS_PinchingLimitState(void)
   }
   if (argc == 32) {
     numData = 3;
-    if (OPS_GetDoubleInput(&numData, dpinchPN) != 0) {
+    if (OPS_GetDoubleInput(numData, dpinchPN) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid YpinchUPN? YpinchRPN? XpinchRPN?\n" << endln;
       return 0;	
     }
     numData = 3;
-    if (OPS_GetDoubleInput(&numData, dpinchNP) != 0) {
+    if (OPS_GetDoubleInput(numData, dpinchNP) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid YpinchUNP? YpinchRNP? XpinchRNP?\n" << endln;
       return 0;	
     }
     numData = 2;
-    if (OPS_GetDoubleInput(&numData, dDmgProp) != 0) {
+    if (OPS_GetDoubleInput(numData, dDmgProp) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid dmgStrsLimE? dmgDispMax?\n" << endln;
       return 0;	
     }
     if(dDmgProp[0] < 0.0001)
       dDmgProp[0] = 0.0001;
     numData = 5;
-    if (OPS_GetDoubleInput(&numData, dDmgEdata) != 0) {
+    if (OPS_GetDoubleInput(numData, dDmgEdata) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid dmgE1? dmgE2? dmgE3? dmgE4? dmgELim?\n" << endln;
       return 0;	
     }
     numData = 6;
-    if (OPS_GetDoubleInput(&numData, dDmgRdata) != 0) {
+    if (OPS_GetDoubleInput(numData, dDmgRdata) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid dmgR1? dmgR2? dmgR3? dmgR4? dmgRLim? dmgRCyc?\n" << endln;
       return 0;	
     }
     numData = 6;
-    if (OPS_GetDoubleInput(&numData, dDmgSdata) != 0) {
+    if (OPS_GetDoubleInput(numData, dDmgSdata) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid dmgS1? dmgS2? dmgS3? dmgS4? dmgSLim? dmgSCyc?\n" << endln;
       return 0;	
     }
@@ -236,7 +236,7 @@ OPS_PinchingLimitState(void)
     
   } else {
     numData = 1;
-    if (OPS_GetIntInput(&numData, iEleTag) != 0) {
+    if (OPS_GetIntInput(numData, iEleTag) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid eleTag?\n" << endln;
       return 0;
     }
@@ -248,7 +248,7 @@ OPS_PinchingLimitState(void)
       return 0;
     }
     numData = 13;
-    if (OPS_GetDoubleInput(&numData, dPropData) != 0) {
+    if (OPS_GetDoubleInput(numData, dPropData) != 0) {
       opserr << "WARNING PinchingLimitStateMaterial -- invalid b? d? h? a? st? As? Acc? ld? db? rhot? f'c? fy? fyt?\n" << endln;
       return 0;
     }

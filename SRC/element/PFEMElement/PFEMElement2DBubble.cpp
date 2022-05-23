@@ -72,7 +72,7 @@ void* OPS_PFEMElement2DBubble(const ID &info)
 
         // tag, nd1, nd2, nd3
         numdata = 4;
-        if(OPS_GetIntInput(&numdata,idata)<0) {
+        if(OPS_GetIntInput(numdata,idata)<0) {
             opserr << "WARNING: failed to get tags\n";
             return 0;
         }
@@ -88,7 +88,7 @@ void* OPS_PFEMElement2DBubble(const ID &info)
         // rho, mu, b1, b2, (thinknes,kappa,minJ)
         numdata = OPS_GetNumRemainingInputArgs();
         if(numdata > 7) numdata = 7;
-        if(OPS_GetDoubleInput(&numdata,data) < 0) {
+        if(OPS_GetDoubleInput(numdata,data) < 0) {
             opserr << "WARNING: failed to get fluid properties\n";
             return 0;
         }

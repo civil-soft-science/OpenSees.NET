@@ -81,7 +81,7 @@ OPS_PeerNGAMotion(void)
   // get tag if provided
   if (numRemainingArgs == 3 || numRemainingArgs == 5 || numRemainingArgs == 7) {
     numData = 1;
-    if (OPS_GetIntInput(&numData, &tag) != 0) {
+    if (OPS_GetIntInput(numData, &tag) != 0) {
       opserr << "WARNING invalid series tag in Constant tag?" << endln;
       return 0;
     }
@@ -91,7 +91,7 @@ OPS_PeerNGAMotion(void)
   const char *eqMotion = OPS_GetString();
 
   numData = 1;
-  if (OPS_GetDouble(&numData, &factor) != 0) {
+  if (OPS_GetDouble(numData, &factor) != 0) {
     opserr << "WARNING invalid shift in peerNGAMotion with tag?" << tag << endln;
     return 0;
   }

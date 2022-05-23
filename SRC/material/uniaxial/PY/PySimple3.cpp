@@ -47,7 +47,7 @@ void* OPS_PySimple3()
     
   int idata[1];
   numdata = 1;
-  if (OPS_GetIntInput(&numdata, idata) < 0) {
+  if (OPS_GetIntInput(numdata, idata) < 0) {
     opserr << "WARNING invalid int inputs\n";
     return 0;
   }
@@ -55,7 +55,7 @@ void* OPS_PySimple3()
   double ddata[5] = {0,0,0,0,0};
   numdata = OPS_GetNumRemainingInputArgs();
   if (numdata > 5) numdata = 5;
-  if (OPS_GetDoubleInput(&numdata, ddata) < 0) {
+  if (OPS_GetDoubleInput(numdata, ddata) < 0) {
     opserr << "WARNING invalid double inputs\n";
     return 0;
   }

@@ -60,14 +60,14 @@ void *OPS_SteelBRB(void)
   double dData[11];
 
   int numData = 1;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer values: nDMaterial SimplifiedJ2 \n";
     return 0;
   }  
   tag = iData[0]; 
 
   numData = numArgs -1;  
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
       opserr << "WARNING invalid double values: nDMaterial SimplifiedJ2 " << tag << endln;
     return 0;
   }

@@ -53,7 +53,7 @@ void* OPS_Elastic2()
 
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial Elastic tag\n";
 	return 0;
     }
@@ -62,7 +62,7 @@ void* OPS_Elastic2()
     double data[2] = {0.0, 0.0};
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 2) numdata = 2;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

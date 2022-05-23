@@ -52,28 +52,28 @@ void* OPS_UVCmultiaxial(void) {
 
   // Get the material tag
   nInputsToRead = N_TAGS;
-  if (OPS_GetIntInput(&nInputsToRead, materialTag) != 0) {
+  if (OPS_GetIntInput(nInputsToRead, materialTag) != 0) {
     opserr << "WARNING invalid nDMaterial UVCmultiaxial tag" << endln;
     return 0;
   }
 
   // Get E, nu, fy, qInf, b
   nInputsToRead = N_BASIC_PROPERTIES;
-  if (OPS_GetDoubleInput(&nInputsToRead, basicProps) != 0) {
+  if (OPS_GetDoubleInput(nInputsToRead, basicProps) != 0) {
     opserr << inputInstructions.c_str() << endln;
     return 0;
   }
 
   // Read in the updated model paramters
   nInputsToRead = N_UPDATED_PROPERTIES;
-  if (OPS_GetDoubleInput(&nInputsToRead, updProps) != 0) {
+  if (OPS_GetDoubleInput(nInputsToRead, updProps) != 0) {
     opserr << inputInstructions.c_str() << endln;
     return 0;
   }
 
   // Get the number of backstresses
   nInputsToRead = 1;
-  if (OPS_GetIntInput(&nInputsToRead, nBackstresses) != 0) {
+  if (OPS_GetIntInput(nInputsToRead, nBackstresses) != 0) {
     opserr << "WARNING N must be an integer" <<
       inputInstructions.c_str() << endln;
     return 0;
@@ -87,7 +87,7 @@ void* OPS_UVCmultiaxial(void) {
 
   // Get the backstress parameters
   nInputsToRead = 2 * nBackstresses[0];
-  if (OPS_GetDoubleInput(&nInputsToRead, backstressProps) != 0) {
+  if (OPS_GetDoubleInput(nInputsToRead, backstressProps) != 0) {
     opserr << inputInstructions.c_str() << endln;
     return 0;
   }

@@ -52,7 +52,7 @@ void* OPS_SelfCenteringMaterial()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
@@ -62,7 +62,7 @@ void* OPS_SelfCenteringMaterial()
     if (numdata > 7) {
 	numdata = 7;
     }
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

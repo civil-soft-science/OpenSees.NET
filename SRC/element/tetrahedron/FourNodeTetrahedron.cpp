@@ -61,7 +61,7 @@ void* OPS_FourNodeTetrahedron()
 
     int idata[6];
     int num = 6;
-    if (OPS_GetIntInput(&num,idata)<0) 
+    if (OPS_GetIntInput(num,idata)<0) 
     {
       opserr<<"WARNING: invalid integer data\n";
       return 0;
@@ -84,7 +84,7 @@ void* OPS_FourNodeTetrahedron()
     }
     if (num > 0) 
     {
-      if (OPS_GetDoubleInput(&num,data) < 0) 
+      if (OPS_GetDoubleInput(num,data) < 0) 
       {
         opserr<<"WARNING: invalid double data\n";
         return 0;
@@ -119,7 +119,7 @@ void* OPS_FourNodeTetrahedron(const ID& info)
 
 	// get tag
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &idata[5]) < 0) {
+	if (OPS_GetIntInput(numdata, &idata[5]) < 0) {
 	    opserr << "WARNING: failed to get material tag -- FourNodeTetrahedron\n";
 	    return 0;
 	}
@@ -130,7 +130,7 @@ void* OPS_FourNodeTetrahedron(const ID& info)
 	    numdata = 3;
 	}
 	if (numdata > 0) {
-	    if (OPS_GetDoubleInput(&numdata,data) < 0) {
+	    if (OPS_GetDoubleInput(numdata,data) < 0) {
 		opserr << "WARNING: failed to get body force -- FourNodeTetrahedron\n";
 		return 0;
 	    }

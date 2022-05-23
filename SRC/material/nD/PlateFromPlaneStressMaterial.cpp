@@ -53,7 +53,7 @@ void* OPS_PlateFromPlaneStressMaterial()
 
     int tag[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata,tag)<0) {
+    if (OPS_GetIntInput(numdata,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlateFromPlaneStress tag and matTag" << endln;
 	return 0;
     }
@@ -68,7 +68,7 @@ void* OPS_PlateFromPlaneStressMaterial()
 
     double gmod;
     numdata = 1;
-    if (OPS_GetDoubleInput(&numdata,&gmod)<0) {
+    if (OPS_GetDoubleInput(numdata,&gmod)<0) {
 	opserr << "WARNING invalid gmod" << endln;
 	return 0;
     }

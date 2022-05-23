@@ -77,7 +77,7 @@ void* OPS_StagedLoadControlIntegrator()
 
     double lambda;
     int numData = 1;
-    if (OPS_GetDoubleInput(&numData, &lambda) < 0) {
+    if (OPS_GetDoubleInput(numData, &lambda) < 0) {
         opserr << "WARNING failed to read double lambda\n";
         return 0;
     }
@@ -85,12 +85,12 @@ void* OPS_StagedLoadControlIntegrator()
     int numIter = 1;
     double mLambda[2] = {lambda, lambda};
     if (OPS_GetNumRemainingInputArgs() > 2) {
-        if (OPS_GetIntInput(&numData, &numIter) < 0) {
+        if (OPS_GetIntInput(numData, &numIter) < 0) {
             opserr << "WARNING failed to read int numIter\n";
             return 0;
         }
         numData = 2;
-        if (OPS_GetDoubleInput(&numData, &mLambda[0]) < 0) {
+        if (OPS_GetDoubleInput(numData, &mLambda[0]) < 0) {
             opserr << "WARNING failed to read double min and max\n";
             return 0;
         }

@@ -58,7 +58,7 @@ void* OPS_FiberSection2d()
 
     numData = 1;
     int tag;
-    if (OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if (OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     bool computeCentroid = true;
     if (OPS_GetNumRemainingInputArgs() > 0) {

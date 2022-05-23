@@ -57,13 +57,13 @@ OPS_Bond_SP01(void)
   int iData[1];
   double dData[10];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Elastic" << endln;
     return 0;
   }
 
   numData = numInput-1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Elastic" << endln;
     return 0;
   }

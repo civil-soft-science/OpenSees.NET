@@ -58,7 +58,7 @@ OPS_IMKJ()
   double dData[23];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial IMKJ tag" << endln;
     return 0;
   }
@@ -69,7 +69,7 @@ OPS_IMKJ()
     opserr << "Invalid IMKJ #args for: " << iData[0] << " see the syntax" << endln;
     return 0;
   }
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid IMKJ #args for: " << iData[0] << " see the syntax" << endln;
     return 0;
     }

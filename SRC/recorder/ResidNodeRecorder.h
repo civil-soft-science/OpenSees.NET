@@ -56,7 +56,7 @@ class ResidNodeRecorder: public Recorder
 			 const ID *theNodes, 
 			 const char *dataToStore,
 			 Domain &theDomain,
-			 OPS_Stream &theOutputHandler,
+			 OPS_Stream *theOutputHandler,
 #ifdef _CSS
           int procDataMethod = 0, int procGrpNum = 1,
 #endif // _CSS

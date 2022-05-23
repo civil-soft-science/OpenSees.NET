@@ -132,8 +132,8 @@ OPS_ElementRecorderRMS()
                 inetAddr = OPS_GetString();
             }
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetIntInput(&num, &inetPort) < 0) {
+
+                if (OPS_GetIntInput(1, &inetPort) < 0) {
                     opserr << "WARNING: failed to read inetPort\n";
                     return 0;
                 }
@@ -154,8 +154,8 @@ OPS_ElementRecorderRMS()
         }
         else if (strcmp(option, "-dT") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetDoubleInput(&num, &dT) < 0) {
+
+                if (OPS_GetDoubleInput(1, &dT) < 0) {
                     opserr << "WARNING: failed to read dT\n";
                     return 0;
                 }
@@ -163,8 +163,8 @@ OPS_ElementRecorderRMS()
         }
         else if (strcmp(option, "-rTolDt") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetDoubleInput(&num, &rTolDt) < 0) {
+
+                if (OPS_GetDoubleInput(1, &rTolDt) < 0) {
                     opserr << "WARNING: failed to read rTolDt\n";
                     return 0;
                 }
@@ -172,8 +172,8 @@ OPS_ElementRecorderRMS()
         }
         else if (strcmp(option, "-precision") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetIntInput(&num, &precision) < 0) {
+
+                if (OPS_GetIntInput(1, &precision) < 0) {
                     opserr << "WARNING: failed to read precision\n";
                     return 0;
                 }
@@ -182,9 +182,9 @@ OPS_ElementRecorderRMS()
         else if (strcmp(option, "-ele") == 0) {
             int numEle = 0;
             while (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
+
                 int el;
-                if (OPS_GetIntInput(&num, &el) < 0) {
+                if (OPS_GetIntInput(1, &el) < 0) {
                     break;
                 }
                 elements[numEle++] = el;
@@ -193,15 +193,15 @@ OPS_ElementRecorderRMS()
         else if (strcmp(option, "-eleRange") == 0) {
             int start, end;
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetIntInput(&num, &start) < 0) {
+
+                if (OPS_GetIntInput(1, &start) < 0) {
                     opserr << "WARNING: failed to read start element\n";
                     return 0;
                 }
             }
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetIntInput(&num, &end) < 0) {
+
+                if (OPS_GetIntInput(1, &end) < 0) {
                     opserr << "WARNING: failed to read end element\n";
                     return 0;
                 }
@@ -218,8 +218,8 @@ OPS_ElementRecorderRMS()
         else if (strcmp(option, "-region") == 0) {
             int tag;
             if (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
-                if (OPS_GetIntInput(&num, &tag) < 0) {
+
+                if (OPS_GetIntInput(1, &tag) < 0) {
                     opserr << "WARNING: failed to read region tag\n";
                     return 0;
                 }
@@ -238,9 +238,9 @@ OPS_ElementRecorderRMS()
         else if (strcmp(option, "-dof") == 0) {
             int numDOF = 0;
             while (OPS_GetNumRemainingInputArgs() > 0) {
-                int num = 1;
+
                 int dof;
-                if (OPS_GetIntInput(&num, &dof) < 0) {
+                if (OPS_GetIntInput(1, &dof) < 0) {
                     OPS_ResetCurrentInputArg(-1);
                     break;
                 }

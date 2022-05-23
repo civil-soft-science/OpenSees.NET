@@ -105,7 +105,7 @@ void* OPS_TwentyEightNodeBrickUP()
     // brickUPId, Node[20], matID
     int tags[22];
     int num = 22;
-    if (OPS_GetIntInput(&num,tags) < 0) {
+    if (OPS_GetIntInput(num,tags) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return 0;
     }
@@ -120,7 +120,7 @@ void* OPS_TwentyEightNodeBrickUP()
     // bk, r, perm1, perm2, perm3
     double data[5];
     num = 5;
-    if (OPS_GetDoubleInput(&num,data) < 0) {
+    if (OPS_GetDoubleInput(num,data) < 0) {
 	opserr<<"WARNING: invalid double input\n";
 	return 0;
     }
@@ -131,7 +131,7 @@ void* OPS_TwentyEightNodeBrickUP()
 	num = 3;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(&num,opt) < 0) {
+	if (OPS_GetDoubleInput(num,opt) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}

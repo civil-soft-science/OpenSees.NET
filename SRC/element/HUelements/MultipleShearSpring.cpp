@@ -104,7 +104,7 @@ void* OPS_MultipleShearSpring()
 	//argv[2~5]
 	int idata[4];
 	int numdata = 4;
-	if (OPS_GetIntInput(&numdata, idata) < 0) {
+	if (OPS_GetIntInput(numdata, idata) < 0) {
 	    opserr << "WARNING invalid multipleShearSpring int inputs\n";
 	    ifNoError = false;
 	}
@@ -125,7 +125,7 @@ void* OPS_MultipleShearSpring()
       
 	    if (strcmp(flag,"-mat")==0 && OPS_GetNumRemainingInputArgs()>0) { // -mat matTag?
 		numdata = 1;
-		if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+		if (OPS_GetIntInput(numdata, &matTag) < 0) {
 		    opserr << "WARNING invalid matTag\n";
 		    ifNoError = false;
 		}
@@ -146,7 +146,7 @@ void* OPS_MultipleShearSpring()
 		theMaterials = new UniaxialMaterial *[nSpring];
 		for (int j=0; j<nSpring; j++) {
 		    numdata = 1;
-		    if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+		    if (OPS_GetIntInput(numdata, &matTag) < 0) {
 			opserr << "WARNING invalid matTag\n";
 			ifNoError = false;
 		    }
@@ -168,7 +168,7 @@ void* OPS_MultipleShearSpring()
 
 		for (int j=1; j<=3; j++) {
 		    numdata = 1;
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -177,7 +177,7 @@ void* OPS_MultipleShearSpring()
 		}
 
 		for (int j=1; j<=3; j++) {
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -188,7 +188,7 @@ void* OPS_MultipleShearSpring()
 	    } else if (strcmp(flag,"-orient")==0 && OPS_GetNumRemainingInputArgs()>=3) { // <-orient yp1? yp2? yp3?> �̓ǂݍ���	  
 
 		for (int j=1; j<=3; j++) {
-		    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
 			opserr << "WARNING invalid -orient value\n";
 			ifNoError = false;
 		    } else {
@@ -197,13 +197,13 @@ void* OPS_MultipleShearSpring()
 		}
 
 	    } else if (strcmp(flag,"-mass")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-mass m?> �̓ǂݍ���
-		if (OPS_GetDoubleInput(&numdata, &mass) < 0 || mass <= 0) {
+		if (OPS_GetDoubleInput(numdata, &mass) < 0 || mass <= 0) {
 		    opserr << "WARNING invalid mass\n";
 		    ifNoError = false;
 		}
 
 	    } else if (strcmp(flag,"-lim")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-lim limDisp?> �̓ǂݍ���
-		if (OPS_GetDoubleInput(&numdata, &limDisp) < 0 || limDisp < 0) {
+		if (OPS_GetDoubleInput(numdata, &limDisp) < 0 || limDisp < 0) {
 		    opserr << "WARNING invalid limDisp\n";
 		    ifNoError = false;
 		}

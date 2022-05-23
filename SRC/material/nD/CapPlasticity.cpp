@@ -64,7 +64,7 @@ OPS_CapPlasticity(void) {
   double dData[10];
 
   int numData = 2;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer values: nDMaterial CapPlasticisty \n";
     return 0;
   }  
@@ -72,7 +72,7 @@ OPS_CapPlasticity(void) {
 
 
   numData = 3;  
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid double values: nDMaterial CapPlasticity " << tag << endln;
     return 0;
   }  
@@ -80,7 +80,7 @@ OPS_CapPlasticity(void) {
 
   if (numArgs == 10) {
     numData = 10;      
-    if (OPS_GetDouble(&numData, dData) != 0) {
+    if (OPS_GetDouble(numData, dData) != 0) {
       opserr << "WARNING invalid double values: nDMaterial CapPlasticity " << tag << endln;
       return 0;
     }  

@@ -80,7 +80,7 @@ OPS_SSPbrickUP(void)
 	dData[9] = 0.0;
 
   	int numData = 10;
-  	if (OPS_GetIntInput(&numData, iData) != 0) {
+  	if (OPS_GetIntInput(numData, iData) != 0) {
     	opserr << "WARNING invalid integer data: element SSPbrickUP " << iData[0] << endln;
 		return 0;
   	}
@@ -94,14 +94,14 @@ OPS_SSPbrickUP(void)
   	}
 
 	numData = 7;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
     	opserr << "WARNING invalid double data: element SSPbrickUP " << iData[0] << endln;
 		return 0;
     }
 
 	if (numRemainingInputArgs == 20) {
     	numData = 3;
-    	if (OPS_GetDoubleInput(&numData, &dData[7]) != 0) {
+    	if (OPS_GetDoubleInput(numData, &dData[7]) != 0) {
       		opserr << "WARNING invalid optional data: element SSPbrickUP " << iData[0] << endln;
 	  		return 0;
     	}

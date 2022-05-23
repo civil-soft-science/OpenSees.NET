@@ -37,14 +37,14 @@ void* OPS_SMAMaterial()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING: failed to read tag\n";
 	return 0;
     }
 
     double data[6];
     numdata = 6;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING: failed to read data\n";
 	return 0;
     }

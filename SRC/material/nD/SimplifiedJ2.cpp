@@ -42,14 +42,14 @@ void *OPS_SimplifiedJ2 (void) {
   double dData[5];
 
   int numData = 1;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer values: nDMaterial SimplifiedJ2 \n";
     return 0;
   }  
   tag = iData[0]; 
 
   numData = 5;  
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
       opserr << "WARNING invalid double values: nDMaterial SimplifiedJ2 " << tag << endln;
     return 0;
   }  

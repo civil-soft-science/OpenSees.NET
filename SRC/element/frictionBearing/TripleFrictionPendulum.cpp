@@ -68,7 +68,7 @@ void *OPS_TripleFrictionPendulum()
     int numData, eleTag;
     
     numData = 10;
-    if (OPS_GetIntInput(&numData, iData) != 0) {
+    if (OPS_GetIntInput(numData, iData) != 0) {
         opserr << "WARNING invalid element data";
         return 0;
     }
@@ -99,7 +99,7 @@ void *OPS_TripleFrictionPendulum()
     }
     
     numData = 11;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
         opserr << "WARNING error reading element" << eleTag << endln;
         return 0;
     }

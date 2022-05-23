@@ -71,39 +71,39 @@ OPS_OOHystereticMaterial(void)
   int argc = OPS_GetNumRemainingInputArgs();
   
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) != 0) {
+  if (OPS_GetIntInput(numData, &tag) != 0) {
     opserr << "WARNING invalid tag\n";
     opserr << "OOHysteretic material: " << tag << endln;
     return 0;
   }
-  if (OPS_GetIntInput(&numData, &bTagPos) != 0) {
+  if (OPS_GetIntInput(numData, &bTagPos) != 0) {
     opserr << "WARNING invalid bTag+\n";
     opserr << "OOHysteretic material: " << tag << endln;
     return 0;
   }
-  if (OPS_GetIntInput(&numData, &unlTagPos) != 0) {
+  if (OPS_GetIntInput(numData, &unlTagPos) != 0) {
     opserr << "WARNING invalid unlRulTag+\n";
     opserr << "OOHysteretic material: " << tag << endln;
     return 0;
   }
-  if (OPS_GetIntInput(&numData, &stfTagPos) != 0) {
+  if (OPS_GetIntInput(numData, &stfTagPos) != 0) {
     opserr << "WARNING invalid stfDegTag+\n";
     opserr << "OOHysteretic material: " << tag << endln;
     return 0;
   }
-  if (OPS_GetIntInput(&numData, &strTagPos) != 0) {
+  if (OPS_GetIntInput(numData, &strTagPos) != 0) {
     opserr << "WARNING invalid strDegTag+\n";
     opserr << "OOHysteretic material: " << tag << endln;
     return 0;
   }
 
   if (argc == 7) {
-    if (OPS_GetDoubleInput(&numData, &pinchX) != 0) {
+    if (OPS_GetDoubleInput(numData, &pinchX) != 0) {
       opserr << "WARNING invalid pinchX\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
-    if (OPS_GetDoubleInput(&numData, &pinchY) != 0) {
+    if (OPS_GetDoubleInput(numData, &pinchY) != 0) {
       opserr << "WARNING invalid pinchY\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
@@ -111,34 +111,34 @@ OPS_OOHystereticMaterial(void)
   }
 
   if (argc > 8) {
-    if (OPS_GetIntInput(&numData, &bTagNeg) != 0) {
+    if (OPS_GetIntInput(numData, &bTagNeg) != 0) {
       opserr << "WARNING invalid bTag-\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
-    if (OPS_GetIntInput(&numData, &unlTagNeg) != 0) {
+    if (OPS_GetIntInput(numData, &unlTagNeg) != 0) {
       opserr << "WARNING invalid unlRulTag-\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
-    if (OPS_GetIntInput(&numData, &stfTagNeg) != 0) {
+    if (OPS_GetIntInput(numData, &stfTagNeg) != 0) {
       opserr << "WARNING invalid stfDegTag-\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
-    if (OPS_GetIntInput(&numData, &strTagNeg) != 0) {
+    if (OPS_GetIntInput(numData, &strTagNeg) != 0) {
       opserr << "WARNING invalid strDegTag-\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
   }
   if (argc == 11) {
-    if (OPS_GetDoubleInput(&numData, &pinchX) != 0) {
+    if (OPS_GetDoubleInput(numData, &pinchX) != 0) {
       opserr << "WARNING invalid pinchX\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;
     }
-    if (OPS_GetDoubleInput(&numData, &pinchY) != 0) {
+    if (OPS_GetDoubleInput(numData, &pinchY) != 0) {
       opserr << "WARNING invalid pinchY\n";
       opserr << "OOHysteretic material: " << tag << endln;
       return 0;

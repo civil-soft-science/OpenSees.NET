@@ -83,14 +83,14 @@ OPS_FourNodeQuad3d()
   const char *pType;
 
   numData = 5;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid element data\n";
     return 0;
   }
   eleTag = iData[0];
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid thickness for element: " << eleTag << "\n";
     return 0;
   }
@@ -101,7 +101,7 @@ OPS_FourNodeQuad3d()
   }
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &matTag) != 0) {
+  if (OPS_GetIntInput(numData, &matTag) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid matTag for element: " << eleTag << "\n";
     delete [] pType;
     return 0;
@@ -117,7 +117,7 @@ OPS_FourNodeQuad3d()
 
   if (numRemainingArgs == 12) {
     numData = 4;
-    if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+    if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
       opserr << "WARNING element FourNodeQuad3d : invalid optional args for element: " << eleTag << "\n";
       delete [] pType;
       return 0;

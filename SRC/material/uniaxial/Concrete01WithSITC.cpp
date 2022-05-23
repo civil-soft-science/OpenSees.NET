@@ -67,14 +67,14 @@ void* OPS_Concrete01WithSITC()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[4];
     numdata = 4;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
@@ -84,7 +84,7 @@ void* OPS_Concrete01WithSITC()
     if (numdata > 0) {
 	double endStrainSITC;
 	numdata = 1;
-	if (OPS_GetDoubleInput(&numdata,&endStrainSITC) < 0) {
+	if (OPS_GetDoubleInput(numdata,&endStrainSITC) < 0) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}

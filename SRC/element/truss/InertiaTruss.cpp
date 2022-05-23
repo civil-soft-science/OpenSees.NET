@@ -99,13 +99,13 @@ OPS_InertiaTrussElement()
   int ndm = OPS_GetNDM();
 
   int numData = 3;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer (tag, iNode, jNode) in element InertiaTruss " << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, &mr) != 0) {
+  if (OPS_GetDoubleInput(numData, &mr) != 0) {
     opserr << "WARNING: Invalid mr: element InertiaTruss " << iData[0] << 
       " $iNode $jNode $mr\n";
     return 0;	

@@ -45,7 +45,7 @@ void* OPS_CircPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
 
     // get data
     double data[6] = {0,0,0,0,0,0};
@@ -53,7 +53,7 @@ void* OPS_CircPatch()
     static Vector centerPos(2);
     /*centerPos(0) = data[0];
     centerPos(1) = data[1];*/
-    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
     centerPos(0) = data[0];
     centerPos(1) = data[1];
 

@@ -58,13 +58,13 @@ OPS_NewPlasticDamageConcretePlaneStress(void)
   dData[7] = 0.75;
 
   int numData = 1;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: nDMaterial EasticIsotropic \n";
     return 0;
   }
 
   numData = numArgs - 1;;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid data: nDMaterial EasticIsotropic : " << iData[0] <<"\n";
     return 0;
   }

@@ -57,13 +57,13 @@ void* OPS_BarSlipMaterial()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	return 0;
     }
 
     double data[10];
     numdata = 10;
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	return 0;
     }
 

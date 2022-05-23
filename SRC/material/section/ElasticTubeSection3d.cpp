@@ -45,14 +45,14 @@ void* OPS_ElasticTubeSection3d()
 	
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid section ElasticTube tag" << endln;
 	return 0;
     }
 
     numdata = 4;
     double data[4];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs" << endln;
 	opserr << "ElasticTube section: " << tag << endln;	    
 	return 0;

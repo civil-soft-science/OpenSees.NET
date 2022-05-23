@@ -76,7 +76,7 @@ OPS_ShellNLDKGQ(void)
   
   int iData[6];
   int numData = 6;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: element ShellNLDKGQ \n";
     return 0;
   }
@@ -125,7 +125,7 @@ OPS_ShellNLDKGQ(const ID& info)
 	// get secTag
 	int numdata = 1;
 	int secTag;
-	if (OPS_GetIntInput(&numdata, &secTag) < 0) {
+	if (OPS_GetIntInput(numdata, &secTag) < 0) {
 	    opserr << "WARNING: failed to get section tag -- ShellNLDKGQ\n";
 	    return 0;
 	}

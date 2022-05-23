@@ -62,7 +62,7 @@ void* OPS_SectionAggregator()
     SectionForceDeformation *theSec = 0;
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid Aggregator tag" << endln;
 	return 0;
     }
@@ -72,7 +72,7 @@ void* OPS_SectionAggregator()
     ID codes(0, 10);
     while (OPS_GetNumRemainingInputArgs() > 1) {
 	int matTag;
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
 	}
@@ -120,7 +120,7 @@ void* OPS_SectionAggregator()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* flag = OPS_GetString();
 	if (strcmp(flag, "-section") == 0) {
-	    if (OPS_GetIntInput(&numdata, &secTag) < 0) {
+	    if (OPS_GetIntInput(numdata, &secTag) < 0) {
 		opserr << "WARNING invalid Aggregator section tag" << endln;
 		return 0;
 	    }
@@ -154,7 +154,7 @@ void* OPS_UniaxialSection()
   
   int data[2];
   numdata = 2;
-  if (OPS_GetIntInput(&numdata, data) < 0) {
+  if (OPS_GetIntInput(numdata, data) < 0) {
     opserr << "WARNING invalid integer" << endln;
     return 0;
   }

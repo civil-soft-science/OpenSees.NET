@@ -29,13 +29,13 @@ OPS_SLModel()
   double dData[3];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  SLModel tag" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Args want: uniaxialMaterial SLModel tag? Dt?, sgm_ini?, OP_Material?";
     return 0;	
   }

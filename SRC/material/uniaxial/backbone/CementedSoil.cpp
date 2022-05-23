@@ -47,7 +47,7 @@ void *OPS_CementedSoil() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) < 0) {
+  if (OPS_GetIntInput(numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "CementedSoil\n";
     return 0;
@@ -56,7 +56,7 @@ void *OPS_CementedSoil() {
   // get pM pU Kpy z b
   double data[5];
   numData = 5;
-  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "CementedSoil\n";
     return 0;

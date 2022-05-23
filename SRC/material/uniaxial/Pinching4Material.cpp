@@ -58,7 +58,7 @@ void* OPS_Pinching4Material()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	return 0;
     }
 
@@ -67,7 +67,7 @@ void* OPS_Pinching4Material()
     if (OPS_GetNumRemainingInputArgs() == 39) {
 	double data[38];
 	numdata = 38;
-	if (OPS_GetDoubleInput(&numdata,data)) {
+	if (OPS_GetDoubleInput(numdata,data)) {
 	    return 0;
 	}
 	const char* type = OPS_GetString();
@@ -92,7 +92,7 @@ void* OPS_Pinching4Material()
     } else if (OPS_GetNumRemainingInputArgs() == 28) {
 	double data[27];
 	numdata = 27;
-	if (OPS_GetDoubleInput(&numdata,data)) {
+	if (OPS_GetDoubleInput(numdata,data)) {
 	    return 0;
 	}
 	const char* type = OPS_GetString();

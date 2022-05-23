@@ -64,7 +64,7 @@ void* OPS_LoadPattern()
     // get tags
     int tags[2];
     int numData = 2;
-    if(OPS_GetIntInput(&numData, &tags[0]) < 0) {
+    if(OPS_GetIntInput(numData, &tags[0]) < 0) {
 	opserr << "WARNING failed to get load pattern tag\n";
 	return 0;
     }
@@ -75,7 +75,7 @@ void* OPS_LoadPattern()
 	std::string type = OPS_GetString();
 	if(type=="-fact" || type=="-factor") {
 	    numData = 1;
-	    if(OPS_GetDoubleInput(&numData,&fact) < 0) {
+	    if(OPS_GetDoubleInput(numData,&fact) < 0) {
 		opserr << "WARNING failed to get load pattern factor\n";
 		return 0;
 	    }

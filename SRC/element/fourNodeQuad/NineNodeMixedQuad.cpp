@@ -85,7 +85,7 @@ void* OPS_NineNodeMixedQuad()
     // int centerNode ;
     // int matID;
 
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid NineNodeMixedQuad int inputs" << endln;
 	return 0;
     }

@@ -62,13 +62,13 @@ OPS_SAWSMaterial(void)
   double dData[10];
   int numData = 1;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial SAWSMaterial tag" << endln;
     return 0;
   }
 
   numData = 10;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Args want: uniaxialMaterial SAWS tag? F0? FI? dU? S0?" << endln;
     opserr << "    R1? R2? R3? R4? alpha? beta?" << endln;
     return 0;	

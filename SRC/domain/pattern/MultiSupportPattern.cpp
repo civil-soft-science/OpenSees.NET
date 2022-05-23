@@ -51,7 +51,7 @@ void* OPS_MultiSupportPattern()
     
     // get tag 
     int numData = 1;
-    if(OPS_GetIntInput(&numData,&tag) < 0) {
+    if(OPS_GetIntInput(numData,&tag) < 0) {
 	opserr << "WARNING failed to get multi support pattern tag\n";
 	return 0;
     }

@@ -62,13 +62,13 @@ void* OPS_PML2D()
   
   int idata[5];
   int num = 5;
-  if (OPS_GetIntInput(&num,idata)<0) {
+  if (OPS_GetIntInput(num,idata)<0) {
     opserr<<"WARNING: invalid integer data\n";
     return 0;
   }
   
   double dData[PML2D_NUM_PROPS]; num = PML2D_NUM_PROPS;
-  if (OPS_GetDoubleInput(&num,dData) < 0) {
+  if (OPS_GetDoubleInput(num,dData) < 0) {
     opserr<<"WARNING: invalid double data\n";
     return 0;
   }	

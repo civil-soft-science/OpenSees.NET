@@ -57,7 +57,7 @@ OPS_ElasticMaterialThermal(void)
   double dData1[2];
   double dData2[2];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Elastic" << endln;
     return 0;
   }
@@ -68,7 +68,7 @@ OPS_ElasticMaterialThermal(void)
   else
 	  numData = 2;
 
-  if (OPS_GetDoubleInput(&numData, dData1) != 0) {
+  if (OPS_GetDoubleInput(numData, dData1) != 0) {
 	  opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
 	  return 0;
   }
@@ -90,7 +90,7 @@ OPS_ElasticMaterialThermal(void)
 	if (numData > 2)
 		numData = 2;
 	if(numData>0){
-	if (OPS_GetDoubleInput(&numData, dData2) != 0) {
+	if (OPS_GetDoubleInput(numData, dData2) != 0) {
       opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
       return 0;
 	}

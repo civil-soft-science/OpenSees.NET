@@ -51,7 +51,7 @@ OPS_IMKPinching()
 	double dData[25];
 	int numData = 1;
 
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial IMKPinching tag" << endln;
 		return 0;
 	}
@@ -59,7 +59,7 @@ OPS_IMKPinching()
 	numData = 25;
 
 
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "Invalid Args want: uniaxialMaterial IMKPinching tag? Ke? ";
 		opserr << "Up_pos? Upc_pos? Uu_pos? Fy_pos? FmaxFy_pos? ResF_pos? ";
 		opserr << "Up_neg? Upc_neg? Uu_neg? Fy_neg? FmaxFy_neg? ResF_neg? ";

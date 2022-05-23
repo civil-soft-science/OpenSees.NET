@@ -80,7 +80,7 @@ OPS_TFP_Bearing()
   int numData;
 
   numData = 3;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -103,7 +103,7 @@ OPS_TFP_Bearing()
     numData = 24;
   }
 
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING error reading element area for element" << eleTag << endln;
     return 0;
   }

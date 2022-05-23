@@ -70,13 +70,13 @@ void *OPS_SFI_MVLEM(void)
   double dData[1];
   
   int numData = 4;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid int data for element SFI_MVLEM" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid c for element SFI_MVLEM " << iData[0] << endln;
     return 0;
   }
@@ -96,19 +96,19 @@ void *OPS_SFI_MVLEM(void)
       str = OPS_GetString();
     if (strcmp(str, "-thick") == 0) {
       numData = m;
-      if (OPS_GetDoubleInput(&numData, theThickness) != 0) {
+      if (OPS_GetDoubleInput(numData, theThickness) != 0) {
 	opserr << "Invalid thick parameter for SFI_MVLEM   " << iData[0] << endln;
 	return 0;
       }
     } else if (strcmp(str, "-width") == 0) {
       numData = m;
-      if (OPS_GetDoubleInput(&numData, theWidth) != 0) {
+      if (OPS_GetDoubleInput(numData, theWidth) != 0) {
 	opserr << "Invalid width value for SFI_MVLEM  " << iData[0] << endln;
 	return 0;
       }
     } else if (strcmp(str, "-mat") == 0) {
       numData = m;
-      if (OPS_GetIntInput(&numData, matTags) != 0) {
+      if (OPS_GetIntInput(numData, matTags) != 0) {
 	opserr << "Invalid mat tags for SFI_MVLEM  " << iData[0] << endln;
 	return 0;
       }

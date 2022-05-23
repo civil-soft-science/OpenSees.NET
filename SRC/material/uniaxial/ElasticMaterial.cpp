@@ -57,7 +57,7 @@ OPS_ElasticMaterial(void)
   int iData[1];
   double dData[3];
   int numData = 1;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Elastic" << endln;
     return 0;
   }
@@ -66,20 +66,20 @@ OPS_ElasticMaterial(void)
 
   if (numData >= 3) {
     numData = 3;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
       return 0;	
     }
   } else if (numData >= 2) {
     numData = 2;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
       return 0;
     }
     dData[2] = dData[0];
   } else {
     numData = 1;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
       opserr << "Invalid data for uniaxialMaterial Elastic " << iData[0] << endln;
       return 0;	
     }

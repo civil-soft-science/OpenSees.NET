@@ -73,7 +73,7 @@ OPS_Quad4FiberOverlay(void)
 	int eleTag = 0;
 	int numData = 0;
 	numData = 5;
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid integer data: element Quad4FiberOverlay" << endln;
 		return 0;
 	}
@@ -81,12 +81,12 @@ OPS_Quad4FiberOverlay(void)
 	eleTag = iData[0];
 
 	numData = 1;
-	if (OPS_GetIntInput(&numData, &matTag) != 0) {
+	if (OPS_GetIntInput(numData, &matTag) != 0) {
 		opserr << "WARNING element Quad4FiberOverlay: invalid matTag for element: " << eleTag << "\n";
 		return 0;
 	}
 	numData = 3;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "WARNING invalid data: element Quad4FiberOverlay " << eleTag << endln;
 		return 0;   
 	}

@@ -70,11 +70,11 @@ void* OPS_SuperLUSolver()
 
 	if (OPS_GetNumRemainingInputArgs() > 0) {
 	  if(type=="np"||type=="-np") {
-	    if(OPS_GetIntInput(&numData,&np)<0) return 0;
+	    if(OPS_GetIntInput(numData,&np)<0) return 0;
 	  } else if(type=="npRow"||type=="-npRow") {
-	    if(OPS_GetIntInput(&numData,&npRow)<0) return 0;
+	    if(OPS_GetIntInput(numData,&npRow)<0) return 0;
 	  } else if(type=="npCol"||type=="-npCol") {
-	    if(OPS_GetIntInput(&numData,&npCol)<0) return 0;
+	    if(OPS_GetIntInput(numData,&npCol)<0) return 0;
 	  }
 	}
     }

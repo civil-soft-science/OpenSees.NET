@@ -49,7 +49,7 @@ OPS_InitStrainMaterial(void)
   int    iData[2];
   double dData[1];
   int numData = 2;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial InitStrainMaterial $tag $otherTag" << endln;
     return 0;
   }
@@ -61,7 +61,7 @@ OPS_InitStrainMaterial(void)
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Args want: uniaxialMaterial InitStrain $tag $otherTag $eps0" << endln;
     return 0;	
   }

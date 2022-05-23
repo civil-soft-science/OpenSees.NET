@@ -50,7 +50,7 @@ class ConditionalElementRecorder: public Recorder
 			    const char **argv, 
 			    int argc,
 			    Domain &theDomain, 
-			    OPS_Stream &theOutputHandler,
+			    OPS_Stream *theOutputHandler,
 				int rcrdrTag,
 			    int procMethod = 0, int procGrpNum = 1,
 			    bool echoTimeFlag = true,

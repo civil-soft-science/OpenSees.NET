@@ -78,7 +78,7 @@ void* OPS_GradientInelasticBeamColumn2d()
 	// inputs: 
 	int iData[5];
 	int numData = 5;
-	if (OPS_GetIntInput(&numData, &iData[0]) < 0) {
+	if (OPS_GetIntInput(numData, &iData[0]) < 0) {
 		opserr << "WARNING! gradientInelasticBeamColumn2d - invalid input tags\n";
 		return 0;
 	}
@@ -91,7 +91,7 @@ void* OPS_GradientInelasticBeamColumn2d()
 
 	double ddata[3];
 	numData = 3;
-	if (OPS_GetDoubleInput(&numData, ddata) < 0) {
+	if (OPS_GetDoubleInput(numData, ddata) < 0) {
 		opserr << "WARNING! gradientInelasticBeamColumn2d - invalid double input\n";
 		return 0;
 	}
@@ -115,15 +115,15 @@ void* OPS_GradientInelasticBeamColumn2d()
 			constH = true;
 		else if (strcmp(word, "-iter") == 0) {
 			if (OPS_GetNumRemainingInputArgs() > 2) {
-				if (OPS_GetIntInput(&numData, &maxIter) < 0) {
+				if (OPS_GetIntInput(numData, &maxIter) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn2d - invalid maxIter\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(&numData, &minTol) < 0) {
+				if (OPS_GetDoubleInput(numData, &minTol) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn2d - invalid minTol\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(&numData, &maxTol) < 0) {
+				if (OPS_GetDoubleInput(numData, &maxTol) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn2d - invalid maxTol\n";
 					return 0;
 				}
@@ -137,11 +137,11 @@ void* OPS_GradientInelasticBeamColumn2d()
 			correctionControl = true;
 
 			if (OPS_GetNumRemainingInputArgs() > 1) {
-				if (OPS_GetDoubleInput(&numData, &maxEpsInc) < 0) {
+				if (OPS_GetDoubleInput(numData, &maxEpsInc) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn2d - invalid maxEpsInc\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(&numData, &maxPhiInc) < 0) {
+				if (OPS_GetDoubleInput(numData, &maxPhiInc) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn2d - invalid maxPhiInc\n";
 					return 0;
 				}

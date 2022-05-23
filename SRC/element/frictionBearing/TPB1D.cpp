@@ -96,7 +96,7 @@ OPS_TPB1D()
   int numData;
 
   numData = 4;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -104,7 +104,7 @@ OPS_TPB1D()
   int eleTag = iData[0];
 
   numData = 16;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING error reading element area for element" << eleTag << endln;
     return 0;
   }

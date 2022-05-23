@@ -66,7 +66,7 @@ void* OPS_ElastomericBearingUFRP2d()
 
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
 	opserr << "WARNING invalid int inputs \n";
 	return 0;
     }
@@ -76,7 +76,7 @@ void* OPS_ElastomericBearingUFRP2d()
 
     double data[11];
     numdata = 1;;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs \n";
 	return 0;
     }
@@ -100,7 +100,7 @@ void* OPS_ElastomericBearingUFRP2d()
     }
     int matTag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+    if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	opserr << "WARNING invalid matTag\n";
 	return 0;
     }
@@ -118,7 +118,7 @@ void* OPS_ElastomericBearingUFRP2d()
 	return 0;
     }
     numdata = 1;
-    if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+    if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	opserr << "WARNING invalid matTag\n";
 	return 0;
     }
@@ -151,19 +151,19 @@ void* OPS_ElastomericBearingUFRP2d()
 	    x.resize(3);
 	    y.resize(3);
 	    numdata = 3;
-	    if (OPS_GetDoubleInput(&numdata, &x(0)) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
 		opserr << "WARNING invalid -orient value\n";
 		opserr << "elastomericBearingUFRP element: " << tag << endln;
 		return 0;
 	    }
-	    if (OPS_GetDoubleInput(&numdata, &y(0)) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
 		opserr << "WARNING invalid -orient value\n";
 		opserr << "elastomericBearingUFRP element: " << tag << endln;
 		return 0;
 	    }
 	} else if (strcmp(flag, "-shearDist") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetDoubleInput(&numdata, &shearDistI) < 0) {
+		if (OPS_GetDoubleInput(numdata, &shearDistI) < 0) {
 		    opserr << "WARNING invalid -shearDist value\n";
 		    opserr << "elastomericBearingUFRP element: " << tag << endln;
 		    return 0;
@@ -173,7 +173,7 @@ void* OPS_ElastomericBearingUFRP2d()
 	    doRayleigh = 1;
 	} else if (strcmp(flag, "-mass") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetDoubleInput(&numdata, &mass) < 0) {
+		if (OPS_GetDoubleInput(numdata, &mass) < 0) {
 		    opserr << "WARNING invalid -mass value\n";
 		    opserr << "elastomericBearingUFRP element: " << tag << endln;
 		    return 0;
@@ -181,12 +181,12 @@ void* OPS_ElastomericBearingUFRP2d()
 	    }
 	} else if (strcmp(flag, "-massiter") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetIntInput(&numdata, &maxIter) < 0) {
+		if (OPS_GetIntInput(numdata, &maxIter) < 0) {
 		    opserr << "WARNING invalid maxIter value\n";
 		    opserr << "elastomericBearingUFRP element: " << tag << endln;
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(&numdata, &tol) < 0) {
+		if (OPS_GetDoubleInput(numdata, &tol) < 0) {
 		    opserr << "WARNING invalid tol value\n";
 		    opserr << "elastomericBearingUFRP element: " << tag << endln;
 		    return 0;

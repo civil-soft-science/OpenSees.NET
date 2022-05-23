@@ -59,19 +59,19 @@ OPS_BoucWenInfill(void)
   int numData;
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData1) != 0) {
+  if (OPS_GetIntInput(numData, iData1) != 0) {
     opserr << "WARNING invalid uniaxialMaterial BoucWenInfill tag" << endln;
     return 0;
   }
 
   numData = 14;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid Double Values\n";
     return 0;	
   }
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, iData2) != 0) {
+  if (OPS_GetIntInput(numData, iData2) != 0) {
     opserr << "WARNING invalid maxNumIter" << endln;
     return 0;
   }

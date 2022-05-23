@@ -45,7 +45,7 @@ void *OPS_LiquefiedSand() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(&numData, &tag) < 0) {
+  if (OPS_GetIntInput(numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "LiquefiedSand\n";
     return 0;
@@ -54,7 +54,7 @@ void *OPS_LiquefiedSand() {
   // get X and D, kN, m
   double data[4];
   numData = 4;
-  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "LiquefiedSand\n";
     return 0;

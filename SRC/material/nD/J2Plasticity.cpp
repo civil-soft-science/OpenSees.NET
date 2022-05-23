@@ -79,7 +79,7 @@ void* OPS_J2Plasticity()
 
     int tag;
     numdata = 1;
-    if (OPS_GetIntInput(&numdata,&tag) < 0) {
+    if (OPS_GetIntInput(numdata,&tag) < 0) {
 	opserr << "WARNING invalid J2Plasticity tag\n";
 	return 0;
     }
@@ -89,7 +89,7 @@ void* OPS_J2Plasticity()
     if (numdata > 7) {
 	numdata = 7;
     }
-    if (OPS_GetDoubleInput(&numdata,data)) {
+    if (OPS_GetDoubleInput(numdata,data)) {
 	opserr << "WARNING invalid J2Plasticity double inputs\n";
 	return 0;
     }

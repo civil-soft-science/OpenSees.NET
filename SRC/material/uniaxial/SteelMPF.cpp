@@ -59,13 +59,13 @@ OPS_Export void *OPS_SteelMPF(void)
 	dData[11] = 1.0;    // set a6 to constructor default
 
 	int numData = 1;
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial SteelMPF tag" << endln;
 		return 0;
 	}
 
 	numData = numArgs-1;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "Invalid data for uniaxialMaterial SteelMPF " << dData[0] << endln;
 		return 0;
 	}

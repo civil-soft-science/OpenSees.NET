@@ -55,7 +55,7 @@ OPS_DamperMaterial(void)
   int numData = 2;
   int *iData = new int[2];
   
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid data for uniaxialMaterial Damper" << endln;
     return 0;
   }

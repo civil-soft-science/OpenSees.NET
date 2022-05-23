@@ -73,19 +73,19 @@ if (num_Brick8FiberOverlay == 0) {
   int		eleTag = 0;
   int		numData = 9;
 
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element Brick8FiberOverlay" << endln;
     return 0;
   }
   eleTag = iData[0];
 
   numData = 1;
-  if (OPS_GetIntInput(&numData, &matTag) != 0) {
+  if (OPS_GetIntInput(numData, &matTag) != 0) {
     opserr << "WARNING element Brick8FiberOverlay: invalid matTag for element: " << eleTag << "\n";
     return 0;
   }
   numData = 5;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid data: element Brick8FiberOverlay " << eleTag << endln;
     return 0;	
   }

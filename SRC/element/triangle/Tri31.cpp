@@ -86,13 +86,13 @@ OPS_Tri31()
   dData[4] = 0.0;
   
   int numData = 4;
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element Tri31\n";
     return 0;
   }
   
   numData = 1;
-  if (OPS_GetDoubleInput(&numData, dData) != 0) {
+  if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "WARNING invalid thickness data: element Tri31 " << iData[0] << endln;
     return 0;
   }
@@ -104,7 +104,7 @@ OPS_Tri31()
   theType = (char*)OPS_GetString();
   
   numData = 1;
-  if (OPS_GetIntInput(&numData, &iData[4]) != 0) {
+  if (OPS_GetIntInput(numData, &iData[4]) != 0) {
     opserr << "WARNING invalid integer data: element Tri31\n";
     return 0;
   }
@@ -119,7 +119,7 @@ OPS_Tri31()
   
   if (numRemainingInputArgs == 11) {
     numData = 4;
-    if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+    if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
       opserr << "WARNING invalid optional data: element Tri31 " << iData[0] << endln;
       return 0;
     }
@@ -169,7 +169,7 @@ OPS_Tri31(const ID &info)
 	}
 
 	numData = 4;
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 	    opserr << "WARNING invalid integer data: element Tri31\n";
 	    return 0;
 	}
@@ -183,7 +183,7 @@ OPS_Tri31(const ID &info)
 	}
 
 	numData = 1;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 	    opserr << "WARNING invalid thickness data: element Tri31 " << endln;
 	    return 0;
 	}
@@ -195,14 +195,14 @@ OPS_Tri31(const ID &info)
 	theType = (char*)OPS_GetString();
 
 	numData = 1;
-	if (OPS_GetIntInput(&numData, &iData[4]) != 0) {
+	if (OPS_GetIntInput(numData, &iData[4]) != 0) {
 	    opserr << "WARNING invalid integer data: element Tri31\n";
 	    return 0;
 	}
 
 	if (OPS_GetNumRemainingInputArgs() == 4) {
 	    numData = 4;
-	    if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
+	    if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
 		opserr << "WARNING invalid optional data: element Tri31 " << endln;
 		return 0;
 	    }
@@ -298,7 +298,7 @@ int OPS_Tri31(Domain& theDomain, const ID& elenodes, ID& eletags)
     dData[3] = 0.0;
  
     int numData = 1;
-    if (OPS_GetDoubleInput(&numData, &thk) != 0) {
+    if (OPS_GetDoubleInput(numData, &thk) != 0) {
 	opserr << "WARNING invalid thickness data: element Tri31 \n";
 	return -1;
     }
@@ -306,7 +306,7 @@ int OPS_Tri31(Domain& theDomain, const ID& elenodes, ID& eletags)
     theType = (char*)OPS_GetString();
   
     numData = 1;
-    if (OPS_GetIntInput(&numData, &matID) != 0) {
+    if (OPS_GetIntInput(numData, &matID) != 0) {
 	opserr << "WARNING invalid integer data: element Tri31\n";
 	return -1;
     }
@@ -320,7 +320,7 @@ int OPS_Tri31(Domain& theDomain, const ID& elenodes, ID& eletags)
   
     if (OPS_GetNumRemainingInputArgs() >= 4) {
 	numData = 4;
-	if (OPS_GetDoubleInput(&numData, &dData[0]) != 0) {
+	if (OPS_GetDoubleInput(numData, &dData[0]) != 0) {
 	    opserr << "WARNING invalid optional data: element Tri31\n";
 	    return -1;
 	}

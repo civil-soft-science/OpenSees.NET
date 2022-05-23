@@ -46,14 +46,14 @@ void* OPS_ElasticWarpingShearSection2d()
 	
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid section ElasticWarpingShearSection2d tag" << endln;
 	return 0;
     }
 
     numdata = 8;
     double data[8];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs" << endln;
 	opserr << "ElasticWarpingShearSection2d section: " << tag << endln;	    
 	return 0;

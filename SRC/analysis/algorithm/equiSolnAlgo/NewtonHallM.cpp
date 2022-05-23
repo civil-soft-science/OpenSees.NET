@@ -45,7 +45,7 @@ void* OPS_NewtonHallM()
   double data[2];
   
   int numData = 1;
-  if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+  if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
     opserr << "WARNING invalid data reading 2 hall factors\n";
     return 0;
   }
@@ -55,7 +55,7 @@ void* OPS_NewtonHallM()
       const char* type = OPS_GetString();
       if(strcmp(type,"-exp")==0 || strcmp(type,"-Exp")==0) {
 	numData = 1;
-	if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+	if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
 	  opserr << "WARNING invalid data reading 2 hall factors\n";
 	  return 0;
 	} else 
@@ -63,7 +63,7 @@ void* OPS_NewtonHallM()
       } else if(strcmp(type,"-sigmoid")==0 || strcmp(type,"-Sigmoid")==0) {
 	method = 1;
 	int numData = 2;
-	if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+	if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
 	  opserr << "WARNING invalid data reading 2 hall factors\n";
 	  return 0;
 	} else {
@@ -73,7 +73,7 @@ void* OPS_NewtonHallM()
       } else if(strcmp(type,"-constant")==0 || strcmp(type,"-Constant")==0) {
 	method = 2;
 	int numData = 1;
-	if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
+	if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
 	  opserr << "WARNING invalid data reading 2 hall factors\n";
 	  return 0;
 	} else {

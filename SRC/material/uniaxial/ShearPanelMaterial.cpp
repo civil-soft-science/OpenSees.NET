@@ -59,7 +59,7 @@ void* OPS_ShearPanelMaterial()
     
     int tag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial ShearPanel tag\n";
 	return 0;
     }
@@ -68,7 +68,7 @@ void* OPS_ShearPanelMaterial()
     // double strain1p, strain2p, strain3p, strain4p;
     double datap[8];
     numdata = 8;
-    if (OPS_GetDoubleInput(&numdata, datap) < 0) {
+    if (OPS_GetDoubleInput(numdata, datap) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -78,7 +78,7 @@ void* OPS_ShearPanelMaterial()
     double datan[8];
     numdata = 8;
     if (argc == 42) {
-	if (OPS_GetDoubleInput(&numdata, datan) < 0) {
+	if (OPS_GetDoubleInput(numdata, datan) < 0) {
 	    opserr << "WARNING invalid double inputs\n";
 	    return 0;
 	}
@@ -87,7 +87,7 @@ void* OPS_ShearPanelMaterial()
     // double rDispP, rForceP, uForceP
     double dataP[3];
     numdata = 3;
-    if (OPS_GetDoubleInput(&numdata, dataP) < 0) {
+    if (OPS_GetDoubleInput(numdata, dataP) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -97,7 +97,7 @@ void* OPS_ShearPanelMaterial()
     double dataN[3];
     numdata = 3;
     if (argc == 42) {
-	if (OPS_GetDoubleInput(&numdata, dataN) < 0) {
+	if (OPS_GetDoubleInput(numdata, dataN) < 0) {
 	    opserr << "WARNING invalid double inputs\n";
 	    return 0;
 	}
@@ -109,7 +109,7 @@ void* OPS_ShearPanelMaterial()
     // double gammaE, yStr;
     double data[17];
     numdata = 17;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

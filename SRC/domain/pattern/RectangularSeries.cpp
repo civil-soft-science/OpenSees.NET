@@ -59,7 +59,7 @@ OPS_RectangularSeries(void)
   // get tag if provided
   if (numRemainingArgs == 3 || numRemainingArgs == 5) {
     numData = 1;
-    if (OPS_GetIntInput(&numData, &tag) != 0) {
+    if (OPS_GetIntInput(numData, &tag) != 0) {
       opserr << "WARNING invalid series tag in Rectangular tag? tStart tFinish <-factor cFactor>\n";
       return 0;
     }
@@ -67,7 +67,7 @@ OPS_RectangularSeries(void)
   }
   
   numData = 2;
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
     opserr << "WARNING invalid double data for RectangularSeries with tag: " << tag << endln;
     return 0;
   }    
@@ -78,7 +78,7 @@ OPS_RectangularSeries(void)
 
     if (strcmp(argvS,"-factor") == 0) {
       numData = 1;
-      if (OPS_GetDouble(&numData, &dData[2]) != 0) {
+      if (OPS_GetDouble(numData, &dData[2]) != 0) {
 	opserr << "WARNING invalid shift in Trig Series with tag?" << tag << endln;
 	return 0;
       }

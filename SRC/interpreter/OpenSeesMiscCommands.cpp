@@ -77,7 +77,7 @@ int OPS_loadConst()
 	if (strcmp(opt, "-time") == 0) {
 	    double newTime;
 	    int numdata = 1;
-	    if (OPS_GetDoubleInput(&numdata, &newTime) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &newTime) < 0) {
 		opserr<<"WARNING readingvalue - loadConst -time value\n";
 		return -1;
 	    }
@@ -126,7 +126,7 @@ int OPS_rayleighDamping()
     //double alphaM, betaK, betaK0, betaKc;
     double data[4];
     int numdata = 4;
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING rayleigh alphaM? betaK? betaK0? betaKc? - could not read ? \n";
 	return -1;
     }
@@ -150,7 +150,7 @@ int OPS_setCreep()
 
     int newFlag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &newFlag) < 0) {
+    if (OPS_GetIntInput(numdata, &newFlag) < 0) {
 	opserr << "WARNING reading creep value - setCreep value? \n";
 	return -1;
     } else {
@@ -171,7 +171,7 @@ int OPS_setTime()
 
     double newTime;
     int numdata = 1;
-    if (OPS_GetDoubleInput(&numdata, &newTime) < 0) {
+    if (OPS_GetDoubleInput(numdata, &newTime) < 0) {
 	opserr << "WARNING reading time value - time pseudoTime? \n";
 	return -1;
     } else {
@@ -201,7 +201,7 @@ int OPS_removeObject()
 	}
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove element tag? failed to read tag\n ";
 	    return -1;
 	}
@@ -244,7 +244,7 @@ int OPS_removeObject()
 	}
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove loadPattern tag? failed to read tag\n ";
 	    return -1;
 	}
@@ -262,7 +262,7 @@ int OPS_removeObject()
 	}
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove parameter tag? failed to read tag\n ";
 	    return -1;
 	}
@@ -278,7 +278,7 @@ int OPS_removeObject()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove node tag? failed to read tag\n";
 	    return -1;
 	}
@@ -303,7 +303,7 @@ int OPS_removeObject()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove recorder tag? failed to read tag\n";
 	    return -1;
 	}
@@ -316,7 +316,7 @@ int OPS_removeObject()
 	    return -1;
 	}
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING remove timeSeries tag? failed to read tag\n";
 	    return -1;
 	}
@@ -331,7 +331,7 @@ int OPS_removeObject()
 	}
 	if (OPS_GetNumRemainingInputArgs() == 1) {
 	    int numdata = 1;
-	    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	    if (OPS_GetIntInput(numdata, &tag) < 0) {
 		opserr << "WARNING remove sp tag? failed to read tag\n";
 		return -1;
 	    }
@@ -346,7 +346,7 @@ int OPS_removeObject()
 	    int tags[3] = {0,0,-1};
 	    int numdata = OPS_GetNumRemainingInputArgs();
 	    if (numdata > 3) numdata = 3;
-	    if (OPS_GetIntInput(&numdata, tags) < 0) {
+	    if (OPS_GetIntInput(numdata, tags) < 0) {
 		opserr << "WARNING remove sp tag? failed to read tags\n";
 		return -1;
 	    }
@@ -367,7 +367,7 @@ int OPS_removeObject()
 	int nodTag = 0;
 	if (OPS_GetNumRemainingInputArgs() == 1) {
 	    int numdata = 1;
-	    if (OPS_GetIntInput(&numdata, &nodTag) < 0) {
+	    if (OPS_GetIntInput(numdata, &nodTag) < 0) {
 		opserr << "WARNING remove mp tag? failed to read tag\n";
 		return -1;
 	    }
@@ -379,7 +379,7 @@ int OPS_removeObject()
 	    const char* type = OPS_GetString();
 	    if (strcmp(type,"-tag") == 0) {
 		int numdata = 1;
-		if (OPS_GetIntInput(&numdata, &nodTag) < 0) {
+		if (OPS_GetIntInput(numdata, &nodTag) < 0) {
 		    opserr << "WARNING remove mp -tag mpTag? failed to read mpTag\n";
 		    return -1;
 		}
@@ -406,7 +406,7 @@ int OPS_addNodalMass()
 
     int nodeTag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &nodeTag) < 0) {
+    if (OPS_GetIntInput(numdata, &nodeTag) < 0) {
 	opserr << "WARNING invalid nodeTag\n";
 	return -1;
     }
@@ -420,7 +420,7 @@ int OPS_addNodalMass()
 	    break;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &theMass) < 0) {
+	if (OPS_GetDoubleInput(numdata, &theMass) < 0) {
 	    opserr << "WARNING invalid mass value\n";
 	    return -1;
 	}
@@ -458,7 +458,7 @@ int OPS_setNodeDisp()
     bool commit = false;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING setNodeDisp nodeTag? dof? - could not read nodeTag? \n";
         return -1;
     }
@@ -472,12 +472,12 @@ int OPS_setNodeDisp()
         return -1;
     }
 
-    if (OPS_GetIntInput(&numdata, &dof) < 0) {
+    if (OPS_GetIntInput(numdata, &dof) < 0) {
         opserr << "WARNING setNodeDisp nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+    if (OPS_GetDoubleInput(numdata, &value) < 0) {
         opserr << "WARNING setNodeDisp nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
@@ -518,7 +518,7 @@ int OPS_setNodeVel()
     bool commit = false;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING setNodeVel nodeTag? dof? - could not read nodeTag? \n";
         return -1;
     }
@@ -532,12 +532,12 @@ int OPS_setNodeVel()
         return -1;
     }
 
-    if (OPS_GetIntInput(&numdata, &dof) < 0) {
+    if (OPS_GetIntInput(numdata, &dof) < 0) {
         opserr << "WARNING setNodeVel nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+    if (OPS_GetDoubleInput(numdata, &value) < 0) {
         opserr << "WARNING setNodeVel nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
@@ -578,7 +578,7 @@ int OPS_setNodeAccel()
     bool commit = false;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
         opserr << "WARNING setNodeAccel nodeTag? dof? - could not read nodeTag? \n";
         return -1;
     }
@@ -592,12 +592,12 @@ int OPS_setNodeAccel()
         return -1;
     }
 
-    if (OPS_GetIntInput(&numdata, &dof) < 0) {
+    if (OPS_GetIntInput(numdata, &dof) < 0) {
         opserr << "WARNING setNodeAccel nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &value) < 0) {
+    if (OPS_GetDoubleInput(numdata, &value) < 0) {
         opserr << "WARNING setNodeAccel nodeTag? dof? value?- could not read dof? \n";
         return -1;
     }
@@ -632,14 +632,14 @@ int OPS_setElementRayleighDampingFactors()
     }
     int eleTag;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+    if (OPS_GetIntInput(numdata, &eleTag) < 0) {
 	opserr << "WARNING rayleigh alphaM? betaK? betaK0? betaKc? - could not read eleTag? \n";
 	return -1;
     }
 
     numdata = 4;
     double data[4];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING rayleigh alphaM? betaK? betaK0? betaKc? - could not read double inputs? \n";
 	return -1;
     }
@@ -681,7 +681,7 @@ int OPS_MeshRegion()
     }
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING region tag? .. - invalid tag " << endln;
 	return -1;
     }
@@ -708,7 +708,7 @@ int OPS_MeshRegion()
 	    }
 	    int eleTag;
 	    while (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+		if (OPS_GetIntInput(numdata, &eleTag) < 0) {
 		    // back one arg
 		    OPS_ResetCurrentInputArg(-1);
 		    break;
@@ -734,11 +734,11 @@ int OPS_MeshRegion()
 	    //
 
 	    int start, end;
-	    if (OPS_GetIntInput(&numdata, &start) < 0) {
+	    if (OPS_GetIntInput(numdata, &start) < 0) {
 		opserr << "WARNING region tag? -eleRange start? end? - invalid start " << endln;
 		return -1;
 	    }
-	    if (OPS_GetIntInput(&numdata, &end) < 0) {
+	    if (OPS_GetIntInput(numdata, &end) < 0) {
 		opserr << "WARNING region tag? -eleRange start? end? - invalid end " << endln;
 		return -1;
 	    }
@@ -775,7 +775,7 @@ int OPS_MeshRegion()
 
 	    int nodTag;
 	    while (OPS_GetNumRemainingInputArgs() > 0) {
-		if (OPS_GetIntInput(&numdata, &nodTag) < 0) {
+		if (OPS_GetIntInput(numdata, &nodTag) < 0) {
 		    // back one arg
 		    OPS_ResetCurrentInputArg(-1);
 		    break;
@@ -798,11 +798,11 @@ int OPS_MeshRegion()
 
 	    // read in start and end ele tags
 	    int start, end;
-	    if (OPS_GetIntInput(&numdata, &start) < 0) {
+	    if (OPS_GetIntInput(numdata, &start) < 0) {
 		opserr << "WARNING region tag? -nodeRange start? end? - invalid start " << endln;
 		return -1;
 	    }
-	    if (OPS_GetIntInput(&numdata, &end) < 0) {
+	    if (OPS_GetIntInput(numdata, &end) < 0) {
 		opserr << "WARNING region tag? -nodeRange start? end? - invalid end " << endln;
 		return -1;
 	    }
@@ -833,19 +833,19 @@ int OPS_MeshRegion()
 	    }
 
 	    // read in rayleigh damping factors
-	    if (OPS_GetDoubleInput(&numdata, &alphaM) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &alphaM) < 0) {
 		opserr << "WARNING region tag? .. -rayleigh aM bK bK0 - invalid aM " << endln;
 		return -1;
 	    }
-	    if (OPS_GetDoubleInput(&numdata, &betaK) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &betaK) < 0) {
 		opserr << "WARNING region tag? .. -rayleigh aM bK bK0 - invalid bK " << endln;
 		return -1;
 	    }
-	    if (OPS_GetDoubleInput(&numdata, &betaK0) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &betaK0) < 0) {
 		opserr << "WARNING region tag? .. -rayleigh aM bK bK0 - invalid bK0 " << endln;
 		return -1;
 	    }
-	    if (OPS_GetDoubleInput(&numdata, &betaKc) < 0) {
+	    if (OPS_GetDoubleInput(numdata, &betaKc) < 0) {
 		opserr << "WARNING region tag? .. -rayleigh aM bK bK0 - invalid bKc " << endln;
 		return -1;
 	    }
@@ -1196,7 +1196,7 @@ int OPS_maxOpenFiles()
 	return -1;
     }
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &maxOpenFiles) < 0) {
+    if (OPS_GetIntInput(numdata, &maxOpenFiles) < 0) {
 	return -1;
     }
 
@@ -1231,11 +1231,11 @@ int OPS_RigidLink()
 
     int rNode, cNode;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &rNode) < 0) {
+    if (OPS_GetIntInput(numdata, &rNode) < 0) {
 	opserr << "WARNING rigidLink linkType? rNode? cNode? - could not read rNode \n";
 	return -1;
     }
-    if (OPS_GetIntInput(&numdata, &cNode) < 0) {
+    if (OPS_GetIntInput(numdata, &cNode) < 0) {
 	opserr << "WARNING rigidLink linkType? rNode? cNode? - could not read CNode \n";
 	return -1;
     }
@@ -1266,12 +1266,12 @@ int OPS_RigidDiaphragm()
     int rNode, perpDirn;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &perpDirn) < 0) {
+    if (OPS_GetIntInput(numdata, &perpDirn) < 0) {
 	opserr << "WARNING rigidLink perpDirn rNode cNodes - could not read perpDirn? \n";
 	return -1;
     }
 
-    if (OPS_GetIntInput(&numdata, &rNode) < 0) {
+    if (OPS_GetIntInput(numdata, &rNode) < 0) {
 	opserr << "WARNING rigidLink perpDirn rNode cNodes - could not read rNode \n";
 	return -1;
     }
@@ -1281,7 +1281,7 @@ int OPS_RigidDiaphragm()
     ID constrainedNodes(numConstrainedNodes);
     for (int i=0; i<numConstrainedNodes; i++) {
 	int cNode;
-	if (OPS_GetIntInput(&numdata, &cNode) < 0) {
+	if (OPS_GetIntInput(numdata, &cNode) < 0) {
 	    opserr << "WARNING rigidLink perpDirn rNode cNodes - could not read a cNode\n";
 	    return -1;
 	}
@@ -1306,7 +1306,7 @@ int OPS_addElementRayleigh()
     int eleTag =0;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &eleTag) < 0) {
+    if (OPS_GetIntInput(numdata, &eleTag) < 0) {
 	opserr << "WARNING: setElementRayleighFactors invalid eleTag: ";
 	opserr << " \n";
 	return -1;
@@ -1314,25 +1314,25 @@ int OPS_addElementRayleigh()
 
     double alphaM,betaK,betaKinit,betaKcomm;
 
-    if (OPS_GetDoubleInput(&numdata, &alphaM) < 0) {
+    if (OPS_GetDoubleInput(numdata, &alphaM) < 0) {
 	opserr << "WARNING : setElementRayleighFactors invalid ";
 	opserr << "alphaM: " << endln;
 	return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &betaK) < 0) {
+    if (OPS_GetDoubleInput(numdata, &betaK) < 0) {
 	opserr << "WARNING : setElementRayleighFactors invalid ";
 	opserr << "betaK: " << endln;
 	return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &betaKinit) < 0) {
+    if (OPS_GetDoubleInput(numdata, &betaKinit) < 0) {
 	opserr << "WARNING : setElementRayleighFactors invalid ";
 	opserr << "betaKinit: " << endln;
 	return -1;
     }
 
-    if (OPS_GetDoubleInput(&numdata, &betaKcomm) < 0) {
+    if (OPS_GetDoubleInput(numdata, &betaKcomm) < 0) {
 	opserr << "WARNING : setElementRayleighFactors invalid ";
 	opserr << "betaKcomm: " << endln;
 	return -1;
@@ -1406,7 +1406,7 @@ int OPS_remesh()
     if (OPS_GetNumRemainingInputArgs() > 0) {
 	double alpha = -1.0;
 	int numdata = 1;
-	if (OPS_GetDoubleInput(&numdata,&alpha) < 0) {
+	if (OPS_GetDoubleInput(numdata,&alpha) < 0) {
 	    opserr << "WARNING: invalid alpha\n";
 	    return -1;
 	}
@@ -1445,7 +1445,7 @@ int OPS_getPID()
 #endif
 
     int size = 1;
-    if (OPS_SetIntOutput(&size, &pid, true) < 0) {
+    if (OPS_SetIntOutput(size, &pid, true) < 0) {
 	opserr << "WARNING: failed to set pid\n";
 	return -1;
     }
@@ -1462,7 +1462,7 @@ int OPS_getNP()
 #endif
 
     int size = 1;
-    if (OPS_SetIntOutput(&size, &nump, true) < 0) {
+    if (OPS_SetIntOutput(size, &nump, true) < 0) {
 	opserr << "WARNING: failed to set np\n";
 	return -1;
     }
@@ -1501,7 +1501,7 @@ int OPS_send()
     if (strcmp(sdata, "-pid") == 0) {
         if (OPS_GetNumRemainingInputArgs() > 0) {
             int num = 1;
-            if (OPS_GetIntInput(&num, &otherPID) < 0) {
+            if (OPS_GetIntInput(num, &otherPID) < 0) {
                 opserr << "WARNING: failed to get pid\n";
                 return -1;
             }
@@ -1533,10 +1533,10 @@ int OPS_send()
         OPS_ResetCurrentInputArg(-1);
         datatype = MPI_DOUBLE;
         int numdata = 1;
-        if (OPS_GetDoubleInput(&numdata, &ddata[0]) < 0) {
+        if (OPS_GetDoubleInput(numdata, &ddata[0]) < 0) {
             OPS_ResetCurrentInputArg(-1);
             datatype = MPI_INT;
-            if (OPS_GetIntInput(&numdata, &idata[0]) < 0) {
+            if (OPS_GetIntInput(numdata, &idata[0]) < 0) {
                 opserr << "WARNING: failed to detect data type\n";
                 return -1;
             }
@@ -1547,12 +1547,12 @@ int OPS_send()
     if (num > 1 && datatype != MPI_CHAR) {
         int numdata = num - 1;
         if (datatype == MPI_DOUBLE) {
-            if (OPS_GetDoubleInput(&numdata, &ddata[1]) < 0) {
+            if (OPS_GetDoubleInput(numdata, &ddata[1]) < 0) {
                 opserr << "WARNING: not all data is double\n";
                 return -1;
             }
         } else {
-            if (OPS_GetIntInput(&numdata, &idata[1]) < 0) {
+            if (OPS_GetIntInput(numdata, &idata[1]) < 0) {
                 opserr << "WARNING: not all data is int\n";
                 return -1;
             }
@@ -1616,7 +1616,7 @@ int OPS_recv()
             return -1;
         }
         int num = 1;
-        if (OPS_GetIntInput(&num, &otherPID) == 0) {
+        if (OPS_GetIntInput(num, &otherPID) == 0) {
             if (otherPID<0 || otherPID>=np || otherPID==myPID) {
                 opserr << "WARNING: invalid pid "<<otherPID<<"\n";
                 return -1;
@@ -1742,10 +1742,10 @@ int OPS_Bcast() {
             OPS_ResetCurrentInputArg(-1);
             datatype = MPI_DOUBLE;
             int numdata = 1;
-            if (OPS_GetDoubleInput(&numdata, &ddata[0]) < 0) {
+            if (OPS_GetDoubleInput(numdata, &ddata[0]) < 0) {
                 OPS_ResetCurrentInputArg(-1);
                 datatype = MPI_INT;
-                if (OPS_GetIntInput(&numdata, &idata[0]) < 0) {
+                if (OPS_GetIntInput(numdata, &idata[0]) < 0) {
                     opserr << "WARNING: failed to detect data type\n";
                     return -1;
                 }
@@ -1756,12 +1756,12 @@ int OPS_Bcast() {
         if (num > 1 && datatype != MPI_CHAR) {
             int numdata = num - 1;
             if (datatype == MPI_DOUBLE) {
-                if (OPS_GetDoubleInput(&numdata, &ddata[1]) < 0) {
+                if (OPS_GetDoubleInput(numdata, &ddata[1]) < 0) {
                     opserr << "WARNING: not all data is double\n";
                     return -1;
                 }
             } else {
-                if (OPS_GetIntInput(&numdata, &idata[1]) < 0) {
+                if (OPS_GetIntInput(numdata, &idata[1]) < 0) {
                     opserr << "WARNING: not all data is int\n";
                     return -1;
                 }
@@ -1855,7 +1855,7 @@ int OPS_sdfResponse()
 
     double data[9] = {0,0,0,0,0,0,0,0,0};
     numdata = 6;
-    if (OPS_GetDoubleInput(&numdata, &data[0]) < 0) {
+    if (OPS_GetDoubleInput(numdata, &data[0]) < 0) {
 	opserr << "WARNING sdfResponse -- could not read input \n";
 	return -1;
     }
@@ -1864,7 +1864,7 @@ int OPS_sdfResponse()
 
     numdata = OPS_GetNumRemainingInputArgs();
     if (numdata > 3) numdata = 3;
-    if (OPS_GetDoubleInput(&numdata, &data[6]) < 0) {
+    if (OPS_GetDoubleInput(numdata, &data[6]) < 0) {
 	opserr << "WARNING sdfResponse -- could not read input \n";
 	return -1;
     }
@@ -1985,7 +1985,7 @@ int OPS_sdfResponse()
 
     double output[] = {umax, u, up, amax, tamax};
     numdata = 5;
-    if (OPS_SetDoubleOutput(&numdata,output, false) < 0) {
+    if (OPS_SetDoubleOutput(numdata,output, false) < 0) {
 	opserr << "WARNING: failed to set output -- sdfResponse\n";
 	return -1;
     }
@@ -1999,7 +1999,7 @@ int OPS_getNumThreads()
     int num = omp_get_max_threads();
     int numdata = 1;
 
-    if (OPS_SetIntOutput(&numdata,&num,true) < 0) {
+    if (OPS_SetIntOutput(numdata,num,true) < 0) {
 	opserr << "WARNING: failed to set output -- getNumThreads\n";
 	return -1;
     }
@@ -2018,7 +2018,7 @@ int OPS_setNumThreads()
     
     int num;
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata,&num) < 0) {
+    if (OPS_GetIntInput(numdata,&num) < 0) {
 	opserr << "WARNING: failed to set output -- getNumThreads\n";
 	return -1;
     }
@@ -2037,7 +2037,7 @@ int OPS_setStartNodeTag() {
 
     int tag;
     int num = 1;
-    if (OPS_GetIntInput(&num, &tag) < 0) {
+    if (OPS_GetIntInput(num, &tag) < 0) {
         opserr << "WARNING: failed to get tag\n";
         return -1;
     }
@@ -2072,7 +2072,7 @@ int OPS_partition() {
         auto opt = OPS_GetString();
         if (strcmp(opt, "-ncuts") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0 &&
-                OPS_GetIntInput(&num, &ncuts) < 0) {
+                OPS_GetIntInput(num, &ncuts) < 0) {
                 opserr << "WARNING: failed to get ncuts\n";
                 return -1;
             }
@@ -2081,7 +2081,7 @@ int OPS_partition() {
             }
         } else if (strcmp(opt, "-niter") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0 &&
-                OPS_GetIntInput(&num, &niter) < 0) {
+                OPS_GetIntInput(num, &niter) < 0) {
                 opserr << "WARNING: failed to get niter\n";
                 return -1;
             }
@@ -2090,7 +2090,7 @@ int OPS_partition() {
             }
         } else if (strcmp(opt, "-ufactor") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0 &&
-                OPS_GetIntInput(&num, &ncuts) < 0) {
+                OPS_GetIntInput(num, &ncuts) < 0) {
                 opserr << "WARNING: failed to get ufactor\n";
                 return -1;
             }

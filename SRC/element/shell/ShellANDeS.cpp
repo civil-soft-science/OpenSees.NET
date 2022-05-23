@@ -126,7 +126,7 @@ OPS_ShellANDeS(void)
 
      int iData[4];
      int numData = 4;
-     if (OPS_GetIntInput(&numData, iData) != 0)
+     if (OPS_GetIntInput(numData, iData) != 0)
      {
           opserr << "WARNING invalid integer tag: element ShellANDeS \n";
           return 0;
@@ -134,7 +134,7 @@ OPS_ShellANDeS(void)
 
      double dData[11];
      numArgs = OPS_GetNumRemainingInputArgs();
-     if (OPS_GetDoubleInput(&numArgs, dData) != 0)
+     if (OPS_GetDoubleInput(numArgs, dData) != 0)
      {
           opserr << "WARNING invalid double thickness: element ShellANDeS \n";
           return 0;

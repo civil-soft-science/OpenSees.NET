@@ -46,7 +46,7 @@ void* OPS_HSConstraint()
     if (numdata > 4) numdata = 4;
 
     double data[4];
-    if (OPS_GetDoubleInput(&numdata, data) < 0) {
+    if (OPS_GetDoubleInput(numdata, data) < 0) {
 	opserr << "WARNING integrator HSConstraint invalid double inputs\n";
 	return 0;
     }

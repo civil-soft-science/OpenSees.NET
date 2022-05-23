@@ -67,7 +67,7 @@ void* OPS_LinearElasticSpring()
     // tags
     int idata[3];
     int numdata = 3;
-    if (OPS_GetIntInput(&numdata, idata) < 0) {
+    if (OPS_GetIntInput(numdata, idata) < 0) {
         opserr << "WARNING: invalid integer data\n";
         return 0;
     }
@@ -84,7 +84,7 @@ void* OPS_LinearElasticSpring()
         int dir;
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(&numdata, &dir) < 0) {
+        if (OPS_GetIntInput(numdata, &dir) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -113,7 +113,7 @@ void* OPS_LinearElasticSpring()
     Matrix kb(numDIR, numDIR);
     for (int i = 0; i < numDIR; i++) {
         for (int j = 0; j < numDIR; j++) {
-            if (OPS_GetDoubleInput(&numdata, &kb(i, j)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &kb(i, j)) < 0) {
                 opserr << "WARNING invalid stiffness value\n";
                     return 0;
             }
@@ -138,7 +138,7 @@ void* OPS_LinearElasticSpring()
             }
             numdata = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
                 opserr << "WARNING: invalid -orient values\n";
                 return 0;
             }
@@ -148,7 +148,7 @@ void* OPS_LinearElasticSpring()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(&numdata, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -167,7 +167,7 @@ void* OPS_LinearElasticSpring()
                 opserr << "WARNING: insufficient data for -pDelta\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(&numdata, ptr) < 0) {
+            if (OPS_GetDoubleInput(numdata, ptr) < 0) {
                 opserr << "WARNING: invalid -pDelta value\n";
                 return 0;
             }
@@ -185,7 +185,7 @@ void* OPS_LinearElasticSpring()
             cb = new Matrix(numDIR, numDIR);
             for (int i = 0; i < numDIR; i++) {
                 for (int j = 0; j < numDIR; j++) {
-                    if (OPS_GetDoubleInput(&numdata, &cij) < 0) {
+                    if (OPS_GetDoubleInput(numdata, &cij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete cb;
                         return 0;

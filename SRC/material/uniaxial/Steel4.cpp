@@ -58,7 +58,7 @@ OPS_Steel4(void)
     numInit = 1;
 
 
-  if (OPS_GetIntInput(&argc, iData) != 0) {
+  if (OPS_GetIntInput(argc, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel4 tag" << endln;
     return 0;
   }
@@ -72,7 +72,7 @@ OPS_Steel4(void)
     return 0;
   }
   //if the first two parameters are not doubles, throw an error
-  else if (OPS_GetDoubleInput(&numBasic, basicData) != 0) {
+  else if (OPS_GetDoubleInput(numBasic, basicData) != 0) {
     opserr << "Invalid args; E0 and fy for Steel4 (tag: " << iData[0] << 
       ") shall be given as floating point numbers" << endln; 
     return 0;
@@ -120,7 +120,7 @@ OPS_Steel4(void)
     //kinematic hardening
     else if  (strcmp(argvLoc, "-kin") == 0) {
       //check if the right number of parameters are provided
-      if (OPS_GetDouble(&numKin, kinData) != 0) {
+      if (OPS_GetDouble(numKin, kinData) != 0) {
         opserr << "WARNING invalid -kin args for Steel4 (tag: " << iData[0] << ")\n" << endln;
         return 0;
       }
@@ -132,7 +132,7 @@ OPS_Steel4(void)
     //isotropic hardening with MP characteristics
     else if  (strcmp(argvLoc, "-iso") == 0) {
       //check if the right number of parameters are provided
-      if (OPS_GetDouble(&numIso, isoData) != 0) {
+      if (OPS_GetDouble(numIso, isoData) != 0) {
         opserr << "WARNING invalid -iso args for Steel4 (tag: " << iData[0] << ")\n" << endln;
         return 0;
       }
@@ -144,7 +144,7 @@ OPS_Steel4(void)
     //ultimate strength limit
     else if  (strcmp(argvLoc, "-ult") == 0) {
       //check if the right number of parameters are provided
-      if (OPS_GetDouble(&numUlt, ultData) != 0) {
+      if (OPS_GetDouble(numUlt, ultData) != 0) {
         opserr << "WARNING invalid -ult args for Steel4 (tag: " << iData[0] << ")\n" << endln;
         return 0;
       }
@@ -156,7 +156,7 @@ OPS_Steel4(void)
     //load history memory
     else if  (strcmp(argvLoc, "-mem") == 0) {
       //check if the right number of parameters are provided
-      if (OPS_GetInt(&numMem, memData) != 0) {
+      if (OPS_GetInt(numMem, memData) != 0) {
         opserr << "WARNING invalid -mem args for Steel4 (tag: " << iData[0] << ")\n" << endln;
         return 0;
       } 
@@ -164,7 +164,7 @@ OPS_Steel4(void)
     //initial stress
     else if  (strcmp(argvLoc, "-init") == 0) {
       //check if the right number of parameters are provided
-      if (OPS_GetDouble(&numInit, initData) != 0) {
+      if (OPS_GetDouble(numInit, initData) != 0) {
         opserr << "WARNING invalid -init args for Steel4 (tag: " << iData[0] << ")\n" << endln;
         return 0;
       }

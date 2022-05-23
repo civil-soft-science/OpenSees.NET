@@ -115,14 +115,14 @@ using namespace std; //Added by AMK for debugging
 			
 				//Collect material tag:
 				numData = 1;
-				if (OPS_GetIntInput(&numData, &iData) != 0) {
+				if (OPS_GetIntInput(numData, &iData) != 0) {
 					opserr << "WARNING: invalid uniaxialMaterial TDConcreteMC10NL tag\n";
 					return 0;
 				}
 			
 				//Collect input parameters: 
 				numData = 18; //ntosic
-				if (OPS_GetDoubleInput(&numData, dData) != 0) {
+				if (OPS_GetDoubleInput(numData, dData) != 0) {
 					opserr << "WARNING: invalid material property definition\n";
 					return 0;
 				}

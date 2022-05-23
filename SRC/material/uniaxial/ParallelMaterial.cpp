@@ -90,7 +90,7 @@ OPS_ParallelMaterial(void)
       theFactors = new Vector(dData, numMats);
   }
   
-  if (OPS_GetIntInput(&numData, iData) != 0) {
+  if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid data for uniaxialMaterial Parallel" << endln;
     return 0;
   }
@@ -109,7 +109,7 @@ OPS_ParallelMaterial(void)
   
   if (gotFactors) {
     const char *argvLoc = OPS_GetString();
-    if (OPS_GetDoubleInput(&numMats, dData) != 0) {
+    if (OPS_GetDoubleInput(numMats, dData) != 0) {
       opserr << "WARNING invalid factors for uniaxialMaterial Parallel" << endln;
       return 0;
     }

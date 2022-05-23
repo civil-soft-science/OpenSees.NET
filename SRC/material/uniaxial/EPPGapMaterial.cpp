@@ -60,14 +60,14 @@ void* OPS_EPPGapMaterial()
     dData[3] = 0.0; // setting default eta to 0.
 
     int numData = 1;
-    if (OPS_GetIntInput(&numData, &tag) != 0) {
+    if (OPS_GetIntInput(numData, &tag) != 0) {
 	opserr << "WARNING invalid tag for uniaxialMaterial EPPGap" << endln;
 	return 0;
     }
 
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 4) numData = 4;
-    if (OPS_GetDoubleInput(&numData, dData) != 0) {
+    if (OPS_GetDoubleInput(numData, dData) != 0) {
 	opserr << "Invalid data for uniaxial EPPGap \n";
 	return 0;	
     }

@@ -52,47 +52,47 @@ void* OPS_WFSection2d()
   SectionForceDeformation* theSection = 0;
   
   int numdata = 1;
-  if (OPS_GetIntInput(&numdata, &tag) < 0) {
+  if (OPS_GetIntInput(numdata, &tag) < 0) {
     opserr << "WARNING invalid section WFSection2d tag" << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+  if (OPS_GetIntInput(numdata, &matTag) < 0) {
     opserr << "WARNING invalid section WFSection2d matTag" << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &d) < 0) {
+  if (OPS_GetDoubleInput(numdata, &d) < 0) {
     opserr << "WARNING invalid d" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &tw) < 0) {
+  if (OPS_GetDoubleInput(numdata, &tw) < 0) {
     opserr << "WARNING invalid tw" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &bf) < 0) {
+  if (OPS_GetDoubleInput(numdata, &bf) < 0) {
     opserr << "WARNING invalid bf" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetDoubleInput(&numdata, &tf) < 0) {
+  if (OPS_GetDoubleInput(numdata, &tf) < 0) {
     opserr << "WARNING invalid tf" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nfdw) < 0) {
+  if (OPS_GetIntInput(numdata, &nfdw) < 0) {
     opserr << "WARNING invalid nfdw" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
   }
   
-  if (OPS_GetIntInput(&numdata, &nftf) < 0) {
+  if (OPS_GetIntInput(numdata, &nftf) < 0) {
     opserr << "WARNING invalid nftf" << endln;
     opserr << "WFSection2d section: " << tag << endln;
     return 0;
@@ -106,7 +106,7 @@ void* OPS_WFSection2d()
     
     double shape = 1.0;
     if (OPS_GetNumRemainingInputArgs() > 1) {
-      if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+      if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 	opserr << "WARNING invalid shape" << endln;
 	opserr << "WFSection2d section: " << tag << endln;
 	return 0;
