@@ -210,11 +210,21 @@ ElementRecorder::record(int commitTag, double timeStamp)
 				}
 				for (int j = 0; j < respSize; j++)
 				{
-					 int nProcOuts = numEle / procGrpNum;
-					 if (nProcOuts * procGrpNum < numEle)
-						  nProcOuts++;
-					 if (procGrpNum == 1)
-						  nProcOuts = 1;
+					 int index = j;
+					 if (numDOF != 0)
+						  index = (*dof)(j);
+					 int nProcOuts;
+					 int nVals = numEle;
+					 if (procGrpNum == -1)
+						  if (procDataMethod != 0)
+								nProcOuts = 1;
+						  else
+								nProcOuts = nVals;
+					 else {
+						  nProcOuts = nVals / procGrpNum;
+						  if (nProcOuts * procGrpNum < nVals)
+								nProcOuts++;
+					 }
 					 double* vals = 0, * val, val1 = 0;
 					 vals = new double[nProcOuts];
 					 for (int i = 0; i < nProcOuts; i++)
@@ -227,13 +237,10 @@ ElementRecorder::record(int commitTag, double timeStamp)
 								continue;
 						  Information& eleInfo = theResponses[i]->getInformation();
 						  const Vector& eleData = eleInfo.getData();
-						  int index = j;
-						  if (numDOF != 0)
-								index = (*dof)(j);
 						  if (index >= eleData.Size())
 								continue;
 						  val1 = eleData(index);
-						  if (procGrpNum != 1 && i == nextGrpN)
+						  if (procGrpNum != -1 && i == nextGrpN)
 						  {
 								iGrpN++;
 								nextGrpN += procGrpNum;
@@ -255,8 +262,8 @@ ElementRecorder::record(int commitTag, double timeStamp)
 					 }
 					 for (int i = 0; i < nProcOuts; i++)
 					 {
-						  val = &vals[i];
-						  (*data)(loc++) = *val;
+						  loc = i * respSize + j + (echoTimeFlag? 1 : 0);
+						  (*data)(loc) = vals[i];
 					 }
 					 delete[] vals;
 				}
@@ -712,11 +719,15 @@ ElementRecorder::initialize(void)
 								dataSize = size;
 					 }
 				}
-				int nProcOuts = numEle / procGrpNum;
-				if (nProcOuts * procGrpNum < numEle)
-					 nProcOuts++;
-				if (procGrpNum == 1)
+				int nProcOuts;
+				int nVals = numEle;
+				if (procGrpNum == -1)
 					 nProcOuts = 1;
+				else {
+					 nProcOuts = nVals / procGrpNum;
+					 if (nProcOuts * procGrpNum < nVals)
+						  nProcOuts++;
+				}
 				if (numDOF == 0)
 					 numDbColumns += dataSize * nProcOuts;
 				else

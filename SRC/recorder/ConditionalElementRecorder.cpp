@@ -171,7 +171,7 @@ ConditionalElementRecorder::record(int commitTag, double timeStamp)
 
     if (initializationDone == false) {
         if (this->initialize() != 0) {
-            opserr << "ElementRecorder::record() - failed to initialize\n";
+            opserr << "ConditionalElementRecorder::record() - failed to initialize\n";
             return -1;
         }
     }
@@ -204,11 +204,18 @@ ConditionalElementRecorder::record(int commitTag, double timeStamp)
         }
         for (int j = 0; j < respSize; j++)
         {
-            int nProcOuts = numEle / procGrpNum;
-            if (nProcOuts * procGrpNum < numEle)
-                nProcOuts++;
-            if (procGrpNum == 1)
-                nProcOuts = 1;
+            int nProcOuts;
+            int nVals = numEle;
+            if (procGrpNum == -1)
+                if (procDataMethod != 0)
+                    nProcOuts = 1;
+                else
+                    nProcOuts = nVals;
+            else {
+                nProcOuts = nVals / procGrpNum;
+                if (nProcOuts * procGrpNum < nVals)
+                    nProcOuts++;
+            }
             double* vals = 0, * val, val1 = 0;
             vals = new double[nProcOuts];
             for (int i = 0; i < nProcOuts; i++)
@@ -227,7 +234,7 @@ ConditionalElementRecorder::record(int commitTag, double timeStamp)
                 if (index >= eleData.Size())
                     continue;
                 val1 = eleData(index);
-                if (procGrpNum != 1 && i == nextGrpN)
+                if (procGrpNum != -1 && i == nextGrpN)
                 {
                     iGrpN++;
                     nextGrpN += procGrpNum;
@@ -249,8 +256,9 @@ ConditionalElementRecorder::record(int commitTag, double timeStamp)
             }
             for (int i = 0; i < nProcOuts; i++)
             {
+                loc = i * respSize + j + (echoTimeFlag? 1 : 0);
                 val = &vals[i];
-                (*data)(0, loc++) = *val;
+                (*data)(0, loc) = *val;
             }
             delete[] vals;
         }
@@ -645,11 +653,15 @@ ConditionalElementRecorder::initialize(void)
                         dataSize = size;
                 }
             }
-            int nProcOuts = numEle / procGrpNum;
-            if (nProcOuts * procGrpNum < numEle)
-                nProcOuts++;
-            if (procGrpNum == 1)
+            int nProcOuts;
+            int nVals = numEle;
+            if (procGrpNum == -1)
                 nProcOuts = 1;
+            else {
+                nProcOuts = nVals / procGrpNum;
+                if (nProcOuts * procGrpNum < nVals)
+                    nProcOuts++;
+            }
             if (numDOF == 0)
                 numDbColumns = dataSize * nProcOuts;
             else

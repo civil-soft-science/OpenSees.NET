@@ -309,7 +309,7 @@ ResidNodeRecorder::record(int commitTag, double timeStamp)
 
 	 if (initializationDone == false) {
 		  if (this->initialize() != 0) {
-				opserr << "ElementRecorder::record() - failed to initialize\n";
+				opserr << "ResidNodeRecorder::record() - failed to initialize\n";
 				return -1;
 		  }
 	 }
@@ -357,11 +357,15 @@ ResidNodeRecorder::record(int commitTag, double timeStamp)
 	 {
 		  int cnt = iCnt;
 		  for (int j = 0; j < numDOF; j++) {
-				int nProcOuts = numValidNodes / procGrpNum;
-				if (nProcOuts * procGrpNum < numValidNodes)
-					 nProcOuts++;
-				if (procGrpNum == 1)
+				int nProcOuts;
+				int nVals = numValidNodes;
+				if (procGrpNum == -1)
 					 nProcOuts = 1;
+				else {
+					 nProcOuts = nVals / procGrpNum;
+					 if (nProcOuts * procGrpNum < nVals)
+						  nProcOuts++;
+				}
 				double* vals = 0, * val, val1 = 0;
 				vals = new double[nProcOuts];
 				for (int i = 0; i < nProcOuts; i++)
@@ -392,7 +396,7 @@ ResidNodeRecorder::record(int commitTag, double timeStamp)
 					 else if (dataFlag == 999999)
 						  val1 = theNode->getDampEnergy();
 
-					 if (procGrpNum != 1 && i == nextGrpN)
+					 if (procGrpNum != -1 && i == nextGrpN)
 					 {
 						  iGrpN++;
 						  nextGrpN += procGrpNum;
@@ -413,8 +417,9 @@ ResidNodeRecorder::record(int commitTag, double timeStamp)
 				}
 				for (int i = 0; i < nProcOuts; i++)
 				{
+					 cnt = i * numValidNodes + j + (echoTimeFlag ? 1 : 0);
 					 val = &vals[i];
-					 (*data)(0, cnt++) = *val;
+					 (*data)(0, cnt) = *val;
 				}
 				delete[] vals;
 		  }
@@ -944,12 +949,19 @@ ResidNodeRecorder::initialize(void)
 	 //
 
 #ifdef _CSS
-	 int nProcOuts = numValidNodes / procGrpNum;
-	 if (nProcOuts * procGrpNum < numValidNodes)
-		  nProcOuts++;
+	 int nProcOuts;
+	 int nVals = numValidNodes;
+	 if (procGrpNum == -1)
+		  if (procDataMethod != 0)
+				nProcOuts = 1;
+		  else
+				nProcOuts = nVals;
+	 else {
+		  nProcOuts = nVals / procGrpNum;
+		  if (nProcOuts * procGrpNum < nVals)
+				nProcOuts++;
+	 }
 	 int numValidResponse = nProcOuts * numDOF;
-	 if (procDataMethod && procGrpNum == 1)
-		  numValidResponse = numDOF;
 #else
 	 int numDOF = theDofs->Size();
 	 int numValidResponse = numValidNodes * numDOF;

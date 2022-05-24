@@ -148,7 +148,7 @@ void* OPS_NodeRecorder(const char* type)
 
 #ifdef _CSS
 	 int procDataMethod = 0;
-	 int nProcGrp = 1;
+	 int nProcGrp = -1;
 	 int cntrlRcrdrTag = 0;
 	 outputMode eMode = No_Output;
 #else
@@ -253,7 +253,6 @@ void* OPS_NodeRecorder(const char* type)
 
 					 int ts;
 					 if (OPS_GetIntInput(1, &ts) < 0) {
-						  OPS_ResetCurrentInputArg(-1);
 						  break;
 					 }
 					 timeseries[numTimeSeries++] = ts;
@@ -280,7 +279,6 @@ void* OPS_NodeRecorder(const char* type)
 
 					 int nd;
 					 if (OPS_GetIntInput(1, &nd) < 0) {
-						  OPS_ResetCurrentInputArg(-1);
 						  break;
 					 }
 					 nodes[numNodes++] = nd;
@@ -343,7 +341,6 @@ void* OPS_NodeRecorder(const char* type)
 
 					 int dof;
 					 if (OPS_GetIntInput(1, &dof) < 0) {
-						  OPS_ResetCurrentInputArg(-1);
 						  break;
 					 }
 					 dofs[numDOF++] = dof - 1;
@@ -456,7 +453,7 @@ void* OPS_ElementRecorder(const char* type)
 	 ID elements(0, 6);
 	 ID dofs(0, 6);
 	 int procDataMethod = 0;
-	 int nProcGrp = 1;
+	 int nProcGrp = -1;
 	 int cntrlRcrdrTag = 0;
 
 	 char** argv = 0;
@@ -550,7 +547,6 @@ void* OPS_ElementRecorder(const char* type)
 
 					 int el;
 					 if (OPS_GetIntInput(1, &el) < 0) {
-						  OPS_ResetCurrentInputArg(-1);
 						  break;
 					 }
 					 elements[numEle++] = el;
@@ -612,7 +608,6 @@ void* OPS_ElementRecorder(const char* type)
 
 					 int dof;
 					 if (OPS_GetIntInput(1, &dof) < 0) {
-						  OPS_ResetCurrentInputArg(-1);
 						  break;
 					 }
 					 dofs[numDOF++] = dof - 1;
@@ -728,7 +723,7 @@ void* OPS_DriftRecorder(const char* type)
 	 bool closeOnWrite = false;
 	 int cntrlRcrdrTag = 0;
 	 int procDataMethod = 0;
-	 int nProcGrp = 1;
+	 int nProcGrp = -1;
 	 const char* fileName;
 	 while (OPS_GetNumRemainingInputArgs() > 0) {
 		  const char* option = OPS_GetString();
@@ -827,7 +822,6 @@ void* OPS_DriftRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0)
 				{
 					 if (OPS_GetInt(1, &node) != 0) {
-						  OPS_ResetCurrentInputArg;
 						  break;
 					 }
 					 iNodes[numNodes++] = node;
@@ -839,7 +833,6 @@ void* OPS_DriftRecorder(const char* type)
 				int numNodes = 0;
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 					 if (OPS_GetInt(1, &node) != 0) {
-						  OPS_ResetCurrentInputArg;
 						  break;
 					 }
 					 jNodes[numNodes++] = node;

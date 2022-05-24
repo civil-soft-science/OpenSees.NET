@@ -162,11 +162,18 @@ DriftRecorder::record(int commitTag, double timeStamp)
 #ifdef _CSS
 		  if (procDataMethod)
 		  {
-				int nProcOuts = numNodes / procGrpNum;
-				if (nProcOuts * procGrpNum < numNodes)
-					 nProcOuts++;
-				if (procGrpNum == 1)
-					 nProcOuts = 1;
+				int nProcOuts;
+				int nVals = numNodes;
+				if (procGrpNum == -1)
+					 if (procDataMethod != 0)
+						  nProcOuts = 1;
+					 else
+						  nProcOuts = nVals;
+				else {
+					 nProcOuts = nVals / procGrpNum;
+					 if (nProcOuts * procGrpNum < nVals)
+						  nProcOuts++;
+				}
 				double* vals = 0, * val, val1 = 0;
 				vals = new double[nProcOuts];
 				for (int i = 0; i < nProcOuts; i++)
@@ -191,7 +198,7 @@ DriftRecorder::record(int commitTag, double timeStamp)
 					 else
 						  val1 = 0.0;
 
-					 if (procGrpNum != 1 && i == nextGrpN)
+					 if (procGrpNum != -1 && i == nextGrpN)
 					 {
 						  iGrpN++;
 						  nextGrpN += procGrpNum;
@@ -487,11 +494,18 @@ DriftRecorder::initialize(void)
 	 theNodes = new Node * [2 * numNodes];
 	 oneOverL = new Vector(numNodes);
 #ifdef _CSS
-	 int nProcOuts = numNodes / procGrpNum;
-	 if (nProcOuts * procGrpNum < numNodes)
-		  nProcOuts++;
-	 if (procDataMethod && procGrpNum == 1)
-		  nProcOuts = 1;
+	 int nProcOuts;
+	 int nVals = numNodes;
+	 if (procGrpNum == -1)
+		  if (procDataMethod != 0)
+				nProcOuts = 1;
+		  else
+				nProcOuts = nVals;
+	 else {
+		  nProcOuts = nVals / procGrpNum;
+		  if (nProcOuts * procGrpNum < nVals)
+				nProcOuts++;
+}
 	 data = new Vector(nProcOuts + timeOffset); // data(0) allocated for time
 #else
 	 data = new Vector(numNodes + timeOffset); // data(0) allocated for time
