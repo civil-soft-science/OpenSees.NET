@@ -59,11 +59,11 @@ class ElementRecorder: public Recorder
 		    Domain &theDomain, 
 		    OPS_Stream *theOutputHandler,
 #ifdef _CSS
-          int procMethod = 0, int procGrpNum = 1,
+          int procMethod, int procGrpNum,
 #endif // _CSS
-		    double deltaT = 0.0,
-		    double relDeltaTTol = 0.00001,
-		    const ID *dof = 0);
+		    double deltaT,
+		    double relDeltaTTol,
+		    const ID *dof);
 
     ~ElementRecorder();
 

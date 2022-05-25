@@ -58,10 +58,10 @@ class ResidNodeRecorder: public Recorder
 			 Domain &theDomain,
 			 OPS_Stream *theOutputHandler,
 #ifdef _CSS
-          int procDataMethod = 0, int procGrpNum = 1,
+          int procDataMethod, int procGrpNum,
 #endif // _CSS
-			 bool echoTimeFlag = false,
-			 TimeSeries **theTimeSeries =0); 
+			 bool echoTimeFlag ,
+			 TimeSeries **theTimeSeries); 
     
     ~ResidNodeRecorder();
 

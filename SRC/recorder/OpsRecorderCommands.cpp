@@ -687,7 +687,7 @@ void* OPS_ElementRecorder(const char* type)
 				theOutputStream, procDataMethod, nProcGrp, dT, rTolDt, &dofs);
 	 if (strcmp(type, "EnvelopeElement") == 0)
 		  recorder = new EnvelopeElementRecorder(&elements, data, nargrem, *domain,
-				theOutputStream, procDataMethod, nProcGrp, echoTimeFlag, &dofs);
+				theOutputStream, procDataMethod, nProcGrp, dT, echoTimeFlag, &dofs);
 	 if (strcmp(type, "ResidElement") == 0)
 		  recorder = new ResidElementRecorder(&elements, data, nargrem, *domain,
 				theOutputStream, procDataMethod, nProcGrp, echoTimeFlag, &dofs);

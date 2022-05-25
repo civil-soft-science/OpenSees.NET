@@ -52,11 +52,11 @@ class EnvelopeElementRecorder: public Recorder
 			    Domain &theDomain, 
 			    OPS_Stream *theOutputHandler,
 #ifdef _CSS
-          int procMethod = 0, int procGrpNum = 1,
+          int procMethod, int procGrpNum,
 #endif // _CSS
-			    double deltaT = 0.0,
-			    bool echoTimeFlag = true,
-			    const ID *dof =0); 
+			    double deltaT,
+			    bool echoTimeFlag,
+			    const ID *dof); 
 
 
     ~EnvelopeElementRecorder();

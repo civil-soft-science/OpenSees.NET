@@ -46,21 +46,21 @@ class DriftRecorder: public Recorder
 		Domain &theDomain, 
 		OPS_Stream *theHandler,
 #ifdef _CSS
-		int procDataMethod = 0, int procGrpNum = 1,
+		int procDataMethod, int procGrpNum,
 #endif // _CSS
-		bool echoTime = false,
-		double dT = 0.0,
-		double relDeltaTTol = 0.00001);
+		bool echoTime,
+		double dT,
+		double relDeltaTTol);
 
   DriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 		Domain &theDomain, 
 		OPS_Stream *theHandler,
 #ifdef _CSS
-		int procDataMethod = 0,  int procGrpNum = 1,
+		int procDataMethod,  int procGrpNum,
 #endif // _CSS
-		bool echoTime = false,
-		double dT = 0.0,
-		double relDeltaTTol = 0.00001);
+		bool echoTime,
+		double dT,
+		double relDeltaTTol);
   
   ~DriftRecorder();
 

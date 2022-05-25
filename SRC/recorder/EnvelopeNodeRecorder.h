@@ -54,8 +54,8 @@ class EnvelopeNodeRecorder: public Recorder
     EnvelopeNodeRecorder();
     EnvelopeNodeRecorder(const ID &theDof, const ID *theNodes, const char *dataToStore,
 			 Domain &theDomain, OPS_Stream *theOutputHandler,
-          int procDataMethod = 0, int procGrpNum = 1, double deltaT = 0.0,
-			 bool echoTimeFlag = false, TimeSeries **theTimeSeries =0); 
+          int procDataMethod, int procGrpNum, double deltaT,
+			 bool echoTimeFlag, TimeSeries **theTimeSeries); 
     
     ~EnvelopeNodeRecorder();
 

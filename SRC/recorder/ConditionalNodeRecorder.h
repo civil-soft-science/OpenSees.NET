@@ -58,9 +58,9 @@ class ConditionalNodeRecorder: public Recorder
 			 Domain &theDomain,
 			 OPS_Stream *theOutputHandler,
 			int rcrdrTag,
-			int procMethod = 0, int procGrpNum = 1,
-			 bool echoTimeFlag = false,
-			 TimeSeries **theTimeSeries =0); 
+			int procMethod, int procGrpNum,
+			 bool echoTimeFlag,
+			 TimeSeries **theTimeSeries); 
     
     ~ConditionalNodeRecorder();
 

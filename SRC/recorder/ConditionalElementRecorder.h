@@ -52,9 +52,9 @@ class ConditionalElementRecorder: public Recorder
 			    Domain &theDomain, 
 			    OPS_Stream *theOutputHandler,
 				int rcrdrTag,
-			    int procMethod = 0, int procGrpNum = 1,
-			    bool echoTimeFlag = true,
-			    const ID *dof =0); 
+			    int procMethod, int procGrpNum,
+			    bool echoTimeFlag,
+			    const ID *dof); 
 
 
     ~ConditionalElementRecorder();

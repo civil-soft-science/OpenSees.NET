@@ -51,8 +51,8 @@ class NodeRecorder: public Recorder
     NodeRecorder();
     NodeRecorder(const ID &theDof, const ID *theNodes, int pgradIndex,
 		 const char *dataToStore, Domain &theDomain, OPS_Stream *theOutputHandler,
-        int procDataMethod = 0, int procGrpNum = 1, double deltaT = 0.0,
-		 bool echoTimeFlag = true, TimeSeries **timeSeries = 0);
+        int procDataMethod, int procGrpNum, double deltaT,
+		 bool echoTimeFlag, TimeSeries **timeSeries);
 
     ~NodeRecorder();
 #if _DLL

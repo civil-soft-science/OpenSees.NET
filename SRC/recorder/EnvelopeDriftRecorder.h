@@ -46,17 +46,17 @@ class EnvelopeDriftRecorder: public Recorder
 			Domain &theDomain, 
 			OPS_Stream *theHandler,
 #ifdef _CSS
-        int procDataMethod = 0, int procGrpNum = 1,
+        int procDataMethod, int procGrpNum,
 #endif // _CSS
-			bool echoTime = false);
+			bool echoTime);
   
   EnvelopeDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
 			OPS_Stream *theHandler,
 #ifdef _CSS
-        int procDataMethod = 0, int procGrpNum = 1,
+        int procDataMethod, int procGrpNum,
 #endif // _CSS
-			bool echoTime = false);
+			bool echoTime);
   
   ~EnvelopeDriftRecorder();
   

@@ -45,15 +45,15 @@ class ConditionalDriftRecorder: public Recorder
 			Domain &theDomain, 
 			OPS_Stream *theHandler,
 			int rcrdrTag,
-			int dataProcMethod,  int procGrpNum = 1,
-			bool echoTime = false);
+			int dataProcMethod,  int procGrpNum ,
+			bool echoTime);
   
   ConditionalDriftRecorder(const ID &ndI, const ID &ndJ, int dof, int perpDirn,
 			Domain &theDomain, 
 			OPS_Stream *theHandler,
 			int rcrdrTag,
-			int dataProcMethod, int procGrpNum = 1,
-			bool echoTime = false);
+			int dataProcMethod, int procGrpNum,
+			bool echoTime);
   
   ~ConditionalDriftRecorder();
   
