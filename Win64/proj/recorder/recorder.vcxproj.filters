@@ -12,30 +12,18 @@
     <Filter Include="response">
       <UniqueIdentifier>{d6b7373a-d593-4403-b6ff-072c629fbc47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="My Recorders">
+      <UniqueIdentifier>{8e2b2ff6-4ebe-45d1-94d0-4bcfa98dab7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="My Recorders\cpp">
+      <UniqueIdentifier>{57af4cd8-c466-4f3c-a31b-e6c94e023d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="My Recorders\h">
+      <UniqueIdentifier>{c83c260a-00e0-4a33-a705-b71848c52331}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\SRC\recorder\DriftRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ElementRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeDriftRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeElementRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeNodeRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\SRC\recorder\FilePlotter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\NodeRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\Recorder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\recorder\response\CompositeResponse.cpp">
@@ -53,29 +41,8 @@
     <ClCompile Include="..\..\..\SRC\recorder\response\Response.cpp">
       <Filter>response</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ResidNodeRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ResidDriftRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ResidElementRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ConditionalNodeRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ConditionalDriftRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\ConditionalElementRecorder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\SRC\recorder\response\CrdTransfResponse.cpp">
       <Filter>response</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\recorder\OpsRecorderCommands.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\recorder\AlgorithmIncrements.cpp">
       <Filter>Source Files</Filter>
@@ -125,27 +92,51 @@
     <ClCompile Include="..\..\..\SRC\recorder\PVDRecorder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ConditionalDriftRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ConditionalElementRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ConditionalNodeRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\DriftRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ElementRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeDriftRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeElementRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\EnvelopeNodeRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\NodeRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\OpsRecorderCommands.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\Recorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ResidDriftRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ResidElementRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\recorder\ResidNodeRecorder.cpp">
+      <Filter>My Recorders\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\SRC\recorder\DriftRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ElementRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeElementRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeNodeRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\FilePlotter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\NodeRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\Recorder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\response\CompositeResponse.h">
@@ -162,27 +153,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\response\Response.h">
       <Filter>response</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeDriftRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ResidDriftRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ResidElementRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ResidNodeRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ConditionalNodeRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ConditionalElementRecorder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\SRC\recorder\ConditionalDriftRecorder.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\response\CrdTransfResponse.h">
       <Filter>response</Filter>
@@ -231,6 +201,45 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\recorder\VTK_Recorder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ConditionalDriftRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ConditionalElementRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ConditionalNodeRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\DriftRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ElementRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeDriftRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeElementRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\EnvelopeNodeRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\NodeRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\Recorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ResidDriftRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ResidElementRecorder.h">
+      <Filter>My Recorders\h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\recorder\ResidNodeRecorder.h">
+      <Filter>My Recorders\h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -411,7 +411,7 @@ void* OPS_NodeRecorder(const char* type)
 				procDataMethod, nProcGrp, dT, echoTimeFlag, theTimeSeries);
 	 else if (strcmp(type, "EnvelopeNode") == 0)
 		  recorder = new EnvelopeNodeRecorder(dofs, &nodes, responseID, *domain, theOutputStream,
-				procDataMethod, nProcGrp, dT, echoTimeFlag, theTimeSeries);
+				procDataMethod, nProcGrp, echoTimeFlag, theTimeSeries);
 	 else if (strcmp(type, "ResidNode") == 0)
 		  recorder = new ResidNodeRecorder(dofs, &nodes, responseID, *domain, theOutputStream,
 				procDataMethod, nProcGrp, echoTimeFlag, theTimeSeries);
@@ -687,7 +687,7 @@ void* OPS_ElementRecorder(const char* type)
 				theOutputStream, procDataMethod, nProcGrp, dT, rTolDt, &dofs);
 	 if (strcmp(type, "EnvelopeElement") == 0)
 		  recorder = new EnvelopeElementRecorder(&elements, data, nargrem, *domain,
-				theOutputStream, procDataMethod, nProcGrp, dT, echoTimeFlag, &dofs);
+				theOutputStream, procDataMethod, nProcGrp, echoTimeFlag, &dofs);
 	 if (strcmp(type, "ResidElement") == 0)
 		  recorder = new ResidElementRecorder(&elements, data, nargrem, *domain,
 				theOutputStream, procDataMethod, nProcGrp, echoTimeFlag, &dofs);
@@ -717,7 +717,6 @@ void* OPS_DriftRecorder(const char* type)
 	 int perpDirn = 2;
 	 int pos = 2;
 	 double dT = 0.0;
-	 double rTolDt = 0.00001;
 	 int precision = 6;
 	 bool doScientific = false;
 	 bool closeOnWrite = false;
@@ -862,13 +861,6 @@ void* OPS_DriftRecorder(const char* type)
 				// allow user to specify time step size for recording
 				int num = 0;
 				if (OPS_GetDouble(1, &dT) != 0) {
-					 opserr << "WARNING: INVALID perpDirn\n";
-					 return 0;
-				}
-		  }
-		  else if (strcmp(option, "-rTolDt") == 0) {
-				int num = 0;
-				if (OPS_GetDouble(1, &rTolDt) != 0) {
 					 opserr << "WARNING: INVALID perpDirn\n";
 					 return 0;
 				}

@@ -68,9 +68,7 @@ NodeRecorder::NodeRecorder(const ID& dofs,
 	 const char* dataToStore,
 	 Domain& theDom,
 	 OPS_Stream* theOutput,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 double dT,
 	 bool timeFlag,
 	 TimeSeries** theSeries)
@@ -82,9 +80,7 @@ NodeRecorder::NodeRecorder(const ID& dofs,
 	 initializationDone(false), numValidNodes(0), addColumnInfo(0),
 	 gradIndex(pgradIndex),
 	 theTimeSeries(theSeries), timeSeriesValues(0)
-#ifdef _CSS
 	 , procDataMethod(procMethod), procGrpNum(procGrpN)
-#endif // _CSS
 
 {
 	 //
@@ -343,7 +339,7 @@ NodeRecorder::record(int commitTag, double timeStamp)
 	 int numDOF = theDofs->Size();
 #endif // !_CSS
 
-	 if (deltaT == 0.0 || timeStamp >= nextTimeStampToRecord) {
+	 if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
 
 		  if (deltaT != 0.0)
 				nextTimeStampToRecord = timeStamp + deltaT;

@@ -39,6 +39,7 @@
 #include <Channel.h>
 #include <FEM_ObjectBroker.h>
 
+
 DriftRecorder::DriftRecorder()
 	 :Recorder(RECORDER_TAGS_DriftRecorder),
 	 ndI(0), ndJ(0), dof(0), perpDirn(0), oneOverL(0), data(0),
@@ -55,20 +56,15 @@ DriftRecorder::DriftRecorder(int ni,
 	 int dirn,
 	 Domain& theDom,
 	 OPS_Stream* theDataOutputHandler,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 bool timeFlag,
-	 double dT,
-	 double rTolDt)
+	 double dT)
 	 :Recorder(RECORDER_TAGS_DriftRecorder),
 	 ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), data(0),
 	 theDomain(&theDom), theOutputHandler(theDataOutputHandler),
-	 initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT), relDeltaTTol(rTolDt),
+	 initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT),
 	 nextTimeStampToRecord(0.0)
-#ifdef _CSS
 	 , procDataMethod(procMethod), procGrpNum(procGrpN)
-#endif // _CSS
 {
 	 ndI = new ID(1);
 	 ndJ = new ID(1);
@@ -86,20 +82,14 @@ DriftRecorder::DriftRecorder(const ID& nI,
 	 int dirn,
 	 Domain& theDom,
 	 OPS_Stream* theDataOutputHandler,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 bool timeFlag,
-	 double dT,
-	 double rTolDt)
+	 double dT)
 	 :Recorder(RECORDER_TAGS_DriftRecorder),
 	 ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), data(0),
 	 theDomain(&theDom), theOutputHandler(theDataOutputHandler),
 	 initializationDone(false), numNodes(0), echoTimeFlag(timeFlag), deltaT(dT),
-	 relDeltaTTol(rTolDt)
-#ifdef _CSS
-	 , procDataMethod(procMethod), procGrpNum(procGrpN)
-#endif // _CSS
+	 procDataMethod(procMethod), procGrpNum(procGrpN)
 {
 	 ndI = new ID(nI);
 	 ndJ = new ID(nJ);
@@ -294,6 +284,13 @@ DriftRecorder::sendSelf(int commitTag, Channel& theChannel)
 		  return -1;
 	 }
 
+	 Vector dt(1);
+	 dt(0) = deltaT;
+	 if (theChannel.sendVector(0, commitTag, dt) < 0) {
+		  opserr << "DriftRecorder::sendSelf() - failed to send dt\n";
+		  return -1;
+	 }
+
 	 if (ndI != 0)
 		  if (theChannel.sendID(0, commitTag, *ndI) < 0) {
 				opserr << "DriftRecorder::sendSelf() - failed to send dof id's\n";
@@ -373,14 +370,13 @@ DriftRecorder::recvSelf(int commitTag, Channel& theChannel,
 
 	 this->setTag(idData(6));
 
-	 static Vector dData(2);
+	 static Vector dData(1);
 	 if (theChannel.recvVector(0, commitTag, dData) < 0) {
-		  opserr << "ElementRecorder::sendSelf() - failed to send dData\n";
+		  opserr << "DriftRecorder::recieveSelf() - failed to recieve deltaT\n";
 		  return -1;
 	 }
 	 deltaT = dData(0);
 	 nextTimeStampToRecord = dData(1);
-	 relDeltaTTol = dData(2);
 
 	 if (theOutputHandler != 0)
 		  delete theOutputHandler;

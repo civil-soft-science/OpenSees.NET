@@ -180,7 +180,7 @@ ElementRecorder::record(int commitTag, double timeStamp)
 	 }
 
 	 int result = 0;
-	 if (deltaT == 0.0 || timeStamp >= nextTimeStampToRecord) {
+	 if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
 
 		  if (deltaT != 0.0)
 				nextTimeStampToRecord = timeStamp + deltaT;

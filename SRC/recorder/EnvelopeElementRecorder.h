@@ -51,10 +51,7 @@ class EnvelopeElementRecorder: public Recorder
 			    int argc,
 			    Domain &theDomain, 
 			    OPS_Stream *theOutputHandler,
-#ifdef _CSS
           int procMethod, int procGrpNum,
-#endif // _CSS
-			    double deltaT,
 			    bool echoTimeFlag,
 			    const ID *dof); 
 
@@ -96,10 +93,6 @@ class EnvelopeElementRecorder: public Recorder
 
     Domain *theDomain;
     OPS_Stream *theHandler;
-
-    double deltaT;
-    double relDeltaTTol;
-    double nextTimeStampToRecord;
 
     Matrix *data;
     Vector *currentData;

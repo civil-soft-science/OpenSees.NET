@@ -55,9 +55,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(int ni,
 	 int dirn,
 	 Domain& theDom,
 	 OPS_Stream* theCurrentDataOutputHandler,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 bool timeFlag)
 	 :Recorder(RECORDER_TAGS_EnvelopeDriftRecorder),
 	 ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), currentData(0),
@@ -83,9 +81,7 @@ EnvelopeDriftRecorder::EnvelopeDriftRecorder(const ID& nI,
 	 int dirn,
 	 Domain& theDom,
 	 OPS_Stream* theDataOutputHandler,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 bool timeFlag)
 	 :Recorder(RECORDER_TAGS_EnvelopeDriftRecorder),
 	 ndI(0), ndJ(0), theNodes(0), dof(df), perpDirn(dirn), oneOverL(0), currentData(0),

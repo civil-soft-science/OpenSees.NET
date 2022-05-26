@@ -71,10 +71,11 @@ class Recorder: public MovableObject, public TaggedObject
 #endif // _CSS
 
   protected:
-    
+      static const double relDeltaTTol;
   private:	
     static int lastRecorderTag;
 };
+const double Recorder::relDeltaTTol = 1e-5;
 
 
 #endif

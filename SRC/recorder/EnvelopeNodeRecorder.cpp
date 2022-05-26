@@ -59,7 +59,6 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder()
 	 theDofs(0), theNodalTags(0), theNodes(0),
 	 currentData(0), data(0),
 	 theDomain(0), theHandler(0),
-	 deltaT(0.0), nextTimeStampToRecord(0.0),
 	 first(true), initializationDone(false),
 	 numValidNodes(0), addColumnInfo(0), theTimeSeries(0), timeSeriesValues(0)
 {
@@ -71,22 +70,16 @@ EnvelopeNodeRecorder::EnvelopeNodeRecorder(const ID& dofs,
 	 const char* dataToStore,
 	 Domain& theDom,
 	 OPS_Stream* theOutputHandler,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
-	 double dT,
 	 bool echoTime,
 	 TimeSeries** theSeries)
 	 :Recorder(RECORDER_TAGS_EnvelopeNodeRecorder),
 	 theDofs(0), theNodalTags(0), theNodes(0),
 	 currentData(0), data(0),
 	 theDomain(&theDom), theHandler(theOutputHandler),
-	 deltaT(dT), nextTimeStampToRecord(0.0),
 	 first(true), initializationDone(false), numValidNodes(0), echoTimeFlag(echoTime),
 	 addColumnInfo(0), theTimeSeries(theSeries), timeSeriesValues(0)
-#ifdef _CSS
 	 , procDataMethod(procMethod), procGrpNum(procGrpN), Modified(0)
-#endif // _CSS
 {
 	 // verify dof are valid 
 #ifndef _CSS
@@ -326,303 +319,297 @@ EnvelopeNodeRecorder::record(int commitTag, double timeStamp)
 				return -1;
 		  }
 
-	 if (deltaT == 0.0 || timeStamp >= nextTimeStampToRecord) {
+	 double timeSeriesTerm = 0.0;
 
-		  if (deltaT != 0.0)
-				nextTimeStampToRecord = timeStamp + deltaT;
-
-		  double timeSeriesTerm = 0.0;
-
-		  if (theTimeSeries != 0) {
-				for (int i = 0; i < numDOF; i++) {
-					 if (theTimeSeries[i] != 0)
-						  timeSeriesValues[i] = theTimeSeries[i]->getFactor(timeStamp);
-				}
+	 if (theTimeSeries != 0) {
+		  for (int i = 0; i < numDOF; i++) {
+				if (theTimeSeries[i] != 0)
+					 timeSeriesValues[i] = theTimeSeries[i]->getFactor(timeStamp);
 		  }
+	 }
 
-		  //
-		  // if need nodal reactions get the domain to calculate them
-		  // before we iterate over the nodes
-		  //
+	 //
+	 // if need nodal reactions get the domain to calculate them
+	 // before we iterate over the nodes
+	 //
 
-		  if (dataFlag == 7)
-				theDomain->calculateNodalReactions(0);
-		  else if (dataFlag == 8)
-				theDomain->calculateNodalReactions(1);
-		  if (dataFlag == 9)
-				theDomain->calculateNodalReactions(2);
+	 if (dataFlag == 7)
+		  theDomain->calculateNodalReactions(0);
+	 else if (dataFlag == 8)
+		  theDomain->calculateNodalReactions(1);
+	 if (dataFlag == 9)
+		  theDomain->calculateNodalReactions(2);
 
 
 #ifdef _CSS
-		  Modified = 0;
-		  if (procDataMethod != 0)
-		  {
-				int cnt = 0;
-				for (int j = 0; j < numDOF; j++) {
-					 int nProcOuts;
-					 int nVals = numValidNodes;
-					 if (procGrpNum == -1)
-						  if (procDataMethod != 0)
-								nProcOuts = 1;
-						  else
-								nProcOuts = nVals;
-					 else {
-						  nProcOuts = nVals / procGrpNum;
-						  if (nProcOuts * procGrpNum < nVals)
-								nProcOuts++;
-					 }
-					 double* vals = 0, * val, val1 = 0;
-					 vals = new double[nProcOuts];
-					 for (int i = 0; i < nProcOuts; i++)
-						  vals[i] = 0;
-					 int iGrpN = 0;
-					 int nextGrpN = procGrpNum;
-					 val = &vals[iGrpN];
-					 int dof = (*theDofs)(j);
-					 for (int i = 0; i < numValidNodes; i++) {
-						  Node* theNode = theNodes[i];
-						  if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
-								const Vector& theResponse = theNode->getReaction();
-								if (theResponse.Size() > dof) {
-									 val1 = theResponse(dof);
-								}
-								else
-									 val1 = 0.0;
-						  }
-						  else if (dataFlag == 999997) {
-								if (theTimeSeries == 0)
-								{
-									 opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
-								}
-								val1 = theNode->getMotionEnergy(theTimeSeries);
-						  }
-						  else if (dataFlag == 999998)
-								val1 = theNode->getKineticEnergy(theTimeSeries);
-						  else if (dataFlag == 999999)
-								val1 = theNode->getDampEnergy();
-
-						  if (procGrpNum != -1 && i == nextGrpN)
-						  {
-								iGrpN++;
-								nextGrpN += procGrpNum;
-								val = &vals[iGrpN];
-						  }
-						  if (i == 0 && procDataMethod != 1)
-								*val = fabs(val1);
-						  if (procDataMethod == 1)
-								*val += val1;
-						  else if (procDataMethod == 2 && val1 > *val)
-								*val = val1;
-						  else if (procDataMethod == 3 && val1 < *val)
-								*val = val1;
-						  else if (procDataMethod == 4 && fabs(val1) > *val)
-								*val = fabs(val1);
-						  else if (procDataMethod == 5 && fabs(val1) < *val)
-								*val = fabs(val1);
-					 }
-					 for (int i = 0; i < nProcOuts; i++)
-					 {
-						  cnt = i * numDOF + j;
-						  val = &vals[i];
-						  (*currentData)(cnt) = *val;
-					 }
-					 delete[] vals;
+	 Modified = 0;
+	 if (procDataMethod != 0)
+	 {
+		  int cnt = 0;
+		  for (int j = 0; j < numDOF; j++) {
+				int nProcOuts;
+				int nVals = numValidNodes;
+				if (procGrpNum == -1)
+					 if (procDataMethod != 0)
+						  nProcOuts = 1;
+					 else
+						  nProcOuts = nVals;
+				else {
+					 nProcOuts = nVals / procGrpNum;
+					 if (nProcOuts * procGrpNum < nVals)
+						  nProcOuts++;
 				}
-		  }
-		  else
-#endif //_CSS
+				double* vals = 0, * val, val1 = 0;
+				vals = new double[nProcOuts];
+				for (int i = 0; i < nProcOuts; i++)
+					 vals[i] = 0;
+				int iGrpN = 0;
+				int nextGrpN = procGrpNum;
+				val = &vals[iGrpN];
+				int dof = (*theDofs)(j);
 				for (int i = 0; i < numValidNodes; i++) {
-					 int cnt = i * numDOF;
-
-					 if (dataFlag == 10000)
-						  cnt = i;
-
 					 Node* theNode = theNodes[i];
-
-					 if (dataFlag == 0) {
-						  const Vector& response = theNode->getTrialDisp();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-
-								if (theTimeSeries != 0) {
-									 timeSeriesTerm = timeSeriesValues[j];
-								}
-
-								if (response.Size() > dof) {
-									 (*currentData)(cnt) = response(dof) + timeSeriesTerm;
-								}
-								else
-									 (*currentData)(cnt) = 0.0 + timeSeriesTerm;
-
-								cnt++;
-						  }
-
-					 }
-					 else if (dataFlag == 10000) {
-						  const Vector& response = theNode->getTrialDisp();
-						  double sum = 0.0;
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-
-								if (theTimeSeries != 0) {
-									 timeSeriesTerm = timeSeriesValues[j];
-								}
-
-								if (response.Size() > dof) {
-									 sum += (response(dof) + timeSeriesTerm) * (response(dof) + timeSeriesTerm);
-								}
-								else
-									 sum += timeSeriesTerm * timeSeriesTerm;
-						  }
-
-						  (*currentData)(cnt) = sqrt(sum);
-						  cnt++;
-
-					 }
-					 else if (dataFlag == 1) {
-						  const Vector& response = theNode->getTrialVel();
-						  for (int j = 0; j < numDOF; j++) {
-
-								if (theTimeSeries != 0) {
-									 timeSeriesTerm = timeSeriesValues[j];
-								}
-
-								int dof = (*theDofs)(j);
-								if (response.Size() > dof) {
-									 (*currentData)(cnt) = response(dof) + timeSeriesTerm;
-								}
-								else
-									 (*currentData)(cnt) = 0.0 + timeSeriesTerm;
-
-								cnt++;
-						  }
-					 }
-					 else if (dataFlag == 2) {
-						  const Vector& response = theNode->getTrialAccel();
-						  for (int j = 0; j < numDOF; j++) {
-
-								if (theTimeSeries != 0) {
-									 timeSeriesTerm = timeSeriesValues[j];
-								}
-
-								int dof = (*theDofs)(j);
-								if (response.Size() > dof) {
-									 (*currentData)(cnt) = response(dof) + timeSeriesTerm;
-								}
-								else
-									 (*currentData)(cnt) = 0.0 + timeSeriesTerm;
-
-								cnt++;
-						  }
-					 }
-					 else if (dataFlag == 3) {
-						  const Vector& response = theNode->getIncrDisp();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (response.Size() > dof) {
-									 (*currentData)(cnt) = response(dof);
-								}
-								else
-									 (*currentData)(cnt) = 0.0;
-
-								cnt++;
-						  }
-					 }
-					 else if (dataFlag == 4) {
-						  const Vector& response = theNode->getIncrDeltaDisp();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (response.Size() > dof) {
-									 (*currentData)(cnt) = response(dof);
-								}
-								else
-									 (*currentData)(cnt) = 0.0;
-
-								cnt++;
-						  }
-					 }
-					 else if (dataFlag == 5) {
-						  const Vector& theResponse = theNode->getUnbalancedLoad();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (theResponse.Size() > dof) {
-									 (*currentData)(cnt) = theResponse(dof);
-								}
-								else
-									 (*currentData)(cnt) = 0.0;
-
-								cnt++;
-						  }
-
-					 }
-					 else if (dataFlag == 6) {
-						  const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (theResponse.Size() > dof) {
-									 (*currentData)(cnt) = theResponse(dof);
-								}
-								else
-									 (*currentData)(cnt) = 0.0;
-
-								cnt++;
-						  }
-
-					 }
-					 else if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
+					 if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
 						  const Vector& theResponse = theNode->getReaction();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (theResponse.Size() > dof) {
-									 (*currentData)(cnt) = theResponse(dof);
-								}
-								else
-									 (*currentData)(cnt) = 0.0;
-
-								cnt++;
+						  if (theResponse.Size() > dof) {
+								val1 = theResponse(dof);
 						  }
-
+						  else
+								val1 = 0.0;
 					 }
-#ifdef _CSS
 					 else if (dataFlag == 999997) {
 						  if (theTimeSeries == 0)
 						  {
 								opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
 						  }
-						  (*currentData)(cnt++) = theNode->getMotionEnergy(theTimeSeries);
+						  val1 = theNode->getMotionEnergy(theTimeSeries);
 					 }
 					 else if (dataFlag == 999998)
-						  (*currentData)(cnt++) = theNode->getKineticEnergy(theTimeSeries);
+						  val1 = theNode->getKineticEnergy(theTimeSeries);
 					 else if (dataFlag == 999999)
-						  (*currentData)(cnt++) = theNode->getDampEnergy();
-#endif // _CSS
-					 else if (dataFlag > 10) {
-						  int mode = dataFlag - 10;
-						  int column = mode - 1;
-						  const Matrix* theEigenvectors = theNode->getEigenvectors();
-						  if (theEigenvectors == 0)
-								opserr << "EnvelopeNodeRecorder::record: zero eigen vector faced\n";
-						  else if (theEigenvectors->noCols() > column) {
-								int noRows = theEigenvectors->noRows();
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (noRows > dof) {
-										  (*currentData)(cnt) = (*theEigenvectors)(dof, column);
-									 }
-									 else
-										  (*currentData)(cnt) = 0.0;
-									 cnt++;
-								}
+						  val1 = theNode->getDampEnergy();
+
+					 if (procGrpNum != -1 && i == nextGrpN)
+					 {
+						  iGrpN++;
+						  nextGrpN += procGrpNum;
+						  val = &vals[iGrpN];
+					 }
+					 if (i == 0 && procDataMethod != 1)
+						  *val = fabs(val1);
+					 if (procDataMethod == 1)
+						  *val += val1;
+					 else if (procDataMethod == 2 && val1 > *val)
+						  *val = val1;
+					 else if (procDataMethod == 3 && val1 < *val)
+						  *val = val1;
+					 else if (procDataMethod == 4 && fabs(val1) > *val)
+						  *val = fabs(val1);
+					 else if (procDataMethod == 5 && fabs(val1) < *val)
+						  *val = fabs(val1);
+				}
+				for (int i = 0; i < nProcOuts; i++)
+				{
+					 cnt = i * numDOF + j;
+					 val = &vals[i];
+					 (*currentData)(cnt) = *val;
+				}
+				delete[] vals;
+		  }
+	 }
+	 else
+#endif //_CSS
+		  for (int i = 0; i < numValidNodes; i++) {
+				int cnt = i * numDOF;
+
+				if (dataFlag == 10000)
+					 cnt = i;
+
+				Node* theNode = theNodes[i];
+
+				if (dataFlag == 0) {
+					 const Vector& response = theNode->getTrialDisp();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+
+						  if (theTimeSeries != 0) {
+								timeSeriesTerm = timeSeriesValues[j];
 						  }
-						  else {
-								for (int j = 0; j < numDOF; j++) {
-									 (*currentData)(cnt) = 0.0;
-									 cnt++;
+
+						  if (response.Size() > dof) {
+								(*currentData)(cnt) = response(dof) + timeSeriesTerm;
+						  }
+						  else
+								(*currentData)(cnt) = 0.0 + timeSeriesTerm;
+
+						  cnt++;
+					 }
+
+				}
+				else if (dataFlag == 10000) {
+					 const Vector& response = theNode->getTrialDisp();
+					 double sum = 0.0;
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+
+						  if (theTimeSeries != 0) {
+								timeSeriesTerm = timeSeriesValues[j];
+						  }
+
+						  if (response.Size() > dof) {
+								sum += (response(dof) + timeSeriesTerm) * (response(dof) + timeSeriesTerm);
+						  }
+						  else
+								sum += timeSeriesTerm * timeSeriesTerm;
+					 }
+
+					 (*currentData)(cnt) = sqrt(sum);
+					 cnt++;
+
+				}
+				else if (dataFlag == 1) {
+					 const Vector& response = theNode->getTrialVel();
+					 for (int j = 0; j < numDOF; j++) {
+
+						  if (theTimeSeries != 0) {
+								timeSeriesTerm = timeSeriesValues[j];
+						  }
+
+						  int dof = (*theDofs)(j);
+						  if (response.Size() > dof) {
+								(*currentData)(cnt) = response(dof) + timeSeriesTerm;
+						  }
+						  else
+								(*currentData)(cnt) = 0.0 + timeSeriesTerm;
+
+						  cnt++;
+					 }
+				}
+				else if (dataFlag == 2) {
+					 const Vector& response = theNode->getTrialAccel();
+					 for (int j = 0; j < numDOF; j++) {
+
+						  if (theTimeSeries != 0) {
+								timeSeriesTerm = timeSeriesValues[j];
+						  }
+
+						  int dof = (*theDofs)(j);
+						  if (response.Size() > dof) {
+								(*currentData)(cnt) = response(dof) + timeSeriesTerm;
+						  }
+						  else
+								(*currentData)(cnt) = 0.0 + timeSeriesTerm;
+
+						  cnt++;
+					 }
+				}
+				else if (dataFlag == 3) {
+					 const Vector& response = theNode->getIncrDisp();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+						  if (response.Size() > dof) {
+								(*currentData)(cnt) = response(dof);
+						  }
+						  else
+								(*currentData)(cnt) = 0.0;
+
+						  cnt++;
+					 }
+				}
+				else if (dataFlag == 4) {
+					 const Vector& response = theNode->getIncrDeltaDisp();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+						  if (response.Size() > dof) {
+								(*currentData)(cnt) = response(dof);
+						  }
+						  else
+								(*currentData)(cnt) = 0.0;
+
+						  cnt++;
+					 }
+				}
+				else if (dataFlag == 5) {
+					 const Vector& theResponse = theNode->getUnbalancedLoad();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+						  if (theResponse.Size() > dof) {
+								(*currentData)(cnt) = theResponse(dof);
+						  }
+						  else
+								(*currentData)(cnt) = 0.0;
+
+						  cnt++;
+					 }
+
+				}
+				else if (dataFlag == 6) {
+					 const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+						  if (theResponse.Size() > dof) {
+								(*currentData)(cnt) = theResponse(dof);
+						  }
+						  else
+								(*currentData)(cnt) = 0.0;
+
+						  cnt++;
+					 }
+
+				}
+				else if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
+					 const Vector& theResponse = theNode->getReaction();
+					 for (int j = 0; j < numDOF; j++) {
+						  int dof = (*theDofs)(j);
+						  if (theResponse.Size() > dof) {
+								(*currentData)(cnt) = theResponse(dof);
+						  }
+						  else
+								(*currentData)(cnt) = 0.0;
+
+						  cnt++;
+					 }
+
+				}
+#ifdef _CSS
+				else if (dataFlag == 999997) {
+					 if (theTimeSeries == 0)
+					 {
+						  opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
+					 }
+					 (*currentData)(cnt++) = theNode->getMotionEnergy(theTimeSeries);
+				}
+				else if (dataFlag == 999998)
+					 (*currentData)(cnt++) = theNode->getKineticEnergy(theTimeSeries);
+				else if (dataFlag == 999999)
+					 (*currentData)(cnt++) = theNode->getDampEnergy();
+#endif // _CSS
+				else if (dataFlag > 10) {
+					 int mode = dataFlag - 10;
+					 int column = mode - 1;
+					 const Matrix* theEigenvectors = theNode->getEigenvectors();
+					 if (theEigenvectors == 0)
+						  opserr << "EnvelopeNodeRecorder::record: zero eigen vector faced\n";
+					 else if (theEigenvectors->noCols() > column) {
+						  int noRows = theEigenvectors->noRows();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (noRows > dof) {
+									 (*currentData)(cnt) = (*theEigenvectors)(dof, column);
 								}
+								else
+									 (*currentData)(cnt) = 0.0;
+								cnt++;
+						  }
+					 }
+					 else {
+						  for (int j = 0; j < numDOF; j++) {
+								(*currentData)(cnt) = 0.0;
+								cnt++;
 						  }
 					 }
 				}
-	 }
+		  }
 
 	 // check if currentData modifies the saved data
 	 int sizeData = currentData->Size();
@@ -804,14 +791,6 @@ EnvelopeNodeRecorder::sendSelf(int commitTag, Channel& theChannel)
 				return -1;
 		  }
 
-	 static Vector data(2);
-	 data(0) = deltaT;
-	 data(1) = nextTimeStampToRecord;
-	 if (theChannel.sendVector(0, commitTag, data) < 0) {
-		  opserr << "EnvelopeNodeRecorder::sendSelf() - failed to send data\n";
-		  return -1;
-	 }
-
 	 if (theHandler != 0)
 
 		  if (theHandler->sendSelf(commitTag, theChannel) < 0) {
@@ -921,14 +900,6 @@ EnvelopeNodeRecorder::recvSelf(int commitTag, Channel& theChannel,
 		  }
 
 
-	 static Vector data(2);
-	 if (theChannel.recvVector(0, commitTag, data) < 0) {
-		  opserr << "EnvelopeNodeRecorder::sendSelf() - failed to receive data\n";
-		  return -1;
-	 }
-	 deltaT = data(0);
-	 nextTimeStampToRecord = data(1);
-
 	 if (theHandler != 0)
 		  delete theHandler;
 
@@ -998,7 +969,7 @@ EnvelopeNodeRecorder::initialize(void)
 		  if (theNodes == 0) {
 				opserr << "EnvelopeNodeRecorder::domainChanged - out of memory\n";
 				return -1;
-		  }
+}
 
 		  for (int i = 0; i < numNode; i++) {
 				int nodeTag = (*theNodalTags)(i);
