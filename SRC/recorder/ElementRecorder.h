@@ -62,7 +62,6 @@ class ElementRecorder: public Recorder
           int procMethod, int procGrpNum,
 #endif // _CSS
 		    double deltaT,
-		    double relDeltaTTol,
 		    const ID *dof);
 
     ~ElementRecorder();
@@ -113,7 +112,6 @@ class ElementRecorder: public Recorder
     bool echoTimeFlag;             // flag indicating if pseudo time also printed
 
     double deltaT;
-    double relDeltaTTol;
     double nextTimeStampToRecord;
 
     Vector *data;

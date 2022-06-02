@@ -54,7 +54,7 @@ NodeRecorder::NodeRecorder()
 	 theDofs(0), theNodalTags(0), theNodes(0), response(0),
 	 theDomain(0), theOutputHandler(0),
 	 echoTimeFlag(true), dataFlag(0),
-	 deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0),
+	 deltaT(0.0), nextTimeStampToRecord(0.0),
 	 gradIndex(-1),
 	 initializationDone(false), numValidNodes(0), addColumnInfo(0), theTimeSeries(0), timeSeriesValues(0)
 {
@@ -338,454 +338,455 @@ NodeRecorder::record(int commitTag, double timeStamp)
 #ifndef _CSS
 	 int numDOF = theDofs->Size();
 #endif // !_CSS
+	 bool record = (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol);
+	 if (!record)
+		  return 0;
 
-	 if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
+	 if (deltaT != 0.0)
+		  nextTimeStampToRecord = timeStamp + deltaT;
 
-		  if (deltaT != 0.0)
-				nextTimeStampToRecord = timeStamp + deltaT;
+	 //
+	 // if need nodal reactions get the domain to calculate them
+	 // before we iterate over the nodes
+	 //
 
-		  //
-		  // if need nodal reactions get the domain to calculate them
-		  // before we iterate over the nodes
-		  //
+	 if (dataFlag == 7)
+		  theDomain->calculateNodalReactions(0);
+	 else if (dataFlag == 8)
+		  theDomain->calculateNodalReactions(1);
+	 if (dataFlag == 9)
+		  theDomain->calculateNodalReactions(2);
 
-		  if (dataFlag == 7)
-				theDomain->calculateNodalReactions(0);
-		  else if (dataFlag == 8)
-				theDomain->calculateNodalReactions(1);
-		  if (dataFlag == 9)
-				theDomain->calculateNodalReactions(2);
+	 //
+	 // add time information if requested
+	 //
 
-		  //
-		  // add time information if requested
-		  //
+	 int timeOffset = 0;
+	 if (echoTimeFlag == true) {
+		  timeOffset = 1;
+		  response(0) = timeStamp;
+	 }
 
-		  int timeOffset = 0;
-		  if (echoTimeFlag == true) {
-				timeOffset = 1;
-				response(0) = timeStamp;
+	 double timeSeriesTerm = 0.0;
+
+	 if (theTimeSeries != 0) {
+		  for (int i = 0; i < numDOF; i++) {
+
+				if (theTimeSeries[i] != 0)
+					 timeSeriesValues[i] = theTimeSeries[i]->getFactor(timeStamp);
 		  }
 
-		  double timeSeriesTerm = 0.0;
+	 }
 
-		  if (theTimeSeries != 0) {
-				for (int i = 0; i < numDOF; i++) {
+	 //
+	 // now we go get the responses from the nodes & place them in disp vector
+	 //
 
-					 if (theTimeSeries[i] != 0)
-						  timeSeriesValues[i] = theTimeSeries[i]->getFactor(timeStamp);
-				}
-
-		  }
-
-		  //
-		  // now we go get the responses from the nodes & place them in disp vector
-		  //
-
-		  if (dataFlag != 10) {
+	 if (dataFlag != 10) {
 #ifdef _CSS
-				if (procDataMethod != 0)
-				{
-					 int cnt = timeOffset;
-					 for (int j = 0; j < numDOF; j++) {
-						  int nProcOuts;
-						  int nVals = numValidNodes;
-						  if (procGrpNum == -1)
-								if (procDataMethod != 0)
-									 nProcOuts = 1;
-								else
-									 nProcOuts = nVals;
-						  else {
-								nProcOuts = nVals / procGrpNum;
-								if (nProcOuts * procGrpNum < nVals)
-									 nProcOuts++;
-						  }
-						  double* vals = 0, * val, val1 = 0;
-						  vals = new double[nProcOuts];
-						  for (int i = 0; i < nProcOuts; i++)
-								vals[i] = 0;
-						  int iGrpN = 0;
-						  int nextGrpN = procGrpNum;
-						  val = &vals[iGrpN];
-						  int dof = 0;
-						  if (theDofs != 0)
-								dof = (*theDofs)(j);
-						  for (int i = 0; i < numValidNodes; i++) {
-								Node* theNode = theNodes[i];
-								if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
-									 const Vector& theResponse = theNode->getReaction();
-									 if (theResponse.Size() > dof) {
-										  val1 = theResponse(dof);
-									 }
-									 else
-										  val1 = 0.0;
-								}
-								else if (dataFlag == 999997) {
-									 if (theTimeSeries == 0)
-									 {
-										  opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
-									 }
-									 val1 = theNode->getMotionEnergy(theTimeSeries);
-								}
-								else if (dataFlag == 999998)
-									 val1 = theNode->getKineticEnergy(theTimeSeries);
-								else if (dataFlag == 999999)
-									 val1 = theNode->getDampEnergy();
-
-								if (procGrpNum != -1 && i == nextGrpN)
-								{
-									 iGrpN++;
-									 nextGrpN += procGrpNum;
-									 val = &vals[iGrpN];
-								}
-								if (i == 0 && procDataMethod != 1)
-									 *val = fabs(val1);
-								if (procDataMethod == 1)
-									 *val += val1;
-								else if (procDataMethod == 2 && val1 > *val)
-									 *val = val1;
-								else if (procDataMethod == 3 && val1 < *val)
-									 *val = val1;
-								else if (procDataMethod == 4 && fabs(val1) > *val)
-									 *val = fabs(val1);
-								else if (procDataMethod == 5 && fabs(val1) < *val)
-									 *val = fabs(val1);
-						  }
-						  for (int i = 0; i < nProcOuts; i++)
-						  {
-								cnt = i * numDOF + j + timeOffset;
-								val = &vals[i];
-								response(cnt) = *val;
-						  }
-						  delete[] vals;
+		  if (procDataMethod != 0)
+		  {
+				int cnt = timeOffset;
+				for (int j = 0; j < numDOF; j++) {
+					 int nProcOuts;
+					 int nVals = numValidNodes;
+					 if (procGrpNum == -1)
+						  if (procDataMethod != 0)
+								nProcOuts = 1;
+						  else
+								nProcOuts = nVals;
+					 else {
+						  nProcOuts = nVals / procGrpNum;
+						  if (nProcOuts * procGrpNum < nVals)
+								nProcOuts++;
 					 }
-				}
-				else
-#endif //_CSS
+					 double* vals = 0, * val, val1 = 0;
+					 vals = new double[nProcOuts];
+					 for (int i = 0; i < nProcOuts; i++)
+						  vals[i] = 0;
+					 int iGrpN = 0;
+					 int nextGrpN = procGrpNum;
+					 val = &vals[iGrpN];
+					 int dof = 0;
+					 if (theDofs != 0)
+						  dof = (*theDofs)(j);
 					 for (int i = 0; i < numValidNodes; i++) {
-
-						  int cnt = i * numDOF + timeOffset;
-						  if (dataFlag == 10000 || dataFlag == 10002)
-								cnt = i + timeOffset;
-
 						  Node* theNode = theNodes[i];
-						  if (dataFlag == 0) {
-
-								// AddingSensitivity:BEGIN ///////////////////////////////////
-								if (gradIndex < 0) {
-									 const Vector& theResponse = theNode->getTrialDisp();
-									 for (int j = 0; j < numDOF; j++) {
-
-										  if (theTimeSeries != 0) {
-												timeSeriesTerm = timeSeriesValues[j];
-										  }
-
-										  int dof = (*theDofs)(j);
-										  if (theResponse.Size() > dof) {
-												response(cnt) = theResponse(dof) + timeSeriesTerm;
-										  }
-										  else {
-												response(cnt) = 0.0 + timeSeriesTerm;
-										  }
-										  cnt++;
-									 }
-								}
-								else {
-									 for (int j = 0; j < numDOF; j++) {
-										  int dof = (*theDofs)(j);
-
-										  response(cnt) = theNode->getDispSensitivity(dof + 1, gradIndex);
-										  cnt++;
-									 }
-								}
-
-								// AddingSensitivity:END /////////////////////////////////////
-						  }
-						  else if (dataFlag == 1) {
-
-								const Vector& theResponse = theNode->getTrialVel();
-								for (int j = 0; j < numDOF; j++) {
-
-									 if (theTimeSeries != 0) {
-										  timeSeriesTerm = timeSeriesValues[j];
-									 }
-
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof) + timeSeriesTerm;
-									 }
-									 else
-										  response(cnt) = 0.0 + timeSeriesTerm;
-
-									 cnt++;
-								}
-
-
-						  }
-						  else if (dataFlag == 10000) {
-								const Vector& theResponse = theNode->getTrialDisp();
-								double sum = 0.0;
-
-								for (int j = 0; j < numDOF; j++) {
-
-									 if (theTimeSeries != 0) {
-										  timeSeriesTerm = timeSeriesValues[j];
-									 }
-
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  sum += (theResponse(dof) + timeSeriesTerm) * (theResponse(dof) + timeSeriesTerm);
-									 }
-									 else
-										  sum += timeSeriesTerm * timeSeriesTerm;
-								}
-
-								response(cnt) = sqrt(sum);
-								cnt++;
-
-						  }
-						  else if (dataFlag == 10002) {
-
-								if (theTimeSeries != 0) {
-									 timeSeriesTerm = timeSeriesValues[0];
-								}
-
-								// get node pressure
-								double pressure = timeSeriesTerm;
-								Pressure_Constraint* pc = theDomain->getPressure_Constraint(theNode->getTag());
-								if (pc != 0) {
-									 pressure += pc->getPressure();
-								}
-
-								response(cnt) = pressure;
-								cnt++;
-
-						  }
-						  else if (dataFlag == 2) {
-
-								const Vector& theResponse = theNode->getTrialAccel();
-								for (int j = 0; j < numDOF; j++) {
-
-									 if (theTimeSeries != 0) {
-										  timeSeriesTerm = timeSeriesValues[j];
-									 }
-
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof) + timeSeriesTerm;
-									 }
-									 else
-										  response(cnt) = 0.0 + timeSeriesTerm;
-
-									 cnt++;
-								}
-
-						  }
-						  else if (dataFlag == 3) {
-								const Vector& theResponse = theNode->getIncrDisp();
-								for (int j = 0; j < numDOF; j++) {
-
-									 if (theTimeSeries != 0) {
-										  timeSeriesTerm = timeSeriesValues[j];
-									 }
-
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-
-									 cnt++;
-								}
-						  }
-						  else if (dataFlag == 4) {
-								const Vector& theResponse = theNode->getIncrDeltaDisp();
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-
-									 cnt++;
-								}
-						  }
-						  else if (dataFlag == 5) {
-								const Vector& theResponse = theNode->getUnbalancedLoad();
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-
-									 cnt++;
-								}
-
-						  }
-						  else if (dataFlag == 6) {
-								const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-
-									 cnt++;
-								}
-
-						  }
-						  else if (dataFlag == 10001) {
-								const Vector* theResponse = theNode->getResponse(RayleighForces);
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (theResponse->Size() > dof) {
-										  response(cnt) = (*theResponse)(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-									 cnt++;
-								}
-
-						  }
-						  else if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
+						  if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
 								const Vector& theResponse = theNode->getReaction();
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 if (theResponse.Size() > dof) {
-										  response(cnt) = theResponse(dof);
-									 }
-									 else
-										  response(cnt) = 0.0;
-									 cnt++;
+								if (theResponse.Size() > dof) {
+									 val1 = theResponse(dof);
 								}
-
+								else
+									 val1 = 0.0;
 						  }
-						  else if (10 <= dataFlag && dataFlag < 1000) {
-								int mode = dataFlag - 10;
-								int column = mode - 1;
-
-								const Matrix* theEigenvectors = theNode->getEigenvectors();
-								if (theEigenvectors == 0)
-									 opserr << "NodeRecorder::record: zero eigen vector faced\n";
-								else if (theEigenvectors->noCols() > column) {
-									 int noRows = theEigenvectors->noRows();
-									 for (int j = 0; j < numDOF; j++) {
-										  int dof = (*theDofs)(j);
-										  if (noRows > dof) {
-												response(cnt) = (*theEigenvectors)(dof, column);
-										  }
-										  else
-												response(cnt) = 0.0;
-										  cnt++;
-									 }
-								}
-
-						  }
-						  else if (dataFlag >= 1000 && dataFlag < 2000) {
-								int grad = dataFlag - 1000;
-
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
-									 // his code!!
-									 response(cnt) = theNode->getDispSensitivity(dof, grad - 1);  // Quan May 2009, the one above is not my comment! 
-									 cnt++;
-								}
-
-						  }
-						  else if (dataFlag >= 2000 && dataFlag < 3000) {
-								int grad = dataFlag - 2000;
-
-								for (int j = 0; j < numDOF; j++) {
-									 int dof = (*theDofs)(j);
-									 dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
-									 // his code!!
-									 response(cnt) = theNode->getVelSensitivity(dof, grad - 1); // Quan May 2009
-									 cnt++;
-								}
-
-
-						  }
-#ifdef _CSS
 						  else if (dataFlag == 999997) {
 								if (theTimeSeries == 0)
 								{
 									 opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
 								}
-								response(cnt++) = theNode->getMotionEnergy(theTimeSeries);
+								val1 = theNode->getMotionEnergy(theTimeSeries);
 						  }
 						  else if (dataFlag == 999998)
-								response(cnt++) = theNode->getKineticEnergy(theTimeSeries);
+								val1 = theNode->getKineticEnergy(theTimeSeries);
 						  else if (dataFlag == 999999)
-								response(cnt++) = theNode->getDampEnergy();
-#endif // _CSS
+								val1 = theNode->getDampEnergy();
 
-						  else if (dataFlag >= 3000) {
-								int grad = dataFlag - 3000;
+						  if (procGrpNum != -1 && i == nextGrpN)
+						  {
+								iGrpN++;
+								nextGrpN += procGrpNum;
+								val = &vals[iGrpN];
+						  }
+						  if (i == 0 && procDataMethod != 1)
+								*val = fabs(val1);
+						  if (procDataMethod == 1)
+								*val += val1;
+						  else if (procDataMethod == 2 && val1 > *val)
+								*val = val1;
+						  else if (procDataMethod == 3 && val1 < *val)
+								*val = val1;
+						  else if (procDataMethod == 4 && fabs(val1) > *val)
+								*val = fabs(val1);
+						  else if (procDataMethod == 5 && fabs(val1) < *val)
+								*val = fabs(val1);
+					 }
+					 for (int i = 0; i < nProcOuts; i++)
+					 {
+						  cnt = i * numDOF + j + timeOffset;
+						  val = &vals[i];
+						  response(cnt) = *val;
+					 }
+					 delete[] vals;
+				}
+		  }
+		  else
+#endif //_CSS
+				for (int i = 0; i < numValidNodes; i++) {
 
+					 int cnt = i * numDOF + timeOffset;
+					 if (dataFlag == 10000 || dataFlag == 10002)
+						  cnt = i + timeOffset;
+
+					 Node* theNode = theNodes[i];
+					 if (dataFlag == 0) {
+
+						  // AddingSensitivity:BEGIN ///////////////////////////////////
+						  if (gradIndex < 0) {
+								const Vector& theResponse = theNode->getTrialDisp();
+								for (int j = 0; j < numDOF; j++) {
+
+									 if (theTimeSeries != 0) {
+										  timeSeriesTerm = timeSeriesValues[j];
+									 }
+
+									 int dof = (*theDofs)(j);
+									 if (theResponse.Size() > dof) {
+										  response(cnt) = theResponse(dof) + timeSeriesTerm;
+									 }
+									 else {
+										  response(cnt) = 0.0 + timeSeriesTerm;
+									 }
+									 cnt++;
+								}
+						  }
+						  else {
 								for (int j = 0; j < numDOF; j++) {
 									 int dof = (*theDofs)(j);
-									 dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
-									 // his code!!
-									 response(cnt) = theNode->getAccSensitivity(dof, grad - 1);// Quan May 2009
+
+									 response(cnt) = theNode->getDispSensitivity(dof + 1, gradIndex);
 									 cnt++;
 								}
 						  }
 
-						  else {
-								// unknown response
-								for (int j = 0; j < numDOF; j++) {
-									 response(cnt) = 0.0;
+						  // AddingSensitivity:END /////////////////////////////////////
+					 }
+					 else if (dataFlag == 1) {
+
+						  const Vector& theResponse = theNode->getTrialVel();
+						  for (int j = 0; j < numDOF; j++) {
+
+								if (theTimeSeries != 0) {
+									 timeSeriesTerm = timeSeriesValues[j];
 								}
+
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof) + timeSeriesTerm;
+								}
+								else
+									 response(cnt) = 0.0 + timeSeriesTerm;
+
+								cnt++;
+						  }
+
+
+					 }
+					 else if (dataFlag == 10000) {
+						  const Vector& theResponse = theNode->getTrialDisp();
+						  double sum = 0.0;
+
+						  for (int j = 0; j < numDOF; j++) {
+
+								if (theTimeSeries != 0) {
+									 timeSeriesTerm = timeSeriesValues[j];
+								}
+
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 sum += (theResponse(dof) + timeSeriesTerm) * (theResponse(dof) + timeSeriesTerm);
+								}
+								else
+									 sum += timeSeriesTerm * timeSeriesTerm;
+						  }
+
+						  response(cnt) = sqrt(sum);
+						  cnt++;
+
+					 }
+					 else if (dataFlag == 10002) {
+
+						  if (theTimeSeries != 0) {
+								timeSeriesTerm = timeSeriesValues[0];
+						  }
+
+						  // get node pressure
+						  double pressure = timeSeriesTerm;
+						  Pressure_Constraint* pc = theDomain->getPressure_Constraint(theNode->getTag());
+						  if (pc != 0) {
+								pressure += pc->getPressure();
+						  }
+
+						  response(cnt) = pressure;
+						  cnt++;
+
+					 }
+					 else if (dataFlag == 2) {
+
+						  const Vector& theResponse = theNode->getTrialAccel();
+						  for (int j = 0; j < numDOF; j++) {
+
+								if (theTimeSeries != 0) {
+									 timeSeriesTerm = timeSeriesValues[j];
+								}
+
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof) + timeSeriesTerm;
+								}
+								else
+									 response(cnt) = 0.0 + timeSeriesTerm;
+
+								cnt++;
+						  }
+
+					 }
+					 else if (dataFlag == 3) {
+						  const Vector& theResponse = theNode->getIncrDisp();
+						  for (int j = 0; j < numDOF; j++) {
+
+								if (theTimeSeries != 0) {
+									 timeSeriesTerm = timeSeriesValues[j];
+								}
+
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof);
+								}
+								else
+									 response(cnt) = 0.0;
+
+								cnt++;
 						  }
 					 }
+					 else if (dataFlag == 4) {
+						  const Vector& theResponse = theNode->getIncrDeltaDisp();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof);
+								}
+								else
+									 response(cnt) = 0.0;
 
-				// insert the data into the database
-				if (theOutputHandler != 0)
-					 theOutputHandler->write(response);
+								cnt++;
+						  }
+					 }
+					 else if (dataFlag == 5) {
+						  const Vector& theResponse = theNode->getUnbalancedLoad();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof);
+								}
+								else
+									 response(cnt) = 0.0;
 
-		  }
-		  else { // output all eigenvalues
+								cnt++;
+						  }
 
-				Node* theNode = theNodes[0];
-				int numValidModes = 0;
-				const Matrix* theEigenvectors = theNode->getEigenvectors();
-				if (theEigenvectors == 0)
-					 opserr << "NodeRecorder::record: zero eigen vector faced\n";
-				else
-					 numValidModes = theEigenvectors->noCols();
+					 }
+					 else if (dataFlag == 6) {
+						  const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof);
+								}
+								else
+									 response(cnt) = 0.0;
 
-				for (int mode = 0; mode < numValidModes; mode++) {
+								cnt++;
+						  }
 
-					 for (int i = 0; i < numValidNodes; i++) {
-						  int cnt = i * numDOF + timeOffset;
-						  theNode = theNodes[i];
-						  int column = mode;
+					 }
+					 else if (dataFlag == 10001) {
+						  const Vector* theResponse = theNode->getResponse(RayleighForces);
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (theResponse->Size() > dof) {
+									 response(cnt) = (*theResponse)(dof);
+								}
+								else
+									 response(cnt) = 0.0;
+								cnt++;
+						  }
 
-						  const Matrix& theEigenvectors = *theNode->getEigenvectors();
-						  if (theEigenvectors.noCols() > column) {
-								int noRows = theEigenvectors.noRows();
+					 }
+					 else if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
+						  const Vector& theResponse = theNode->getReaction();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (theResponse.Size() > dof) {
+									 response(cnt) = theResponse(dof);
+								}
+								else
+									 response(cnt) = 0.0;
+								cnt++;
+						  }
+
+					 }
+					 else if (10 <= dataFlag && dataFlag < 1000) {
+						  int mode = dataFlag - 10;
+						  int column = mode - 1;
+
+						  const Matrix* theEigenvectors = theNode->getEigenvectors();
+						  if (theEigenvectors == 0)
+								opserr << "NodeRecorder::record: zero eigen vector faced\n";
+						  else if (theEigenvectors->noCols() > column) {
+								int noRows = theEigenvectors->noRows();
 								for (int j = 0; j < numDOF; j++) {
 									 int dof = (*theDofs)(j);
 									 if (noRows > dof) {
-										  response(cnt) = theEigenvectors(dof, column);
+										  response(cnt) = (*theEigenvectors)(dof, column);
 									 }
 									 else
 										  response(cnt) = 0.0;
 									 cnt++;
 								}
 						  }
+
 					 }
-					 if (theOutputHandler != 0)
-						  theOutputHandler->write(response);
+					 else if (dataFlag >= 1000 && dataFlag < 2000) {
+						  int grad = dataFlag - 1000;
+
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
+								// his code!!
+								response(cnt) = theNode->getDispSensitivity(dof, grad - 1);  // Quan May 2009, the one above is not my comment! 
+								cnt++;
+						  }
+
+					 }
+					 else if (dataFlag >= 2000 && dataFlag < 3000) {
+						  int grad = dataFlag - 2000;
+
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
+								// his code!!
+								response(cnt) = theNode->getVelSensitivity(dof, grad - 1); // Quan May 2009
+								cnt++;
+						  }
+
+
+					 }
+#ifdef _CSS
+					 else if (dataFlag == 999997) {
+						  if (theTimeSeries == 0)
+						  {
+								opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
+						  }
+						  response(cnt++) = theNode->getMotionEnergy(theTimeSeries);
+					 }
+					 else if (dataFlag == 999998)
+						  response(cnt++) = theNode->getKineticEnergy(theTimeSeries);
+					 else if (dataFlag == 999999)
+						  response(cnt++) = theNode->getDampEnergy();
+#endif // _CSS
+
+					 else if (dataFlag >= 3000) {
+						  int grad = dataFlag - 3000;
+
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								dof += 1; // Terje uses 1 through DOF for the dof indexing; the fool then subtracts 1 
+								// his code!!
+								response(cnt) = theNode->getAccSensitivity(dof, grad - 1);// Quan May 2009
+								cnt++;
+						  }
+					 }
+
+					 else {
+						  // unknown response
+						  for (int j = 0; j < numDOF; j++) {
+								response(cnt) = 0.0;
+						  }
+					 }
 				}
+
+		  // insert the data into the database
+		  if (theOutputHandler != 0)
+				theOutputHandler->write(response);
+
+	 }
+	 else { // output all eigenvalues
+
+		  Node* theNode = theNodes[0];
+		  int numValidModes = 0;
+		  const Matrix* theEigenvectors = theNode->getEigenvectors();
+		  if (theEigenvectors == 0)
+				opserr << "NodeRecorder::record: zero eigen vector faced\n";
+		  else
+				numValidModes = theEigenvectors->noCols();
+
+		  for (int mode = 0; mode < numValidModes; mode++) {
+
+				for (int i = 0; i < numValidNodes; i++) {
+					 int cnt = i * numDOF + timeOffset;
+					 theNode = theNodes[i];
+					 int column = mode;
+
+					 const Matrix& theEigenvectors = *theNode->getEigenvectors();
+					 if (theEigenvectors.noCols() > column) {
+						  int noRows = theEigenvectors.noRows();
+						  for (int j = 0; j < numDOF; j++) {
+								int dof = (*theDofs)(j);
+								if (noRows > dof) {
+									 response(cnt) = theEigenvectors(dof, column);
+								}
+								else
+									 response(cnt) = 0.0;
+								cnt++;
+						  }
+					 }
+				}
+				if (theOutputHandler != 0)
+					 theOutputHandler->write(response);
 		  }
 	 }
+
 	 return 0;
 }
 

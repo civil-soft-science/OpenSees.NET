@@ -157,7 +157,6 @@ void* OPS_NodeRecorder(const char* type)
 
 	 bool echoTimeFlag = false;
 	 double dT = 0.0;
-	 double rTolDt = 0.00001;
 	 bool doScientific = false;
 
 	 int precision = 6;
@@ -240,12 +239,7 @@ void* OPS_NodeRecorder(const char* type)
 				}
 		  }
 		  else if (strcmp(option, "-rTolDt") == 0) {
-				if (OPS_GetNumRemainingInputArgs() > 0) {
-					 if (OPS_GetDoubleInput(1, &rTolDt) < 0) {
-						  opserr << "WARNING: failed to read rTolDt\n";
-						  return 0;
-					 }
-				}
+				opserr << "WARNING: " << type << ": rTolDt Option is constantly assumed as 1.e-5 in this version\n";
 		  }
 		  else if (strcmp(option, "-timeSeries") == 0) {
 				int numTimeSeries = 0;
@@ -684,7 +678,7 @@ void* OPS_ElementRecorder(const char* type)
 	 Recorder* recorder = 0;
 	 if (strcmp(type, "Element") == 0)
 		  recorder = new ElementRecorder(&elements, data, nargrem, echoTimeFlag, *domain,
-				theOutputStream, procDataMethod, nProcGrp, dT, rTolDt, &dofs);
+				theOutputStream, procDataMethod, nProcGrp, dT, &dofs);
 	 if (strcmp(type, "EnvelopeElement") == 0)
 		  recorder = new EnvelopeElementRecorder(&elements, data, nargrem, *domain,
 				theOutputStream, procDataMethod, nProcGrp, echoTimeFlag, &dofs);

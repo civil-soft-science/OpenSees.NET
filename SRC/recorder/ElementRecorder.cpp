@@ -64,7 +64,7 @@ ElementRecorder::ElementRecorder()
 	 :Recorder(RECORDER_TAGS_ElementRecorder),
 	 numEle(0), numDOF(0), eleID(0), dof(0), theResponses(0),
 	 theDomain(0), theOutputHandler(0),
-	 echoTimeFlag(true), deltaT(0.0), relDeltaTTol(0.00001), nextTimeStampToRecord(0.0), data(0),
+	 echoTimeFlag(true), deltaT(0.0), nextTimeStampToRecord(0.0), data(0),
 	 initializationDone(false), responseArgs(0), numArgs(0), addColumnInfo(0)
 {
 
@@ -76,16 +76,13 @@ ElementRecorder::ElementRecorder(const ID* ele,
 	 bool echoTime,
 	 Domain& theDom,
 	 OPS_Stream* theOutput,
-#ifdef _CSS
 	 int procMethod, int procGrpN,
-#endif // _CSS
 	 double dT,
-	 double rTolDt,
 	 const ID* theDOFs)
 	 :Recorder(RECORDER_TAGS_ElementRecorder),
 	 numEle(0), numDOF(0), eleID(0), dof(0), theResponses(0),
 	 theDomain(&theDom), theOutputHandler(theOutput),
-	 echoTimeFlag(echoTime), deltaT(dT), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0), data(0),
+	 echoTimeFlag(echoTime), deltaT(dT), nextTimeStampToRecord(0.0), data(0),
 	 initializationDone(false), responseArgs(0), numArgs(0), addColumnInfo(0)
 #ifdef _CSS
 	 , procDataMethod(procMethod), procGrpNum(procGrpN)
@@ -380,10 +377,9 @@ ElementRecorder::sendSelf(int commitTag, Channel& theChannel)
 		  return -1;
 	 }
 
-	 static Vector dData(3);
+	 static Vector dData(2);
 	 dData(0) = deltaT;
 	 dData(1) = nextTimeStampToRecord;
-	 dData(2) = relDeltaTTol;
 	 if (theChannel.sendVector(0, commitTag, dData) < 0) {
 		  opserr << "ElementRecorder::sendSelf() - failed to send dData\n";
 		  return -1;
@@ -508,7 +504,6 @@ ElementRecorder::recvSelf(int commitTag, Channel& theChannel,
 	 }
 	 deltaT = dData(0);
 	 nextTimeStampToRecord = dData(1);
-	 relDeltaTTol = dData(2);
 
 	 //
 	 // resize & recv the eleID

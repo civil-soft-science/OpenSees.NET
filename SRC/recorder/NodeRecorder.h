@@ -100,7 +100,6 @@ class NodeRecorder: public Recorder
     int dataFlag;        // flag indicating what it is to be stored in recorder
 
     double deltaT;
-    double relDeltaTTol;
     double nextTimeStampToRecord;
 
     // AddingSensitivity:BEGIN //////////////////////////////
