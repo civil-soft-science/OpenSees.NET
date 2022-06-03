@@ -137,105 +137,112 @@ DriftRecorder::record(int commitTag, double timeStamp)
 	 if (numNodes == 0 || data == 0)
 		  return 0;
 
-	 // where relDeltaTTol is the maximum reliable ratio between analysis time step and deltaT
-	 // and provides tolerance for floating point precision (see floating-point-tolerance-for-recorder-time-step.md)
-	 if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
-
-		  if (deltaT != 0.0)
-				nextTimeStampToRecord = timeStamp + deltaT;
-
-		  int timeOffset = 0;
-		  if (echoTimeFlag == true) {
-				(*data)(0) = theDomain->getCurrentTime();
-				timeOffset = 1;
-		  }
-#ifdef _CSS
-		  if (procDataMethod)
+	 bool doRec = true;
+	 if (deltaT != 0.0)
+	 {
+		  if (timeStamp < nextTimeStampToRecord - deltaT)
 		  {
-				int nProcOuts;
-				int nVals = numNodes;
-				if (procGrpNum == -1)
-					 if (procDataMethod != 0)
-						  nProcOuts = 1;
-					 else
-						  nProcOuts = nVals;
-				else {
-					 nProcOuts = nVals / procGrpNum;
-					 if (nProcOuts * procGrpNum < nVals)
-						  nProcOuts++;
-				}
-				double* vals = 0, * val, val1 = 0;
-				vals = new double[nProcOuts];
-				for (int i = 0; i < nProcOuts; i++)
-					 vals[i] = 0;
-				int iGrpN = 0;
-				int nextGrpN = procGrpNum;
-				val = &vals[iGrpN];
-				int loc = timeOffset;
-				for (int i = 0; i < numNodes; i++) {
-					 Node* nodeI = theNodes[2 * i];
-					 Node* nodeJ = theNodes[2 * i + 1];
-
-					 if ((*oneOverL)(i) != 0.0) {
-						  const Vector& dispI = nodeI->getTrialDisp();
-						  const Vector& dispJ = nodeJ->getTrialDisp();
-
-						  double dx = dispJ(dof) - dispI(dof);
-
-						  val1 = dx * (*oneOverL)(i);
-
-					 }
-					 else
-						  val1 = 0.0;
-
-					 if (procGrpNum != -1 && i == nextGrpN)
-					 {
-						  iGrpN++;
-						  nextGrpN += procGrpNum;
-						  val = &vals[iGrpN];
-					 }
-					 if (i == 0 && procDataMethod != 1)
-						  *val = fabs(val1);
-					 if (procDataMethod == 1)
-						  *val += val1;
-					 else if (procDataMethod == 2 && val1 > *val)
-						  *val = val1;
-					 else if (procDataMethod == 3 && val1 < *val)
-						  *val = val1;
-					 else if (procDataMethod == 4 && fabs(val1) > *val)
-						  *val = fabs(val1);
-					 else if (procDataMethod == 5 && fabs(val1) < *val)
-						  *val = fabs(val1);
-				}
-				for (int i = 0; i < nProcOuts; i++)
-				{
-					 val = &vals[i];
-					 (*data)(loc++) = *val;
-				}
-				delete[] vals;
+				nextTimeStampToRecord = 0;
 		  }
-		  else
+		  doRec = (timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol);
+		  if (doRec)
+				nextTimeStampToRecord = timeStamp + deltaT;
+	 }
+	 if (!doRec)
+		  return 0;
+
+	 int timeOffset = 0;
+	 if (echoTimeFlag == true) {
+		  (*data)(0) = theDomain->getCurrentTime();
+		  timeOffset = 1;
+	 }
+#ifdef _CSS
+	 if (procDataMethod)
+	 {
+		  int nProcOuts;
+		  int nVals = numNodes;
+		  if (procGrpNum == -1)
+				if (procDataMethod != 0)
+					 nProcOuts = 1;
+				else
+					 nProcOuts = nVals;
+		  else {
+				nProcOuts = nVals / procGrpNum;
+				if (nProcOuts * procGrpNum < nVals)
+					 nProcOuts++;
+		  }
+		  double* vals = 0, * val, val1 = 0;
+		  vals = new double[nProcOuts];
+		  for (int i = 0; i < nProcOuts; i++)
+				vals[i] = 0;
+		  int iGrpN = 0;
+		  int nextGrpN = procGrpNum;
+		  val = &vals[iGrpN];
+		  int loc = timeOffset;
+		  for (int i = 0; i < numNodes; i++) {
+				Node* nodeI = theNodes[2 * i];
+				Node* nodeJ = theNodes[2 * i + 1];
+
+				if ((*oneOverL)(i) != 0.0) {
+					 const Vector& dispI = nodeI->getTrialDisp();
+					 const Vector& dispJ = nodeJ->getTrialDisp();
+
+					 double dx = dispJ(dof) - dispI(dof);
+
+					 val1 = dx * (*oneOverL)(i);
+
+				}
+				else
+					 val1 = 0.0;
+
+				if (procGrpNum != -1 && i == nextGrpN)
+				{
+					 iGrpN++;
+					 nextGrpN += procGrpNum;
+					 val = &vals[iGrpN];
+				}
+				if (i == 0 && procDataMethod != 1)
+					 *val = fabs(val1);
+				if (procDataMethod == 1)
+					 *val += val1;
+				else if (procDataMethod == 2 && val1 > *val)
+					 *val = val1;
+				else if (procDataMethod == 3 && val1 < *val)
+					 *val = val1;
+				else if (procDataMethod == 4 && fabs(val1) > *val)
+					 *val = fabs(val1);
+				else if (procDataMethod == 5 && fabs(val1) < *val)
+					 *val = fabs(val1);
+		  }
+		  for (int i = 0; i < nProcOuts; i++)
+		  {
+				val = &vals[i];
+				(*data)(loc++) = *val;
+		  }
+		  delete[] vals;
+	 }
+	 else
 #endif // _CSS
 
-				for (int i = 0; i < numNodes; i++) {
-					 Node* nodeI = theNodes[2 * i];
-					 Node* nodeJ = theNodes[2 * i + 1];
+		  for (int i = 0; i < numNodes; i++) {
+				Node* nodeI = theNodes[2 * i];
+				Node* nodeJ = theNodes[2 * i + 1];
 
-					 if ((*oneOverL)(i) != 0.0) {
-						  const Vector& dispI = nodeI->getTrialDisp();
-						  const Vector& dispJ = nodeJ->getTrialDisp();
+				if ((*oneOverL)(i) != 0.0) {
+					 const Vector& dispI = nodeI->getTrialDisp();
+					 const Vector& dispJ = nodeJ->getTrialDisp();
 
-						  double dx = dispJ(dof) - dispI(dof);
+					 double dx = dispJ(dof) - dispI(dof);
 
-						  (*data)(i + timeOffset) = dx * (*oneOverL)(i);
+					 (*data)(i + timeOffset) = dx * (*oneOverL)(i);
 
-					 }
-					 else
-						  (*data)(i + timeOffset) = 0.0;
 				}
-		  if (theOutputHandler != 0)
-				theOutputHandler->write(*data);
-	 }
+				else
+					 (*data)(i + timeOffset) = 0.0;
+		  }
+	 if (theOutputHandler != 0)
+		  theOutputHandler->write(*data);
+
 
 	 return 0;
 }
@@ -501,7 +508,7 @@ DriftRecorder::initialize(void)
 		  nProcOuts = nVals / procGrpNum;
 		  if (nProcOuts * procGrpNum < nVals)
 				nProcOuts++;
-}
+	 }
 	 data = new Vector(nProcOuts + timeOffset); // data(0) allocated for time
 #else
 	 data = new Vector(numNodes + timeOffset); // data(0) allocated for time

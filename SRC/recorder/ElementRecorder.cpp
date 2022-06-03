@@ -177,136 +177,146 @@ ElementRecorder::record(int commitTag, double timeStamp)
 	 }
 
 	 int result = 0;
-	 if (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol) {
-
-		  if (deltaT != 0.0)
-				nextTimeStampToRecord = timeStamp + deltaT;
-
-		  int loc = 0;
-		  if (echoTimeFlag == true)
+	 bool doRec = true;
+	 if (deltaT != 0.0)
+	 {
+		  if (timeStamp < nextTimeStampToRecord - deltaT)
 		  {
-				(*data)(loc++) = timeStamp;
+				nextTimeStampToRecord = 0;
 		  }
+		  doRec = (timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol);
+		  if (doRec)
+				nextTimeStampToRecord = timeStamp + deltaT;
+	 }
+	 if (!doRec)
+		  return 0;
+
+
+	 int loc = 0;
+	 if (echoTimeFlag == true)
+	 {
+		  (*data)(loc++) = timeStamp;
+	 }
 #ifdef _CSS
-		  if (procDataMethod != 0)
+	 if (procDataMethod != 0)
+	 {
+		  int respSize = numDOF;
+		  for (int i = 0; i < numEle; i++) {
+				if (theResponses[i] == 0)
+					 continue;
+				// ask the element for the reponse
+				result += theResponses[i]->getResponse();
+				if (numDOF == 0)
+				{
+					 Information& eleInfo = theResponses[i]->getInformation();
+					 const Vector& eleData = eleInfo.getData();
+					 int sz = eleData.Size();
+					 if (sz > respSize)
+						  respSize = sz;
+				}
+		  }
+		  for (int j = 0; j < respSize; j++)
 		  {
-				int respSize = numDOF;
+				int index = j;
+				if (numDOF != 0)
+					 index = (*dof)(j);
+				int nProcOuts;
+				int nVals = numEle;
+				if (procGrpNum == -1)
+					 if (procDataMethod != 0)
+						  nProcOuts = 1;
+					 else
+						  nProcOuts = nVals;
+				else {
+					 nProcOuts = nVals / procGrpNum;
+					 if (nProcOuts * procGrpNum < nVals)
+						  nProcOuts++;
+				}
+				double* vals = 0, * val, val1 = 0;
+				vals = new double[nProcOuts];
+				for (int i = 0; i < nProcOuts; i++)
+					 vals[i] = 0;
+				int iGrpN = 0;
+				int nextGrpN = procGrpNum;
+				val = &vals[iGrpN];
 				for (int i = 0; i < numEle; i++) {
 					 if (theResponses[i] == 0)
 						  continue;
-					 // ask the element for the reponse
-					 result += theResponses[i]->getResponse();
-					 if (numDOF == 0)
+					 Information& eleInfo = theResponses[i]->getInformation();
+					 const Vector& eleData = eleInfo.getData();
+					 if (index >= eleData.Size())
+						  continue;
+					 val1 = eleData(index);
+					 if (procGrpNum != -1 && i == nextGrpN)
 					 {
-						  Information& eleInfo = theResponses[i]->getInformation();
-						  const Vector& eleData = eleInfo.getData();
-						  int sz = eleData.Size();
-						  if (sz > respSize)
-								respSize = sz;
+						  iGrpN++;
+						  nextGrpN += procGrpNum;
+						  val = &vals[iGrpN];
 					 }
-				}
-				for (int j = 0; j < respSize; j++)
-				{
-					 int index = j;
-					 if (numDOF != 0)
-						  index = (*dof)(j);
-					 int nProcOuts;
-					 int nVals = numEle;
-					 if (procGrpNum == -1)
-						  if (procDataMethod != 0)
-								nProcOuts = 1;
-						  else
-								nProcOuts = nVals;
-					 else {
-						  nProcOuts = nVals / procGrpNum;
-						  if (nProcOuts * procGrpNum < nVals)
-								nProcOuts++;
-					 }
-					 double* vals = 0, * val, val1 = 0;
-					 vals = new double[nProcOuts];
-					 for (int i = 0; i < nProcOuts; i++)
-						  vals[i] = 0;
-					 int iGrpN = 0;
-					 int nextGrpN = procGrpNum;
-					 val = &vals[iGrpN];
-					 for (int i = 0; i < numEle; i++) {
-						  if (theResponses[i] == 0)
-								continue;
-						  Information& eleInfo = theResponses[i]->getInformation();
-						  const Vector& eleData = eleInfo.getData();
-						  if (index >= eleData.Size())
-								continue;
-						  val1 = eleData(index);
-						  if (procGrpNum != -1 && i == nextGrpN)
-						  {
-								iGrpN++;
-								nextGrpN += procGrpNum;
-								val = &vals[iGrpN];
-						  }
 
-						  if (i == 0 && procDataMethod != 1)
-								*val = fabs(val1);
-						  if (procDataMethod == 1)
-								*val += val1;
-						  else if (procDataMethod == 2 && val1 > *val)
-								*val = val1;
-						  else if (procDataMethod == 3 && val1 < *val)
-								*val = val1;
-						  else if (procDataMethod == 4 && fabs(val1) > *val)
-								*val = fabs(val1);
-						  else if (procDataMethod == 5 && fabs(val1) < *val)
-								*val = fabs(val1);
-					 }
-					 for (int i = 0; i < nProcOuts; i++)
-					 {
-						  loc = i * respSize + j + (echoTimeFlag? 1 : 0);
-						  (*data)(loc) = vals[i];
-					 }
-					 delete[] vals;
+					 if (i == 0 && procDataMethod != 1)
+						  *val = fabs(val1);
+					 if (procDataMethod == 1)
+						  *val += val1;
+					 else if (procDataMethod == 2 && val1 > *val)
+						  *val = val1;
+					 else if (procDataMethod == 3 && val1 < *val)
+						  *val = val1;
+					 else if (procDataMethod == 4 && fabs(val1) > *val)
+						  *val = fabs(val1);
+					 else if (procDataMethod == 5 && fabs(val1) < *val)
+						  *val = fabs(val1);
+				}
+				for (int i = 0; i < nProcOuts; i++)
+				{
+					 loc = i * respSize + j + (echoTimeFlag ? 1 : 0);
+					 (*data)(loc) = vals[i];
+				}
+				delete[] vals;
+		  }
+	 }
+	 else
+#endif // _CSS
+
+		  //
+		  // for each element if responses exist, put them in response vector
+		  //
+		  for (int i = 0; i < numEle; i++) {
+				if (theResponses[i] != 0) {
+					 // ask the element for the reponse
+					 int res;
+					 if ((res = theResponses[i]->getResponse()) < 0)
+						  result += res;
+					 else {
+						  Information& eleInfo = theResponses[i]->getInformation();
+						  const Vector& eleData = eleInfo.getData();
+						  if (numDOF == 0) {
+								for (int j = 0; j < eleData.Size(); j++)
+									 (*data)(loc++) = eleData(j);
+						  }
+						  else {
+#ifdef _CSS
+								int dataSize = eleData.Size();
+#else
+								int dataSize = data->Size();
+#endif // _CSS
+								for (int j = 0; j < numDOF; j++) {
+									 int index = (*dof)(j);
+									 if (index >= 0 && index < dataSize)
+										  (*data)(loc++) = eleData(index);
+									 else
+										  (*data)(loc++) = 0.0;
+								}
+						  }
 				}
 		  }
-		  else
-#endif // _CSS
+}
 
-				//
-				// for each element if responses exist, put them in response vector
-				//
-				for (int i = 0; i < numEle; i++) {
-					 if (theResponses[i] != 0) {
-						  // ask the element for the reponse
-						  int res;
-						  if ((res = theResponses[i]->getResponse()) < 0)
-								result += res;
-						  else {
-								Information& eleInfo = theResponses[i]->getInformation();
-								const Vector& eleData = eleInfo.getData();
-								if (numDOF == 0) {
-									 for (int j = 0; j < eleData.Size(); j++)
-										  (*data)(loc++) = eleData(j);
-								}
-								else {
-#ifdef _CSS
-									 int dataSize = eleData.Size();
-#else
-									 int dataSize = data->Size();
-#endif // _CSS
-									 for (int j = 0; j < numDOF; j++) {
-										  int index = (*dof)(j);
-										  if (index >= 0 && index < dataSize)
-												(*data)(loc++) = eleData(index);
-										  else
-												(*data)(loc++) = 0.0;
-									 }
-								}
-						  }
-					 }
-				}
+	 //
+	 // send the response vector to the output handler for o/p
+	 //
+	 theOutputHandler->write(*data);
 
-		  //
-		  // send the response vector to the output handler for o/p
-		  //
-		  theOutputHandler->write(*data);
-	 }
 
 	 // succesfull completion - return 0
 	 return result;

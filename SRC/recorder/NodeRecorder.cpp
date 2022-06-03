@@ -338,12 +338,19 @@ NodeRecorder::record(int commitTag, double timeStamp)
 #ifndef _CSS
 	 int numDOF = theDofs->Size();
 #endif // !_CSS
-	 bool record = (deltaT == 0.0 || timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol);
-	 if (!record)
-		  return 0;
-
+	 bool doRec = true;
 	 if (deltaT != 0.0)
-		  nextTimeStampToRecord = timeStamp + deltaT;
+	 {
+		  if (timeStamp < nextTimeStampToRecord - deltaT)
+		  {
+				nextTimeStampToRecord = 0;
+		  }
+		  doRec = (timeStamp - nextTimeStampToRecord >= -deltaT * relDeltaTTol);
+		  if (doRec)
+				nextTimeStampToRecord = timeStamp + deltaT;
+	 }
+	 if (!doRec)
+		  return 0;
 
 	 //
 	 // if need nodal reactions get the domain to calculate them
