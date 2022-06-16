@@ -1428,7 +1428,7 @@ double FiberSection2d::getMaxDuctility(const char* matType) const
 	double muMax = 0.;
 	for (int i = 0; i < numFibers; i++) {
       const char* thisMat = theMaterials[i]->getClassType();
-      if (matType != "" && strcmp(matType, thisMat) != 0)
+      if (matType != 0 && strcmp(matType, thisMat) != 0)
          continue;
       double y = fiberLocs[i] - yBar;
 
