@@ -1233,7 +1233,7 @@ FiberSection3d::setResponse(const char **argv, int argc, OPS_Stream &output)
   }
   else if ((strcmp(argv[0], "maxDuctility") == 0) || (strcmp(argv[0], "MaxDuctility") == 0)) {
 
-  return theResponse = new MaterialResponse(this, 9, getMaxDuctility());
+  return theResponse = new MaterialResponse(this, 9, 0.0);
   }
 
 #endif // _CSS
@@ -1605,7 +1605,7 @@ double FiberSection3d::getDmax()
 	return dMax;
 }
 
-double FiberSection3d::getMaxDuctility() const 
+double FiberSection3d::getMaxDuctility(const char* matType) const
 {
 
 	double d0 = e(0);
@@ -1626,14 +1626,17 @@ double FiberSection3d::getMaxDuctility() const
 	}
 	double muMax = 0.;
 	for (int i = 0; i < numFibers; i++) {
+      const char* thisMat = theMaterials[i]->getClassType();
+      if (matType != "" && strcmp(matType, thisMat) != 0)
+         continue;
 		double y = fiberLocsy[i] - yBar;
 		double z = fiberLocsz[i] - zBar;
 
 		// determine material strain and set it
 		double strain = fabs(d0 - y * d1 + z * d2);
-		double sYield = theMaterials[i]->getInitYieldStrain();
+		double sYield = fabs(theMaterials[i]->getInitYieldStrain());
 		double mu = 0;
-		if (abs(sYield) > 1.e-6)
+		if (sYield > 1.e-6)
 			mu = strain / sYield;
 		if (mu > muMax)
 			muMax = mu;

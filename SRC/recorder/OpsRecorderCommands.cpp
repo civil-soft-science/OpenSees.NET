@@ -645,11 +645,7 @@ void* OPS_ElementRecorder(const char* type)
 				//argv = new char*[nargrem];
 				char buffer[128];
 				for (int i = 1; i < nargrem; i++) {
-					 data[i] = new char[128];
-
-					 // Turn everything in to a string for setResponse
-					 //data[i] = OPS_GetStringFromAll(buffer, 128);
-					 OPS_GetStringFromAll((char*)data[i], 128);
+					 data[i] = OPS_GetString();
 				}
 		  }
 	 }
@@ -690,9 +686,6 @@ void* OPS_ElementRecorder(const char* type)
 				theOutputStream, cntrlRcrdrTag, procDataMethod, nProcGrp, echoTimeFlag, &dofs);
 
 	 if (data != 0) {
-		  for (int i = 1; i < nargrem; ++i) {
-				delete[] data[i];
-		  }
 		  delete[] data;
 	 }
 

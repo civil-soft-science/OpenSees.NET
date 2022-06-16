@@ -94,7 +94,7 @@ class FiberSection2d : public SectionForceDeformation
 #ifdef _CSS
 	//by SAJalali
 	double getDmax();
-   virtual double getMaxDuctility() const;
+   virtual double getMaxDuctility(const char* matType = "") const;
 
 #endif // _CSS
 

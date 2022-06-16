@@ -1410,7 +1410,7 @@ double FiberSection2d::getDmax()
 }
 
 
-double FiberSection2d::getMaxDuctility() const 
+double FiberSection2d::getMaxDuctility(const char* matType) const
 {
 	double d0 = e(0);
 	double d1 = e(1);
@@ -1427,13 +1427,16 @@ double FiberSection2d::getMaxDuctility() const
 	}
 	double muMax = 0.;
 	for (int i = 0; i < numFibers; i++) {
-		double y = fiberLocs[i] - yBar;
+      const char* thisMat = theMaterials[i]->getClassType();
+      if (matType != "" && strcmp(matType, thisMat) != 0)
+         continue;
+      double y = fiberLocs[i] - yBar;
 
 		// determine material strain and set it
 		double strain = fabs(d0 - y * d1);
 		double mu = 0;
-		double sYield = theMaterials[i]->getInitYieldStrain();
-		if (abs(sYield) > 1.e-6)
+		double sYield = fabs(theMaterials[i]->getInitYieldStrain());
+		if (sYield > 1.e-6)
 			mu = strain / sYield;
 		if (mu > muMax)
 			muMax = mu;
