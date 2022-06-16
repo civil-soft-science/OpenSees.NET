@@ -74,7 +74,8 @@ OPS_ConfinedConcrete02()
 		  opserr << "ConfinedConcrete02::Invalid number of arguments; tag = " << tag << "; wants:\n";
 		  opserr << "uniaxialMaterial ConfinedConcrete02 tag fc0 epsc0 fcu Lambda ft Ets \n";
 		  opserr << "    [-beam StressUnitToGPa]\n";
-		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH nBarTransB dBarTrans sStirrup]\n";
+		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
+						   nBarTransB dBarTrans sStirrup [-wrap Area Fy spacing]]\n";
 		  return 0;
 	 }
 	 double concData[6];
@@ -83,7 +84,8 @@ OPS_ConfinedConcrete02()
 		  opserr << "ConfinedConcrete02::failed to read concrete properties before the [-beam/-column] switch; tag = " << tag << "\nwants:\n";
 		  opserr << "uniaxialMaterial ConfinedConcrete02 tag fc0 epsc0 fcu Lambda ft Ets \n";
 		  opserr << "    [-beam StressUnitToGPa]\n";
-		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH nBarTransB dBarTrans sStirrup]\n";
+		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
+						   nBarTransB dBarTrans sStirrup [wrapArea wrapFy wrapSpacing]]\n";
 		  return 0;
 	 }
 	 int i = 0;
@@ -128,10 +130,18 @@ OPS_ConfinedConcrete02()
 	 if (OPS_GetDoubleInput(14, dData) != 0)
 	 {
 		  opserr << "ConfinedConcrete02:: Invalid -column props. tag = " << tag << "; wants:\n";
-		  opserr << "-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH nBarTransB dBarTrans sStirrup\n";
+		  opserr << "-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
+					  nBarTransB dBarTrans sStirrup [wrapArea wrapFy wrapSpacing]\n";
 		  return 0;
 	 }
-
+	 double wrpData[3] = { 0, 0, 0};
+	 numData = OPS_GetNumRemainingInputArgs();
+	 if (numData != 0)
+		if (OPS_GetDoubleInput(3, wrpData) != 0)
+		{
+		   opserr << "ConfinedConcrete02:: Invalid wrap data. tag = " << tag << "; wants:wrapArea wrapFy wrapSpacing\n";
+		   return 0;
+		}
 	 //section props (to compute Mander's coeff.s):
 	 i = 0;
 	 double& B = dData[i++];
@@ -149,6 +159,9 @@ OPS_ConfinedConcrete02()
 	 double& nBarTB = dData[i++];
 	 double& dBarT = dData[i++];
 	 double& sStirrup = dData[i++];
+	 double& wrpA = wrpData[0];
+	 double& wrpFy = wrpData[1];
+	 double& wrpS = wrpData[2];
 
 	 // calculate total plan area of ineffectually confined core(area of all parabolas)
 	 double dc = B - 2 * cover - dBarT;
@@ -180,11 +193,20 @@ OPS_ConfinedConcrete02()
 	 double Asx = nBarTH * ABarT;
 	 double Asy = nBarTB * ABarT;
 
-	 double rhoX = Asx / (sStirrup * dc);
-	 double rhoY = Asy / (sStirrup * bc);
-
-	 double f_lx = ke * rhoX * fyh;
-	 double f_ly = ke * rhoY * fyh;
+	 double fTransX = Asx / (sStirrup * dc)* fyh;
+	 double fTransY = Asy / (sStirrup * bc)* fyh;
+	 if (wrpA != 0)
+	 {
+		if (wrpS == 0)
+		{
+		   opserr << "Warning::invalid frp spacing for ConfinedConcrete02 material with tag:" << tag << endln;
+		   return 0;
+		}
+		fTransX += wrpA / (wrpS * H) * wrpFy;
+		fTransY += wrpA / (wrpS * B) * wrpFy;
+	 }
+	 double f_lx = ke * fTransX;
+	 double f_ly = ke * fTransY;
 
 	 // calculate KMander
 	 //rat1 > rat2
