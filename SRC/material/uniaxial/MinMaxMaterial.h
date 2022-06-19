@@ -76,7 +76,10 @@ class MinMaxMaterial : public UniaxialMaterial
     double getRhoSensitivity        (int gradIndex);
     int    commitSensitivity        (double strainGradient, int gradIndex, int numGrads);
     // AddingSensitivity:END ///////////////////////////////////////////
-    
+    virtual double getInitYieldStrain() { return theMaterial->getInitYieldStrain(); } //SAJalali
+    virtual void resetEnergy(void) { theMaterial->resetEnergy(); }
+    virtual double getEnergy() { return theMaterial->getEnergy(); }
+
   protected:
     
   private:

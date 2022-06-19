@@ -476,7 +476,6 @@ Node::Node(const Node &otherNode, bool copyMass)
 
 Node::~Node()
 {
-    opserr << this->getTag() << endln;
     // delete anything that we created with new
 #ifdef _CSS
    if (theEleConnects != 0)
