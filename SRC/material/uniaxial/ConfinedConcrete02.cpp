@@ -29,11 +29,14 @@
 //#include <math.h>
 
 #include <Concrete02.h>
+#include <FileStream.h>
 //#include <OPS_Globals.h>
 //#include <float.h>
 //#include <Channel.h>
 //#include <Information.h>
 
+extern int LOG_COMMANDS;
+extern FileStream CmdLogStream;
 #include <elementAPI.h>
 #include <OPS_Globals.h>
 
@@ -123,6 +126,10 @@ OPS_ConfinedConcrete02()
 				opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete02; tag = " << tag << "\n";
 				return 0;
 		  }
+		  if (LOG_COMMANDS)
+		  {
+			  CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fc0 << " " << epsc0 << " " << fcu << " " << ecu << " " << rat << " " << ft << " " << Ets << "; #code generated for beam by ConfinedConcrete02\n";
+		  }
 		  return theMaterial;
 	 }
 	 //column
@@ -193,8 +200,8 @@ OPS_ConfinedConcrete02()
 	 double Asx = nBarTH * ABarT;
 	 double Asy = nBarTB * ABarT;
 
-	 double fTransX = Asx / (sStirrup * dc)* fyh;
-	 double fTransY = Asy / (sStirrup * bc)* fyh;
+	 double fTransX = Asx * fyh / (sStirrup * dc);
+	 double fTransY = Asy * fyh / (sStirrup * bc);
 	 if (wrpA != 0)
 	 {
 		if (wrpS == 0)
@@ -202,8 +209,8 @@ OPS_ConfinedConcrete02()
 		   opserr << "Warning::invalid frp spacing for ConfinedConcrete02 material with tag:" << tag << endln;
 		   return 0;
 		}
-		fTransX += wrpA / (wrpS * H) * wrpFy;
-		fTransY += wrpA / (wrpS * B) * wrpFy;
+		fTransX += 2*wrpA * wrpFy / (wrpS * H);		//for two legs
+		fTransY += 2*wrpA * wrpFy / (wrpS * B);
 	 }
 	 double f_lx = ke * fTransX;
 	 double f_ly = ke * fTransY;
@@ -248,6 +255,10 @@ OPS_ConfinedConcrete02()
 	 {
 		  opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete02; tag = " << tag << "\n";
 		  return 0;
+	 }
+	 if (LOG_COMMANDS)
+	 {
+		 CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fcc << " " << ecc << " " << fcu << " " << epscu << " " << rat << " " << ft << " " << Ets << "; #code generated for column by ConfinedConcrete02\n";
 	 }
 
 	 return theMaterial;
