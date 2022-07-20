@@ -139,6 +139,7 @@ MinMaxMaterial::~MinMaxMaterial()
 int 
 MinMaxMaterial::setTrialStrain(double strain, double strainRate)
 {
+   Strain = strain;
   if (Cfailed)
     return 0;
   
@@ -156,6 +157,7 @@ MinMaxMaterial::setTrialStrain(double strain, double strainRate)
 int 
 MinMaxMaterial::setTrialStrain(double strain, double temp, double strainRate)
 {
+   Strain = strain;
   if (Cfailed)
     return 0;
   
@@ -173,14 +175,18 @@ MinMaxMaterial::setTrialStrain(double strain, double temp, double strainRate)
 double 
 MinMaxMaterial::getStress(void)
 {
-    if (Tfailed)
+   if (Tfailed)
+   {
 #ifdef _CSS
-        return 1.0e-11 * theMaterial->getInitialTangent();
+      return (1.0e-11 * theMaterial->getInitialTangent());
+   }
 #else
     return 0.0;
 #endif // _CSS
-  else
-    return theMaterial->getStress();
+   else
+   {
+      return theMaterial->getStress();
+   }
 }
 
 double 
@@ -207,7 +213,7 @@ MinMaxMaterial::getDampTangent(void)
 double 
 MinMaxMaterial::getStrain(void)
 {
-  return theMaterial->getStrain();
+  return Strain;
 }
 
 double 

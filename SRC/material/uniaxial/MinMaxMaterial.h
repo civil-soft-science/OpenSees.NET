@@ -90,6 +90,9 @@ class MinMaxMaterial : public UniaxialMaterial
 
 	bool Tfailed;
 	bool Cfailed;
+
+   //SAJ
+   double Strain;
 };
 
 

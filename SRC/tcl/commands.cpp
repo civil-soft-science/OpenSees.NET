@@ -1704,20 +1704,17 @@ int printArgv(Tcl_Interp* interp, int argc, TCL_Char** argv, bool hasBlock)
 	}
 	for (int i = 0; i < argc; i++)
 	{
-		if (argv[i][0] == '\n')
+		if (i == argc - 1 && hasBlock)
 		{
-			if (hasBlock)
+			CmdLogStream << " {";
+			CmdLogStream << endln;
+			if (ECHO_COMMANDS)
 			{
-				CmdLogStream << " {";
-				CmdLogStream << endln;
-				if (ECHO_COMMANDS)
-				{
-					opserr << " {";
-					opserr << endln;
-				}
-				BlockStarted = true;
-				return 0;
+				opserr << " {";
+				opserr << endln;
 			}
+			BlockStarted = true;
+			return 0;
 		}
 		else if (i != 0)
 		{
