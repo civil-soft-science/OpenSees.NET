@@ -127,7 +127,6 @@ class ConvergenceTest;
 #define OPS_AllocateElement ops_allocateelement_
 #define OPS_GetMaterialType ops_getmaterialtype_
 #define OPS_GetMaterial ops_getmaterial_
-#define OPS_GetMaterialPtr ops_getmaterialptr_
 #define OPS_GetCrdTransf ops_getcrdtransf_
 #define OPS_GetFrictionModel ops_getfrictionmodel_
 #define OPS_GetNodeCrd ops_getnodecrd_
@@ -185,10 +184,8 @@ extern "C" int         OPS_SetDoubleOutput(int numData, double* data, bool scala
 extern "C" const char* OPS_GetString(); // does a strcpy
 extern "C" const char* OPS_GetStringFromAll(char* buffer, int len); // does a strcpy
 extern "C" int         OPS_SetString(const char* str);
-//extern "C" int       OPS_GetString(char *cArray, int sizeArray); // does a strcpy
 extern "C" int         OPS_GetStringCopy(char** cArray); // returns a new copy
 extern "C" matObj*     OPS_GetMaterial(int matTag, int matType);
-//extern "C" void      OPS_GetMaterialPtr(int *matTag, matObj *theRes);
 extern "C" eleObj*     OPS_GetElement(int eleTag);
 extern "C" matObj*     OPS_GetMaterialType(char* type, int sizeType);
 extern "C" eleObj*     OPS_GetElementType(char* type, int sizeType);

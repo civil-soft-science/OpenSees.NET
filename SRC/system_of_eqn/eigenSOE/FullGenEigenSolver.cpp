@@ -328,10 +328,8 @@ const Vector& FullGenEigenSolver::getEigenvector(int mode)
         eigenV->Zero();
     }      
 
-#ifndef _CSS
-    opserr << "EIGEN VECTOR: " << *eigenV;
-#endif // _CSS
-
+    //opserr << "EIGEN VECTOR: " << *eigenV;
+    
     return *eigenV;
     
 }

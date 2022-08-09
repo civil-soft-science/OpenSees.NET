@@ -20,7 +20,7 @@
 
 // Written: fmk 
 //
-// Description: This file contains the class implementatation of 
+// Description: This file contains the class implementation of 
 // EnvelopeEnvelopeElementRecorder.
 //
 // What: "@(#) EnvelopeEnvelopeElementRecorder.C, revA"

@@ -25,7 +25,7 @@
 // Written: fmk 
 // Created: 09/99
 //
-// Description: This file contains the class implementatation of ElementRecorder.
+// Description: This file contains the class implementation of ElementRecorder.
 //
 // What: "@(#) ElementRecorder.C, revA"
 

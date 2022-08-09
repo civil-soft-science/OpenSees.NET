@@ -90,7 +90,10 @@ OBJS       = NDMaterial.o \
 	PlateFromPlaneStressMaterialThermal.o \
 	UVCmultiaxial.o	\
 	UVCplanestress.o \
-	PlateRebarMaterialThermal.o
+	PlateRebarMaterialThermal.o \
+	ElasticPlaneStress.o \
+	ElasticOrthotropicPlaneStress.o \
+	VonPapaDamage.o
 
 
 all: $(OBJS) 
@@ -102,6 +105,12 @@ all: $(OBJS)
 	@$(CD) $(FE)/material/nD/matCMM; $(MAKE);
 	@$(CD) $(FE)/material/nD/stressDensityModel; $(MAKE);
 	@$(CD) $(FE)/material/nD/UANDESmaterials; $(MAKE);
+
+test: $(OBJS) main.o
+	$(LINKER) $(LINKFLAGS) main.o ../../../SRC/api/elementAPI_Dummy.o $(FE_LIBRARY) \
+	$(MACHINE_LINKLIBS) \
+	$(MACHINE_NUMERICAL_LIBS) $(MACHINE_SPECIFIC_LIBS) \
+	-o material_test
 
 # Miscellaneous
 

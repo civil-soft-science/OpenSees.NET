@@ -29,6 +29,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug.DLL|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -94,10 +95,10 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeaderOutputFile>.\..\..\obj\opensees\release\OpenSees.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\..\..\obj\opensees\release/</AssemblerListingLocation>
-      <ObjectFileName>.\..\..\obj\opensees\release/</ObjectFileName>
-      <ProgramDataBaseFileName>.\..\..\obj\opensees\release/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -119,9 +120,10 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <BuildLog>
-      <Path>.\..\..\obj\opensees\release\$(MSBuildProjectName).log</Path>
+      <Path>$(IntDir)$(MSBuildProjectName).log</Path>
     </BuildLog>
     <PostBuildEvent>
       <Command>
@@ -210,7 +212,7 @@
       </Version>
     </Link>
     <BuildLog>
-      <Path>.\..\..\obj\opensees\debug\$(MSBuildProjectName).log</Path>
+      <Path>$(IntDir)$(MSBuildProjectName).log</Path>
     </BuildLog>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>

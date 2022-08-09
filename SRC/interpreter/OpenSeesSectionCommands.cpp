@@ -47,9 +47,7 @@
 #include <ReinfBar.h>
 #include <TubeSectionIntegration.h>
 #include <WideFlangeSectionIntegration.h>
-#include <HSSSectionIntegration.h>
 #include <NDFiberSectionWarping2d.h>
-#include <RCSectionIntegration.h>
 #include <RCTBeamSectionIntegration.h>
 #include <RCCircularSectionIntegration.h>
 #include <RCTunnelSectionIntegration.h>
@@ -70,6 +68,7 @@ void* OPS_FiberSectionWarping3d();
 void* OPS_FiberSectionAsym3d();
 void* OPS_NDFiberSection2d();
 void* OPS_NDFiberSection3d();
+void* OPS_NDFiberSectionWarping2d();
 void* OPS_UniaxialFiber2d();
 void* OPS_UniaxialFiber3d();
 void* OPS_NDFiber2d();
@@ -93,6 +92,14 @@ void* OPS_Elliptical2();
 void* OPS_Isolator2spring();
 void* OPS_FiberSection2dThermal();
 void* OPS_HSSSection();
+void* OPS_TubeSection();
+void* OPS_RCSection2d();
+void* OPS_WFSection2d();
+void* OPS_RCCircularSection();
+void* OPS_RCTunnelSection();
+void* OPS_UniaxialSection();
+void* OPS_RCTBeamSection2d();
+void* OPS_RCTBeamSectionUniMat2d();
 
 namespace {
     static FiberSection2d* theActiveFiberSection2d = 0;
@@ -101,6 +108,7 @@ namespace {
 	static FiberSectionAsym3d* theActiveFiberSectionAsym3d = 0;
     static NDFiberSection2d* theActiveNDFiberSection2d = 0;
     static NDFiberSection3d* theActiveNDFiberSection3d = 0;
+    static NDFiberSectionWarping2d* theActiveNDFiberSectionWarping2d = 0;    
 
     static FiberSection2dThermal* theActiveFiberSection2dThermal = 0;
     static FiberSection3dThermal* theActiveFiberSection3dThermal = 0;
@@ -273,18 +281,21 @@ namespace {
 	return theSec;
     }
 
-    static void* OPS_UniaxialSection()
+    static void* OPS_NDFiberSectionWarping()
     {
-	int numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata < 3) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section Uniaxial tag? 1DTag? code?" << endln;
-	    return 0;
+	void* theSec = 0;
+	int ndm = OPS_GetNDM();
+	if(ndm == 2) {
+	  theSec = OPS_NDFiberSectionWarping2d();
+	  theActiveNDFiberSectionWarping2d = (NDFiberSectionWarping2d*)theSec;
+	} else if(ndm == 3) {
+	  //theSec = OPS_NDFiberSection3d();
+	  //theActiveNDFiberSection3d = (NDFiberSection3d*)theSec;
 	}
 
 	int data[2];
 	numdata = 2;
-	if (OPS_GetIntInput(numdata, data) < 0) {
+	if (OPS_GetIntInput(&numdata, data) < 0) {
 	    opserr << "WARNING invalid integer" << endln;
 	    return 0;
 	}
@@ -344,35 +355,35 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
+	if (OPS_GetIntInput(&numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section Tube tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section Tube matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &D) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &D) < 0) {
 	    opserr << "WARNING invalid D" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &t) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &t) < 0) {
 	    opserr << "WARNING invalid t" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(numdata, &nfw) < 0) {
+	if (OPS_GetIntInput(&numdata, &nfw) < 0) {
 	    opserr << "WARNING invalid nfw" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(numdata, &nfr) < 0) {
+	if (OPS_GetIntInput(&numdata, &nfr) < 0) {
 	    opserr << "WARNING invalid nfr" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
@@ -386,7 +397,7 @@ namespace {
 
 	    double shape = 1.0;
 	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
+		if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
 		    opserr << "WARNING invalid shape" << endln;
 		    opserr << "Tube section: " << tag << endln;
 		    return 0;
@@ -456,41 +467,41 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
+	if (OPS_GetIntInput(&numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &d) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &d) < 0) {
 	    opserr << "WARNING invalid d" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &tw) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &tw) < 0) {
 	    opserr << "WARNING invalid tw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &bf) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &bf) < 0) {
 	    opserr << "WARNING invalid bf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(numdata, &tf) < 0) {
+	if (OPS_GetDoubleInput(&numdata, &tf) < 0) {
 	    opserr << "WARNING invalid tf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(numdata, &nfdw) < 0) {
+	if (OPS_GetIntInput(&numdata, &nfdw) < 0) {
 	    opserr << "WARNING invalid nfdw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
@@ -1080,6 +1091,7 @@ namespace {
 	functionMap.insert(std::make_pair("FiberAsym", &OPS_FiberSectionAsym));
 	functionMap.insert(std::make_pair("FiberThermal", &OPS_FiberSectionThermal));	
 	functionMap.insert(std::make_pair("NDFiber", &OPS_NDFiberSection));
+	functionMap.insert(std::make_pair("NDFiberWarping", &OPS_NDFiberSectionWarping));	
 	functionMap.insert(std::make_pair("Uniaxial", &OPS_UniaxialSection));
 	functionMap.insert(std::make_pair("Generic1D", &OPS_UniaxialSection));
 	functionMap.insert(std::make_pair("Generic1d", &OPS_UniaxialSection));
@@ -1119,7 +1131,8 @@ int OPS_Section()
 	theActiveFiberSectionAsym3d = 0;
     theActiveNDFiberSection2d = 0;
     theActiveNDFiberSection3d = 0;
-
+    theActiveNDFiberSectionWarping2d = 0;
+    
     theActiveFiberSection2dThermal = 0;
     theActiveFiberSection3dThermal = 0;
     //theActiveFiberSectionGJThermal = 0;
@@ -1157,7 +1170,8 @@ int OPS_Section()
 	theActiveFiberSectionAsym3d = 0;
 	theActiveNDFiberSection2d = 0;
 	theActiveNDFiberSection3d = 0;
-
+	theActiveNDFiberSectionWarping2d = 0;
+	
 	theActiveFiberSection2dThermal = 0;
 	theActiveFiberSection3dThermal = 0;
 	//theActiveFiberSectionGJThermal = 0;
@@ -1182,7 +1196,7 @@ int OPS_Fiber()
 
 	theFiber = (UniaxialFiber3d*) OPS_UniaxialFiber3d();
 
-    } else if (theActiveNDFiberSection2d != 0) {
+    } else if (theActiveNDFiberSection2d != 0 || theActiveNDFiberSectionWarping2d != 0) {
 
 	theFiber = (NDFiber2d*) OPS_NDFiber2d();
 
@@ -1225,6 +1239,10 @@ int OPS_Fiber()
 
 	res = theActiveNDFiberSection3d->addFiber(*theFiber);
 
+    } else if (theActiveNDFiberSectionWarping2d != 0) {
+
+	res = theActiveNDFiberSectionWarping2d->addFiber(*theFiber);
+	
     } else if (theActiveFiberSection2dThermal != 0) {
 
 	res = theActiveFiberSection2dThermal->addFiber(*theFiber);
@@ -1262,7 +1280,7 @@ int OPS_Patch()
     } else if(strcmp(type,"circ")==0 || strcmp(type,"circular")==0) {
 	thePatch = (CircPatch*) OPS_CircPatch();
     } else {
-	opserr<<"ERROR unknow patch type\n";
+	opserr<<"ERROR unknown patch type\n";
 	return -1;
     }
 
@@ -1377,6 +1395,17 @@ int OPS_Patch()
 	    }
 	    theFiber = new NDFiber3d(j,*ndmaterial,area,cPos(0),cPos(1));
 	    theActiveNDFiberSection3d->addFiber(*theFiber);
+
+	} else if (theActiveNDFiberSectionWarping2d != 0) {
+
+	    ndmaterial = OPS_getNDMaterial(matTag);
+	    if (ndmaterial == 0) {
+		opserr << "WARNING material "<<matTag<<" cannot be found\n";
+		delete thePatch;
+		return -1;
+	    }
+	    theFiber = new NDFiber2d(j,*ndmaterial,area,cPos(0));
+	    theActiveNDFiberSectionWarping2d->addFiber(*theFiber);
 	}
 
 	delete cells[j];
@@ -1404,7 +1433,7 @@ int OPS_Layer()
     } else if(strcmp(type,"circ")==0 || strcmp(type,"circular")==0) {
 	theLayer = (ReinfLayer*) OPS_CircReinfLayer();
     } else {
-	opserr<<"ERROR unknow layer type\n";
+	opserr<<"ERROR unknown layer type\n";
 	return -1;
     }
 
@@ -1522,7 +1551,19 @@ int OPS_Layer()
 	    }
 	    theFiber = new NDFiber3d(j,*ndmaterial,area,cPos(0),cPos(1));
 	    theActiveNDFiberSection3d->addFiber(*theFiber);
+
+	} else if (theActiveNDFiberSectionWarping2d != 0) {
+
+	    ndmaterial = OPS_getNDMaterial(matTag);
+	    if (ndmaterial == 0) {
+		opserr << "WARNING material "<<matTag<<" cannot be found\n";
+		delete theLayer;
+		return -1;
+	    }
+	    theFiber = new NDFiber2d(j,*ndmaterial,area,cPos(0));
+	    theActiveNDFiberSectionWarping2d->addFiber(*theFiber);
 	}
+    
 
     }
 

@@ -24,6 +24,12 @@
                                                                         
 // Written: CY Seo
 // Created August 2008
+//
+// // REFERENCES (added by CVMiculas)
+// // C.Y. Seo, Y.C. Lin, R. Sause & J.M. Ricles (2009). Development of analytical models for 0.6 scale self-centering MRF with beam web friction devices. In: 6th International Conference for Steel Structures in Seismic Area (STESSA), Philadelphia. CRC Press, pp. 849-854.
+// // The article from above is part of a conference proceedings book:
+// // Mazzolani, F., Ricles, J.M., & Sause, R. (Eds.). (2009). Behaviour of Steel Structures in Seismic Areas: STESSA 2009 (1st ed.). CRC Press. https://doi.org/10.1201/9780203861592
+// // Karavasilis, Theodore & Seo, Choungyeol & Ricles, James. (2008). HybridFEM: A PROGRAM FOR DYNAMIC TIME HISTORY ANALYSIS OF 2D INELASTIC FRAMED STRUCTURES AND REAL-TIME HYBRID SIMULATION HybridFEM Version 4.2.4 User's Manual.
 
 #include <LehighJoint2d.h>
 
@@ -305,7 +311,7 @@ LehighJoint2d::setDomain(Domain *theDomain)
     apq(10,10)=  apq(0,0) ;
     apq(11,11)=  1.0;
 
-	// fille transformation coefficients, local to basic system
+	// fill transformation coefficients, local to basic system
 	getAvp();
 
 //	opserr<<" Apq" <<endln << apq<< endln;
@@ -319,7 +325,7 @@ LehighJoint2d::commitState(void)
 {
 	// following code is not necessary for linear elastic element
 	
-	// store commited external nodal displacements
+	// store committed external nodal displacements
 	vs = vt;
 
 	// store material history data.
@@ -407,7 +413,7 @@ LehighJoint2d::getTangentStiff(void)
 const Matrix &
 LehighJoint2d::getInitialStiff(void)
 {
-	// assumming linear elastic element
+	// assuming linear elastic element
 	// assuming diagonal stiffness
 	static Matrix kb(numBasicDOF,numBasicDOF);
 	kb.Zero();
@@ -666,7 +672,7 @@ LehighJoint2d::recvSelf(int commitTag, Channel &theChannel, FEM_ObjectBroker &th
   nodeDbTag = data(2);
   dofDbTag = data(3);
   
-  // Receving Springs
+  // Receiving Springs
   for (int i=0 ; i<numBasicDOF ; i++) {
     int SpringClass = data( i+4 );
     int SpringDb = data( i+13 );

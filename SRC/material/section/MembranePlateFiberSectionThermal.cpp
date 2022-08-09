@@ -36,6 +36,41 @@
 #include <MaterialResponse.h>
 #include <Information.h>
 
+#include <elementAPI.h>
+
+void* OPS_MembranePlateFiberSectionThermal()
+{
+    int numdata = OPS_GetNumRemainingInputArgs();
+    if (numdata < 3) {
+	opserr << "WARNING insufficient arguments\n";
+	opserr << "Want: section PlateFiberThermal tag? matTag? h? " << endln;
+	return 0;
+    }
+    
+    int idata[2];
+    numdata = 2;
+    if (OPS_GetIntInput(&numdata, idata) < 0) {
+	opserr << "WARNING: invalid tags\n";
+	return 0;
+    }
+
+    double h;
+    numdata = 1;
+    if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+	opserr << "WARNING: invalid h\n";
+	return 0;
+    }
+
+    NDMaterial *theMaterial = OPS_getNDMaterial(idata[1]);
+    if (theMaterial == 0) {
+	opserr << "WARNING nD material does not exist\n";
+	opserr << "nD material: " << idata[1]; 
+	opserr << "\nPlateFiberThermal section: " << idata[0] << endln;
+	return 0;
+    }
+
+    return new MembranePlateFiberSectionThermal(idata[0], h, *theMaterial);
+}
 
 //parameters
 //const double MembranePlateFiberSectionThermal::root56 = 1 ; //shear correction
@@ -777,4 +812,50 @@ int
 MembranePlateFiberSectionThermal::getResponse(int responseID, Information &secInfo)
 {
   return SectionForceDeformation::getResponse(responseID, secInfo);
+}
+
+int MembranePlateFiberSectionThermal::setParameter(const char** argv, int argc, Parameter& param)
+{
+    // if the user explicitly wants to update a material in this section...
+    if (argc > 1) {
+        // case 1: fiber value (all fibers)
+        // case 2: fiber id value (one specific fiber)
+        if (strcmp(argv[0], "fiber") == 0 || strcmp(argv[0], "Fiber") == 0) {
+            // test case 2 (one specific fiber) ...
+            if (argc > 2) {
+                int pointNum = atoi(argv[1]);
+                if (pointNum > 0 && pointNum <= 5) {
+                    return theFibers[pointNum - 1]->setParameter(&argv[2], argc - 2, param);
+                }
+            }
+            // ... otherwise case 1 (all fibers), if the argv[1] is not a valid id
+            int mixed_result = -1;
+            for (int i = 0; i < 5; ++i) {
+                if (theFibers[i]->setParameter(&argv[1], argc - 1, param) == 0)
+                    mixed_result = 0; // if at least one fiber handles the param, make it successful
+            }
+            return mixed_result;
+        }
+    }
+    // if we are here, the first keyword is not "fiber", so we can check for parameters
+    // specific to this section (if any) or forward the request to all fibers.
+    if (argc > 0) {
+        // we don't have parameters for this section, so we directly forward it to all fibers.
+        // placeholder for future implementations: if we will have parameters for this class, check them here
+        // before forwarding to all fibers
+        int mixed_result = -1;
+        for (int i = 0; i < 5; ++i) {
+            if (theFibers[i]->setParameter(argv, argc, param) == 0)
+                mixed_result = 0; // if at least one fiber handles the param, make it successful
+        }
+        return mixed_result;
+    }
+    // fallback to base class implementation
+    return SectionForceDeformation::setParameter(argv, argc, param);
+}
+
+int MembranePlateFiberSectionThermal::updateParameter(int parameterID, Information& info)
+{
+    // placeholder for future implementations: if we will have parameters for this class, update them here
+    return SectionForceDeformation::updateParameter(parameterID, info);
 }

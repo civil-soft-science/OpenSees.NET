@@ -150,6 +150,8 @@ OBJS       = UniaxialMaterial.o \
 	IMKJ.o \
 	BucklingStrut.o \
 	BucklingMaterial.o \
+	HystereticSmooth.o \
+	HystereticAsym.o \
 	TclModelBuilderUniaxialMaterialCommand.o
 
 all:         $(OBJS)

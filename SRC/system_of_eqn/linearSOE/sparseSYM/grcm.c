@@ -224,8 +224,8 @@ int rcm(int root, int **padj, int *mask, int *perm, int *deg, int *work)
       }  /* end for i =  */
    }  while(lnbr > lvlend ) ; /* end do */
 /* ----------------------------------------------------------
-   we now haave the cuthill mckee ordering
-   now reverse it 
+   we now have the cuthill mckee ordering
+   now reverse it
    --------------------------------------------------------*/
    revrse(ccsize, perm) ;
 

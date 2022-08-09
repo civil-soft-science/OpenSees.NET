@@ -132,6 +132,14 @@ CrdTransf::getLocalAxes(Vector &xAxis, Vector &yAxis, Vector &zAxis)
   return 0;
 }
 
+int
+CrdTransf::getRigidOffsets(Vector &offsets)
+{
+  offsets.Zero();
+  
+  return 0;
+}
+
 Response*
 CrdTransf::setResponse(const char **argv, int argc, OPS_Stream &theHandler)
 {
@@ -149,28 +157,40 @@ CrdTransf::setResponse(const char **argv, int argc, OPS_Stream &theHandler)
   if (strcmp(argv[0],"zaxis") == 0 || strcmp(argv[0],"zlocal") == 0)
     theResponse = new CrdTransfResponse(this, 203, Vector(3));
 
+  if (strcmp(argv[0],"offsets") == 0 || strcmp(argv[0],"rigidOffsets") == 0)
+    theResponse = new CrdTransfResponse(this, 204, Vector(6));
+  
   return theResponse;
 }
 
 int
 CrdTransf::getResponse(int responseID, Information &eleInfo)
 {
-  if (responseID >= 201 && responseID <= 203) {
-    static Vector xlocal(3);
-    static Vector ylocal(3);
-    static Vector zlocal(3);
-    
-    this->getLocalAxes(xlocal,ylocal,zlocal);
-    
-    if (responseID == 201)
-      return eleInfo.setVector(xlocal);
-    if (responseID == 202)
-      return eleInfo.setVector(ylocal);
-    if (responseID == 203)
-      return eleInfo.setVector(zlocal);    
-  }
-  else
-    return -1;
+    if (responseID >= 201 && responseID <= 203) {
+        static Vector xlocal(3);
+        static Vector ylocal(3);
+        static Vector zlocal(3);
+        
+        this->getLocalAxes(xlocal, ylocal, zlocal);
+        
+        if (responseID == 201)
+            return eleInfo.setVector(xlocal);
+        else if (responseID == 202)
+            return eleInfo.setVector(ylocal);
+        else if (responseID == 203)
+            return eleInfo.setVector(zlocal);
+        else
+            return -1;
+    }
+    if (responseID == 204) {
+      static Vector offsets(6);
+
+      this->getRigidOffsets(offsets);
+
+      return eleInfo.setVector(offsets);
+    }
+    else
+        return -1;
 }
 
 const Vector &

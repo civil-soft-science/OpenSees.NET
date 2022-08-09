@@ -16,6 +16,8 @@ target_sources(OPS_INTERPRETER
     OpenSeesParameterCommands.cpp
     OpenSeesFrictionModelCommands.cpp
     OpenSeesReliabilityCommands.cpp
+    OpenSeesNDTestCommands.cpp
+    OpenSeesIGACommands.cpp
 )
 
 
@@ -23,4 +25,5 @@ target_sources(OpenSeesPy
    PRIVATE
      PythonModule.cpp
      PythonWrapper.cpp
+     PythonStream.cpp
 )
