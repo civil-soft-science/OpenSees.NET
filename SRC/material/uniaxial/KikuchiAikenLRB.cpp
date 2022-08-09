@@ -265,8 +265,7 @@ KikuchiAikenLRB::setTrialStrain(double strain, double strainRate)
 
   //application limit strain
   if ( fabs(trialStrain) > lmtStrain ) {
-    opserr << "uniaxialMaterial KikuchiAikenLRB: \n";
-    opserr << "   Response value exceeded limited strain.\n";
+    opserr << "uniaxialMaterial KikuchiAikenLRB: Response value exceeded limited strain.\n";
     // return -1;
     // warning, extrapolation
   }

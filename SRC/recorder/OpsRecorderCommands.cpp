@@ -411,7 +411,7 @@ void* OPS_NodeRecorder(const char* type)
 				procDataMethod, nProcGrp, echoTimeFlag, theTimeSeries);
 	 else if (strcmp(type, "ConditionalNode") == 0)
 		  recorder = new ConditionalNodeRecorder(dofs, &nodes, responseID, *domain, theOutputStream,
-				procDataMethod, nProcGrp, dT, echoTimeFlag, theTimeSeries);
+			  cntrlRcrdrTag, procDataMethod, nProcGrp, echoTimeFlag, theTimeSeries);
 
 	 return recorder;
 }

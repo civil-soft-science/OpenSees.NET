@@ -1618,10 +1618,10 @@ void KikuchiBearing::setUp()
       oriX.resize(3);
       oriX = oriXp;
     } else  {
-      opserr << "WARNING KikuchiBearing::setUp() - " 
+      /*opserr << "WARNING KikuchiBearing::setUp() - " 
 	     << "element: " << this->getTag() << endln
 	     << "ignoring nodes and using specified "
-	     << "local x vector to determine orientation\n";
+	     << "local x vector to determine orientation\n";*/
     }
   }
   // check that vectors for orientation are of correct size
