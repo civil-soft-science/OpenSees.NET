@@ -249,7 +249,7 @@ OPS_ASDEmbeddedNodeElement(void)
             }
             ++i;
             numData = 1;
-            if (OPS_GetDouble(&numData, &KP) != 0) {
+            if (OPS_GetDouble(numData, &KP) != 0) {
                 opserr << "ASDEmbeddedNodeElement ERROR invalid floating point number for -K keyword.\n";
                 return 0;
             }

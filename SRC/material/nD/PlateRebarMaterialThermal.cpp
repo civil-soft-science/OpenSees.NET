@@ -53,7 +53,7 @@ void* OPS_PlateRebarMaterialThermal()
 
     int tag[2];
     numdata = 2;
-    if (OPS_GetIntInput(&numdata,tag)<0) {
+    if (OPS_GetIntInput(numdata,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlateRebarThermal tag or matTag" << endln;
 	return 0;
     }
@@ -68,7 +68,7 @@ void* OPS_PlateRebarMaterialThermal()
 
     double angle;
     numdata = 1;
-    if (OPS_GetDoubleInput(&numdata,&angle)<0) {
+    if (OPS_GetDoubleInput(numdata,&angle)<0) {
 	opserr << "WARNING invalid angle" << endln;
 	return 0;
     }

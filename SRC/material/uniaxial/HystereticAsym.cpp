@@ -65,13 +65,13 @@ OPS_HystereticAsym()
 
 
 	int numData = 1;
-	if (OPS_GetIntInput(&numData, iData) != 0) {
+	if (OPS_GetIntInput(numData, iData) != 0) {
 		opserr << "WARNING invalid tag for uniaxialMaterial HystereticAsym" << endln;
 		return 0;
 	}
 
 	numData = 6;
-	if (OPS_GetDoubleInput(&numData, dData) != 0) {
+	if (OPS_GetDoubleInput(numData, dData) != 0) {
 		opserr << "Invalid data for uniaxial HystereticAsym " << iData[0] << endln;
 		return 0;
 	}

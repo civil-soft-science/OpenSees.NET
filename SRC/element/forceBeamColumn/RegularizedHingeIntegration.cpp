@@ -50,7 +50,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
 
   int iData[2];
   int numData = 2;
-  if (OPS_GetIntInput(&numData,&iData[0]) < 0) {
+  if (OPS_GetIntInput(numData,&iData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read int data" << endln;
     return 0;
   }
@@ -81,7 +81,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
   // Read information for hinge at end I
   double lpI, zetaI;
   numData = 2;
-  if (OPS_GetDoubleInput(&numData,&dData[0]) < 0) {
+  if (OPS_GetDoubleInput(numData,&dData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read hinge I data" << endln;
     return 0;
   }
@@ -92,7 +92,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
   // Read information for hinge at end J
   double lpJ, zetaJ;
   numData = 2;
-  if (OPS_GetDoubleInput(&numData,&dData[0]) < 0) {
+  if (OPS_GetDoubleInput(numData,&dData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read hinge J data" << endln;
     return 0;
   }

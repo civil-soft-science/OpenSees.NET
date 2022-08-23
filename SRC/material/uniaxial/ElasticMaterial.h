@@ -82,7 +82,7 @@ class ElasticMaterial : public UniaxialMaterial
 #ifdef _CSS
     virtual double getEnergy(void) {
         double s = getStress();
-        double energy = 0.5 * committedStrain * s;
+        double energy = 0.5 * trialStrain * s;
         return energy; 
     }
 #endif

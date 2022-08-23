@@ -274,7 +274,7 @@ int
 ElasticPPMaterial::sendSelf(int cTag, Channel &theChannel)
 {
   int res = 0;
-  static Vector data(10);//editted by SAJalali for EnergyP
+  static Vector data(9);//editted by SAJalali for EnergyP
   data(0) = this->getTag();
   data(1) = ep;
   data(2) = E;
@@ -283,8 +283,7 @@ ElasticPPMaterial::sendSelf(int cTag, Channel &theChannel)
   data(5) = fyn;
   data(6) = commitStrain;
   data(7) = commitStress;
-  data(8) = commitTangent;
-  data(9) = EnergyP;//SAJalali
+  data(8) = EnergyP;//SAJalali
   res = theChannel.sendVector(this->getDbTag(), cTag, data);
   if (res < 0) 
     opserr << "ElasticPPMaterial::sendSelf() - failed to send data" << endln;
@@ -297,7 +296,7 @@ ElasticPPMaterial::recvSelf(int cTag, Channel &theChannel,
 				 FEM_ObjectBroker &theBroker)
 {
   int res = 0;
-  static Vector data(10);//editted by SAJalali for EnergyP
+  static Vector data(9);//editted by SAJalali for EnergyP
   res = theChannel.recvVector(this->getDbTag(), cTag, data);
   if (res < 0) 
     opserr << "ElasticPPMaterial::recvSelf() - failed to recv data" << endln;
@@ -310,8 +309,7 @@ ElasticPPMaterial::recvSelf(int cTag, Channel &theChannel,
     fyn   = data(5);  
     commitStrain=data(6);
     commitStress=data(7);
-    commitTangent=data(8);
-	EnergyP = data(9);//SAJalali
+	EnergyP = data(8);//SAJalali
     trialStrain = commitStrain;
     trialStress = commitStress;
   }

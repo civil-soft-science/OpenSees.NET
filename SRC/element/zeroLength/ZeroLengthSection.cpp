@@ -86,11 +86,11 @@ void* OPS_ZeroLengthSection()
 	    return 0;
 	  }	    	      
 	  numData = 3;
-	  if(OPS_GetDoubleInput(&numData,x_ptr) < 0) {
+	  if(OPS_GetDoubleInput(numData,x_ptr) < 0) {
 	    opserr<<"WARNING zeroLengthSection invalid double inputs for x axis" << endln;
 	    return 0;
 	  }
-	  if(ndm == 3 && OPS_GetDoubleInput(&numData,y_ptr) < 0) {
+	  if(ndm == 3 && OPS_GetDoubleInput(numData,y_ptr) < 0) {
 	    opserr<<"WARNING zeroLengthSection invalid double inputs for y axis" << endln;
 	    return 0;
 	  }

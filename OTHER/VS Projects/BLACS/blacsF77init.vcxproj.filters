@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igesd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\itrsd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igerv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\itrrv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igebs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igebr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\itrbs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\itrbr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igsum2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igamx2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\igamn2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgesd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\strsd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgerv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\strrv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgebs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgebr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\strbs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\strbr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgsum2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgamx2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sgamn2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgesd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dtrsd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgerv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dtrrv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgebs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgebr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dtrbs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dtrbr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgsum2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgamx2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dgamn2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgesd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ctrsd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgerv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ctrrv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgebs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgebr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ctrbs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ctrbr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgsum2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgamx2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\cgamn2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgesd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ztrsd2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgerv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ztrrv2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgebs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgebr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ztrbs2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ztrbr2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgsum2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgamx2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\zgamn2d_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_setup_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_set_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_get_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_abort_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_exit_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_pnum_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_pcoord_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\ksendid_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\krecvid_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\kbsid_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\kbrid_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dcputime00_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\dwalltime00_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_pinfo_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_init_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_map_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_free_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_grid_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_info_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs_barr_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\sys2blacs_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\blacs2sys_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\free_handle_.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3E844D9B-914A-3AAB-8484-16003ABAD60E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

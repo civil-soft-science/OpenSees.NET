@@ -502,7 +502,8 @@ float sdot(int n, float *x, float *y)
 /*************************************************************************
 * This function computes a 2-norm
 **************************************************************************/
-/* FMK - a lapack routine
+/* FMK - a lapack routine*/
+#ifdef _PARALLEL_PROCESSING
 void saxpy(int n, float alpha, float *x, int incx, float *y, int incy)
 {
   int i;
@@ -510,7 +511,8 @@ void saxpy(int n, float alpha, float *x, int incx, float *y, int incy)
   for (i=0; i<n; i++, x+=incx, y+=incy) 
     *y += alpha*(*x);
 }
-*/
+#endif // _PARALLEL_PROCESSING
+
 
 
 

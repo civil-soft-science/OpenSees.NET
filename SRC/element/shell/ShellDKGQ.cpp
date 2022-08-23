@@ -122,7 +122,7 @@ OPS_ShellDKGQ(const ID& info)
 	// get secTag
 	int numdata = 1;
 	int secTag;
-	if (OPS_GetIntInput(&numdata, &secTag) < 0) {
+	if (OPS_GetIntInput(numdata, &secTag) < 0) {
 	    opserr << "WARNING: failed to get section tag -- ShellDKGQ\n";
 	    return 0;
 	}

@@ -1,0 +1,360 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0723D792-791C-38C4-AC81-8B62C153E55F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>blacs</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">blacs.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">blacs</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\MPICH2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /QxHost</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CDEFS;Add_;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CDEFS;Add_;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\MPICH2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\MPICH2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule I:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects/_deps/scalapack-src/BLACS/SRC/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SI:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake" "-BI:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects" --check-stamp-file "I:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects/_deps/scalapack-build/BLACS/SRC/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_HypBS.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_HypBR.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_IdringBS.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_IdringBR.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_MpathBS.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_MpathBR.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_SringBS.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_SringBR.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_TreeBS.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_TreeBR.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Ssend.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Rsend.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Srecv.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Asend.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Arecv.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_TreeComb.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_BeComb.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_MringComb.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ArgCheck.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_TransDist.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_GetBuff.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_UpdateBuffs.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_EmergencyBuff.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_BlacsErr.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_BlacsWarn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_BlacsAbort.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_BuffIsFree.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_imvcopy.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivmcopy.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Pack.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_Unpack.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_GetMpiGeType.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_GetMpiTrType.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivvsum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivvamx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivvamx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivvamn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ivvamn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_iMPI_amx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_iMPI_amx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_iMPI_amn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_iMPI_amn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_ContxtNum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_GlobalVars.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_TransUserComm.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svvsum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svvamx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svvamx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svvamn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svvamn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_sMPI_amx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_sMPI_amx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_sMPI_amn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_sMPI_amn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvvsum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvvamx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvvamx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvvamn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvvamn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dMPI_amx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dMPI_amx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dMPI_amn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dMPI_amn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cvvsum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cvvamx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cvvamx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cvvamn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cvvamn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cMPI_amx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cMPI_amx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cMPI_amn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cMPI_amn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_cMPI_sum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zvvsum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zvvamx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zvvamx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zvvamn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zvvamn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zMPI_amx.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zMPI_amx2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zMPI_amn.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zMPI_amn2.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_zMPI_sum.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_smvcopy.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_svmcopy.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dmvcopy.c" />
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-src\BLACS\SRC\BI_dvmcopy.c" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\itrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\itrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\itrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\itrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\igamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\strsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\strrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\strbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\strbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dtrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dtrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dtrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dtrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ctrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ctrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ctrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ctrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\cgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ztrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ztrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ztrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ztrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\zgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_setup_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_set_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_get_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_abort_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_exit_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_pnum_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_pcoord_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\ksendid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\krecvid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\kbsid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\kbrid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dcputime00_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\dwalltime00_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_pinfo_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_init_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_map_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_free_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_grid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_info_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs_barr_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\sys2blacs_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\blacs2sys_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.dir\$(Configuration)\free_handle_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\itrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\itrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\itrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\itrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\igamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\strsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\strrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\strbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\strbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dtrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dtrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dtrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dtrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ctrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ctrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ctrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ctrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\cgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgesd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ztrsd2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgerv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ztrrv2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgebs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgebr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ztrbs2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ztrbr2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgsum2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgamx2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\zgamn2d_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_setup_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_set_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_get_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_abort_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_exit_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_pnum_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_pcoord_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\ksendid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\krecvid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\kbsid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\kbrid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dcputime00_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\dwalltime00_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_pinfo_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_init_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_map_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_free_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_grid_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_info_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs_barr_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\sys2blacs_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\blacs2sys_.obj" />
+    <Object Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.dir\$(Configuration)\free_handle_.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\ZERO_CHECK.vcxproj">
+      <Project>{3ED61779-15C4-31C9-87A7-5B7427F53A78}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsCinit.vcxproj">
+      <Project>{9359BD46-2462-3340-8B20-3822A49B4642}</Project>
+      <Name>blacsCinit</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\scalapack-build\BLACS\SRC\blacsF77init.vcxproj">
+      <Project>{5AA5967D-EBF3-3B07-87D0-36E5B8519299}</Project>
+      <Name>blacsF77init</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

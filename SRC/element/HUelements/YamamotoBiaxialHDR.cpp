@@ -125,7 +125,7 @@ void* OPS_YamamotoBiaxialHDR()
 	}
 
 	// Tp
-	if (OPS_GetIntInput(&numdata, &Tp) < 0) {
+	if (OPS_GetIntInput(numdata, &Tp) < 0) {
 	    opserr << "WARNING invalid YamamotoBiaxialHDR Tp" << endln;
 	    ifNoError = false;
 	}

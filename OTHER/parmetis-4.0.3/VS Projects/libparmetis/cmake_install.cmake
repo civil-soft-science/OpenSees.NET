@@ -1,8 +1,8 @@
-# Install script for directory: F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/libparmetis
+# Install script for directory: I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/libparmetis
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/ParMETIS")
+  set(CMAKE_INSTALL_PREFIX "ParMETIS")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,14 +33,8 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/Debug/parmetis.lib")
-  elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/Release/parmetis.lib")
-  elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/MinSizeRel/parmetis.lib")
-  elseif("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/RelWithDebInfo/parmetis.lib")
+  if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/Release/parmetis.lib")
   endif()
 endif()
 

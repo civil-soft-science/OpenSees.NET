@@ -53,12 +53,12 @@ void* OPS_LayeredShellFiberSectionThermal()
     NDMaterial **theMats;
 
     int numdata = 1;
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	opserr << "WARNING invalid section LayeredShellThermal tag" << endln;
 	return 0;
     }
 
-    if (OPS_GetIntInput(&numdata, &nLayers) < 0) {
+    if (OPS_GetIntInput(numdata, &nLayers) < 0) {
 	opserr << "WARNING invalid nLayers" << endln;
 	opserr << "LayeredShellThermal section: " << tag << endln;	    	    
 	return 0;
@@ -77,12 +77,12 @@ void* OPS_LayeredShellFiberSectionThermal()
     // over the layers
     if (OPS_GetNumRemainingInputArgs() == 2) {
       
-      if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+      if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	opserr << "WARNING invalid matTag" << endln;
 	opserr << "LayeredShellThermal section: " << tag << endln;
 	return 0;
       }
-      if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+      if (OPS_GetDoubleInput(numdata, &h) < 0) {
 	opserr << "WARNING invalid thickness" << endln;
 	opserr << "LayeredShellThermal section: " << tag << endln;
 	return 0;
@@ -104,7 +104,7 @@ void* OPS_LayeredShellFiberSectionThermal()
 	  opserr << "WARNING must provide "<<2*nLayers<<"inputs\n";
 	  return 0;
 	}
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	  opserr << "WARNING invalid matTag" << endln;
 	  opserr << "LayeredShellThermal section: " << tag << endln;
 	  return 0;
@@ -118,7 +118,7 @@ void* OPS_LayeredShellFiberSectionThermal()
 	  return 0;
 	}
 	
-	if (OPS_GetDoubleInput(&numdata, &h) < 0) {
+	if (OPS_GetDoubleInput(numdata, &h) < 0) {
 	  opserr << "WARNING invalid h" << endln;
 	  opserr << "LayeredShellThermal section: " << tag << endln;	    	    
 	  return 0;

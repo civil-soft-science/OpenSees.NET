@@ -71,7 +71,7 @@ void* OPS_NDFiberSection3d()
 	if (OPS_GetNumRemainingInputArgs() < 1)
 	  break;
 	numData = 1;
-	if (OPS_GetDoubleInput(&numData,&alpha) < 0)
+	if (OPS_GetDoubleInput(numData,&alpha) < 0)
 	  return 0;
       }
     }

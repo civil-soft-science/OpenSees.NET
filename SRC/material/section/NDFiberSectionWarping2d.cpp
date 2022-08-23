@@ -60,7 +60,7 @@ void* OPS_NDFiberSectionWarping2d()
 
     numData = 1;
     int tag;
-    if (OPS_GetIntInput(&numData,&tag) < 0) return 0;
+    if (OPS_GetIntInput(numData,&tag) < 0) return 0;
 
     double alpha = 1.0;
     bool computeCentroid = true;
@@ -72,7 +72,7 @@ void* OPS_NDFiberSectionWarping2d()
 	if (OPS_GetNumRemainingInputArgs() < 1)
 	  break;
 	numData = 1;
-	if (OPS_GetDoubleInput(&numData,&alpha) < 0)
+	if (OPS_GetDoubleInput(numData,&alpha) < 0)
 	  return 0;
       }
     }

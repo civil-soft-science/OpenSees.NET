@@ -107,7 +107,8 @@ ${a}sol_root_parallel.F ${a}tools.F ${a}type3_root.F
 
 set(CINT_SRC mumps_c.c)
 
-add_library(${a}mumps ${CINT_SRC} ${SRC} ${SRC_OTHER})
+# add_library(${a}mumps ${CINT_SRC} ${SRC} ${SRC_OTHER})
+add_library(${a}mumps ${SRC} ${SRC_OTHER})
 if(_memfree LESS 1000)  # < 1GB RAM free
   set_target_properties(${a}mumps PROPERTIES JOB_POOL_COMPILE Njobs)
 endif()

@@ -238,7 +238,7 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 					 epsmin = epsP;
 					 sigmin = sigP;
 				}
-				if (cyclicFlagP == 1)
+				if (cyclicFlagP == 1)			//bilinear
 				{
 					 kon = 1;
 					 epss0 = (FydP - EshP * epsyP - sigr + E0 * epsr) / (E0 - EshP);
@@ -253,10 +253,10 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 					 double rotrel = epspl;
 					 double rotmp2 = epsmax - (1.0 - pinchYP) * sigmax / E0;
 					 double rotch = rotrel + (rotmp2 - rotrel) * pinchXP;
-					 epss0 = rotch;
-					 sigs0 = pinchYP * sigmax;
+					 epss0 = epspl;
+					 sigs0 = 0; 
 					 double e1 = (sigs0 - sigr) / (epss0 - epsr);
-					 double e2 = (1 - pinchYP) * sigmax / (epsmax - epss0);
+					 double e2 = (1-pinchYP) * sigmax / (rotch - epspl);
 					 b2 = e2 / e1;
 					 kon = 5;
 				}
@@ -277,18 +277,28 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 					 R = R0 * 2;
 				}
 				else {
-					 kon = 6;
+					sigmin = negEnvlpStress(epsmin);
+					double rotrel = epspl;
+					double rotmp2 = epsmin - (1.0 - pinchYN) * sigmin / E0;
+					double rotch = rotrel + (rotmp2 - rotrel) * pinchXN;
+					epss0 = epspl;
+					sigs0 = 0;
+					double e1 = (sigs0 - sigr) / (epss0 - epsr);
+					double e2 = (1 - pinchYN) * sigmin / (rotch - epss0);
+					b2 = e2 / e1;
+					kon = 6;
 				}
 
 		  }
 
 	 }
 	 if (kon == 2) {
-		  if (eps < -(epspN + epsyN) / 2 + epspl)
+		 double eps1 = -(epspN + epsyN) / 2;
+		 if (eps <  eps1)
 		  {
-				epss0 = -epspN + epspl;
+				epss0 = -epspN;
 				sigs0 = -FcN;
-				epsr = epsP;
+				epsr = eps1;
 				sigr = sigP;
 				double e1 = (sigs0 - sigr) / (epss0 - epsr);
 				b2 = bcN * E0 / e1;
@@ -296,11 +306,12 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 		  }
 	 }
 	 if (kon == 1) {
-		  if (eps > (epspP + epsyP) / 2)
+		 double eps1 = (epspP + epsyP) / 2;
+		  if (eps > eps1)
 		  {
 				epss0 = epspP;
 				sigs0 = FcP;
-				epsr = epsP;
+				epsr = eps1;
 				sigr = sigP;
 				double e1 = (sigs0 - sigr) / (epss0 - epsr);
 				b2 = bcP * E0/ e1;
@@ -309,36 +320,52 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 	 }
 	 if (kon == 3)
 	 {
-		  if (eps > (epspP + epspcP)/2.)
+		 double eps1 = (epspP + epspcP) / 2.;
+		  if (eps > eps1)
 		  {
 				epss0 = epspcP;
 				sigs0 = resFacP*Fyp;
-				epsr = epsP;
+				epsr = eps1;
 				sigr = sigP;
 				double e1 = (sigs0 - sigr) / (epss0 - epsr);
-				b2 = 1.e-12 * E0 / e1;
+				b2 = 1.e-6 * E0 / e1;
 				R = R0 / 4;
 				kon = 9;
 		  }
 	 }
 	 if (kon == 4)
 	 {
-		  
-		  if (eps < -(epspN + epspcN)/2. + epspl)
+		 double eps1 = -(epspN + epspcN) / 2.;
+		  if (eps < eps1)
 		  {
-				epss0 = -epspcN + epspl;
+				epss0 = -epspcN;
 				sigs0 = -resFacN*Fyn;
-				epsr = epsP;
+				epsr = eps1;
 				sigr = sigP;
 				double e1 = (sigs0 - sigr) / (epss0 - epsr);
 				//double e1 = bcN*E0;
 				b2 = 1.e-12 * E0 / e1;
 				R = R0 / 2;
-				kon = 8;
+				kon = 10;
 		  }
 	 }
 	 if (kon == 5) {
-		  if (eps > (epsmax + epss0) / 2)
+		 double rotrel = epspl;
+		 double rotmp2 = epsmax - (1.0 - pinchYP) * sigmax / E0;
+		 double rotch = rotrel + (rotmp2 - rotrel) * pinchXP;
+		 if (eps > (epss0 + rotch)/2)
+		  {
+				epss0 = rotch;
+				sigs0 = (1- pinchYP)*sigmax;
+				epsr = epsP;
+				sigr = sigP;
+				double e1 = (sigs0 - sigr) / (epss0 - epsr);
+				b2 = pinchYP*sigmax/(epsmax-rotch) / e1;
+				kon = 7;
+		  }
+	 }
+	 if (kon == 7) {
+		 if (eps > (epsmax + epss0) / 2)
 		  {
 				epss0 = epsmax;
 				sigs0 = sigmax;
@@ -346,35 +373,55 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 				sigr = sigP;
 				double e1 = (sigs0 - sigr) / (epss0 - epsr);
 				b2 = bP * E0 / e1;
-				kon = 7;
+				kon = 1;
 				if (epsmax  > epspcP )
 				{
-					 b2 = 1.e-12 * E0 / e1;//
+					 b2 = 1.e-12 * E0 / e1;
 					 kon = 9;
 				}
 				else if (epsmax  > epspP )
 				{
-					 b2 = bcP * E0 / e1;//
+					 b2 = bcP * E0 / e1;
 					 kon = 3;
 				}
 		  }
 	 }
 	 if (kon == 6) {
-		  opserr << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+		 double rotrel = epspl;
+		 double rotmp2 = epsmin - (1.0 - pinchYN) * sigmin / E0;
+		 double rotch = rotrel + (rotmp2 - rotrel) * pinchXN;
+		 if (eps < (epss0 + rotch) / 2)
+		 {
+			 epss0 = rotch;
+			 sigs0 = (1 - pinchYN) * sigmin;
+			 epsr = epsP;
+			 sigr = sigP;
+			 double e1 = (sigs0 - sigr) / (epss0 - epsr);
+			 b2 = pinchYN * sigmin / (epsmin - rotch) / e1;
+			 kon = 8;
+		 }
 	 }
-	 if (kon == 7) {
-		  if (epsmax > (epsyP+epspP)/2.)
-		  if ((eps - epsr) / (epss0 - epsr) > 1.2)
-		  {
-				epss0 = epspP;
-				sigs0 = FcP;
-				epsr = epsP;
-				sigr = sigP;
-				double e1 = (sigs0 - sigr) / (epss0 - epsr);
-				b2 = bcP * E0 / e1;
-				kon = 3;
-		  }
-		  
+	 if (kon == 8) {
+		 if (eps < (epsmin + epss0) / 2)
+		 {
+			 epss0 = epsmin;
+			 sigs0 = sigmin;
+			 epsr = epsP;
+			 sigr = sigP;
+			 double e1 = (sigs0 - sigr) / (epss0 - epsr);
+			 b2 = bN * E0 / e1;
+			 kon = 2;
+			 if (epsmin < -epspcN)
+			 {
+				 b2 = 1.e-12 * E0 / e1;
+				 kon = 10;
+			 }
+			 else if (epsmin < -epspN)
+			 {
+				 b2 = bcN * E0 / e1;
+				 kon = 4;
+			 }
+		 }
 	 }
 	 // calculate current stress sig and tangent modulus E 
 	 const double epsrat = (eps - epsr) / (epss0 - epsr);

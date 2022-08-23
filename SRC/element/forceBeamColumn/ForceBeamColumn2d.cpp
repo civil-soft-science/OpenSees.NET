@@ -437,12 +437,12 @@ OPS_BeamWithHinges(void)
     if (strcmp(type,"-iter") == 0) {
       numOptionalArgs++;
       if(OPS_GetNumRemainingInputArgs() > 1) {
-	if(OPS_GetIntInput(&numData,&maxIter) < 0) {
+	if(OPS_GetIntInput(numData,&maxIter) < 0) {
 	  opserr << "ERROR beamWithHinges - invalid maxIter input" << endln;
 	  return 0;
 	}
 	numOptionalArgs++;		
-	if(OPS_GetDoubleInput(&numData,&tol) < 0) {
+	if(OPS_GetDoubleInput(numData,&tol) < 0) {
 	  opserr << "ERROR beamWithHinges - invalid tolerance input" << endln;
 	  return 0;
 	}
@@ -453,7 +453,7 @@ OPS_BeamWithHinges(void)
     if (strcmp(type,"-mass") == 0) {
       numOptionalArgs++;
       if(OPS_GetNumRemainingInputArgs() > 0) {
-	if(OPS_GetDoubleInput(&numData,&mass) < 0) {
+	if(OPS_GetDoubleInput(numData,&mass) < 0) {
 	  opserr << "ERROR beamWithHinges - invalid mass input" << endln;
 	  return 0;
 	}
@@ -477,26 +477,26 @@ OPS_BeamWithHinges(void)
   // inputs: 
   int iData[6];
   numData = 3;
-  if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+  if(OPS_GetIntInput(numData,&iData[0]) < 0) {
     opserr << "ERROR beamWithHinges - invalid int inputs" << endln;
     return 0;
   }
 
   numData = 1;
   double lpI,lpJ;
-  if(OPS_GetIntInput(&numData,&iData[3]) < 0) {
+  if(OPS_GetIntInput(numData,&iData[3]) < 0) {
     opserr << "ERROR beamWithHinges - invalid secTagI input" << endln;
     return 0;
   }
-  if(OPS_GetDoubleInput(&numData,&lpI) < 0) {
+  if(OPS_GetDoubleInput(numData,&lpI) < 0) {
     opserr << "ERROR beamWithHinges - invalid lpI input" << endln;
     return 0;
   }
-  if(OPS_GetIntInput(&numData,&iData[4]) < 0) {
+  if(OPS_GetIntInput(numData,&iData[4]) < 0) {
     opserr << "ERROR beamWithHinges - invalid secTagJ input" << endln;
     return 0;
   }
-  if(OPS_GetDoubleInput(&numData,&lpJ) < 0) {
+  if(OPS_GetDoubleInput(numData,&lpJ) < 0) {
     opserr << "ERROR beamWithHinges - invalid lpJ input" << endln;
     return 0;
   }
@@ -506,7 +506,7 @@ OPS_BeamWithHinges(void)
     numData = 3;
   if (ndm == 3)
     numData = 6;  
-  if (OPS_GetDoubleInput(&numData, dData) < 0) {
+  if (OPS_GetDoubleInput(numData, dData) < 0) {
     opserr << "ERROR beamWithHinges - invalid E,A,I,etc. input" << endln;
     return 0;
   }
@@ -541,7 +541,7 @@ OPS_BeamWithHinges(void)
 
   
   numData = 1;
-  if(OPS_GetIntInput(&numData,&iData[5]) < 0) {
+  if(OPS_GetIntInput(numData,&iData[5]) < 0) {
     opserr << "ERROR beamWithHinges - invalid transfTag input" << endln;
     return 0;
   }

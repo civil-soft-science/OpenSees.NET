@@ -77,14 +77,14 @@ void* OPS_ElasticPlaneStress(void)
   double dData[3];
 
   int numData = 1;
-  if (OPS_GetInt(&numData, iData) != 0) {
+  if (OPS_GetInt(numData, iData) != 0) {
     opserr << "WARNING invalid integer values: nDMaterial ElasticPlaneStress \n";
     return 0;
   }  
   tag = iData[0]; 
 
   numData = 3;  
-  if (OPS_GetDouble(&numData, dData) != 0) {
+  if (OPS_GetDouble(numData, dData) != 0) {
       opserr << "WARNING invalid double values: nDMaterial ElasticPlaneStress " << tag << endln;
     return 0;
   }  
