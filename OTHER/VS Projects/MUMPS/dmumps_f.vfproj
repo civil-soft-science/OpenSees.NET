@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectType="typeStaticLibrary" ProjectCreator="Intel Fortran" Keyword="Static Library" Version="11.0" ProjectIdGuid="{0777650B-A5F8-3CD9-8E47-E6EDD8AFDA52}">
+	<Platforms>
+		<Platform Name="x64"/></Platforms>
+	<Configurations>
+		<Configuration Name="Release|x64" OutputDirectory="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\Release" IntermediateDirectory="dmumps.dir\Release" TargetName="dmumps" ConfigurationType="typeStaticLibrary">
+				<Tool Name="VFFortranCompilerTool" AdditionalOptions="/warn:declarations /heap-arrays /O2 /QxHost" SuppressStartupBanner="true" Preprocess="preprocessYes" AdditionalIncludeDirectories="&quot;I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\include&quot;;&quot;I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\src\include&quot;;&quot;I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\PORD\include&quot;;&quot;C:\Program Files\MPICH2\include&quot;;C:\Program Files\MPICH2\include/$(ConfigurationName)" PreprocessorDefinitions=";NDEBUG;CDEFS;Add_;CMAKE_INTDIR=\&quot;Release\&quot;" F77RuntimeCompatibility="true" F77IntegerConstants="true" ErrorLimit="1" ModulePath=".\$(ConfigurationName)" UseWindowsLibs="true" ExceptionHandling="0"/>
+				<Tool Name="VFLibrarianTool" AdditionalOptions="/machine:x64" OutputFile="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\Release\dmumps.lib"/>
+				<Tool Name="VFResourceCompilerTool" PreprocessorDefinitions=";NDEBUG;CDEFS;Add_;CMAKE_INTDIR=\&quot;Release\&quot;"/>
+				<Tool Name="VFMidlTool" GenerateStublessProxies="true" OutputDirectory="$(IntDir)" HeaderFileName="$(InputName).h" DLLDataFileName="" InterfaceIdentifierFileName="$(InputName)_i.c" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Source Files">
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_aux_ELT.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_aux_par.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_dist_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_LDLT_preprocess.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_lr.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_mtrans.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dana_reordertree.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\darrowheads.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dbcast_int.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dend_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_asm.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_asm_ELT.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_asm_master_ELT_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_asm_master_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_b.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_determinant.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_distrib_distentry.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_distrib_ELT.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_LDLT_type1.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_LDLT_type2.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_LU_type1.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_LU_type2.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_front_type2_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_lastrtnelind.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_lr.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_alloc_cb.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_compress_cb.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_dynamic.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_free_block_cb.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_stack.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_mem_stack_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_omp_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_par_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_band.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_bf.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_blfac_slave.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_blocfacto.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_blocfacto_LDLT.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_contrib_type1.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_contrib_type2.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_contrib_type3.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_end_facto_slave.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_maprow.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_master2.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_message.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_root2slave.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_root2son.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_process_rtnelind.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_root_parallel.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_scalings.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_scalings_simScale_util.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_scalings_simScaleAbs.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_sispointers_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_sol_l0omp_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_sol_pool.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dfac_type3_symmetrize.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dini_defaults.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dini_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dlr_core.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dlr_stats.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dlr_type.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_comm_buffer.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_config_file.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_f77.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_iXamax.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_load.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_lr_data_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_ooc.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_ooc_buffer.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_save_restore.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_save_restore_files.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_sol_es.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dmumps_struc_def.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\domp_tps_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dooc_panel_piv.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\drank_revealing.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_bwd.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_bwd_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_c.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_distrhs.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_driver.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_fwd.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_fwd_aux.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_lr.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_matvec.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_omp_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dsol_root_parallel.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dstatic_ptr_m.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dtools.F"/>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\dtype3_root.F"/></Filter>
+		<File RelativePath="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\CMakeLists.txt">
+			<FileConfiguration Name="Release|x64">
+				<Tool Name="VFCustomBuildTool" CommandLine="setlocal&#xA;&quot;C:\Program Files\CMake\bin\cmake.exe&quot; &quot;-SI:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake&quot; &quot;-BI:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects&quot; --check-stamp-file &quot;I:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects/src/CMakeFiles/generate.stamp&quot;&#xA;if %errorlevel% neq 0 goto :cmEnd&#xA;:cmEnd&#xA;endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone&#xA;:cmErrorLevel&#xA;exit /b %1&#xA;:cmDone&#xA;if %errorlevel% neq 0 goto :VCEnd" Description="Building Custom Rule I:/OmranElmAfzar/OpenSees/OTHER/mumps_5.3.5 with CMake/VS Projects/_deps/lapack-src/CMakeLists.txt" Outputs="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\_deps\lapack-build\CMakeFiles\generate.stamp" AdditionalDependencies="&quot;I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\VS Projects\src\CMakeLists.txt&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\BasicConfigVersion-SameMinorVersion.cmake.in&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CMakePackageConfigHelpers.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CPack.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CPackComponent.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CTest.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CTestTargets.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CTestUseLaunchers.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\CheckFortranSourceCompiles.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\DartConfiguration.tcl.in&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\FeatureSummary.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\Internal\CheckSourceCompiles.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Modules\WriteBasicConfigVersionFile.cmake&quot;;&quot;C:\Program Files\CMake\share\cmake-3.23\Templates\CPackConfig.cmake.in&quot;;"/></FileConfiguration></File></Files>
+	<Globals/></VisualStudioProject>

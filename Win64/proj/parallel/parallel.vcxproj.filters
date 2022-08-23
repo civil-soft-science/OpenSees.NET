@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{7ca25d97-806e-46d8-b95b-e8987fa1ecd2}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{11b1afac-5900-4ff8-b8b0-48907f6107ad}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
@@ -32,6 +28,10 @@
     </Filter>
     <Filter Include="analysis">
       <UniqueIdentifier>{1d7d2502-ead5-4f2a-9e03-cd4b67db6120}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{7ca25d97-806e-46d8-b95b-e8987fa1ecd2}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +114,6 @@
       <Filter>partitioner</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\domain\loadBalancer\LoadBalancer.cpp">
-      <Filter>partitioner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\SRC\graph\partitioner\Metis.cpp">
       <Filter>partitioner</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\domain\loadBalancer\ShedHeaviest.cpp">
@@ -302,6 +299,12 @@
     <ClCompile Include="..\..\..\SRC\analysis\analysis\TransientDomainDecompositionAnalysis.cpp">
       <Filter>analysis</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\graph\partitioner\MetisWrapper.cpp">
+      <Filter>partitioner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\parallel\mumps_c.c">
+      <Filter>external</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\SRC\actor\actor\Actor.h">
@@ -385,9 +388,6 @@
     <ClInclude Include="..\..\..\SRC\domain\loadBalancer\LoadBalancer.h">
       <Filter>partitioner</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SRC\graph\partitioner\Metis.h">
-      <Filter>partitioner</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\SRC\domain\loadBalancer\ShedHeaviest.h">
       <Filter>partitioner</Filter>
     </ClInclude>
@@ -435,6 +435,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\analysis\analysis\TransientDomainDecompositionAnalysis.h">
       <Filter>analysis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\parallel\mumps_common.h">
+      <Filter>external</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

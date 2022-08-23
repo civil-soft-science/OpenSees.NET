@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SuperLU_dist", "SuperLU_dist\SuperLU_dist.vcxproj", "{845D4C21-5FE8-43CB-9389-D8963AC2EAD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{845D4C21-5FE8-43CB-9389-D8963AC2EAD7}.Release|x64.ActiveCfg = Release|x64
+		{845D4C21-5FE8-43CB-9389-D8963AC2EAD7}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F45AA2A2-85A3-454A-BF8B-51F2C8129228}
+	EndGlobalSection
+EndGlobal

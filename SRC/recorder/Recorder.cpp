@@ -35,6 +35,7 @@
 #include <OPS_Globals.h>
 
 int Recorder::lastRecorderTag(0);
+const double Recorder::relDeltaTTol = 1e-5;
 
 Recorder::Recorder(int classTag)
   :MovableObject(classTag), TaggedObject(lastRecorderTag)
