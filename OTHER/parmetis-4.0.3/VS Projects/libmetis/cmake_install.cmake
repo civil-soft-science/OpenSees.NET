@@ -1,8 +1,8 @@
-# Install script for directory: I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/metis/libmetis
+# Install script for directory: F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/metis/libmetis
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "ParMETIS")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/ParMETIS")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

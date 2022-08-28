@@ -40,8 +40,9 @@
 #include <superlu_ddefs.h>
 
 
+
 superlu_options_t options;
-SuperLUStat_t this_stat;
+SuperLUStat_t stat;
 SuperMatrix A;
 ScalePermstruct_t ScalePermstruct;
 LUstruct_t LUstruct;
@@ -152,7 +153,7 @@ DistributedSuperLU::solve(void)
     //
 
     pdgssvx_ABglobal(&options, &A, &ScalePermstruct, Xptr, ldb, nrhs, &grid,
-		     &LUstruct, berr, &this_stat, &info);
+		     &LUstruct, berr, &stat, &info);
 
     if (theSOE->factored == false) {
       options.Fact = FACTORED;      
@@ -211,7 +212,7 @@ DistributedSuperLU::setSize()
   //
   // Initialize the statistics variables.
   //
-  PStatInit(&this_stat);
+  PStatInit(&stat);
   
   //
   // Create compressed column matrix for A. 
@@ -246,7 +247,7 @@ DistributedSuperLU::setSize()
   //
   // Initialize the statistics variables. 
   //
-  PStatInit(&this_stat);
+  PStatInit(&stat);
 
   return 0;
 }

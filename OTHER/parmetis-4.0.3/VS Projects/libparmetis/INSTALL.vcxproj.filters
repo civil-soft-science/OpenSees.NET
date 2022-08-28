@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\VS Projects\CMakeFiles\c6528a540a69ba99047e98af4ecbfa2c\INSTALL_force.rule">
+    <CustomBuild Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\VS Projects\CMakeFiles\adbdf69a83514ec66b84096eec1f8707\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{DD14F38A-3FEB-362A-A2BE-B41708AC0B53}</UniqueIdentifier>
+      <UniqueIdentifier>{05E97A0B-31A3-35BE-8799-ED4515D4BE8A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

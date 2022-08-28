@@ -17,12 +17,12 @@
 **   Filip C. Filippou (filippou@ce.berkeley.edu)                     **
 **                                                                    **
 ** ****************************************************************** */
-
+                                                                        
 // $Revision: 1.72 $
 // $Date: 2010-09-16 00:04:05 $
 // $Source: /usr/local/cvs/OpenSees/SRC/material/uniaxial/TclModelBuilderUniaxialMaterialCommand.cpp,v $
-
-
+                                                                        
+                                                                        
 // Written: fmk, MHS 
 // Created: 07/99
 //
@@ -35,7 +35,7 @@
 
 #include <tcl.h>
 #include <elementAPI.h>
-extern "C" int OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp* interp, int cArg, int mArg, TCL_Char** argv, Domain* domain);
+extern "C" int OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
 
 
 #include <Elastic2Material.h>	// ZHY
@@ -87,18 +87,13 @@ extern "C" int OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp* interp
 
 extern void *OPS_SPSW02(void);		// SAJalali
 #ifdef _CSS
-extern void* OPS_Steel05(void);		// SAJalali
-extern void* OPS_IMKJ(void);		// SAJalali
-extern void* OPS_BucklingStrut(void);		// SAJalali
-extern void* OPS_BucklingMaterial(void);		// SAJalali
-extern void* OPS_ConfinedConcrete02(void);		// SAJalali
+extern void *OPS_Steel05(void);		// SAJalali
+extern void *OPS_IMKJ(void);		// SAJalali
+extern void * OPS_BucklingStrut(void);		// SAJalali
+extern void * OPS_BucklingMaterial(void);		// SAJalali
+extern void * OPS_ConfinedConcrete02(void);		// SAJalali
 #endif
-extern void* OPS_TDConcreteEXP(void); // ntosic
-extern void* OPS_TDConcrete(void); // ntosic
-extern void* OPS_TDConcreteMC10(void); //ntosic
-extern void* OPS_TDConcreteMC10NL(void); //ntosicextern void *OPS_ElasticMaterial(void);
-extern void* OPS_ECC01(void);
-extern void* OPS_ElasticMaterial(void);
+extern void *OPS_ElasticMaterial(void);
 extern void *OPS_ElasticPPMaterial(void);
 extern void *OPS_EPPGapMaterial(void);
 extern void *OPS_ParallelMaterial(void);
@@ -189,8 +184,8 @@ extern void *OPS_ElasticPowerFunc(void);
 extern void *OPS_UVCuniaxial(void);
 extern void *OPS_DegradingPinchedBW(void);
 extern void* OPS_BoucWenInfill(void);  // S. Sirotti  18-January-2022  e-mail: stefano.sirotti@unimore.it
-extern void* OPS_SLModel(void);
-extern void* OPS_SMAMaterial(void);
+extern void *OPS_SLModel(void);
+extern void *OPS_SMAMaterial(void);
 extern void* OPS_HystereticPoly(void); // Salvatore Sessa 14-Jan-2021 Mail: salvatore.sessa2@unina.it
 extern void *OPS_Masonry(void);
 extern void *OPS_Trilinwp(void);
@@ -206,26 +201,26 @@ extern void *OPS_MultiplierMaterial(void);
 extern UniaxialMaterial *
 Tcl_AddLimitStateMaterial(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **arg);
 
-extern UniaxialMaterial* Tcl_addWrapperUniaxialMaterial(matObj*, ClientData clientData, Tcl_Interp* interp,
-	int argc, TCL_Char** argv);
+extern UniaxialMaterial *Tcl_addWrapperUniaxialMaterial(matObj *, ClientData clientData, Tcl_Interp *interp,
+							int argc, TCL_Char **argv);
 
 #include <packages.h>
 
 typedef struct uniaxialPackageCommand {
-	char* funcName;
-	void* (*funcPtr)();
-	struct uniaxialPackageCommand* next;
+  char *funcName;
+  void * (*funcPtr)(); 
+  struct uniaxialPackageCommand *next;
 } UniaxialPackageCommand;
 
-static UniaxialPackageCommand* theUniaxialPackageCommands = NULL;
+static UniaxialPackageCommand *theUniaxialPackageCommands = NULL;
 
-static void printCommand(int argc, TCL_Char** argv)
+static void printCommand(int argc, TCL_Char **argv)
 {
-	opserr << "Input command: ";
-	for (int i = 0; i < argc; i++)
-		opserr << argv[i] << " ";
-	opserr << endln;
-}
+    opserr << "Input command: ";
+    for (int i=0; i<argc; i++)
+	opserr << argv[i] << " ";
+    opserr << endln;
+} 
 
 
 // external functions
@@ -247,56 +242,56 @@ UniaxialMaterial *
 TclModelBuilder_addFedeasMaterial(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
 				  
 
-UniaxialMaterial*
-TclModelBuilder_addDrainMaterial(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv);
+UniaxialMaterial *
+TclModelBuilder_addDrainMaterial(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
+				 
 
+UniaxialMaterial *
+TclModelBuilder_addSnapMaterial(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
+				
 
-UniaxialMaterial*
-TclModelBuilder_addSnapMaterial(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv);
+UniaxialMaterial *
+TclModelBuilder_addPyTzQzMaterial(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv, Domain *theDomain);
 
+UniaxialMaterial *
+TclModelBuilder_FRPCnfinedConcrete(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv, Domain *theDomain);
 
-UniaxialMaterial*
-TclModelBuilder_addPyTzQzMaterial(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv, Domain* theDomain);
-
-UniaxialMaterial*
-TclModelBuilder_FRPCnfinedConcrete(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv, Domain* theDomain);
-
-UniaxialMaterial*
-TclModelBuilder_addDegradingMaterial(ClientData, Tcl_Interp*, int, TCL_Char**);
+UniaxialMaterial *
+TclModelBuilder_addDegradingMaterial(ClientData, Tcl_Interp *, int , TCL_Char **);				  
 
 
 int
-TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv, Domain* theDomain)
+TclModelBuilderUniaxialMaterialCommand (ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv, Domain *theDomain)
 {
+  
+  // Make sure there is a minimum number of arguments
+    if (argc < 3) {
+	opserr << "WARNING insufficient number of uniaxial material arguments\n";
+	opserr << "Want: uniaxialMaterial type? tag? <specific material args>" << endln;
+	return TCL_ERROR;
+    }
 
-	// Make sure there is a minimum number of arguments
-	if (argc < 3) {
-		opserr << "WARNING insufficient number of uniaxial material arguments\n";
-		opserr << "Want: uniaxialMaterial type? tag? <specific material args>" << endln;
-		return TCL_ERROR;
-	}
+    OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, theDomain);	  
 
-	OPS_ResetInputNoBuilder(clientData, interp, 2, argc, argv, theDomain);
+    // Pointer to a uniaxial material that will be added to the model builder
+    UniaxialMaterial *theMaterial = 0;
 
-	// Pointer to a uniaxial material that will be added to the model builder
-	UniaxialMaterial* theMaterial = 0;
+    // Check argv[2] for uniaxial material type
+    if (strcmp(argv[1],"Elastic") == 0) {
 
-	// Check argv[2] for uniaxial material type
-	if (strcmp(argv[1], "Elastic") == 0) {
+      void *theMat = OPS_ElasticMaterial();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
 
-		void* theMat = OPS_ElasticMaterial();
-		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
-		else
-			return TCL_ERROR;
-
-	}
-
+    }
+	
 	// SAJalali
 	if (strcmp(argv[1], "SPSW02") == 0) {
-		void* theMat = OPS_SPSW02();
+		void *theMat = OPS_SPSW02();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 	}
@@ -489,11 +484,11 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 
     } else if ((strcmp(argv[1],"SimpleFractureMaterial") == 0) || (strcmp(argv[1],"SimpleFracture") == 0)) {
 
-		void* theMat = OPS_SimpleFractureMaterial();
-		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
-		else
-			return TCL_ERROR;
+      void *theMat = OPS_SimpleFractureMaterial();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
 
     } else if ((strcmp(argv[1],"Maxwell") == 0) || (strcmp(argv[1],"MaxwellMaterial") == 0)) {
       void *theMat = OPS_Maxwell();
@@ -541,20 +536,20 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	       (strcmp(argv[1],"DoddRestrepo") == 0) || 
 	       (strcmp(argv[1],"Restrepo") == 0)) {
 
-		void* theMat = OPS_Dodd_Restrepo();
-		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
-		else
-			return TCL_ERROR;
+      void *theMat = OPS_Dodd_Restrepo();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
 
 #ifndef _NO_NEW_RESTREPO
 	} else if ((strcmp(argv[1],"DoddRestr") == 0)) {
 
-		void* theMat = OPS_DoddRestr();
-		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
-		else
-			return TCL_ERROR;
+      void *theMat = OPS_DoddRestr();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
 #endif
     } else if (strcmp(argv[1],"ElasticMultiLinear") == 0) {
       void *theMat = OPS_ElasticMultiLinear();
@@ -609,7 +604,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
     } else if (strcmp(argv[1], "SteelDRC") == 0) {
 		void *theMat = OPS_SteelDRC();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 	} else if (strcmp(argv[1],"Steel2") == 0) {
@@ -797,7 +792,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	else if (strcmp(argv[1], "SteelECThermal") == 0) {
 		void *theMat = OPS_SteelECThermal();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 		//------End of adding identity for SteelEcThermal	
@@ -805,7 +800,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	else if (strcmp(argv[1], "StainlessECThermal") == 0) {
 		void *theMat = OPS_StainlessECThermal();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 		//------End of adding identity for StainlessECThermal
@@ -813,14 +808,14 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	else if (strcmp(argv[1], "ElasticThermal") == 0) {
 		void *theMat = OPS_ElasticMaterialThermal();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 
 	} else if (strcmp(argv[1], "ConcreteECThermal") == 0) {
 		void *theMat = OPS_ConcreteECThermal();
 		if (theMat != 0)
-			theMaterial = (UniaxialMaterial*)theMat;
+			theMaterial = (UniaxialMaterial *)theMat;
 		else
 			return TCL_ERROR;
 		// end of adding More thermo-mechanical uniaxial materials, L.Jiang[SIF]
@@ -1735,7 +1730,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
     else if (strcmp(argv[1],"Pinching4") == 0) {
 		if (argc != 42 && argc != 31 ) {
 			opserr << "WARNING insufficient arguments\n";
-			printCommand(argc, argv);
+			printCommand(argc,argv);
 			opserr << "Want: uniaxialMaterial Pinching4 tag? stress1p? strain1p? stress2p? strain2p? stress3p? strain3p? stress4p? strain4p? "
 				<< "\n<stress1n? strain1n? stress2n? strain2n? stress3n? strain3n? stress4n? strain4n?> rDispP? rForceP? uForceP? "
 				<< "\n<rDispN? rForceN? uForceN?> gammaK1? gammaK2? gammaK3? gammaK4? gammaKLimit? gammaD1? gammaD2? gammaD3? gammaD4? "
@@ -1857,9 +1852,9 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 				opserr << "Pinching4 material: " << tag << endln;
 				return TCL_ERROR;
 			}
-
+		
 		}
-
+		
 
 		if (Tcl_GetDouble(interp, argv[i++], &rDispP) != TCL_OK) {
 			opserr << "WARNING invalid rDispP\n";
@@ -1928,7 +1923,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 			opserr << "WARNING invalid gammaD1\n";
 			opserr << "Pinching4 material: " << tag << endln;
 			return TCL_ERROR;
-		}
+		}										   
 		if (Tcl_GetDouble(interp, argv[i++], &gammaD2) != TCL_OK) {
 			opserr << "WARNING invalid gammaD2\n";
 			opserr << "Pinching4 material: " << tag << endln;
@@ -1981,17 +1976,13 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 			return TCL_ERROR;
 		}
 
-		int y;
+		int y; 
 		y = i;
 
-		if ((strcmp(argv[y], "cycle") == 0) || (strcmp(argv[y], "Cycle") == 0) || (strcmp(argv[y], "DamageCycle") == 0) || (strcmp(argv[y], "damageCycle") == 0))
-		{
-			tDmg = 1;
-		}
-		else if ((strcmp(argv[y], "energy") == 0) || (strcmp(argv[y], "Energy") == 0) || (strcmp(argv[y], "DamageEnergy") == 0) || (strcmp(argv[y], "damageEnergy") == 0))
-		{
-			tDmg = 0;
-		}
+		if ((strcmp(argv[y],"cycle") == 0) || (strcmp(argv[y],"Cycle") == 0) || (strcmp(argv[y],"DamageCycle") == 0) || (strcmp(argv[y],"damageCycle") == 0))
+		{ tDmg = 1; }
+		else if ((strcmp(argv[y],"energy") == 0) || (strcmp(argv[y],"Energy") == 0) || (strcmp(argv[y],"DamageEnergy") == 0) || (strcmp(argv[y],"damageEnergy") == 0))
+		{ tDmg = 0; }
 		else
 		{
 			opserr << "WARNING invalid type of damage calculation specified\n";
@@ -1999,23 +1990,23 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 			return TCL_ERROR;
 		}
 
-		// allocate the pinching material
+	// allocate the pinching material
 		if (argc == 42) {
-			theMaterial = new Pinching4Material(tag,
-				stress1p, strain1p, stress2p, strain2p, stress3p, strain3p, stress4p, strain4p,
-				stress1n, strain1n, stress2n, strain2n, stress3n, strain3n, stress4n, strain4n,
-				rDispP, rForceP, uForceP, rDispN, rForceN, uForceN,
-				gammaK1, gammaK2, gammaK3, gammaK4, gammaKLimit,
-				gammaD1, gammaD2, gammaD3, gammaD4, gammaDLimit,
-				gammaF1, gammaF2, gammaF3, gammaF4, gammaFLimit, gammaE, tDmg);
+		theMaterial = new Pinching4Material (tag,
+			stress1p, strain1p, stress2p, strain2p, stress3p, strain3p, stress4p, strain4p,
+			stress1n, strain1n, stress2n, strain2n, stress3n, strain3n, stress4n, strain4n,
+			rDispP, rForceP, uForceP, rDispN, rForceN, uForceN, 
+			gammaK1, gammaK2, gammaK3, gammaK4, gammaKLimit,
+			gammaD1, gammaD2, gammaD3, gammaD4, gammaDLimit,
+			gammaF1, gammaF2, gammaF3, gammaF4, gammaFLimit, gammaE, tDmg);
 		}
 		if (argc == 31) {
-			theMaterial = new Pinching4Material(tag,
-				stress1p, strain1p, stress2p, strain2p, stress3p, strain3p, stress4p, strain4p,
-				rDispP, rForceP, uForceP,
-				gammaK1, gammaK2, gammaK3, gammaK4, gammaKLimit,
-				gammaD1, gammaD2, gammaD3, gammaD4, gammaDLimit,
-				gammaF1, gammaF2, gammaF3, gammaF4, gammaFLimit, gammaE, tDmg);
+		theMaterial = new Pinching4Material (tag,
+			stress1p, strain1p, stress2p, strain2p, stress3p, strain3p, stress4p, strain4p,
+			rDispP, rForceP, uForceP,  
+			gammaK1, gammaK2, gammaK3, gammaK4, gammaKLimit,
+			gammaD1, gammaD2, gammaD3, gammaD4, gammaDLimit,
+			gammaF1, gammaF2, gammaF3, gammaF4, gammaFLimit, gammaE, tDmg);		
 		}
    }
    
@@ -3016,55 +3007,54 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
     
 
 #if defined(OPSDEF_DAMAGE_FEDEAS)
-	if (theMaterial == 0)
-		theMaterial = TclModelBuilder_addDegradingMaterial(clientData, interp, argc, argv);
+      if (theMaterial == 0)
+        theMaterial = TclModelBuilder_addDegradingMaterial(clientData, interp, argc, argv);
 #endif
 
-	if (theMaterial == 0) {
+    if (theMaterial == 0) {
+      
+      //
+      // maybe element in a class package already loaded
+      //  loop through linked list of loaded functions comparing names & if find call it
+      //
+      
+      UniaxialPackageCommand *matCommands = theUniaxialPackageCommands;
+      bool found = false;
+      while (matCommands != NULL && found == false) {
+	if (strcmp(argv[1], matCommands->funcName) == 0) {
+	  theMaterial = (UniaxialMaterial *)(*(matCommands->funcPtr))();
+	  found = true;;
+	} else
+	  matCommands = matCommands->next;
+      }
+    }
 
-		//
-		// maybe element in a class package already loaded
-		//  loop through linked list of loaded functions comparing names & if find call it
-		//
+    //
+    // check to see if element is a procedure
+    //   the proc may already have been loaded from a package or may exist in a package yet to be loaded
+    //
+    if (theMaterial == 0) {
 
-		UniaxialPackageCommand* matCommands = theUniaxialPackageCommands;
-		bool found = false;
-		while (matCommands != NULL && found == false) {
-			if (strcmp(argv[1], matCommands->funcName) == 0) {
-				theMaterial = (UniaxialMaterial*)(*(matCommands->funcPtr))();
-				found = true;;
-			}
-			else
-				matCommands = matCommands->next;
-		}
-	}
+      // maybe material in a routine
+      //
+      char *matType = new char[strlen(argv[1])+1];
+      strcpy(matType, argv[1]);
+      matObj *matObject = OPS_GetMaterialType(matType, strlen(matType));
+      
+      delete [] matType;
 
-	//
-	// check to see if element is a procedure
-	//   the proc may already have been loaded from a package or may exist in a package yet to be loaded
-	//
-	if (theMaterial == 0) {
+      if (matObject != 0) {
+	
+	theMaterial = Tcl_addWrapperUniaxialMaterial(matObject, clientData, interp, argc, argv);
+	
+	if (theMaterial == 0)
+	  delete matObject;
+      }
+    }
 
-		// maybe material in a routine
-		//
-		char* matType = new char[strlen(argv[1]) + 1];
-		strcpy(matType, argv[1]);
-		matObj* matObject = OPS_GetMaterialType(matType, strlen(matType));
-
-		delete[] matType;
-
-		if (matObject != 0) {
-
-			theMaterial = Tcl_addWrapperUniaxialMaterial(matObject, clientData, interp, argc, argv);
-
-			if (theMaterial == 0)
-				delete matObject;
-		}
-	}
-
-	//
-	// maybe material class exists in a package yet to be loaded
-	//
+    //
+    // maybe material class exists in a package yet to be loaded
+    //
 
     if (theMaterial == 0) {
 	

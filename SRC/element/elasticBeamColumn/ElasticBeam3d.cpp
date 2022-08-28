@@ -66,12 +66,12 @@ void* OPS_ElasticBeam3d(void)
 	return 0;
     }
 
-	int ndm = OPS_GetNDM();
-	int ndf = OPS_GetNDF();
-	if (ndm != 3 || ndf != 6) {
-		opserr << "ndm must be 3 and ndf must be 6\n";
-		return 0;
-	}
+    int ndm = OPS_GetNDM();
+    int ndf = OPS_GetNDF();
+    if(ndm != 3 || ndf != 6) {
+	opserr<<"ndm must be 3 and ndf must be 6\n";
+	return 0;
+    }
 
     // inputs: 
     int iData[3];

@@ -1,8 +1,8 @@
-# Install script for directory: I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/include
+# Install script for directory: F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/include
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "ParMETIS")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/ParMETIS")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,6 +33,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES "I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/include/parmetis.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/include/parmetis.h")
 endif()
 

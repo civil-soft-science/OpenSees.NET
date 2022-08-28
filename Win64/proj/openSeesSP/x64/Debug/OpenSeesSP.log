@@ -1,5 +1,59 @@
-﻿  mpiMain.cpp
-I:\OmranElmAfzar\OpenSees\SRC\tcl\mpiMain.cpp(182,10): fatal error C1083: Cannot open include file: 'mpi.h': No such file or directory
+﻿  socket.c
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(98,15): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(174,25): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(226,40): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(172,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(173,3): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\actor\channel\socket.c(213,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  myCommands.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\myCommands.cpp : message : see previous definition of '_CSS'
+  TclModelBuilder.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(3427,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(3449,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(3452,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(3930,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4032,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4411,7): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4412,7): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4413,16): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4416,11): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4418,7): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4579,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4580,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4581,11): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4584,13): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclModelBuilder.cpp(4586,2): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  TclSectionTester.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclSectionTester.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclSectionTester.cpp(40,10): fatal error C1083: Cannot open include file: 'Response.h': No such file or directory
+  TclUniaxialMaterialTester.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclUniaxialMaterialTester.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclUniaxialMaterialTester.cpp(216,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\modelbuilder\tcl\TclUniaxialMaterialTester.cpp(235,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  commands.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\tcl\commands.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\tcl\commands.cpp(38,10): fatal error C1083: Cannot open include file: 'mpi.h': No such file or directory
+  mpiMain.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\tcl\mpiMain.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\tcl\mpiMain.cpp(182,10): fatal error C1083: Cannot open include file: 'mpi.h': No such file or directory
+  TclFeViewer.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\tcl\TclFeViewer.cpp : message : see previous definition of '_CSS'
   tclMain.cpp
-I:\OmranElmAfzar\OpenSees\SRC\tcl\tclMain.cpp(298,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\tcl\tclMain.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\tcl\tclMain.cpp(291,2): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  TclVideoPlayer.cpp
+F:\OmranElmAfzar\OpenSees\src\classTags.h(28,1): warning C4005: '_CSS': macro redefinition
+F:\OmranElmAfzar\OpenSees\SRC\tcl\TclVideoPlayer.cpp : message : see previous definition of '_CSS'
+F:\OmranElmAfzar\OpenSees\SRC\tcl\TclVideoPlayer.cpp(96,7): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\tcl\TclVideoPlayer.cpp(147,7): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+F:\OmranElmAfzar\OpenSees\SRC\tcl\TclVideoPlayer.cpp(203,7): warning C4101: 'mode': unreferenced local variable
   Generating Code...

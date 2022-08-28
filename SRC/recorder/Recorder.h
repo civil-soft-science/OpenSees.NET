@@ -75,6 +75,7 @@ class Recorder: public MovableObject, public TaggedObject
   private:	
     static int lastRecorderTag;
 };
+const double Recorder::relDeltaTTol = 1e-5;
 
 
 #endif
