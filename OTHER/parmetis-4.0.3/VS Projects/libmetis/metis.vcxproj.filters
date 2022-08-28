@@ -1,196 +1,196 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\b64.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\b64.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\blas.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\blas.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\csr.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\csr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\error.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\error.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\evaluate.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\evaluate.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\fkvkselect.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\fkvkselect.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\fs.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\fs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\getopt.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\getopt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\gkregex.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\gkregex.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\graph.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\graph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\htable.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\htable.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\io.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\io.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\itemsets.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\itemsets.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\mcore.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\mcore.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\memory.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\memory.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\omp.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\omp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\pdb.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\pdb.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\pqueue.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\pqueue.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\random.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\random.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\rw.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\rw.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\seq.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\seq.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\sort.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\sort.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\string.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\string.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\timers.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\timers.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\tokenizer.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\tokenizer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\util.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\GKlib\util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\auxapi.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\auxapi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\balance.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\balance.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\bucketsort.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\bucketsort.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\checkgraph.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\checkgraph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\coarsen.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\coarsen.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\compress.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\compress.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\contig.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\contig.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\debug.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\debug.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\fm.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\fm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\fortran.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\fortran.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\frename.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\frename.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\gklib.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\gklib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\graph.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\graph.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\initpart.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\initpart.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kmetis.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kmetis.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kwayfm.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kwayfm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kwayrefine.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\kwayrefine.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mcutil.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mcutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mesh.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mesh.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\meshpart.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\meshpart.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\minconn.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\minconn.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mincover.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mincover.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mmd.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\mmd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\ometis.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\ometis.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\options.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\options.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\parmetis.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\parmetis.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\pmetis.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\pmetis.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\refine.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\refine.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\separator.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\separator.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\sfm.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\sfm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\srefine.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\srefine.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\stat.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\stat.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\timing.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\timing.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\util.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\wspace.c">
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\wspace.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="F:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\CMakeLists.txt" />
+    <CustomBuild Include="I:\OmranElmAfzar\OpenSees\OTHER\parmetis-4.0.3\metis\libmetis\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{4671BED0-BA62-3354-98E6-D16D218139CA}</UniqueIdentifier>
+      <UniqueIdentifier>{D84C169C-9C43-3200-ACA7-5083887B405B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

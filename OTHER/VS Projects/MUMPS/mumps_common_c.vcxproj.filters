@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_pord.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_size.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_io.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_io_basic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_io_thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_io_err.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_numa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_save_restore_C.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_config_file_C.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I:\OmranElmAfzar\OpenSees\OTHER\mumps_5.3.5 with CMake\src\mumps_thread_affinity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3E844D9B-914A-3AAB-8484-16003ABAD60E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

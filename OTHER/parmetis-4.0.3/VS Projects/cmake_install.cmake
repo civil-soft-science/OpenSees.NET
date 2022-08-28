@@ -1,8 +1,8 @@
-# Install script for directory: F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3
+# Install script for directory: I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/ParMETIS")
+  set(CMAKE_INSTALL_PREFIX "ParMETIS")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,10 +34,10 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libmetis/cmake_install.cmake")
-  include("F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/include/cmake_install.cmake")
-  include("F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/cmake_install.cmake")
-  include("F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/programs/cmake_install.cmake")
+  include("I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libmetis/cmake_install.cmake")
+  include("I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/include/cmake_install.cmake")
+  include("I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/libparmetis/cmake_install.cmake")
+  include("I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/programs/cmake_install.cmake")
 
 endif()
 
@@ -49,5 +49,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "F:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "I:/OmranElmAfzar/OpenSees/OTHER/parmetis-4.0.3/VS Projects/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

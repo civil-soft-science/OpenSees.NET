@@ -132,13 +132,13 @@ int OPS_GetNumRemainingInputArgs()
 }
 
 extern "C"   
-int OPS_GetIntInput(int *numData, int*data)
+int OPS_GetIntInput(int numData, int*data)
 {
   return 0;
 }
 
 extern "C" 
-int OPS_GetDoubleInput(int *numData, double *data)
+int OPS_GetDoubleInput(int numData, double *data)
 {
   return 0;  
 }
@@ -159,11 +159,11 @@ int OPS_GetStringCopy(char **arrayData)
 
 
 extern "C" 
-matObj *OPS_GetMaterial(int *matTag, int *matType)
+matObj *OPS_GetMaterial(int matTag, int matType)
 {
 
-  if (*matType == OPS_UNIAXIAL_MATERIAL_TYPE) {
-    UniaxialMaterial *theUniaxialMaterial = OPS_getUniaxialMaterial(*matTag);
+  if (matType == OPS_UNIAXIAL_MATERIAL_TYPE) {
+    UniaxialMaterial *theUniaxialMaterial = OPS_getUniaxialMaterial(matTag);
     
     if (theUniaxialMaterial != 0) {
       
@@ -172,7 +172,7 @@ matObj *OPS_GetMaterial(int *matTag, int *matType)
       // theUniaxialMaterials[uniaxialMaterialObjectCount] = theCopy;
       
       matObject *theMatObject = new matObject;
-      theMatObject->tag = *matTag;
+      theMatObject->tag = matTag;
       theMatObject->nParam = 1;
       theMatObject->nState = 0;
       
@@ -189,10 +189,10 @@ matObj *OPS_GetMaterial(int *matTag, int *matType)
       return theMatObject;
     }
     
-    fprintf(stderr,"getMaterial - no uniaxial material exists with tag %d\n", *matTag);    
+    fprintf(stderr,"getMaterial - no uniaxial material exists with tag %d\n", matTag);    
     return 0;
 
-  } else if (*matType == OPS_SECTION_TYPE) {
+  } else if (matType == OPS_SECTION_TYPE) {
     fprintf(stderr,"getMaterial - not yet implemented for Section\n");    
     return 0;
   } else {
@@ -259,7 +259,7 @@ void OPS_GetMaterialPtr(int *matTag, matObj *theRes)
 
 
 extern "C" 
-eleObj *OPS_GetElement(int *eleTag) {
+eleObj *OPS_GetElement(int eleTag) {
   return 0;
 }
 
@@ -346,7 +346,7 @@ int OPS_AllocateMaterial(matObject *theMat){
 }  
 
 extern "C" 
-int OPS_AllocateElement(eleObject *theEle, int *matTags, int *matType){
+int OPS_AllocateElement(eleObject *theEle, int *matTags, int matType){
   if (theEle->nNode > 0)
     theEle->node = new int[theEle->nNode];
 
@@ -366,7 +366,7 @@ int OPS_AllocateElement(eleObject *theEle, int *matTags, int *matType){
   for (int i=0; i< numMat; i++) {
   /*  opserr << "AllocateElement - matTag " << matTags[i] << "\n"; */
 
-    matObject *theMat = OPS_GetMaterial(&(matTags[i]), matType);
+    matObject *theMat = OPS_GetMaterial((matTags[i]), matType);
     //    matObject *theMat = OPS_GetMaterial(&(matTags[i]));
 
     theEle->mats[i] = theMat;
@@ -378,14 +378,13 @@ int OPS_AllocateElement(eleObject *theEle, int *matTags, int *matType){
 
 
 extern "C" 
-int OPS_GetNodeCrd(int *nodeTag, int *sizeCrd, double *data)
+int OPS_GetNodeCrd(int nodeTag, int size, double *data)
 {
-  Node *theNode = theDomain->getNode(*nodeTag);
+  Node *theNode = theDomain->getNode(nodeTag);
   if (theNode == 0) {
-    opserr << "OPS_GetNodeCrd - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeCrd - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeCrd;
   const Vector &crd = theNode->getCrds();
   if (crd.Size() != size) {
     opserr << "OPS_GetNodeCrd - crd size mismatch\n";
@@ -398,15 +397,14 @@ int OPS_GetNodeCrd(int *nodeTag, int *sizeCrd, double *data)
 }
 
 extern "C" 
-int OPS_GetNodeDisp(int *nodeTag, int *sizeData, double *data)
+int OPS_GetNodeDisp(int nodeTag, int size, double *data)
 {
-  Node *theNode = theDomain->getNode(*nodeTag);
+  Node *theNode = theDomain->getNode(nodeTag);
 
   if (theNode == 0) {
-    opserr << "OPS_GetNodeDisp - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeDisp - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeData;
   const Vector &disp = theNode->getTrialDisp();
 
   if (disp.Size() != size) {
@@ -420,15 +418,14 @@ int OPS_GetNodeDisp(int *nodeTag, int *sizeData, double *data)
 }
 
 extern "C" 
-int OPS_GetNodeVel(int *nodeTag, int *sizeData, double *data)
+int OPS_GetNodeVel(int nodeTag, int size, double *data)
 {
-	  Node *theNode = theDomain->getNode(*nodeTag);
+	  Node *theNode = theDomain->getNode(nodeTag);
 
   if (theNode == 0) {
-    opserr << "OPS_GetNodeVel - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeVel - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeData;
   const Vector &vel = theNode->getTrialVel();
 
   if (vel.Size() != size) {
@@ -442,15 +439,14 @@ int OPS_GetNodeVel(int *nodeTag, int *sizeData, double *data)
 }
 
 extern "C" 
-int OPS_GetNodeAccel(int *nodeTag, int *sizeData, double *data)
+int OPS_GetNodeAccel(int nodeTag, int size, double *data)
 {
-   Node *theNode = theDomain->getNode(*nodeTag);
+   Node *theNode = theDomain->getNode(nodeTag);
 
   if (theNode == 0) {
-    opserr << "OPS_GetNodeAccel - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeAccel - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeData;
   const Vector &accel = theNode->getTrialAccel();
 
   if (accel.Size() != size) {
@@ -464,15 +460,14 @@ int OPS_GetNodeAccel(int *nodeTag, int *sizeData, double *data)
 }
 
 extern "C" 
-int OPS_GetNodeIncrDisp(int *nodeTag, int *sizeData, double *data)
+int OPS_GetNodeIncrDisp(int nodeTag, int size, double *data)
 {
-  Node *theNode = theDomain->getNode(*nodeTag);
+  Node *theNode = theDomain->getNode(nodeTag);
 
   if (theNode == 0) {
-    opserr << "OPS_GetNodeIncrDisp - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeIncrDisp - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeData;
   const Vector &disp = theNode->getIncrDisp();
 
   if (disp.Size() != size) {
@@ -487,15 +482,14 @@ int OPS_GetNodeIncrDisp(int *nodeTag, int *sizeData, double *data)
 
 
 extern "C" 
-int OPS_GetNodeIncrDeltaDisp(int *nodeTag, int *sizeData, double *data)
+int OPS_GetNodeIncrDeltaDisp(int nodeTag, int size, double *data)
 {
-  Node *theNode = theDomain->getNode(*nodeTag);
+  Node *theNode = theDomain->getNode(nodeTag);
 
   if (theNode == 0) {
-    opserr << "OPS_GetNodeIncrDisp - no node with tag " << *nodeTag << endln;
+    opserr << "OPS_GetNodeIncrDisp - no node with tag " << nodeTag << endln;
     return -1;
   }
-  int size = *sizeData;
   const Vector &disp = theNode->getIncrDeltaDisp();
 
   if (disp.Size() != size) {
@@ -512,7 +506,7 @@ int OPS_GetNodeIncrDeltaDisp(int *nodeTag, int *sizeData, double *data)
 
 
 extern "C" int        
-OPS_InvokeMaterial(eleObject *theEle, int *mat, modelState *model, double *strain, double *stress, double *tang, int *isw)
+OPS_InvokeMaterial(eleObject *theEle, int mat, modelState *model, double *strain, double *stress, double *tang, int *isw)
 {
   return 0;
 }
