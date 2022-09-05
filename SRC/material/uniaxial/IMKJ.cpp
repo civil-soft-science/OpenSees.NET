@@ -231,7 +231,23 @@ IMKJ::setTrialStrain(double trialStrain, double strainRate)
 		  sigr = sigP;
 		  epspl = epsP - sigP / E0;
 		  R = R0;
-		  if (kon == 2 || kon == 4 || kon == 6 || kon == 8)
+		  if (kon == 1)
+		  {
+			  kon = 2;
+			  epss0 = epsmin;
+			  sigs0 = -FydN;
+			  double e1 = (sigs0 - sigr) / (epss0 - epsr);
+			  b2 = bN * E0 / e1;
+		  }
+		  else if (kon == 2)
+		  {
+			  kon = 1;
+			  epss0 = epsmax;
+			  sigs0 = FydP;
+			  double e1 = (sigs0 - sigr) / (epss0 - epsr);
+			  b2 = bP * E0 / e1;
+		  }
+		  else if (kon == 4 || kon == 6 || kon == 8)
 		  {
 				if (epsP < epsmin)
 				{
