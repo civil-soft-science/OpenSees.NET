@@ -1266,30 +1266,30 @@ NodeRecorder::initialize(void)
 
 		  if (theOutputHandler != 0)
 		  {
-				theOutputHandler->tag("NodeOutput");
-				theOutputHandler->attr("nodeTag", nodeTag);
+			  theOutputHandler->tag("NodeOutput");
+			  theOutputHandler->attr("nodeTag", nodeTag);
 
-				for (int j = 0; j < 3; j++) {
-					 sprintf(nodeCrdData, "coord%d", j + 1);
-					 if (j < numCoord)
-						  theOutputHandler->attr(nodeCrdData, nodeCrd(j));
-					 else
-						  theOutputHandler->attr(nodeCrdData, 0.0);
-				}
+			  for (int j = 0; j < 3; j++) {
+				  sprintf(nodeCrdData, "coord%d", j + 1);
+				  if (j < numCoord)
+					  theOutputHandler->attr(nodeCrdData, nodeCrd(j));
+				  else
+					  theOutputHandler->attr(nodeCrdData, 0.0);
+			  }
 
-				for (int k = 0; k < numDOF; k++) {
-					 sprintf(outputData, "%s%d", dataType, k + 1);
-					 theOutputHandler->tag("ResponseType", outputData);
-				}
+			  for (int k = 0; k < numDOF; k++) {
+				  sprintf(outputData, "%s%d", dataType, k + 1);
+				  theOutputHandler->tag("ResponseType", outputData);
+			  }
 
-				theOutputHandler->endTag();
+			  theOutputHandler->endTag();
+			  if (theNodalTags != 0 && addColumnInfo == 1) {
+				  theOutputHandler->setOrder(orderResponse);
+			  }
+
+			  theOutputHandler->tag("Data");
 		  }
 
-		  if (theNodalTags != 0 && addColumnInfo == 1) {
-				theOutputHandler->setOrder(orderResponse);
-		  }
-
-		  theOutputHandler->tag("Data");
 	 }
 	 initializationDone = true;
 

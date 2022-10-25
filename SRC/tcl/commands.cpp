@@ -1689,6 +1689,11 @@ int OPS_LogCommandsCmd(ClientData clientData, Tcl_Interp* interp, int argc, TCL_
 			{
 				CmdLogStream << argv[narg++];
 			}
+			narg++;
+		}
+		else {
+			opserr << "WARNING LogCommands: unsupported option: " << argv[narg] << " omitted\n";
+			narg++;
 		}
 	}
 
@@ -7613,7 +7618,7 @@ nodeDOFs(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 	int tag;
 
 	if (Tcl_GetInt(interp, argv[1], &tag) != TCL_OK) {
-		opserr << "WARNING nodeMass nodeTag? nodeDOF? \n";
+		opserr << "WARNING nodeDOFs nodeTag? nodeDOF? \n";
 		return TCL_ERROR;
 	}
 
