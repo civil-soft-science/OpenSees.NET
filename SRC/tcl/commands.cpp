@@ -1609,7 +1609,7 @@ int OPS_recorderValue(ClientData clientData, Tcl_Interp* interp, int argc, TCL_C
 		Tcl_SetResult(interp, buffer, TCL_VOLATILE);
 		return TCL_OK;
 	}
-	opserr << "WARNING: recorderValue Could Not Find the Specified Recorder Object in Domain\n";
+	opserr << "WARNING: recorderValue Could Not Find Recorder Object with tag: " << tag << " in the Domain\n";
 	//return TCL_ERROR;
 	char buffer[40];
 	sprintf(buffer, "%35.8f", 0.0);

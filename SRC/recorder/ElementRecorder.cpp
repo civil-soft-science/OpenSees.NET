@@ -642,6 +642,13 @@ ElementRecorder::initialize(void)
 	 ID xmlOrder(0, 64);
 	 ID responseOrder(0, 64);
 
+#ifdef _CSS
+	int isIntForce = 0;
+	if (strcmp(responseArgs[0], "internalForce") == 0 || strcmp(responseArgs[0], "InternalForce") == 0)
+	{
+		isIntForce = 1;
+	}
+#endif // _CSS
 	 if (eleID != 0) {
 
 		  //
@@ -705,24 +712,35 @@ ElementRecorder::initialize(void)
 		  {
 				int dataSize = 0;
 				for (i = 0; i < numEle; i++) {
-					 Element* theEle = theDomain->getElement((*eleID)(i));
-					 if (theEle == 0) {
-						  theResponses[i] = 0;
-						  continue;
-					 }
-					 theResponses[i] = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
-					 if (theResponses[i] == 0)
-						  continue;
-					 Information& eleInfo = theResponses[i]->getInformation();
-					 const Vector& eleData = eleInfo.getData();
-					 int size = eleData.Size();
-					 if (numDOF == 0 && size != dataSize)
-					 {
-						  if (dataSize != 0)
-								opserr << "incompatible response size encountered for element: " << theEle->getTag() << " combining the results may lead to errors" << endln;
-						  if (size > dataSize)
-								dataSize = size;
-					 }
+					Element* theEle = theDomain->getElement((*eleID)(i));
+					if (theEle == 0) {
+						theResponses[i] = 0;
+						continue;
+					}
+					if (isIntForce && numArgs > 2)
+					{
+						if (numArgs != numEle+1)
+							opserr << "WARNING: Element recorder: the points for recording internalForce should equal"
+							<< "\n\teither 1 or the number of input elements" << endln;
+						else {
+							const char* args[2] = { responseArgs[0], responseArgs[i+1]};
+							theResponses[i] = theEle->setResponse(args, numArgs, *theOutputHandler);
+						}
+					}
+					else
+						theResponses[i] = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
+					if (theResponses[i] == 0)
+						continue;
+					Information& eleInfo = theResponses[i]->getInformation();
+					const Vector& eleData = eleInfo.getData();
+					int size = eleData.Size();
+					if (numDOF == 0 && size != dataSize)
+					{
+						if (dataSize != 0)
+							opserr << "incompatible response size encountered for element: " << theEle->getTag() << " combining the results may lead to errors" << endln;
+						if (size > dataSize)
+							dataSize = size;
+					}
 				}
 				int nProcOuts;
 				int nVals = numEle;
@@ -750,7 +768,20 @@ ElementRecorder::initialize(void)
 						  theResponses[i] = 0;
 					 }
 					 else {
-						  theResponses[i] = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
+#ifdef _CSS
+
+						 if (isIntForce && numArgs > 2)
+						 {
+							 if (numArgs != numEle + 1)
+								 opserr << "WARNING: Element recorder: the points for recording internalForce should equal"
+								 << "\n\teither 1 or the number of input elements" << endln;
+							 else {
+								 const char* args[2] = { responseArgs[0], responseArgs[i + 1] };
+								 theResponses[i] = theEle->setResponse(args, numArgs, *theOutputHandler);
+							 }
+						 } else 
+#endif // _CSS
+							 theResponses[i] = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
 						  if (theResponses[i] != 0) {
 								// from the response type determine no of cols for each
 								Information& eleInfo = theResponses[i]->getInformation();
@@ -818,7 +849,16 @@ ElementRecorder::initialize(void)
 		  Element* theEle;
 
 		  while ((theEle = theElements()) != 0) {
-				Response* theResponse = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
+#ifdef _CSS
+
+			  if (isIntForce && numArgs > 2)
+			  {
+				  if (numArgs != numEle + 1)
+					  opserr << "WARNING: Element recorder: the points for recording internalForce should equal"
+					  << "\n\t1 when all elements are to be recorded" << endln;
+			  }
+#endif // _CSS
+				  Response* theResponse = theEle->setResponse((const char**)responseArgs, numArgs, *theOutputHandler);
 				if (theResponse != 0) {
 					 if (numResponse == numEle) {
 						  // Why is this created locally and not used? -- MHS
