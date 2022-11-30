@@ -289,16 +289,6 @@ SP_Constraint::~SP_Constraint()
   numSPs--;
   if (numSPs == 0)
     nextTag = 0;
-#ifdef _CSS
-  if (!isConstant)
-  {
-      Node* pNode = this->getDomain()->getNode(nodeTag);
-      double oldDisp = pNode->getDisp()(dofNumber);
-      pNode->setTrialDisp(oldDisp-valueC, dofNumber);
-      pNode->commitState();
-  }
-#endif // _CSS
-
 }
 
 int
