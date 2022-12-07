@@ -1503,6 +1503,9 @@ wipeModel(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 int
 wipeAnalysis(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
+#ifdef _CSS
+	printArgv(interp, argc, argv);
+#endif // _CSS
 
 #ifdef _PARALLEL_PROCESSING
 	if (OPS_PARTITIONED == true && OPS_NUM_SUBDOMAINS > 1) {
@@ -1861,7 +1864,7 @@ int
 getTime(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
+	//printArgv(interp, argc, argv); //SAJalali
 #endif // _CSS
 	double time = theDomain.getCurrentTime();
 
@@ -6488,7 +6491,7 @@ int
 nodeDisp(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
+	//printArgv(interp, argc, argv); //SAJalali
 #endif // _CSS
 	// make sure at least one other argument to contain type of system
 	if (argc < 2) {
@@ -10495,8 +10498,8 @@ int stripOpenSeesXML(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Ch
 	ofstream theOutputDataFile;
 	theOutputDataFile.open(outputDataFile, ios::out);
 	if (theOutputDataFile.bad()) {
-		opserr << "stripXML - error opening input file: " << outputDataFile << endln;
-		return -1;
+opserr << "stripXML - error opening input file: " << outputDataFile << endln;
+return -1;
 	}
 
 	ofstream theOutputDescriptiveFile;
@@ -10591,6 +10594,17 @@ int record(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
 	printArgv(interp, argc, argv); //SAJalali
+	if (argc > 1)
+	{
+		int recrdrTag;
+		if (Tcl_GetInt(interp, argv[1], &recrdrTag) != TCL_OK)
+		{
+			opserr << "OpenSeesH::record ERROR: an integer value is expected as the the recorder tag \n";
+		}
+		theDomain.recordSingle(recrdrTag);
+		return TCL_OK;
+
+	}
 #endif // _CSS
 
 	theDomain.record(false);

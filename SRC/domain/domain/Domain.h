@@ -202,6 +202,9 @@ class Domain
     virtual void  unsetLoadConstant(void);
     virtual  int  initialize(void);    
     virtual  int  setRayleighDampingFactors(double alphaM, double betaK, double betaK0, double betaKc);
+#ifdef _CSS
+    int recordSingle(int tag);
+#endif // _CSS
 
     virtual  int  commit(void);
     virtual  int  revertToLastCommit(void);

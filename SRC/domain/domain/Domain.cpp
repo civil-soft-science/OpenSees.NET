@@ -1436,6 +1436,9 @@ Domain::removeLoadPattern(int tag)
 	// in the loadPattern to be 0
 	//
 
+#ifndef _CSS
+
+
 	NodalLoad* theNodalLoad;
 	NodalLoadIter& theNodalLoads = result->getNodalLoads();
 	while ((theNodalLoad = theNodalLoads()) != 0) {
@@ -1447,6 +1450,7 @@ Domain::removeLoadPattern(int tag)
 	while ((theElementalLoad = theElementalLoads()) != 0) {
 		// theElementalLoad->setDomain(0);
 	}
+#endif // !_CSS
 
 	int numSPs = 0;
 	SP_Constraint* theSP_Constraint;
@@ -2121,6 +2125,26 @@ Domain::record(bool fromAnalysis)
 	return res;
 }
 
+#ifdef _CSS
+
+
+int
+Domain::recordSingle(int tag)
+{
+	int res = 0;
+
+	// invoke record on given recorders
+	for (int i = 0; i < numRecorders; i++)
+		if (theRecorders[i] != 0 && theRecorders[i]->getTag() == tag)
+		{
+			res += theRecorders[i]->record(commitTag, currentTime);
+			break;
+		}
+
+	return res;
+}
+
+#endif // _CSS
 int
 Domain::commit(void)
 {
