@@ -309,31 +309,41 @@ Steel05::setTrialStrain(double trialStrain, double strainRate)
 				b2 = pstcpEFac / b;
 		 
 	 }
-	 double R = R0;
-	 // calculate current stress sig and tangent modulus E 
-	 if (cR1 != 0.0 && cR2 != 0.0)
+	 if (kon == 5)
 	 {
-		  const double xi = fabs((epspl - epss0) / epsy);
-		  R *= (1.0 - (cR1 * xi) / (cR2 + xi));
+		 sig = resFac * Fy;
+		 e = 1e-15 * E0;
 	 }
-	 const double epsrat = (eps - epsr) / (epss0 - epsr);
-	 const double dum1 = 1.0 + pow(fabs(epsrat), R);
-	 const double dum2 = pow(dum1, (1 / R));
+	 else {
 
-	 sig = b2 * epsrat + (1.0 - b2) * epsrat / dum2;
-	 sig = sig * (sigs0 - sigr) + sigr;
+		 double R = R0;
+		 // calculate current stress sig and tangent modulus E 
+		 if (cR1 != 0.0 && cR2 != 0.0)
+		 {
+			 const double xi = fabs((epspl - epss0) / epsy);
+			 R *= (1.0 - (cR1 * xi) / (cR2 + xi));
+		 }
+		 const double epsrat = (eps - epsr) / (epss0 - epsr);
+		 const double dum1 = 1.0 + pow(fabs(epsrat), R);
+		 const double dum2 = pow(dum1, (1 / R));
 
-	 e = b2 + (1.0 - b2) / (dum1 * dum2);
-	 e *= (sigs0 - sigr) / (epss0 - epsr);
-	 if (kon == 3 && sig < resFac * Fy)
-	 {
-		  sig = resFac * Fy;
-		  e = 1e-15 * E0;
-	 }
-	 else if (kon == 4 && sig > -resFac * Fy)
-	 {
-		  sig = -resFac * Fy;
-		  e = 1e-15 * E0;
+		 sig = b2 * epsrat + (1.0 - b2) * epsrat / dum2;
+		 sig = sig * (sigs0 - sigr) + sigr;
+
+		 e = b2 + (1.0 - b2) / (dum1 * dum2);
+		 e *= (sigs0 - sigr) / (epss0 - epsr);
+		 if (kon == 3 && sig < resFac * Fy)
+		 {
+			 sig = resFac * Fy;
+			 e = 1e-15 * E0;
+			 kon = 5;
+		 }
+		 else if (kon == 4 && sig > -resFac * Fy)
+		 {
+			 sig = -resFac * Fy;
+			 e = 1e-15 * E0;
+			 kon = 5;
+		 }
 	 }
 	 return 0;
 }
@@ -641,7 +651,6 @@ void Steel05::updateDamage()
 			return;
 		}
 		double& Fyd = (konP == 2 || konP == 4) ? FydP : FydN;
-		//double& Fyd = FydP;
 		ExcurEnergy += dE;
 		if (ExcurEnergy < 0) ExcurEnergy = 0.;
 		double beta = pow( ExcurEnergy / ( FailEnerg - EnergyP) , c );
@@ -651,7 +660,6 @@ void Steel05::updateDamage()
 			beta = 0.999;
 		}
 		Fyd = (1. - beta)*Fyd + beta * resFac*Fyd;
-		//FydN = Fyd;
 		ExcurEnergy = 0.0;
 	} 
 	else
