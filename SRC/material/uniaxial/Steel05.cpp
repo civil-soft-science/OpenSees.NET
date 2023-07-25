@@ -180,6 +180,8 @@ Steel05::setTrialStrain(double trialStrain, double strainRate)
 	 const double epsy = Fy / E0;
 	 eps = trialStrain + sigini / E0;
 	 const double deps = eps - epsP;
+	 if (fabs(deps) < 1.e-20)
+		 return 0;
 	 double b2 = b;
 	 const double epsPC = epsPCFac * epsy;
 

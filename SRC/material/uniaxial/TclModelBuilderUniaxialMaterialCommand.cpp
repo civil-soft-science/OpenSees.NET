@@ -91,7 +91,7 @@ extern void* OPS_Steel05(void);		// SAJalali
 extern void* OPS_IMKJ(void);		// SAJalali
 extern void* OPS_BucklingStrut(void);		// SAJalali
 extern void* OPS_BucklingMaterial(void);		// SAJalali
-extern void* OPS_ConfinedConcrete02(void);		// SAJalali
+extern void* OPS_ConfinedConcrete(void);		// SAJalali
 #endif
 extern void* OPS_TDConcreteEXP(void); // ntosic
 extern void* OPS_TDConcrete(void); // ntosic
@@ -329,8 +329,8 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 		  else
 				return TCL_ERROR;
 	 }*/
-	if (strcmp(argv[1], "ConfinedConcrete02") == 0) {
-		  void* theMat = OPS_ConfinedConcrete02();
+	if (strcmp(argv[1], "ConfinedConcrete") == 0) {
+		  void* theMat = OPS_ConfinedConcrete();
 		  if (theMat != 0)
 				theMaterial = (UniaxialMaterial*)theMat;
 		  else
@@ -1705,7 +1705,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
     }
 
 
-    else if ((strcmp(argv[1],"ConfinedConcrete01") == 0) || (strcmp(argv[1],"ConfinedConcrete") == 0)) {
+    else if ((strcmp(argv[1],"ConfinedConcrete01") == 0)) {
 
       void *theMat = OPS_ConfinedConcrete01Material();
       if (theMat != 0) 

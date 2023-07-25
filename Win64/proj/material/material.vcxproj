@@ -214,7 +214,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConcreteSakaiKawashima.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConcretewBeta.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete01.cpp" />
-    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete02.cpp" />
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ContinuumUniaxial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\CubicSpline.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\DamperMaterial.cpp" />

@@ -1446,7 +1446,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\BoucWenInfill.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete02.cpp">
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
   </ItemGroup>

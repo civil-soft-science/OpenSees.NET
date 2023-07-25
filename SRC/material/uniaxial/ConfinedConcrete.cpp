@@ -18,7 +18,7 @@
 **                                                                    **
 ** ****************************************************************** */
 
-// Source: /usr/local/cvs/OpenSees/SRC/material/uniaxial/ConfinedConcrete02.cpp,v
+// Source: /usr/local/cvs/OpenSees/SRC/material/uniaxial/ConfinedConcrete.cpp,v
 
 // Written: SA Jalali (Civil Soft Science)
 // Created: 02/1401
@@ -29,6 +29,7 @@
 //#include <math.h>
 
 #include <Concrete02.h>
+#include <Concrete01.h>
 #include <FileStream.h>
 //#include <OPS_Globals.h>
 //#include <float.h>
@@ -59,7 +60,7 @@ const double facs[16][16] = {
 	{1.44, 1.43, 1.42, 1.40, 1.39, 1.38, 1.37, 1.35, 1.33, 1.30, 1.28, 1.26, 1.23, 1.19, 1.13, 0.00},
 	{1.30, 1.30, 1.29, 1.28, 1.27, 1.26, 1.25, 1.23, 1.21, 1.20, 1.17, 1.15, 1.12, 1.09, 1.05, 1.00} };
 void*
-OPS_ConfinedConcrete02()
+OPS_ConfinedConcrete()
 {
 	 // Pointer to a uniaxial material that will be returned
 	 UniaxialMaterial* theMaterial = 0;
@@ -67,15 +68,15 @@ OPS_ConfinedConcrete02()
 	 int tag;
 	 if (OPS_GetIntInput(1, &tag) != 0)
 	 {
-		  opserr << "WARNING invalid tag for uniaxialMaterial ConfinedConcrete02" << endln;
+		  opserr << "WARNING invalid tag for uniaxialMaterial ConfinedConcrete" << endln;
 		  return 0;
 	 }
 
 	 int numData = OPS_GetNumRemainingInputArgs();
 	 if (numData < 8)
 	 {
-		  opserr << "ConfinedConcrete02::Invalid number of arguments; tag = " << tag << "; wants:\n";
-		  opserr << "uniaxialMaterial ConfinedConcrete02 tag fc0 epsc0 fcu Lambda ft Ets \n";
+		  opserr << "ConfinedConcrete::Invalid number of arguments; tag = " << tag << "; wants:\n";
+		  opserr << "uniaxialMaterial ConfinedConcrete tag fc0 epsc0 fcu Lambda ft Ets \n";
 		  opserr << "    [-beam StressUnitToGPa]\n";
 		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
 						   nBarTransB dBarTrans sStirrup [-wrap Area Fy spacing]]\n";
@@ -84,8 +85,8 @@ OPS_ConfinedConcrete02()
 	 double concData[6];
 	 if (OPS_GetDouble(6, concData) != 0)
 	 {
-		  opserr << "ConfinedConcrete02::failed to read concrete properties before the [-beam/-column] switch; tag = " << tag << "\nwants:\n";
-		  opserr << "uniaxialMaterial ConfinedConcrete02 tag fc0 epsc0 fcu Lambda ft Ets \n";
+		  opserr << "ConfinedConcrete::failed to read concrete properties before the [-beam/-column] switch; tag = " << tag << "\nwants:\n";
+		  opserr << "uniaxialMaterial ConfinedConcrete tag fc0 epsc0 fcu Lambda ft Ets \n";
 		  opserr << "    [-beam StressUnitToGPa]\n";
 		  opserr << "    [-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
 						   nBarTransB dBarTrans sStirrup [wrapArea wrapFy wrapSpacing]]\n";
@@ -105,7 +106,7 @@ OPS_ConfinedConcrete02()
 		  isBeam = true;
 	 else if (strcmp(str, "-column") != 0)
 	 {
-		  opserr << "ConfinedConcrete02:: Error reading type string; either -beam or -column is expected; tag = " << tag << endln;
+		  opserr << "ConfinedConcrete:: Error reading type string; either -beam or -column is expected; tag = " << tag << endln;
 		  return 0;
 	 }
 	 if (isBeam)
@@ -113,22 +114,28 @@ OPS_ConfinedConcrete02()
 		  double fac = 1;
 		  if (OPS_GetDouble(1, &fac) != 0)
 		  {
-				opserr << "ConfinedConcrete02::Invalid Stress To GPa conversion factor for material with tag:" << tag << "\n";
+				opserr << "ConfinedConcrete::Invalid Stress To GPa conversion factor for material with tag:" << tag << "\n";
 				return 0;
 		  }
 		  //Kent and Park:
 		  double e50u = (3.0 + epsc0 * fc0 * fac) / (fc0 * fac - 1000);
 		  double e50h = 0.75 * 0.03 * sqrt(500. / 75.);
 		  double ecu = (e50u - e50h - epsc0) * 8. / 5.;
-		  theMaterial = new Concrete02(tag, fc0, epsc0, fcu, ecu, rat, ft, Ets);
+		  if (ft > 0.001)
+			  theMaterial = new Concrete02(tag, fc0, epsc0, fcu, ecu, rat, ft, Ets);
+		  else
+			  theMaterial = new Concrete01(tag, fc0, epsc0, fcu, ecu);
 		  if (theMaterial == 0)
 		  {
-				opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete02; tag = " << tag << "\n";
+				opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete; tag = " << tag << "\n";
 				return 0;
 		  }
 		  if (LOG_COMMANDS)
 		  {
-			  CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fc0 << " " << epsc0 << " " << fcu << " " << ecu << " " << rat << " " << ft << " " << Ets << "; #code generated for beam by ConfinedConcrete02\n";
+			  if (ft > 0.001)
+				  CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fc0 << " " << epsc0 << " " << fcu << " " << ecu << " " << rat << " " << ft << " " << Ets << "; #code generated for beam by ConfinedConcrete\n";
+			  else
+				  CmdLogStream << "#uniaxialMaterial Concrete01 " << tag << " " << fc0 << " " << epsc0 << " " << fcu << " " << ecu << "; #code generated for beam by ConfinedConcrete\n";
 		  }
 		  return theMaterial;
 	 }
@@ -136,7 +143,7 @@ OPS_ConfinedConcrete02()
 	 double dData[14];
 	 if (OPS_GetDoubleInput(14, dData) != 0)
 	 {
-		  opserr << "ConfinedConcrete02:: Invalid -column props. tag = " << tag << "; wants:\n";
+		  opserr << "ConfinedConcrete:: Invalid -column props. tag = " << tag << "; wants:\n";
 		  opserr << "-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
 					  nBarTransB dBarTrans sStirrup [wrapArea wrapFy wrapSpacing]\n";
 		  return 0;
@@ -146,7 +153,7 @@ OPS_ConfinedConcrete02()
 	 if (numData != 0)
 		if (OPS_GetDoubleInput(3, wrpData) != 0)
 		{
-		   opserr << "ConfinedConcrete02:: Invalid wrap data. tag = " << tag << "; wants:wrapArea wrapFy wrapSpacing\n";
+		   opserr << "ConfinedConcrete:: Invalid wrap data. tag = " << tag << "; wants:wrapArea wrapFy wrapSpacing\n";
 		   return 0;
 		}
 	 //section props (to compute Mander's coeff.s):
@@ -206,7 +213,7 @@ OPS_ConfinedConcrete02()
 	 {
 		if (wrpS == 0)
 		{
-		   opserr << "Warning::invalid frp spacing for ConfinedConcrete02 material with tag:" << tag << endln;
+		   opserr << "Warning::invalid frp spacing for ConfinedConcrete material with tag:" << tag << endln;
 		   return 0;
 		}
 		fTransX += 2*wrpA * wrpFy / (wrpS * H);		//for two legs
@@ -249,16 +256,21 @@ OPS_ConfinedConcrete02()
 	 double ec85 = 260 * 0.015 * ecc + 0.0038; 	//Mander's Eq.
 	 double epscu = (ec85 - ecc) * (0.85 / fcu * fc0) + ecc; //Mander's Eq.
 	 fcu *= fcc / fc0;
-
-	 theMaterial = new Concrete02(tag, fcc, ecc, fcu, epscu, rat, ft, Ets);
+	 if (ft > 0.001)
+		 theMaterial = new Concrete02(tag, fcc, ecc, fcu, epscu, rat, ft, Ets);
+	 else
+		 theMaterial = new Concrete01(tag, fcc, ecc, fcu, epscu);
 	 if (theMaterial == 0)
 	 {
-		  opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete02; tag = " << tag << "\n";
+		  opserr << "WARNING ran out of memory while creating uniaxialMaterial of type ConfinedConcrete; tag = " << tag << "\n";
 		  return 0;
 	 }
 	 if (LOG_COMMANDS)
 	 {
-		 CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fcc << " " << ecc << " " << fcu << " " << epscu << " " << rat << " " << ft << " " << Ets << "; #code generated for column by ConfinedConcrete02\n";
+		 if (ft > 0.001)
+			 CmdLogStream << "#uniaxialMaterial Concrete02 " << tag << " " << fcc << " " << ecc << " " << fcu << " " << epscu << " " << rat << " " << ft << " " << Ets << "; #code generated for column by ConfinedConcrete\n";
+		 else
+			 CmdLogStream << "#uniaxialMaterial Concrete01 " << tag << " " << fcc << " " << ecc << " " << fcu << " " << epscu << "; #code generated for column by ConfinedConcrete\n";
 	 }
 
 	 return theMaterial;
