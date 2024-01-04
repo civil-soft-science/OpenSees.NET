@@ -61,7 +61,7 @@ Element::Element(int tag, int cTag)
       Kc(0), previousK(0), numPreviousK(0), index(-1), nodeIndex(-1),
       is_this_element_active(true)
 #ifdef _CSS
-    , dampingEnergy(0), prevDampingForces(0)
+    , dampingEnergy(0), prevDampingForces(0), hystereticEnergy(0), prevResistingForces(0)
 #endif // _CSS
 {
   // does nothing
@@ -86,7 +86,7 @@ Element::commitState(void)
   if (Kc != 0)
     *Kc = this->getTangentStiff();
 #ifdef _CSS
-  computeDampingEnergy();
+  computeEnergies();
 #endif // _CSS
   double t = this->getDomain()->getCurrentTime();
   return 0;
@@ -477,6 +477,10 @@ Element::setResponse(const char **argv, int argc, OPS_Stream &output)
       output.tag("ResponseType", "dampingEnergy");
       theResponse = new ElementResponse(this, 555555, 0.0);
   }
+  else if (strcmp(argv[0], "energy") == 0 || strcmp(argv[0], "Energy") == 0) {
+      output.tag("ResponseType", "hystereticEnergy");
+      theResponse = new ElementResponse(this, 666666, 0.0);
+  }
 
 #endif // _CSS
 
@@ -500,6 +504,8 @@ Element::getResponse(int responseID, Information &eleInfo)
 #ifdef _CSS
   case 555555:
     return eleInfo.setDouble(this->getDampingEnergy());
+  case 666666:
+    return eleInfo.setDouble(this->getHystereticEnergy());
 #endif
   default:
     return -1;
@@ -842,12 +848,20 @@ double Element::getDampingEnergy()
 {
     return dampingEnergy;
 }
-void Element::computeDampingEnergy()
+double Element::getHystereticEnergy()
 {
-    const Vector& thisF = getRayleighDampingForces();
-    int numDof = thisF.Size();
+    return hystereticEnergy;
+}
+void Element::computeEnergies()
+{
+    const Vector& thisDampF = getRayleighDampingForces();
+    const Vector& thisResF = getResistingForce();
+    int numDof = thisDampF.Size();
     if (prevDampingForces.Size() == 0)
+    {
         prevDampingForces = Vector(numDof);
+        prevResistingForces = Vector(numDof);
+    }
     Node** theNodes = this->getNodePtrs();
     int numNodes = this->getNumExternalNodes();
     int loc = 0;
@@ -855,11 +869,13 @@ void Element::computeDampingEnergy()
         const Vector& prevDisp = theNodes[i]->getLastCommitDisp();
         const Vector& thisDisp = theNodes[i]->getDisp();
         for (int j = 0; j < prevDisp.Size(); j++) {
-            dampingEnergy += 0.5 * (prevDampingForces(loc) + thisF(loc)) * (thisDisp[j] - prevDisp[j]);
-            //opserr <<loc << " " << dampingEnergy << " " << prevDampingForces(loc) << " " << thisF(loc) << " " << thisDisp[j] << " " << prevDisp[j] << "\n";
+            dampingEnergy += 0.5 * (prevDampingForces(loc) + thisDampF(loc)) * (thisDisp[j] - prevDisp[j]);
+            hystereticEnergy += 0.5 * (prevResistingForces(loc) + thisResF(loc)) * (thisDisp[j] - prevDisp[j]);
+            //opserr <<loc << " " << dampingEnergy << " " << prevDampingForces(loc) << " " << thisDampF(loc) << " " << thisDisp[j] << " " << prevDisp[j] << "\n";
             loc++;
         }
     }
-    prevDampingForces = thisF;
+    prevDampingForces = thisDampF;
+    prevResistingForces = thisResF;
 }
 #endif

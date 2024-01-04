@@ -123,6 +123,7 @@ class Element : public DomainComponent
 
 #ifdef _CSS
     void resetDampingEnergy() { dampingEnergy = 0; }
+    void resetHystereticEnergy() { hystereticEnergy = 0; }
 #endif // _CSS
 
 protected:
@@ -142,13 +143,16 @@ protected:
     static int numMatrices;
 #ifdef _CSS
 	double getDampingEnergy();
-	void computeDampingEnergy();
+	void computeEnergies();
+	double getHystereticEnergy();
 #endif
    bool is_this_element_active;
   private:
 #ifdef _CSS
 	  Vector prevDampingForces;
+	  Vector prevResistingForces;
 	  double dampingEnergy;
+	  double hystereticEnergy;
 #endif // _CSS
 
 };
