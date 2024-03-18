@@ -47,6 +47,7 @@
 
 void* OPS_FourNodeQuad()
 {
+#ifndef _CSS
     int ndm = OPS_GetNDM();
     int ndf = OPS_GetNDF();
 
@@ -54,7 +55,15 @@ void* OPS_FourNodeQuad()
 	opserr << "WARNING -- model dimensions and/or nodal DOF not compatible with quad element\n";
 	return 0;
     }
-    
+#else
+	int ndm = OPS_GetNDM();
+
+	if (ndm != 2) {
+		opserr << "WARNING -- element can only be used in 2d models\n";
+		return 0;
+	}
+#endif // !_CSS
+
     if (OPS_GetNumRemainingInputArgs() < 8) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: element FourNodeQuad eleTag? iNode? jNode? kNode? lNode? thk? type? matTag? <pressure? rho? b1? b2?>\n";
@@ -278,8 +287,12 @@ FourNodeQuad::setDomain(Domain *theDomain)
     int dofNd4 = theNodes[3]->getNumberDOF();
     
     if (dofNd1 != 2 || dofNd2 != 2 || dofNd3 != 2 || dofNd4 != 2) {
+#ifdef _CSS
+		opserr << "ERROR FourNodeQuad (tag:" << this->getTag() << "), num DOFs should equal 2 at all nodes\n";
+#endif // _CSS
+
 	//opserr << "FATAL ERROR FourNodeQuad (tag: %d), has differing number of DOFs at its nodes",
-	//	this->getTag());
+	//	this->getTag();
 	
 	return;
     }

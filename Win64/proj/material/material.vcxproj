@@ -20,12 +20,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -217,7 +217,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConcreteSakaiKawashima.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConcretewBeta.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete01.cpp" />
-    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete02.cpp" />
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ContinuumUniaxial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\CubicSpline.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\DamperMaterial.cpp" />
@@ -264,6 +264,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\Maxwell.cpp" />
     <ClCompile Include="..\..\..\Src\material\uniaxial\MinMaxMaterial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ModelBuilderUniaxialMaterialEventHandler.cpp" />
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ModIMKPeakOriented.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ModIMKPeakOriented02.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ModIMKPinching.cpp" />
@@ -703,6 +704,7 @@
     <ClInclude Include="..\..\..\SRC\material\uniaxial\Maxwell.h" />
     <ClInclude Include="..\..\..\Src\material\uniaxial\MinMaxMaterial.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ModelBuilderUniaxialMaterialEventHandler.h" />
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ModIMKPeakOriented.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ModIMKPeakOriented02.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ModIMKPinching.h" />

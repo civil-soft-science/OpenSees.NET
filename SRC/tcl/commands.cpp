@@ -1503,6 +1503,9 @@ wipeModel(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 int
 wipeAnalysis(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
+#ifdef _CSS
+	printArgv(interp, argc, argv);
+#endif // _CSS
 
 #ifdef _PARALLEL_PROCESSING
 	if (OPS_PARTITIONED == true && OPS_NUM_SUBDOMAINS > 1) {
@@ -1609,7 +1612,7 @@ int OPS_recorderValue(ClientData clientData, Tcl_Interp* interp, int argc, TCL_C
 		Tcl_SetResult(interp, buffer, TCL_VOLATILE);
 		return TCL_OK;
 	}
-	opserr << "WARNING: recorderValue Could Not Find the Specified Recorder Object in Domain\n";
+	opserr << "WARNING: recorderValue Could Not Find Recorder Object with tag: " << tag << " in the Domain\n";
 	//return TCL_ERROR;
 	char buffer[40];
 	sprintf(buffer, "%35.8f", 0.0);
@@ -1689,6 +1692,11 @@ int OPS_LogCommandsCmd(ClientData clientData, Tcl_Interp* interp, int argc, TCL_
 			{
 				CmdLogStream << argv[narg++];
 			}
+			narg++;
+		}
+		else {
+			opserr << "WARNING LogCommands: unsupported option: " << argv[narg] << " omitted\n";
+			narg++;
 		}
 	}
 
@@ -1856,7 +1864,7 @@ int
 getTime(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
+	//printArgv(interp, argc, argv); //SAJalali
 #endif // _CSS
 	double time = theDomain.getCurrentTime();
 
@@ -6483,7 +6491,7 @@ int
 nodeDisp(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
-	printArgv(interp, argc, argv); //SAJalali
+	//printArgv(interp, argc, argv); //SAJalali
 #endif // _CSS
 	// make sure at least one other argument to contain type of system
 	if (argc < 2) {
@@ -7613,7 +7621,7 @@ nodeDOFs(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 	int tag;
 
 	if (Tcl_GetInt(interp, argv[1], &tag) != TCL_OK) {
-		opserr << "WARNING nodeMass nodeTag? nodeDOF? \n";
+		opserr << "WARNING nodeDOFs nodeTag? nodeDOF? \n";
 		return TCL_ERROR;
 	}
 
@@ -10586,6 +10594,17 @@ int record(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 {
 #ifdef _CSS
 	printArgv(interp, argc, argv); //SAJalali
+	if (argc > 1)
+	{
+		int recrdrTag;
+		if (Tcl_GetInt(interp, argv[1], &recrdrTag) != TCL_OK)
+		{
+			opserr << "OpenSeesH::record ERROR: an integer value is expected as the the recorder tag \n";
+		}
+		theDomain.recordSingle(recrdrTag);
+		return TCL_OK;
+
+	}
 #endif // _CSS
 
 	theDomain.record(false);

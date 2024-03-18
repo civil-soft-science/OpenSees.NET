@@ -68,11 +68,17 @@ TclModelBuilder_addFourNodeQuad(ClientData clientData, Tcl_Interp *interp,
     opserr << "WARNING builder has been destroyed\n";    
     return TCL_ERROR;
   }
-
+#ifndef _CSS
 	if (theTclBuilder->getNDM() != 2 || theTclBuilder->getNDF() != 2) {
 		opserr << "WARNING -- model dimensions and/or nodal DOF not compatible with quad element\n";
 		return TCL_ERROR;
 	}
+#else
+  if (theTclBuilder->getNDM() != 2) {
+      opserr << "WARNING -- element can only be used in 2d models\n";
+      return TCL_ERROR;
+  }
+#endif // !_CSS
 
   // check the number of arguments is correct
   int argStart = 2;

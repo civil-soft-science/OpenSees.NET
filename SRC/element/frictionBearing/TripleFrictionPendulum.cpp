@@ -958,7 +958,12 @@ Response* TripleFrictionPendulum::setResponse(const char **argv, int argc,
     OPS_Stream &output)
 {
     Response *theResponse = 0;
-    
+#ifdef _CSS
+    theResponse = Element::setResponse(argv, argc, output);
+    if (theResponse != 0)
+        return theResponse;
+#endif // _CSS
+
     output.tag("ElementOutput");
     output.attr("eleType","TripleFrictionPendulum");
     output.attr("eleTag",this->getTag());
@@ -1095,6 +1100,10 @@ Response* TripleFrictionPendulum::setResponse(const char **argv, int argc,
 
 int TripleFrictionPendulum::getResponse(int responseID, Information &eleInfo)
 {
+#ifdef _CSS
+    if (Element::getResponse(responseID, eleInfo) == 0)
+        return 0;
+#endif // _CSS
     Vector locForce(12), locDisp(12), basForce(6), basDisp(6), cmpDisp(6);
     switch (responseID)  {
     case 1:  // global forces

@@ -80,7 +80,8 @@ class EnvelopeNodeRecorder: public Recorder
                           //2: maximize results
                           //3: minimize results
    int procGrpNum;
-     virtual int getModified() { return Modified; }
+   Vector getResponse(Node* theNode);
+   virtual int getModified() { return Modified; }
      int Modified;
 #endif // _CSS
     int initialize(void);

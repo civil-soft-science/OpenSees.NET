@@ -743,9 +743,6 @@
     <ClCompile Include="..\..\..\SRC\element\elastomericBearing\ElastomericBearingBoucWenMod3d.cpp">
       <Filter>elastomericBearing</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping2d.cpp">
-      <Filter>crdTransf</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\SRC\element\forceBeamColumn\ElasticForceBeamColumnWarping2d.cpp">
       <Filter>forceBeamColumn</Filter>
     </ClCompile>
@@ -985,6 +982,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\element\IGA\IGAKLShell_BendingStrip.cpp">
       <Filter>IGA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\element\PML\PML2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SRC\element\PML\PML3D.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\SRC\element\PML\PML2D.cpp">
       <Filter>Source Files</Filter>
@@ -1525,9 +1528,6 @@
     <ClInclude Include="..\..\..\SRC\element\elastomericBearing\ElastomericBearingBoucWenMod3d.h">
       <Filter>elastomericBearing</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping2d.h">
-      <Filter>crdTransf</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\SRC\element\forceBeamColumn\ElasticForceBeamColumnWarping2d.h">
       <Filter>forceBeamColumn</Filter>
     </ClInclude>
@@ -1755,6 +1755,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\element\IGA\IGAKLShell_BendingStrip.h">
       <Filter>IGA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\element\PML\PML2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\element\PML\PML3D.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\element\PML\PML2D.h">
       <Filter>Header Files</Filter>

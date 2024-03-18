@@ -85,7 +85,8 @@ class ResidNodeRecorder: public Recorder
                            //3: minimize results
    int procGrpNum;
 #endif // _CSS
-      int initialize(void);
+   Vector getResponse(Node* theNode);
+   int initialize(void);
 
     ID *theDofs;
     ID *theNodalTags;

@@ -467,7 +467,8 @@ TclModelBuilder_addForceBeamColumn(ClientData clientData, Tcl_Interp *interp,
     }
   }
   
-
+  //_CSS
+  int argi = 6;
   BeamIntegration *beamIntegr = 0;
   SectionForceDeformation **sections;
   int numSections;
@@ -481,32 +482,59 @@ TclModelBuilder_addForceBeamColumn(ClientData clientData, Tcl_Interp *interp,
     if (argc < 9) {
       opserr << "WARNING insufficient arguments\n";
       printCommand(argc, argv);
-      opserr << "Want: element " << argv[1] << " eleTag? iNode? jNode? transfTag? Lobatto secTag? nIP?\n";
+      opserr << "Want: element " << argv[1] << " eleTag? iNode? jNode? transfTag? integType? <secTag nIP> <-sections nIP secTag1 ... secTagN>\n";
       return TCL_ERROR;
     }
 
-    if (Tcl_GetInt(interp, argv[7], &secTag) != TCL_OK) {
-      opserr << "WARNING invalid secTag\n";
-      opserr << argv[1] << " element: " << eleTag << endln;
-      return TCL_ERROR;
-    }
+    SectionForceDeformation* theSection = 0;
     if (Tcl_GetInt(interp, argv[8], &numSections) != TCL_OK) {
-      opserr << "WARNING invalid nIP\n";
-      opserr << argv[1] << " element: " << eleTag << endln;
-      return TCL_ERROR;
+        opserr << "WARNING invalid nIP\n";
+        opserr << argv[1] << " element: " << eleTag << endln;
+        return TCL_ERROR;
+    }
+    sections = new SectionForceDeformation * [numSections];
+    if (strcmp(argv[7], "-sections") == 0) {
+        if (argc < 9 + numSections) {
+            opserr << "WARNING insufficient arguments\n";
+            printCommand(argc, argv);
+            opserr << "Want: element " << argv[1] << " eleTag? iNode? jNode? transfTag? integType? <secTag nIP> <-sections nIP secTag1 ... secTagN>\n";
+            return TCL_ERROR;
+        }
+        for (int i = 0; i < numSections; i++)
+        {
+            if (Tcl_GetInt(interp, argv[9 + i], &secTag) != TCL_OK) {
+                opserr << "WARNING invalid secTag\n";
+                opserr << argv[1] << " element: " << eleTag << endln;
+                return TCL_ERROR;
+            }
+            theSection = theTclBuilder->getSection(secTag);
+            if (theSection == 0) {
+                opserr << "WARNING section not found\n";
+                opserr << "Section: " << secTag;
+                opserr << argv[1] << " element: " << eleTag << endln;
+                return TCL_ERROR;
+            }
+            sections[i] = theSection;
+        }
+        argi = 9 + numSections;
+    } else {
+        if (Tcl_GetInt(interp, argv[7], &secTag) != TCL_OK) {
+            opserr << "WARNING invalid secTag\n";
+            opserr << argv[1] << " element: " << eleTag << endln;
+            return TCL_ERROR;
+        }
+
+        theSection = theTclBuilder->getSection(secTag);
+        if (theSection == 0) {
+            opserr << "WARNING section not found\n";
+            opserr << "Section: " << secTag;
+            opserr << argv[1] << " element: " << eleTag << endln;
+            return TCL_ERROR;
+        }
+        for (int i = 0; i < numSections; i++)
+            sections[i] = theSection;
     }
 
-    SectionForceDeformation *theSection = theTclBuilder->getSection(secTag);
-    if (theSection == 0) {
-      opserr << "WARNING section not found\n";
-      opserr << "Section: " << secTag;
-      opserr << argv[1] << " element: " << eleTag << endln;
-      return TCL_ERROR;
-    }
-
-    sections = new SectionForceDeformation *[numSections];
-    for (int i = 0; i < numSections; i++)
-      sections[i] = theSection;
 
     if (strcmp(argv[6],"Lobatto") == 0)
       beamIntegr = new LobattoBeamIntegration();
@@ -1262,7 +1290,6 @@ TclModelBuilder_addForceBeamColumn(ClientData clientData, Tcl_Interp *interp,
     return TCL_ERROR;
   }
 
-  int argi = 6;
   double mass = 0.0;
   int cMass = 0;
   int numIter = 10;
