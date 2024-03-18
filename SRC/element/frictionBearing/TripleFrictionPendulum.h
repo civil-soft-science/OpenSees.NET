@@ -55,7 +55,8 @@ public:
         double Uy,
         double Kvt,
         double minFv,
-        double tol);
+        double tol,
+        double stpr_fy, double stpr_as, double stpr_dpFac, double stpr_dcFac, double stpr_duFac, double stpr_resFyFac);
     
     TripleFrictionPendulum();
     
@@ -100,9 +101,10 @@ protected:
 
 private:
     // private member functions - only available to objects of the class
+    void CircularPlasticGap(Matrix &kj, Vector &fj, double Ej,double Gapj,Vector di, int iPend);
     void CircularElasticGap(Matrix &kj, Vector &fj, double Ej,double Gapj,Vector di);
     void BidirectionalPlastic(Matrix &ki, Vector &fi, Vector &epitmp, Vector &qitmp, double Fyi, double Ei, double Hi, Vector epi, Vector qi, Vector di);
-    void Segment(Vector &epitmp, Vector &qitmp, bool &conv, Matrix &kij, Vector &di, Vector epi, Vector qi, Vector f, Vector df, double Fyi, double Ei, double Hi, double Ej, double Gapj, double Tol, int Niter);
+    void Segment(int iPend, Vector &epitmp, Vector &qitmp, bool &conv, Matrix &kij, Vector &di, Vector epi, Vector qi, Vector f, Vector df, double Fyi, double Ei, double Hi, double Ej, double Gapj, double Tol, int Niter);
     void TFPElement(bool &Conv, Vector &ep1tmp, Vector &ep3tmp, Vector &ep5tmp, Vector &q1tmp, Vector &q3tmp, Vector &q5tmp, Matrix &K, Vector &f, Matrix &k12, Matrix &k34, Matrix &k56, Vector &d1, Vector &d3, Vector &d5, Vector ep1, Vector ep3, Vector ep5, Vector q1, Vector q3, Vector q5, Vector u, Vector dusub, double Fy1, double Fy3, double Fy5, double E1, double E3, double E5, double H1, double H3, double H5, double E2, double E4, double E6, double Gap2, double Gap4, double Gap6, double Tol, int Niter);
     void StiffnessForm(Matrix &K, Matrix k12, Matrix k34, Matrix k56);
     
@@ -121,7 +123,10 @@ private:
     double MinFv;
     double TOL;
     int Niter;
-    
+    ID loadDir, loadDirPrev; //for considering stpr_fy in X and Y dirs --->1:loading, 2:unloading
+    double stpr_fy, stpr_as, stpr_dpFac, stpr_ac, stpr_dcFac, stpr_duFac, stpr_resFyFac;//for considering yielding of the stopper
+    Vector initGap, plastGap, plastGapPrev, stpr_dCur, stpr_dPrev, stpr_peakFCur, stpr_peakFPrev, stpr_fCur, stpr_fPrev;
+
     Matrix K;
     Matrix Kpr;
     Vector f;

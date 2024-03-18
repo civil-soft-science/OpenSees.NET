@@ -67,6 +67,7 @@
 #include "ElasticPowerFunc.h"
 #include "Elastic2Material.h"
 #include "ElasticPPMaterial.h"
+#include "ElasticPPLagMaterial.h"
 #include "ParallelMaterial.h"
 #include "ASD_SMA_3K.h"
 #include "Concrete01.h"
@@ -1177,6 +1178,9 @@ FEM_ObjectBrokerAllClasses::getNewUniaxialMaterial(int classTag)
 	     
 	case MAT_TAG_ElasticPPMaterial:  
 	     return new ElasticPPMaterial();
+
+	case MAT_TAG_ElasticPPLagMaterial:
+	     return new ElasticPPLagMaterial();
 
 	case MAT_TAG_ElasticMultiLinear:  
 	     return new ElasticMultiLinear();

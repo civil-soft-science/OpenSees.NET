@@ -1452,6 +1452,9 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.cpp">
+      <Filter>uniaxial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\AxialSp.h">
@@ -2663,6 +2666,9 @@
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.h">
+      <Filter>uniaxial</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
   </ItemGroup>

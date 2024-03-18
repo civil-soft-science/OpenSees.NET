@@ -117,6 +117,7 @@
 
 #define MAT_TAG_ElasticMaterial			 1
 #define MAT_TAG_ElasticPPMaterial		 2
+#define MAT_TAG_ElasticPPLagMaterial	108
 #define MAT_TAG_ParallelMaterial		 3
 #define MAT_TAG_Concrete01			 4
 #define MAT_TAG_Concrete01A			 444

@@ -92,6 +92,7 @@ extern void* OPS_IMKJ(void);		// SAJalali
 extern void* OPS_BucklingStrut(void);		// SAJalali
 extern void* OPS_BucklingMaterial(void);		// SAJalali
 extern void* OPS_ConfinedConcrete(void);		// SAJalali
+extern void* OPS_ModifiedPinching4Material(void);		// SAJalali
 #endif
 extern void* OPS_TDConcreteEXP(void); // ntosic
 extern void* OPS_TDConcrete(void); // ntosic
@@ -100,6 +101,7 @@ extern void* OPS_TDConcreteMC10NL(void); //ntosicextern void *OPS_ElasticMateria
 extern void* OPS_ECC01(void);
 extern void* OPS_ElasticMaterial(void);
 extern void *OPS_ElasticPPMaterial(void);
+extern void *OPS_ElasticPPLagMaterial(void);
 extern void *OPS_EPPGapMaterial(void);
 extern void *OPS_ParallelMaterial(void);
 extern void *OPS_SeriesMaterial(void);
@@ -1001,6 +1003,14 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	return TCL_ERROR;
     }
     
+    else if (strcmp(argv[1],"ElasticPPLag") == 0) {
+      void *theMat = OPS_ElasticPPLagMaterial();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
+    }
+    
     else if (strcmp(argv[1],"ElasticPPGap") == 0) {
       void *theMat = OPS_EPPGapMaterial();
       if (theMat != 0) 
@@ -1732,6 +1742,13 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
         return TCL_ERROR;
     }
     
+	else if (strcmp(argv[1], "ModifiedPinching4") == 0) {
+		void* theMat = OPS_ModifiedPinching4Material();
+		if (theMat != 0)
+			theMaterial = (UniaxialMaterial*)theMat;
+		else
+			return TCL_ERROR;
+	}
     else if (strcmp(argv[1],"Pinching4") == 0) {
 		if (argc != 42 && argc != 31 ) {
 			opserr << "WARNING insufficient arguments\n";

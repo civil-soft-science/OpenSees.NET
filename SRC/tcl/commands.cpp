@@ -1870,6 +1870,10 @@ getTime(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 
 	// get the display format
 	char format[80];
+	if (time > 1.e20)
+		time = 1.e20;
+	if (time < -1.e20)
+		time = -1.e20;
 	if (argc == 1) {
 		//      strcpy(format,"%f");
 		sprintf(format, "%f", time);

@@ -158,8 +158,8 @@ EPPGapMaterial::setTrialStrain(double strain, double strainRate)
       trialStress = fy+(trialStrain-gap-fy/E)*eta*E;
       trialTangent = eta*E;
     } else if (trialStrain < minElasticYieldStrain) {
-      trialStress = 1e-6*fy;
-      trialTangent = 1e-6*E;
+      trialStress = 1e-6;
+      trialTangent = 1e-6;
     } else {
       trialStress =  E*(trialStrain-minElasticYieldStrain);
       trialTangent = E;
@@ -169,8 +169,8 @@ EPPGapMaterial::setTrialStrain(double strain, double strainRate)
       trialStress =  fy+(trialStrain-gap-fy/E)*eta*E;
       trialTangent = eta*E;
     } else if (trialStrain > minElasticYieldStrain) {
-        trialStress = 1e-6 * fy;
-        trialTangent = 1e-6 * E;
+        trialStress = 1e-6;
+        trialTangent = 1e-6;
     } else {
       trialStress =  E*(trialStrain-minElasticYieldStrain);
       trialTangent = E;

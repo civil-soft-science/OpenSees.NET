@@ -225,6 +225,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticBDMaterial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticMaterialThermal.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticPowerFunc.cpp" />
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ENTMaterial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\EPPGapMaterial.cpp" />
     <ClCompile Include="..\..\..\SRC\material\uniaxial\Elastic2Material.cpp" />
@@ -661,6 +662,7 @@
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticBDMaterial.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticMaterialThermal.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticPowerFunc.h" />
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ENTMaterial.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\EPPGapMaterial.h" />
     <ClInclude Include="..\..\..\SRC\material\uniaxial\Elastic2Material.h" />
