@@ -223,10 +223,7 @@ ElementRecorder::record(int commitTag, double timeStamp)
 				int nProcOuts;
 				int nVals = numEle;
 				if (procGrpNum == -1)
-					 if (procDataMethod != 0)
 						  nProcOuts = 1;
-					 else
-						  nProcOuts = nVals;
 				else {
 					 nProcOuts = nVals / procGrpNum;
 					 if (nProcOuts * procGrpNum < nVals)

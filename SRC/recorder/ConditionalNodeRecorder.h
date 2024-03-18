@@ -85,6 +85,7 @@ class ConditionalNodeRecorder: public Recorder
                            //3: minimize results
    int procGrpNum;
       int initialize(void);
+      Vector getResponse(Node* theNode);
 
     ID *theDofs;
     ID *theNodalTags;

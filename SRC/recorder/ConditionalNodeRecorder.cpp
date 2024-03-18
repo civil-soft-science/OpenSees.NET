@@ -270,6 +270,189 @@ ConditionalNodeRecorder::~ConditionalNodeRecorder()
 	 }
 }
 
+Vector ConditionalNodeRecorder::getResponse(Node* theNode)
+{
+	//
+	// if need nodal reactions get the domain to calculate them
+	// before we iterate over the nodes
+	//
+
+	if (dataFlag == 7)
+		theDomain->calculateNodalReactions(0);
+	else if (dataFlag == 8)
+		theDomain->calculateNodalReactions(1);
+	if (dataFlag == 9)
+		theDomain->calculateNodalReactions(2);
+
+	double timeSeriesTerm = 0.0;
+	Vector response;
+	if (dataFlag == 0) {
+
+		// AddingSensitivity:BEGIN ///////////////////////////////////
+		response.resize(numDOF);
+
+			const Vector& theResponse = theNode->getTrialDisp();
+			for (int j = 0; j < numDOF; j++) {
+
+				if (theTimeSeries != 0) {
+					timeSeriesTerm = timeSeriesValues[j];
+				}
+
+				int dof = (*theDofs)(j);
+				if (theResponse.Size() > dof) {
+					response[j] = theResponse(dof) + timeSeriesTerm;
+				}
+				else {
+					response[j] = 0.0 + timeSeriesTerm;
+				}
+			}
+		return response;
+		// AddingSensitivity:END /////////////////////////////////////
+	}
+	if (dataFlag == 1) {
+		response.resize(numDOF);
+
+
+		const Vector& theResponse = theNode->getTrialVel();
+		for (int j = 0; j < numDOF; j++) {
+
+			if (theTimeSeries != 0) {
+				timeSeriesTerm = timeSeriesValues[j];
+			}
+
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof) + timeSeriesTerm;
+			}
+			else
+				response[j] = 0.0 + timeSeriesTerm;
+		}
+		return response;
+
+	}
+	if (dataFlag == 2) {
+		response.resize(numDOF);
+
+
+		const Vector& theResponse = theNode->getTrialAccel();
+		for (int j = 0; j < numDOF; j++) {
+
+			if (theTimeSeries != 0) {
+				timeSeriesTerm = timeSeriesValues[j];
+			}
+
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof) + timeSeriesTerm;
+			}
+			else
+				response[j] = 0.0 + timeSeriesTerm;
+
+		}
+		return response;
+	}
+	if (dataFlag == 3) {
+		response.resize(numDOF);
+
+		const Vector& theResponse = theNode->getIncrDisp();
+		for (int j = 0; j < numDOF; j++) {
+
+			if (theTimeSeries != 0) {
+				timeSeriesTerm = timeSeriesValues[j];
+			}
+
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof);
+			}
+			else
+				response[j] = 0.0;
+		}
+		return response;
+	}
+	if (dataFlag == 4) {
+		response.resize(numDOF);
+
+		const Vector& theResponse = theNode->getIncrDeltaDisp();
+		for (int j = 0; j < numDOF; j++) {
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof);
+			}
+			else
+				response[j] = 0.0;
+		}
+		return response;
+	}
+	if (dataFlag == 5) {
+		response.resize(numDOF);
+
+		const Vector& theResponse = theNode->getUnbalancedLoad();
+		for (int j = 0; j < numDOF; j++) {
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof);
+			}
+			else
+				response[j] = 0.0;
+		}
+		return response;
+	}
+	if (dataFlag == 6) {
+		response.resize(numDOF);
+
+		const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
+		for (int j = 0; j < numDOF; j++) {
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof);
+			}
+			else
+				response[j] = 0.0;
+		}
+		return response;
+	}
+	if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
+		response.resize(numDOF);
+
+		const Vector& theResponse = theNode->getReaction();
+		for (int j = 0; j < numDOF; j++) {
+			int dof = (*theDofs)(j);
+			if (theResponse.Size() > dof) {
+				response[j] = theResponse(dof);
+			}
+			else
+				response[j] = 0.0;
+		}
+		return response;
+	}
+	if (dataFlag == 999997) {
+		response.resize(1);
+
+		if (theTimeSeries == 0)
+		{
+			opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
+		}
+		response[0] = theNode->getMotionEnergy(theTimeSeries);
+		return response;
+	}
+	if (dataFlag == 999998)
+	{
+		response.resize(1);
+
+		response[0] = theNode->getKineticEnergy(theTimeSeries);
+		return response;
+	}
+	if (dataFlag == 999999)
+	{
+		response.resize(1);
+
+		response[0] = theNode->getDampEnergy();
+		return response;
+	}
+	return response;
+}
+
 int
 ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 {
@@ -318,16 +501,15 @@ ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 	 // before we iterate over the nodes
 	 //
 
-	 if (dataFlag == 7)
-		  theDomain->calculateNodalReactions(0);
-	 else if (dataFlag == 8)
-		  theDomain->calculateNodalReactions(1);
-	 if (dataFlag == 9)
-		  theDomain->calculateNodalReactions(2);
-
 	 if (procDataMethod != 0)
 	 {
-		  double val = 0, val1 = 0;
+		 Vector* respVecs = new Vector[numValidNodes];
+		 for (int i = 0; i < numValidNodes; i++)
+		 {
+			 Node* theNode = theNodes[i];
+			 respVecs[i] = getResponse(theNode);
+		 }
+		 double val = 0, val1 = 0;
 		  int cnt = iCnt;
 		  for (int j = 0; j < numDOF; j++) {
 				int nProcOuts;
@@ -351,28 +533,8 @@ ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 				val = &vals[iGrpN];
 				int dof = (*theDofs)(j);
 				for (int i = 0; i < numValidNodes; i++) {
-					 Node* theNode = theNodes[i];
-					 if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
-						  const Vector& theResponse = theNode->getReaction();
-						  if (theResponse.Size() > dof) {
-								val1 = theResponse(dof);
-						  }
-						  else
-								val1 = 0.0;
-					 }
-					 else if (dataFlag == 999997) {
-						  if (theTimeSeries == 0)
-						  {
-								opserr << "WARNING! NodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
-						  }
-						  val1 = theNode->getMotionEnergy(theTimeSeries);
-					 }
-					 else if (dataFlag == 999998)
-						  val1 = theNode->getKineticEnergy(theTimeSeries);
-					 else if (dataFlag == 999999)
-						  val1 = theNode->getDampEnergy();
-
-					 if (procGrpNum != -1 && i == nextGrpN)
+					val1 = respVecs[i][j];
+					if (procGrpNum != -1 && i == nextGrpN)
 					 {
 						  iGrpN++;
 						  nextGrpN += procGrpNum;
@@ -399,6 +561,7 @@ ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 				}
 				delete[] vals;
 		  }
+		  delete[] respVecs;
 	 }
 	 else
 
@@ -409,187 +572,9 @@ ConditionalNodeRecorder::record(int commitTag, double timeStamp)
 					 cnt = i + iCnt;
 
 				Node* theNode = theNodes[i];
-				if (dataFlag == 0) {
-					 const Vector& response = theNode->getTrialDisp();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-
-						  if (theTimeSeries != 0) {
-								timeSeriesTerm = timeSeriesValues[j];
-						  }
-
-						  if (response.Size() > dof) {
-								(*data)(0, cnt) = response(dof) + timeSeriesTerm;
-						  }
-						  else
-								(*data)(0, cnt) = 0.0 + timeSeriesTerm;
-
-						  cnt++;
-					 }
-
-				}
-				else if (dataFlag == 10000) {
-					 const Vector& response = theNode->getTrialDisp();
-					 double sum = 0.0;
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-
-						  if (theTimeSeries != 0) {
-								timeSeriesTerm = timeSeriesValues[j];
-						  }
-
-						  if (response.Size() > dof) {
-								sum += (response(dof) + timeSeriesTerm) * (response(dof) + timeSeriesTerm);
-						  }
-						  else
-								sum += timeSeriesTerm * timeSeriesTerm;
-					 }
-
-					 (*data)(0, cnt) = sqrt(sum);
-					 cnt++;
-
-				}
-				else if (dataFlag == 1) {
-					 const Vector& response = theNode->getTrialVel();
-					 for (int j = 0; j < numDOF; j++) {
-
-						  if (theTimeSeries != 0) {
-								timeSeriesTerm = timeSeriesValues[j];
-						  }
-
-						  int dof = (*theDofs)(j);
-						  if (response.Size() > dof) {
-								(*data)(0, cnt) = response(dof) + timeSeriesTerm;
-						  }
-						  else
-								(*data)(0, cnt) = 0.0 + timeSeriesTerm;
-
-						  cnt++;
-					 }
-				}
-				else if (dataFlag == 2) {
-					 const Vector& response = theNode->getTrialAccel();
-					 for (int j = 0; j < numDOF; j++) {
-
-						  if (theTimeSeries != 0) {
-								timeSeriesTerm = timeSeriesValues[j];
-						  }
-
-						  int dof = (*theDofs)(j);
-						  if (response.Size() > dof) {
-								(*data)(0, cnt) = response(dof) + timeSeriesTerm;
-						  }
-						  else
-								(*data)(0, cnt) = 0.0 + timeSeriesTerm;
-
-						  cnt++;
-					 }
-				}
-				else if (dataFlag == 3) {
-					 const Vector& response = theNode->getIncrDisp();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-						  if (response.Size() > dof) {
-								(*data)(0, cnt) = response(dof);
-						  }
-						  else
-								(*data)(0, cnt) = 0.0;
-
-						  cnt++;
-					 }
-				}
-				else if (dataFlag == 4) {
-					 const Vector& response = theNode->getIncrDeltaDisp();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-						  if (response.Size() > dof) {
-								(*data)(0, cnt) = response(dof);
-						  }
-						  else
-								(*data)(0, cnt) = 0.0;
-
-						  cnt++;
-					 }
-				}
-				else if (dataFlag == 5) {
-					 const Vector& theResponse = theNode->getUnbalancedLoad();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-						  if (theResponse.Size() > dof) {
-								(*data)(0, cnt) = theResponse(dof);
-						  }
-						  else
-								(*data)(0, cnt) = 0.0;
-
-						  cnt++;
-					 }
-
-				}
-				else if (dataFlag == 6) {
-					 const Vector& theResponse = theNode->getUnbalancedLoadIncInertia();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-						  if (theResponse.Size() > dof) {
-								(*data)(0, cnt) = theResponse(dof);
-						  }
-						  else
-								(*data)(0, cnt) = 0.0;
-
-						  cnt++;
-					 }
-
-				}
-				else if (dataFlag == 7 || dataFlag == 8 || dataFlag == 9) {
-					 const Vector& theResponse = theNode->getReaction();
-					 for (int j = 0; j < numDOF; j++) {
-						  int dof = (*theDofs)(j);
-						  if (theResponse.Size() > dof) {
-								(*data)(0, cnt) = theResponse(dof);
-						  }
-						  else
-								(*data)(0, cnt) = 0.0;
-
-						  cnt++;
-					 }
-#ifdef _CSS
-				}
-				else if (dataFlag == 999997) {
-					 if (theTimeSeries == 0)
-					 {
-						  opserr << "WARNING! ConditionalNodeRecorder::motionEnergy: the timeSeries tag is missing. Please use the -TimeSeries option\n";
-					 }
-					 (*data)(0, cnt++) = theNode->getMotionEnergy(theTimeSeries);
-				}
-				else if (dataFlag == 999998)
-					 (*data)(0, cnt++) = theNode->getKineticEnergy(theTimeSeries);
-				else if (dataFlag == 999999)
-					 (*data)(0, cnt++) = theNode->getDampEnergy();
-#endif // _CSS
-				else if (dataFlag > 10) {
-					 int mode = dataFlag - 10;
-					 int column = mode - 1;
-					 const Matrix* theEigenvectors = theNode->getEigenvectors();
-					 if (theEigenvectors == 0)
-						  opserr << "ConditionalNodeRecorder::record: zero eigen vector faced\n";
-					 else if (theEigenvectors->noCols() > column) {
-						  int noRows = theEigenvectors->noRows();
-						  for (int j = 0; j < numDOF; j++) {
-								int dof = (*theDofs)(j);
-								if (noRows > dof) {
-									 (*data)(0, cnt) = (*theEigenvectors)(dof, column);
-								}
-								else
-									 (*data)(0, cnt) = 0.0;
-								cnt++;
-						  }
-					 }
-					 else {
-						  for (int j = 0; j < numDOF; j++) {
-								(*data)(0, cnt) = 0.0;
-								cnt++;
-						  }
-					 }
-				}
+				Vector resp = getResponse(theNode);
+				for (int j = 0; j < resp.Size(); j++)
+					(*data)(0,cnt++) = resp[j];
 		  }
 
 	 return 0;

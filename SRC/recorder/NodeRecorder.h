@@ -84,6 +84,7 @@ class NodeRecorder: public Recorder
                           //3: minimum of results
                           //4: maximum absolute of results
    int procGrpNum;
+   Vector getResponse(Node* theNode);
 #endif // _CSS
 
     int initialize(void);
