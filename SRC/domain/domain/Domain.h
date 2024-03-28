@@ -90,6 +90,12 @@ typedef int(__stdcall* DomainEvent_AddLoadPattern) (LoadPattern* lp);
 typedef int(__stdcall* DomainEvent_RemoveLoadPattern) (LoadPattern* lp);
 typedef int(__stdcall* DomainEvent_AddRecorder) (Recorder* rec);
 typedef int(__stdcall* DomainEvent_RemoveRecorder) (Recorder* rec);
+typedef int(__stdcall* DomainEvent_AddNodalLoad) (NodalLoad* nl,int pat);
+typedef int(__stdcall* DomainEvent_RemoveNodalLoad) (NodalLoad* nl);
+typedef int(__stdcall* DomainEvent_AddElementalLoad) (ElementalLoad* el,int pat);
+typedef int(__stdcall* DomainEvent_RemoveElementalLoad) (ElementalLoad* el);
+typedef int(__stdcall* DomainEvent_AddSP_Constraint) (SP_Constraint* sp, int pat);
+typedef int(__stdcall* DomainEvent_RemoveSP_Constraint) (SP_Constraint* rec);
 typedef int(__stdcall* DomainEvent_ClearAll) ();
 #endif
 
@@ -262,19 +268,25 @@ class Domain
 	Recorder* getRecorder(int tag);	//by SAJalali
 
 #if _DLL
-   DomainEvent_AddNode _DomainEvent_AddNode;
-   DomainEvent_RemoveNode _DomainEvent_RemoveNode;
-   DomainEvent_AddElement _DomainEvent_AddElement;
-   DomainEvent_RemoveElement _DomainEvent_RemoveElement;
-   DomainEvent_AddSP _DomainEvent_AddSP;
-   DomainEvent_RemoveSP _DomainEvent_RemoveSP;
-   DomainEvent_AddMP _DomainEvent_AddMP;
-   DomainEvent_RemoveMP _DomainEvent_RemoveMP;
-   DomainEvent_AddLoadPattern _DomainEvent_AddLoadPattern;
-   DomainEvent_RemoveLoadPattern _DomainEvent_RemoveLoadPattern;
-   DomainEvent_AddRecorder _DomainEvent_AddRecorder;
-   DomainEvent_RemoveRecorder _DomainEvent_RemoveRecorder;
-   DomainEvent_ClearAll _DomainEvent_ClearAll;
+	DomainEvent_AddNode _DomainEvent_AddNode;
+	DomainEvent_RemoveNode _DomainEvent_RemoveNode;
+	DomainEvent_AddElement _DomainEvent_AddElement;
+	DomainEvent_RemoveElement _DomainEvent_RemoveElement;
+	DomainEvent_AddSP _DomainEvent_AddSP;
+	DomainEvent_RemoveSP _DomainEvent_RemoveSP;
+	DomainEvent_AddMP _DomainEvent_AddMP;
+	DomainEvent_RemoveMP _DomainEvent_RemoveMP;
+	DomainEvent_AddLoadPattern _DomainEvent_AddLoadPattern;
+	DomainEvent_RemoveLoadPattern _DomainEvent_RemoveLoadPattern;
+	DomainEvent_AddRecorder _DomainEvent_AddRecorder;
+	DomainEvent_RemoveRecorder _DomainEvent_RemoveRecorder;
+	DomainEvent_ClearAll _DomainEvent_ClearAll;
+	DomainEvent_AddNodalLoad _DomainEvent_AddNodalLoad;
+	DomainEvent_RemoveNodalLoad _DomainEvent_RemoveNodalLoad;
+	DomainEvent_AddElementalLoad _DomainEvent_AddElementalLoad;
+	DomainEvent_RemoveElementalLoad _DomainEvent_RemoveElementalLoad;
+	DomainEvent_AddSP_Constraint _DomainEvent_AddSP_Constraint;
+	DomainEvent_RemoveSP_Constraint _DomainEvent_RemoveSP_Constraint;
    Recorder** theRecorders;
    int numRecorders;
 #endif

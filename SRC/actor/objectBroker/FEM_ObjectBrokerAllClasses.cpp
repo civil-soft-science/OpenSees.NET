@@ -67,6 +67,7 @@
 #include "ElasticPowerFunc.h"
 #include "Elastic2Material.h"
 #include "ElasticPPMaterial.h"
+#include "ElasticPPLagMaterial.h"
 #include "ParallelMaterial.h"
 #include "ASD_SMA_3K.h"
 #include "Concrete01.h"
@@ -203,7 +204,9 @@
 #include "J2CyclicBoundingSurface3D.h"
 #include "J2CyclicBoundingSurfacePlaneStrain.h"
 #include "UWmaterials/InitialStateAnalysisWrapper.h"
+#if !_DLL
 #include "stressDensityModel/stressDensity.h"
+#endif
 #include "InitStressNDMaterial.h"
 
 // Fibers
@@ -1178,6 +1181,9 @@ FEM_ObjectBrokerAllClasses::getNewUniaxialMaterial(int classTag)
 	case MAT_TAG_ElasticPPMaterial:  
 	     return new ElasticPPMaterial();
 
+	case MAT_TAG_ElasticPPLagMaterial:
+	     return new ElasticPPLagMaterial();
+
 	case MAT_TAG_ElasticMultiLinear:  
 	     return new ElasticMultiLinear();
 	     	     
@@ -1585,8 +1591,10 @@ FEM_ObjectBrokerAllClasses::getNewNDMaterial(int classTag)
 
   case ND_TAG_InitialStateAnalysisWrapper:
       return new InitialStateAnalysisWrapper(); 
+#if !_DLL
   case ND_TAG_stressDensity:
 	  return new stressDensity();
+#endif
   case ND_TAG_CycLiqCP3D:
       return new CycLiqCP3D(); 
 

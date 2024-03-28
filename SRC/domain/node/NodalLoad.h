@@ -68,7 +68,12 @@ class NodalLoad : public Load
 	virtual const Vector &getData(int& type);
 	//Change made by Liming for NodalThermalAction [SIF]
 
-  protected:
+  #if _DLL
+	virtual inline Vector* getLoadVector() {
+		return load;
+	}
+  #endif
+protected:
 
   private:
     int  myNode;        // tag indicating associated Node objects tag

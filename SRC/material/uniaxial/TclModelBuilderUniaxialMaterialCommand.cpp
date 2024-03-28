@@ -101,6 +101,7 @@ extern void* OPS_ECC01(void);
 extern void* OPS_ElasticMaterial(void);
 extern void *OPS_ElasticPPMaterial(void);
 extern void *OPS_EPPGapMaterial(void);
+extern void *OPS_ElasticPPLagMaterial(void);
 extern void *OPS_ParallelMaterial(void);
 extern void *OPS_SeriesMaterial(void);
 extern void *OPS_HardeningMaterial(void);
@@ -1003,6 +1004,14 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
     
     else if (strcmp(argv[1],"ElasticPPGap") == 0) {
       void *theMat = OPS_EPPGapMaterial();
+      if (theMat != 0) 
+	theMaterial = (UniaxialMaterial *)theMat;
+      else 
+	return TCL_ERROR;
+    }
+
+    else if (strcmp(argv[1],"ElasticPPLag") == 0) {
+      void *theMat = OPS_ElasticPPLagMaterial();
       if (theMat != 0) 
 	theMaterial = (UniaxialMaterial *)theMat;
       else 

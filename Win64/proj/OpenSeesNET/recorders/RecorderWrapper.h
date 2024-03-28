@@ -1,17 +1,25 @@
 #pragma once
 #include <response\Response.h>
-#include <recorder\DamageRecorder.h>
+//#include <recorder\DamageRecorder.h>
 #include <recorder\NodeRecorder.h>
 #include <recorder\DriftRecorder.h>
 #include <recorder\ElementRecorder.h>
 #include <recorder\EnvelopeDriftRecorder.h>
 #include <recorder\EnvelopeElementRecorder.h>
 #include <recorder\EnvelopeNodeRecorder.h>
-#include <recorder\MaxNodeDispRecorder.h>
 #include <recorder\EnvelopeDriftRecorder.h>
-#include <recorder\NormElementRecorder.h>
-#include <recorder\NormEnvelopeElementRecorder.h>
-#include <recorder\PatternRecorder.h>
+#include <recorder\ResidDriftRecorder.h>
+#include <recorder\ResidElementRecorder.h>
+#include <recorder\ResidNodeRecorder.h>
+#include <recorder\ResidDriftRecorder.h>
+#include <recorder\ConditionalDriftRecorder.h>
+#include <recorder\ConditionalElementRecorder.h>
+#include <recorder\ConditionalNodeRecorder.h>
+#include <recorder\ConditionalDriftRecorder.h>
+//#include <recorder\MaxNodeDispRecorder.h>
+//#include <recorder\NormElementRecorder.h>
+//#include <recorder\NormEnvelopeElementRecorder.h>
+//#include <recorder\PatternRecorder.h>
 
 
 #include "../taggeds/TaggedObjectWrapper.h"
@@ -51,6 +59,15 @@ namespace OpenSees {
 					return opsstr->GetStreamHeader();
 				}
 			}
+			String^ GetClassType() {
+				const char* type = _Recorder->getClassType();
+				return gcnew String(type);
+			}
+
+			int GetClassTag() {
+				return _Recorder->getClassTag();
+			}
+
 			int CloseOutputStreamHandler() {
 				OPS_Stream* opsstrptr = _Recorder->getOutputHandler();
 				if (opsstrptr == 0) return -1;
@@ -73,24 +90,13 @@ namespace OpenSees {
 
 		};
 
-		public ref class DamageRecorderWrapper : RecorderWrapper
-		{
-		public:
-			DamageRecorderWrapper(int elemid, IDWrapper^ secIDs, int dofid, DamageModelWrapper^ dmgPtr,
-				BaseDomainWrapper^ theDomainPtr,
-				bool echotimeflag, double deltat, OPS_StreamWrapper^ theOutputStream);
-			~DamageRecorderWrapper() {};
-		};
-
 		public ref class NodeRecorderWrapper : RecorderWrapper
 		{
 		public:
 			NodeRecorderWrapper(IDWrapper^ theDof,
-				IDWrapper^ theNodes,
-				int sensitivity,
-				String^ dataToStore,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theOutputHandler);
+				IDWrapper^ theNodes, int sensitivity, String^ dataToStore,
+				BaseDomainWrapper^ theDomain, OPS_StreamWrapper^ theOutputHandler, int procDataMethod, int procGrpNum, double deltaT,
+				bool echoTimeFlag, array<TimeSeriesWrapper^>^ timeSeries);
 			~NodeRecorderWrapper() {};
 
 		};
@@ -100,23 +106,12 @@ namespace OpenSees {
 		public:
 			DriftRecorderWrapper(int ndI, int ndJ, int dof, int perpDirn,
 				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler,
-				bool echoTime,
-				double dT);
-
-			DriftRecorderWrapper(int ndI, int ndJ, int dof, int perpDirn,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler);
+				OPS_StreamWrapper^ theHandler, int procDataMethod, int procGrpNum, bool echoTime, double deltaT);
 
 			DriftRecorderWrapper(IDWrapper^ ndI, IDWrapper^ ndJ, int dof, int perpDirn,
 				BaseDomainWrapper^ theDomain,
 				OPS_StreamWrapper^ theHandler,
-				bool echoTime,
-				double dT);
-
-			DriftRecorderWrapper(IDWrapper^ ndI, IDWrapper^ ndJ, int dof, int perpDirn,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler);
+				int procDataMethod, int procGrpNum, bool echoTime, double deltaT);
 
 			~DriftRecorderWrapper() {};
 
@@ -132,13 +127,8 @@ namespace OpenSees {
 				bool echoTime,
 				BaseDomainWrapper^ theDomain,
 				OPS_StreamWrapper^ theOutputHandler,
-				double deltaT,
+				int procMethod, int procGrpNum, double deltaT,
 				IDWrapper^ dof);
-			ElementRecorderWrapper(IDWrapper^ eleID,
-				array<String^>^ argv,
-				bool echoTime,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theOutputHandler);
 			~ElementRecorderWrapper() {};
 
 		};
@@ -149,11 +139,11 @@ namespace OpenSees {
 			EnvelopeDriftRecorderWrapper(int ndI, int ndJ, int dof, int perpDirn,
 				BaseDomainWrapper^ theDomain,
 				OPS_StreamWrapper^ theHandler,
-				bool echoTime);
+				int procDataMethod, int procGrpNum, bool echoTime);
 			EnvelopeDriftRecorderWrapper(IDWrapper^ ndI, IDWrapper^ ndJ, int dof, int perpDirn,
 				BaseDomainWrapper^ theDomain,
 				OPS_StreamWrapper^ theHandler,
-				bool echoTime);
+				int procDataMethod, int procGrpNum, bool echoTime);
 			~EnvelopeDriftRecorderWrapper() {};
 		};
 
@@ -164,14 +154,9 @@ namespace OpenSees {
 				array<String^>^ argv,
 				BaseDomainWrapper^ theDomain,
 				OPS_StreamWrapper^ theHandler,
-				double deltaT,
+				int procMethod, int procGrpNum,
 				bool echoTimeFlag,
 				IDWrapper^ dof);
-
-			EnvelopeElementRecorderWrapper(IDWrapper^ eleID,
-				array<String^>^ argv,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler);
 
 			~EnvelopeElementRecorderWrapper() {};
 		};
@@ -180,22 +165,99 @@ namespace OpenSees {
 		{
 		public:
 			EnvelopeNodeRecorderWrapper(IDWrapper^ theDof,
-				IDWrapper^ theNodes,
-				String^ dataToStore,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler,
-				double deltaT,
-				bool echoTimeFlag,
-				array<TimeSeriesWrapper^>^ theTimeSeries);
-			EnvelopeNodeRecorderWrapper(IDWrapper^ theDof,
-				IDWrapper^ theNodes,
-				String^ dataToStore,
-				BaseDomainWrapper^ theDomain,
-				OPS_StreamWrapper^ theHandler);
+				IDWrapper^ theNodes, String^ dataToStore,
+				BaseDomainWrapper^ theDomain, OPS_StreamWrapper^ theOutputHandler, int procDataMethod, int procGrpNum,
+				bool echoTimeFlag, array<TimeSeriesWrapper^>^ timeSeries);
 			~EnvelopeNodeRecorderWrapper() {};
 		};
 
-		public ref class MaxNodeDispRecorderWrapper : RecorderWrapper
+		public ref class ResidDriftRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ResidDriftRecorderWrapper(int ndI, int ndJ, int dof, int perpDirn,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int procDataMethod, int procGrpNum, bool echoTime);
+			ResidDriftRecorderWrapper(IDWrapper^ ndI, IDWrapper^ ndJ, int dof, int perpDirn,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int procDataMethod, int procGrpNum, bool echoTime);
+			~ResidDriftRecorderWrapper() {};
+		};
+
+		public ref class ResidElementRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ResidElementRecorderWrapper(IDWrapper^ eleID,
+				array<String^>^ argv,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int procMethod, int procGrpNum,
+				bool echoTimeFlag,
+				IDWrapper^ dof);
+
+			~ResidElementRecorderWrapper() {};
+		};
+
+		public ref class ResidNodeRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ResidNodeRecorderWrapper(IDWrapper^ theDof,
+				IDWrapper^ theNodes, String^ dataToStore,
+				BaseDomainWrapper^ theDomain, OPS_StreamWrapper^ theOutputHandler, int procDataMethod, int procGrpNum,
+				bool echoTimeFlag, array<TimeSeriesWrapper^>^ timeSeries);
+			~ResidNodeRecorderWrapper() {};
+		};
+
+		public ref class ConditionalDriftRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ConditionalDriftRecorderWrapper(int ndI, int ndJ, int dof, int perpDirn,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int rcrdrTag, int procDataMethod, int procGrpNum, bool echoTime);
+			ConditionalDriftRecorderWrapper(IDWrapper^ ndI, IDWrapper^ ndJ, int dof, int perpDirn,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int rcrdrTag, int procDataMethod, int procGrpNum, bool echoTime);
+			~ConditionalDriftRecorderWrapper() {};
+		};
+
+		public ref class ConditionalElementRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ConditionalElementRecorderWrapper(IDWrapper^ eleID,
+				array<String^>^ argv,
+				BaseDomainWrapper^ theDomain,
+				OPS_StreamWrapper^ theHandler,
+				int rcrdrTag, int procMethod, int procGrpNum,
+				bool echoTimeFlag,
+				IDWrapper^ dof);
+
+			~ConditionalElementRecorderWrapper() {};
+		};
+
+		public ref class ConditionalNodeRecorderWrapper : RecorderWrapper
+		{
+		public:
+			ConditionalNodeRecorderWrapper(IDWrapper^ theDof,
+				IDWrapper^ theNodes, String^ dataToStore,
+				BaseDomainWrapper^ theDomain, OPS_StreamWrapper^ theOutputHandler, int rcrdrTag, int procDataMethod, int procGrpNum,
+				bool echoTimeFlag, array<TimeSeriesWrapper^>^ timeSeries);
+			~ConditionalNodeRecorderWrapper() {};
+		};
+
+		/*
+		public ref class DamageRecorderWrapper : RecorderWrapper
+		{
+		public:
+			DamageRecorderWrapper(int elemid, IDWrapper^ secIDs, int dofid, DamageModelWrapper^ dmgPtr,
+				BaseDomainWrapper^ theDomainPtr,
+				bool echotimeflag, double deltat, OPS_StreamWrapper^ theOutputStream);
+			~DamageRecorderWrapper() {};
+		};
+
+public ref class MaxNodeDispRecorderWrapper : RecorderWrapper
 		{
 		public:
 			MaxNodeDispRecorderWrapper(int dof, IDWrapper^ theNodes, BaseDomainWrapper^ theDomain);
@@ -251,6 +313,6 @@ namespace OpenSees {
 				int startFlag);
 
 			~PatternRecorderWrapper() {};
-		};
+		};*/
 	}
 }

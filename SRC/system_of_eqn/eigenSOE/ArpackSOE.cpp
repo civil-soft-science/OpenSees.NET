@@ -34,7 +34,9 @@
 #include <Vertex.h>
 #include <VertexIter.h>
 #include <math.h>
+#if !_DLL
 #include <f2c.h>
+#endif
 #include <Channel.h>
 #include <FEM_ObjectBroker.h>
 #include <AnalysisModel.h>

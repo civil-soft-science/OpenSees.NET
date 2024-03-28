@@ -290,7 +290,7 @@ TclCreateRecorder(ClientData clientData, Tcl_Interp* interp, int argc,
 		  OPS_Stream* theOutput = new DataFileStream(fileName);
 
 		  // now construct the recorder
-		  (*theRecorder) = new DamageRecorder(eleID, secIDs, dofID, dmgPTR, theDomain, echoTime, dT, rTolDt, *theOutput);
+		  (*theRecorder) = new DamageRecorder(eleID, secIDs, dofID, dmgPTR, theDomain, echoTime, dT, *theOutput);
 
 	 }
 	 //////////////////////End of ElementDamage recorder////////////////////////////

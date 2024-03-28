@@ -48,11 +48,11 @@
 using std::ios;
 
 DamageRecorder::DamageRecorder( int elemid, ID &secIDs, int dofid, DamageModel *dmgPtr,
-				Domain &theDomainPtr, bool echotimeflag, double deltat, double rTolDt, OPS_Stream &output)
+				Domain &theDomainPtr, bool echotimeflag, double deltat, OPS_Stream &output)
   :Recorder(RECORDER_TAGS_DamageRecorder),
    eleID(elemid) , numSec(secIDs.Size()), dofID(dofid),
    responseID(secIDs.Size()), sectionTags(secIDs.Size()),theDomain(&theDomainPtr),
-   echoTimeFlag(echotimeflag), deltaT(deltat), relDeltaTTol(rTolDt), nextTimeStampToRecord(0.0),
+   echoTimeFlag(echotimeflag), deltaT(deltat), nextTimeStampToRecord(0.0),
    theOutput(&output), data(0)
 {
   // make copy of the damage model

@@ -26,7 +26,7 @@ namespace OpenSees {
 		{
 		public:
 			AdapterWrapper(int tag, IDWrapper^ nodes, IDWrapper^ dof,
-				MatrixWrapper^ stif, int ipPort,
+				MatrixWrapper^ stif, int ipPort, int ssl, int udp,
 				int addRayleigh, MatrixWrapper^ mass);
 			AdapterWrapper() {};
 			~AdapterWrapper() {

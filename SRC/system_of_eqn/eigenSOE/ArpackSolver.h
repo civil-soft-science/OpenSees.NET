@@ -89,7 +89,11 @@ class ArpackSolver : public EigenSolver
     int iparam[11];
     int ipntr[11];
   //	long int* select;
-  int* select;
+#if _DLL
+	long int* select;
+#else
+	int* select;
+#endif
     
     void myMv(int n, double *v, double *result);
     void myCopy(int n, double *v, double *result);

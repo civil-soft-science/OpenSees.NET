@@ -125,9 +125,13 @@ class Element : public DomainComponent
     void resetDampingEnergy() { dampingEnergy = 0; }
     void resetHystereticEnergy() { hystereticEnergy = 0; }
 #endif // _CSS
-
-protected:
+#if _DLL
 	const Vector& getRayleighDampingForces(void);
+#endif
+protected:
+#if !_DLL
+	const Vector& getRayleighDampingForces(void);
+#endif
 
     double alphaM, betaK, betaK0, betaKc;
     Matrix *Kc; // pointer to hold last committed matrix if needed for rayleigh damping

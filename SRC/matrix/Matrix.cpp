@@ -41,6 +41,11 @@ using std::nothrow;
 
 #define MATRIX_WORK_AREA 400
 #define INT_WORK_AREA 20
+#ifdef _WIN32
+#ifdef _USRDLL
+#define _DLL
+#endif
+#endif
 
 #include <math.h>
 

@@ -1449,7 +1449,7 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\ConfinedConcrete.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.cpp">
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2662,7 +2662,7 @@
     <ClInclude Include="..\..\..\SRC\material\uniaxial\IMKJ.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SRC\material\uniaxial\ModifiedPinching4Material.h">
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\ElasticPPLagMaterial.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
   </ItemGroup>

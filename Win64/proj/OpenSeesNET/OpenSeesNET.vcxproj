@@ -37,7 +37,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AEE65078-1C94-4379-8A03-E6E820239F51}</ProjectGuid>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>OpenSeesNET</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -47,56 +47,56 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug.DLL|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.DLL|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug.DLL|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.DLL|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -251,8 +251,7 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>actor.lib;analysis.lib;arpack.lib;blas.lib;cblas.lib;convergence.lib;cssparse.lib;damage.lib;database.lib;DoddRestrepo.lib;domain.lib;drain.lib;element.lib;feap.lib;tcl.lib;fedeas.lib;glu32.lib;graph.lib;handler.lib;ifconsol.lib;lapack.lib;libifcoremt.lib;libmmt.lib;material.lib;matrix.lib;modelbuilder.lib;opengl32.lib;optimization.lib;recorder.lib;reliability.lib;renderer.lib;superLU.lib;system.lib;tagged.lib;tcl86t.lib;tk86t.lib;umfpackC.lib;utility.lib;wsock32.lib;proxy.lib</AdditionalDependencies>
-      <OutputFile>.\..\..\bin\debug\OpenSees.NET.x64.dll</OutputFile>
+      <AdditionalDependencies>proxy.lib;actor.lib;analysis.lib;arpack.lib;blas.lib;cblas.lib;convergence.lib;cssparse.lib;damage.lib;database.lib;DoddRestrepo.lib;domain.lib;drain.lib;element.lib;feap.lib;tcl.lib;fedeas.lib;glu32.lib;graph.lib;handler.lib;ifconsol.lib;lapack.lib;libifcoremt.lib;libmmt.lib;material.lib;matrix.lib;modelbuilder.lib;opengl32.lib;optimization.lib;recorder.lib;reliability.lib;renderer.lib;superLU.lib;system.lib;tagged.lib;tcl86t.lib;tk86t.lib;umfpackC.lib;utility.lib;wsock32.lib;proxy.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\lib\debug-dll;C:\Program Files\Tcl\lib;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2018.2.185\windows\mkl\lib\intel64_win</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -324,9 +323,8 @@
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>actor.lib;analysis.lib;arpack.lib;blas.lib;cblas.lib;convergence.lib;cssparse.lib;damage.lib;database.lib;DoddRestrepo.lib;domain.lib;drain.lib;element.lib;feap.lib;tcl.lib;fedeas.lib;glu32.lib;graph.lib;handler.lib;ifconsol.lib;lapack.lib;libifcoremt.lib;libmmt.lib;material.lib;matrix.lib;modelbuilder.lib;opengl32.lib;optimization.lib;recorder.lib;reliability.lib;renderer.lib;superLU.lib;system.lib;tagged.lib;tcl86t.lib;tk86t.lib;umfpackC.lib;utility.lib;wsock32.lib;proxy.lib</AdditionalDependencies>
-      <OutputFile>.\..\..\bin\OpenSees.NET.x64.dll</OutputFile>
-      <AdditionalLibraryDirectories>..\..\lib\release;..\..\lib;C:\Program Files\Tcl\lib;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2018.2.185\windows\mkl\lib\intel64_win</AdditionalLibraryDirectories>
+      <AdditionalDependencies>proxy.lib;actor.lib;analysis.lib;arpack.lib;blas.lib;cblas.lib;convergence.lib;cssparse.lib;damage.lib;database.lib;DoddRestrepo.lib;domain.lib;drain.lib;element.lib;feap.lib;tcl.lib;fedeas.lib;glu32.lib;graph.lib;handler.lib;ifconsol.lib;lapack.lib;libifcoremt.lib;libmmt.lib;material.lib;matrix.lib;modelbuilder.lib;opengl32.lib;optimization.lib;recorder.lib;reliability.lib;renderer.lib;superLU.lib;system.lib;tagged.lib;tcl86t.lib;tk86t.lib;umfpackC.lib;utility.lib;wsock32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\lib\release-dll;..\..\lib;C:\Program Files\Tcl\lib;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2018.2.185\windows\mkl\lib\intel64_win</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>

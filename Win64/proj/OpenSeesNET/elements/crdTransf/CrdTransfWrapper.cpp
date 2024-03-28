@@ -50,15 +50,15 @@ PDeltaCrdTransf3dWrapper::PDeltaCrdTransf3dWrapper(VectorWrapper^ vectorXZPlane,
 	_CrdTransf = new PDeltaCrdTransf3d(0, *vectorXZPlane->_Vector, *rigJntOffsetI->_Vector, *rigJntOffsetJ->_Vector);
 }
 
-CorotCrdTransfWarping2dWrapper::CorotCrdTransfWarping2dWrapper()
-{
-	_CrdTransf = new CorotCrdTransfWarping2d();
-}
-
-CorotCrdTransfWarping2dWrapper::CorotCrdTransfWarping2dWrapper(VectorWrapper^ rigJntOffsetI, VectorWrapper^ rigJntOffsetJ)
-{
-	_CrdTransf = new CorotCrdTransfWarping2d(0, *rigJntOffsetI->_Vector, *rigJntOffsetI->_Vector);
-}
+//CorotCrdTransfWarping2dWrapper::CorotCrdTransfWarping2dWrapper()
+//{
+//	_CrdTransf = new CorotCrdTransfWarping2d();
+//}
+//
+//CorotCrdTransfWarping2dWrapper::CorotCrdTransfWarping2dWrapper(VectorWrapper^ rigJntOffsetI, VectorWrapper^ rigJntOffsetJ)
+//{
+//	_CrdTransf = new CorotCrdTransfWarping2d(0, *rigJntOffsetI->_Vector, *rigJntOffsetI->_Vector);
+//}
 
 LinearCrdTransf2dIntWrapper::LinearCrdTransf2dIntWrapper()
 {

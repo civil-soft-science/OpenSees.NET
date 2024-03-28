@@ -8,10 +8,10 @@ using namespace OpenSees::Materials::Sections;
 using namespace OpenSees::Materials::Uniaxials;
 
 AdapterWrapper::AdapterWrapper(int tag, IDWrapper^ nodes, IDWrapper^ dof,
-	MatrixWrapper^ stif, int ipPort,
+	MatrixWrapper^ stif, int ipPort, int ssl, int udp,
 	int addRayleigh, MatrixWrapper^ mass) {
 	_Element = new Adapter(tag, *nodes->_ID, dof->_ID,
-		*stif->_Matrix, ipPort,
+		*stif->_Matrix, ipPort, ssl, udp,
 		addRayleigh, mass != nullptr ? mass->_Matrix : 0);
 }
 

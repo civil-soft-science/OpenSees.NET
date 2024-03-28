@@ -164,12 +164,12 @@ namespace OpenSees {
 			// eigen vectors
 			MatrixWrapper^ GetEigenvectorsMatrix()
 			{
-				return MatrixWrapper::GetMatrixWrapper(_Node->getEigenvectors());
+				return MatrixWrapper::GetMatrixWrapper(*_Node->getEigenvectors());
 			}
 
 			array<double,2>^ GetEigenvectors()
 			{
-				return MatrixWrapper::GetArray(_Node->getEigenvectors());
+				return MatrixWrapper::GetArray(*_Node->getEigenvectors());
 			}
 
 			// commit revert 

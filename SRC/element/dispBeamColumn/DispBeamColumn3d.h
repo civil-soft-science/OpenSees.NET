@@ -104,6 +104,12 @@ class DispBeamColumn3d : public Element
     int            commitSensitivity(int gradNumber, int numGrads);
     // AddingSensitivity:END ///////////////////////////////////////////
 
+#if _DLL
+	int numSections;
+	SectionForceDeformation** theSections; // pointer to the ND material objects
+	CrdTransf* crdTransf;        // pointer to coordinate tranformation object 
+	BeamIntegration* beamInt;
+#endif
   protected:
     
   private:

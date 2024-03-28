@@ -182,7 +182,7 @@ namespace OpenSees {
 
 			};
 
-			public ref class CorotCrdTransfWarping2dWrapper : CrdTransfWrapper
+			/*public ref class CorotCrdTransfWarping2dWrapper : CrdTransfWrapper
 			{
 			public:
 				CorotCrdTransfWarping2dWrapper(VectorWrapper^ rigJntOffsetI, VectorWrapper^ rigJntOffsetJ);
@@ -196,7 +196,7 @@ namespace OpenSees {
 
 			private:
 
-			};
+			};*/
 
 			public ref class LinearCrdTransf2dIntWrapper : CrdTransfWrapper
 			{

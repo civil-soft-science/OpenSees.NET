@@ -194,7 +194,11 @@ ArpackSolver::solve(int numModes, bool generalized, bool findSmallest)
     eigenvalues = new double[nev];
     eigenvectors = new double[n * nev];
     resid = new double[n];
-    select = new int[ncv];
+#if _DLL
+	select = new long int[ncv];
+#else
+	select = new int[ncv];
+#endif
 
     for (int i=0; i<lworkl+1; i++)
 	   workl[i] = 0;
