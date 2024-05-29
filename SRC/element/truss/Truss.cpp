@@ -1145,7 +1145,13 @@ Response*
 Truss::setResponse(const char **argv, int argc, OPS_Stream &output)
 {
 
-    Response *theResponse = 0;
+#ifdef _CSS
+    Response* theResponse = Element::setResponse(argv, argc, output);
+    if (theResponse != 0)
+        return theResponse;
+#else
+    Response* theResponse = 0;
+#endif // _CSS
 
     output.tag("ElementOutput");
     output.attr("eleType","Truss");
@@ -1231,7 +1237,11 @@ Truss::setResponse(const char **argv, int argc, OPS_Stream &output)
 int 
 Truss::getResponse(int responseID, Information &eleInfo)
 {
-  double strain, force;
+#ifdef _CSS
+    if (Element::getResponse(responseID, eleInfo) == 0)
+        return 0;
+#endif // _CSS
+    double strain, force;
     static Vector fVec(1);
     static Matrix kVec(1,1);
 

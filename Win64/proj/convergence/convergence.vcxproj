@@ -122,7 +122,6 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>.\..\..\lib\debug\convergence.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <ResourceCompile>
