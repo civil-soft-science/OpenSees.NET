@@ -970,34 +970,34 @@ int OPS_GetNumRemainingInputArgs()
     return interp->getNumRemainingInputArgs();
 }
 
-int OPS_GetIntInput(int *numData, int*data)
+int OPS_GetIntInput(int numData, int*data)
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
     if (numData == 0 || data == 0) return -1;
-    return interp->getInt(data, *numData);
+    return interp->getInt(data, numData);
 }
 
-int OPS_SetIntOutput(int *numData, int*data, bool scalar)
+int OPS_SetIntOutput(int numData, int*data, bool scalar)
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
-    return interp->setInt(data, *numData, scalar);
+    return interp->setInt(data, numData, scalar);
 }
 
-int OPS_GetDoubleInput(int *numData, double *data)
+int OPS_GetDoubleInput(int numData, double *data)
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
     if (numData == 0 || data == 0) return -1;
-    return interp->getDouble(data, *numData);
+    return interp->getDouble(data, numData);
 }
 
-int OPS_SetDoubleOutput(int *numData, double *data, bool scalar)
+int OPS_SetDoubleOutput(int numData, double *data, bool scalar)
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
-    return interp->setDouble(data, *numData, scalar);
+    return interp->setDouble(data, numData, scalar);
 }
 
 const char * OPS_GetString(void)
@@ -1957,7 +1957,7 @@ int OPS_printA()
 		int size = A->noRows() * A->noCols();
 		if (size >0) {
 		    double& ptr = (*A)(0,0);
-		    if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		    if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
 			opserr << "WARNING: printA - failed to set output\n";
 			return -1;
 		    }
@@ -1968,7 +1968,7 @@ int OPS_printA()
 	} else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -1976,7 +1976,7 @@ int OPS_printA()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -2026,14 +2026,14 @@ int OPS_printB()
 	    int size = b.Size();
 	    if (size > 0) {
 		double &ptr = b(0);
-		if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
 		    opserr << "WARNING: printb - failed to set output\n";
 		    return -1;
 		}
 	    } else {
             size = 0;
             double *ptr2 = 0;
-            if (OPS_SetDoubleOutput(&size, ptr2, false) < 0) {
+            if (OPS_SetDoubleOutput(size, ptr2, false) < 0) {
                 opserr << "WARNING: printA - failed to set output\n";
                 return -1;
             }
@@ -2044,7 +2044,7 @@ int OPS_printB()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }

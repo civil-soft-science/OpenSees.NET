@@ -241,7 +241,6 @@ OPS_ElementRecorderRMS()
 
                 int dof;
                 if (OPS_GetIntInput(1, &dof) < 0) {
-                    OPS_ResetCurrentInputArg(-1);
                     break;
                 }
                 dofs[numDOF++] = dof - 1;

@@ -76,10 +76,6 @@ void* OPS_GenericClient()
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
         if (OPS_GetIntInput(numdata, &node) < 0) {
-            if (numArgs > OPS_GetNumRemainingInputArgs()) {
-                // move current arg back by one
-                OPS_ResetCurrentInputArg(-1);
-            }
             break;
         }
         nodes(numNodes++) = node;
@@ -103,10 +99,6 @@ void* OPS_GenericClient()
             numdata = 1;
             int numArgs = OPS_GetNumRemainingInputArgs();
             if (OPS_GetIntInput(numdata, &dof) < 0) {
-                if (numArgs > OPS_GetNumRemainingInputArgs()) {
-                    // move current arg back by one
-                    OPS_ResetCurrentInputArg(-1);
-                }
                 break;
             }
             if (dof < 1 || ndf < dof) {

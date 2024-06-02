@@ -206,7 +206,6 @@ void *OPS_RemoveRecorder() {
                     int num = 1;
                     int eleTag;
                     if (OPS_GetIntInput(num, &eleTag) < 0) {
-                        OPS_ResetCurrentInputArg(-1);
                         break;
                     }
                     if (!secondaryFlag) {
@@ -347,7 +346,6 @@ void *OPS_RemoveRecorder() {
                 int num = 1;
                 int secID;
                 if (OPS_GetIntInput(num, &secID) < 0) {
-                    OPS_ResetCurrentInputArg(-1);
                     break;
                 }
                 secIDs.insert(secID);

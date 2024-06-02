@@ -578,8 +578,6 @@ int OPS_setParameter() {
     int eleTag;
     while (OPS_GetNumRemainingInputArgs() > 0) {
       if (OPS_GetIntInput(numdata, &eleTag) < 0) {
-        // back on arg
-        OPS_ResetCurrentInputArg(-1);
         break;
       } else {
         eleIDs[numEle] = eleTag;

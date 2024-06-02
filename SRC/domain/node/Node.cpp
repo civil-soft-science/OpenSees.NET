@@ -1088,10 +1088,10 @@ int
 Node::commitState()
 {
     // check disp exists, if does set commit = trial, incr = 0.0
+    if (trialDisp != 0) {
 #ifdef _CSS
     lastCommitDisp = *commitDisp;
 #endif // _CSS
-    if (trialDisp != 0) {
       for (int i=0; i<numberDOF; i++) {
 	disp[i+numberDOF] = disp[i];  
         disp[i+2*numberDOF] = 0.0;
@@ -1119,9 +1119,12 @@ Node::commitState()
 
 #ifdef _CSS
     prevT = curT;
-    curT = ops_TheActiveDomain->getCurrentTime();
-    computeDampEnergy();
-    computeMotionEnergy();
+    if (ops_TheActiveDomain != NULL)
+    {
+        curT = ops_TheActiveDomain->getCurrentTime();
+        computeDampEnergy();
+        computeMotionEnergy();
+    }
 #endif // _CSS
     // if we get here we are done
     return 0;

@@ -68,10 +68,10 @@ public:
     PyMethodDef* getMethods();
 
     // get command line arguments
-    PyObject* getCurrentArgv() {return currentArgv;}
-    int getCurrentArg() const {return currentArg;}
-    int getNumberArgs() const {return numberArgs;}
-    void incrCurrentArg() {currentArg++;}
+    PyObject* getCurrentArgv(); 
+    int getCurrentArg() const; 
+    int getNumberArgs() const; 
+    void incrCurrentArg();
 
     // set outputs
     void setOutputs(int* data, int numArgs, bool scalar);

@@ -97,8 +97,6 @@ void* OPS_ZeroLengthND()
 	    opserr<<"WARNING: uniaxial material "<<uniTag<<" is not defined\n";
 	    return 0;
 	}
-    } else {
-	OPS_ResetCurrentInputArg(-1);
     }
 
     const char* type = OPS_GetString();

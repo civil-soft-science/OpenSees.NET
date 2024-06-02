@@ -643,9 +643,10 @@ void* OPS_ElementRecorder(const char* type)
 				data = new const char* [nargrem];
 				data[0] = option;
 				//argv = new char*[nargrem];
-				char buffer[128];
 				for (int i = 1; i < nargrem; i++) {
-					 data[i] = OPS_GetString();
+					data[i] = new char[128];
+					// Turn everything in to a string for setResponse
+					OPS_GetStringFromAll((char*)data[i], 128);
 				}
 		  }
 	 }

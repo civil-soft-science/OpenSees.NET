@@ -83,10 +83,6 @@ void* OPS_TwoNodeLink()
         numdata = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
         if (OPS_GetIntInput(numdata, &mattag) < 0) {
-            if (numArgs > OPS_GetNumRemainingInputArgs()) {
-                // move current arg back by one
-                OPS_ResetCurrentInputArg(-1);
-            }
             break;
         }
         UniaxialMaterial* mat = OPS_getUniaxialMaterial(mattag);

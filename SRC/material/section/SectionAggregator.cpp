@@ -73,7 +73,6 @@ void* OPS_SectionAggregator()
     while (OPS_GetNumRemainingInputArgs() > 1) {
 	int matTag;
 	if (OPS_GetIntInput(numdata, &matTag) < 0) {
-	    OPS_ResetCurrentInputArg(-1);
 	    break;
 	}
 

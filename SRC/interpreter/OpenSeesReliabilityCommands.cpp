@@ -2227,7 +2227,6 @@ int OPS_transformUtoX()
   // Now read in rv tags and get their indices
   while (loc < nrv && OPS_GetNumRemainingInputArgs() > 0) {
     if (OPS_GetIntInput(numData,&rvTag) < 0) {
-      OPS_ResetCurrentInputArg(-1);
       break;
     }
     rvIndex(loc) = theReliabilityDomain->getRandomVariableIndex(rvTag);

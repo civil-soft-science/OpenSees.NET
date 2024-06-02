@@ -141,13 +141,13 @@ PythonModule::getInt(int *data, int numArgs) {
 
     for (int i = 0; i < numArgs; i++) {
         PyObject *o = PyTuple_GetItem(wrapper.getCurrentArgv(), wrapper.getCurrentArg());
-        wrapper.incrCurrentArg();
         if (PyLong_Check(o) || PyFloat_Check(o) || PyBool_Check(o)) {
             PyErr_Clear();
             data[i] = PyLong_AsLong(o);
             if (PyErr_Occurred()) {
                 return -1;
             }
+            wrapper.incrCurrentArg();
         } else {
             return -1;
         }

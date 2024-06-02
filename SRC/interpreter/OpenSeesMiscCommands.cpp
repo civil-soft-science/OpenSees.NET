@@ -709,8 +709,6 @@ int OPS_MeshRegion()
 	    int eleTag;
 	    while (OPS_GetNumRemainingInputArgs() > 0) {
 		if (OPS_GetIntInput(numdata, &eleTag) < 0) {
-		    // back one arg
-		    OPS_ResetCurrentInputArg(-1);
 		    break;
 		}
 
@@ -776,8 +774,6 @@ int OPS_MeshRegion()
 	    int nodTag;
 	    while (OPS_GetNumRemainingInputArgs() > 0) {
 		if (OPS_GetIntInput(numdata, &nodTag) < 0) {
-		    // back one arg
-		    OPS_ResetCurrentInputArg(-1);
 		    break;
 		}
 
@@ -1622,7 +1618,6 @@ int OPS_recv()
                 return -1;
             }
         } else {
-            OPS_ResetCurrentInputArg(-1);
 
             sdata = OPS_GetString();
             if (strcmp(sdata, "ANY") == 0) {

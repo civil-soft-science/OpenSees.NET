@@ -109,10 +109,6 @@ void* OPS_ZeroLength()
 	// the first one not an int
 	int numArgs = OPS_GetNumRemainingInputArgs();
         if (OPS_GetIntInput(numdata,&mtag) < 0) {
-	    if (numArgs > OPS_GetNumRemainingInputArgs()) {
-		// move current arg back by one
-		OPS_ResetCurrentInputArg(-1); 
-	    }
 	    break;
         }
 	matTags[numMats] = mtag;
