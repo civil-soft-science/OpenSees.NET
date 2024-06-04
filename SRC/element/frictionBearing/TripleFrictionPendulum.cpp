@@ -334,9 +334,6 @@ int TripleFrictionPendulum::commitState()
     for (int i=0; i<4; i++)
         errCode += theMaterials[i]->commitState();
     
-    // commit the base class
-    errCode += this->Element::commitState();
-    
     // commit other history variables
     Wpr = Wcr;
     Fy1pr = Fy1; Fy3pr = Fy3; Fy5pr = Fy5;
@@ -347,6 +344,9 @@ int TripleFrictionPendulum::commitState()
     ep1pr = ep1tmp; ep3pr = ep3tmp; ep5pr = ep5tmp;
     q1pr = q1tmp; q3pr = q3tmp; q5pr = q5tmp;
     
+    // commit the base class
+    errCode += this->Element::commitState();
+
     return 0;
 }
 

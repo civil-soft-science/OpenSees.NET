@@ -88,7 +88,6 @@ Element::commitState(void)
 #ifdef _CSS
   computeEnergies();
 #endif // _CSS
-  double t = this->getDomain()->getCurrentTime();
   return 0;
 }
 

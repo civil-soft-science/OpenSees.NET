@@ -390,11 +390,11 @@ int
 ElasticBeam3d::commitState()
 {
   int retVal = 0;
+  retVal += theCoordTransf->commitState();
   // call element commitState to do any base class stuff
   if ((retVal = this->Element::commitState()) != 0) {
-    opserr << "ElasticBeam3d::commitState () - failed in base class";
-  }    
-  retVal += theCoordTransf->commitState();
+      opserr << "ElasticBeam3d::commitState () - failed in base class";
+  }
   return retVal;
 }
 

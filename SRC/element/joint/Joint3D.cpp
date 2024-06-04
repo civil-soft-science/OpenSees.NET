@@ -501,6 +501,10 @@ int Joint3D::commitState()
     if (result != 0) break;
   }
 
+  // call element commitState to do any base class stuff
+  if ((result = this->Element::commitState()) != 0) {
+      opserr << "Joint3D::commitState () - failed in base class\n";
+  }
   return result;
 }
 

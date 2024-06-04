@@ -307,16 +307,16 @@ DispBeamColumn3d::commitState()
 {
 	int retVal = 0;
 
-	// call element commitState to do any base class stuff
-	if ((retVal = this->Element::commitState()) != 0) {
-		opserr << "DispBeamColumn3d::commitState () - failed in base class";
-	}
-
 	// Loop over the integration points and commit the material states
 	for (int i = 0; i < numSections; i++)
 		retVal += theSections[i]->commitState();
 
 	retVal += crdTransf->commitState();
+
+	// call element commitState to do any base class stuff
+	if ((retVal = this->Element::commitState()) != 0) {
+		opserr << "DispBeamColumn3d::commitState () - failed in base class";
+	}
 
 	return retVal;
 }

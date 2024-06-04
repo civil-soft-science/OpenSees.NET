@@ -395,11 +395,11 @@ int
 CorotTrussSection::commitState()
 {
   int retVal = 0;
+  retVal = theSection->commitState();
   // call element commitState to do any base class stuff
   if ((retVal = this->Element::commitState()) != 0) {
-    opserr << "CorotTrussSection::commitState () - failed in base class";
-  }    
-  retVal = theSection->commitState();
+      opserr << "CorotTrussSection::commitState () - failed in base class";
+  }
   return retVal;
 }
 

@@ -283,13 +283,13 @@ int
 ZeroLengthSection::commitState()
 {
     int retVal=0;
-
-    // call element commitState to do any base class stuff
-    if ((retVal = this->Element::commitState()) != 0) {
-      opserr << "ZeroLength::commitState () - failed in base class\n";
-    }    
   // Commit the section
   retVal += theSection->commitState();
+
+  // call element commitState to do any base class stuff
+  if ((retVal = this->Element::commitState()) != 0) {
+	  opserr << "ZeroLength::commitState () - failed in base class\n";
+  }
   return retVal;
 }
 

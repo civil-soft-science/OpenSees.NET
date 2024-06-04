@@ -604,11 +604,6 @@ ForceBeamColumn2d::commitState()
 	int err = 0;
 	int i = 0;
 
-	// call element commitState to do any base class stuff
-	if ((err = this->Element::commitState()) != 0) {
-		opserr << "ForceBeamColumn2d::commitState () - failed in base class";
-	}
-
 	do {
 		vscommit[i] = vs[i];
 		err = sections[i++]->commitState();
@@ -628,6 +623,12 @@ ForceBeamColumn2d::commitState()
 
 	//   initialFlag = 0;  fmk - commented out, see what happens to Example3.1.tcl if uncommented
 	//                         - i have not a clue why, ask remo if he ever gets in contact with us again!
+
+	// call element commitState to do any base class stuff
+	if ((err = this->Element::commitState()) != 0) {
+		opserr << "ForceBeamColumn2d::commitState () - failed in base class";
+	}
+
 
 	return err;
 }

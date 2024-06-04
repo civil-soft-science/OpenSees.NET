@@ -483,11 +483,11 @@ int
 Truss::commitState()
 {
   int retVal = 0;
+  retVal = theMaterial->commitState();
   // call element commitState to do any base class stuff
   if ((retVal = this->Element::commitState()) != 0) {
-    opserr << "Truss::commitState () - failed in base class";
-  }    
-  retVal = theMaterial->commitState();
+      opserr << "Truss::commitState () - failed in base class";
+  }
   return retVal;
 }
 

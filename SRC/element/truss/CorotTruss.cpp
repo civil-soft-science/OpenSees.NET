@@ -548,11 +548,11 @@ int
 CorotTruss::commitState()
 {
   int retVal = 0;
+  retVal = theMaterial->commitState();
   // call element commitState to do any base class stuff
   if ((retVal = this->Element::commitState()) != 0) {
-    opserr << "CorotTruss::commitState () - failed in base class\n";
-  }    
-  retVal = theMaterial->commitState();
+      opserr << "CorotTruss::commitState () - failed in base class\n";
+  }
   return retVal;
 }
 

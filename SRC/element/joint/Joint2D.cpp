@@ -1057,6 +1057,11 @@ int Joint2D::commitState()
 
   }
 
+
+  // call element commitState to do any base class stuff
+  if ((result = this->Element::commitState()) != 0) {
+      opserr << "Joint2D::commitState () - failed in base class\n";
+  }
   return result;
 }
 
