@@ -1016,6 +1016,8 @@ FourNodeQuad::setResponse(const char **argv, int argc,
 			  OPS_Stream &output)
 {
   Response *theResponse =0;
+  if ((theResponse = Element::setResponse(argv, argc, output)) != 0)
+	  return theResponse;
 
   output.tag("ElementOutput");
   output.attr("eleType","FourNodeQuad");
@@ -1125,6 +1127,9 @@ FourNodeQuad::setResponse(const char **argv, int argc,
 int 
 FourNodeQuad::getResponse(int responseID, Information &eleInfo)
 {
+	int res = 0;
+	if ((res = Element::getResponse(responseID, eleInfo)) != -1)
+		return res;
   if (responseID == 1) {
 
     return eleInfo.setVector(this->getResistingForce());
