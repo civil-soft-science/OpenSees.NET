@@ -1080,6 +1080,11 @@ Response* TwoNodeLink::setResponse(const char **argv, int argc,
     OPS_Stream &output)
 {
     Response *theResponse = 0;
+#ifdef _CSS
+	theResponse = Element::setResponse(argv, argc, output);
+	if (theResponse != 0)
+		return theResponse;
+#endif // _CSS
     
     output.tag("ElementOutput");
     output.attr("eleType","TwoNodeLink");
@@ -1170,6 +1175,10 @@ Response* TwoNodeLink::setResponse(const char **argv, int argc,
 
 int TwoNodeLink::getResponse(int responseID, Information &eleInfo)
 {
+#ifdef _CSS
+	if (Element::getResponse(responseID, eleInformation) == 0)
+		return 0;
+#endif // _CSS
     Vector defoAndForce(numDIR*2);
     
     switch (responseID)  {
