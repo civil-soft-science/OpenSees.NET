@@ -493,6 +493,8 @@ Response*
 ShellMITC4::setResponse(const char **argv, int argc, OPS_Stream &output)
 {
   Response *theResponse = 0;
+  if ((theResponse = Element::setResponse(argv, argc, output)) != 0)
+      return theResponse;
 
   output.tag("ElementOutput");
   output.attr("eleType", "ShellMITC4");
@@ -598,7 +600,10 @@ ShellMITC4::setResponse(const char **argv, int argc, OPS_Stream &output)
 int
 ShellMITC4::getResponse(int responseID, Information &eleInfo)
 {
-  int cnt = 0;
+    int res = 0;
+    if ((res = Element::getResponse(responseID, eleInfo)) != -1)
+        return res;
+    int cnt = 0;
   static Vector stresses(32);
   static Vector strains(32);
 

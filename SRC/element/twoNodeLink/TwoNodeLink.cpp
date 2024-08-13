@@ -1176,7 +1176,7 @@ Response* TwoNodeLink::setResponse(const char **argv, int argc,
 int TwoNodeLink::getResponse(int responseID, Information &eleInfo)
 {
 #ifdef _CSS
-	if (Element::getResponse(responseID, eleInformation) == 0)
+	if (Element::getResponse(responseID, eleInfo) == 0)
 		return 0;
 #endif // _CSS
     Vector defoAndForce(numDIR*2);
