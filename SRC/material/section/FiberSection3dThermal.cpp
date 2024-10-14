@@ -1253,7 +1253,7 @@ FiberSection3dThermal::determineFiberTemperature(const Vector& DataMixed, double
 
 		if (  fiberLocy <= dataTempe[1])
 		{
-			opserr <<"FiberSection2dThermal::setTrialSectionDeformationTemperature -- fiber loc is out of the section";
+			opserr <<"FiberSection2dThermal::setTrialSectionDeformationTemperature -- fiber loc is out of the section\n";
 		}
 		else if (fiberLocy <= dataTempe[3])
 		{

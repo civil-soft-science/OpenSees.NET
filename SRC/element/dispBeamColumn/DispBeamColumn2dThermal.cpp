@@ -704,7 +704,7 @@ int
 DispBeamColumn2dThermal::addLoad(ElementalLoad *theLoad, double loadFactor)
 {
   int type;
-  const Vector &data = theLoad->getData(type, loadFactor);
+  const Vector data = theLoad->getData(type, loadFactor);
   double L = crdTransf->getInitialLength();
   
   if (type == LOAD_TAG_Beam2dUniformLoad) {
@@ -786,11 +786,11 @@ DispBeamColumn2dThermal::addLoad(ElementalLoad *theLoad, double loadFactor)
       // Get section stress resultant 
       // FMk const Vector &s = theSections[i]->getTemperatureStress(dataMix);
 
-      Vector dataMixV(27);
-	  for(int m=0;m<9;m++){
+      Vector dataMixV(data.Size()/2*3);
+	  for(int m=0;m< data.Size() / 2;m++){
 		  dataMixV(2*m)=data(2*m); //Linear temperature interpolation
 		  dataMixV(2*m+1)=data(2*m+1);
-		  dataMixV(18+m)=1000;
+		  dataMixV(data.Size()+m)=1000;
 		  }
       const Vector &s = theSections[i]->getTemperatureStress(dataMixV);    //contribuited by ThermalElongation
 #ifdef _BDEBUG

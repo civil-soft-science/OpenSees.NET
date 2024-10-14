@@ -31,6 +31,7 @@
 // Beam2dThermalAction is a thermal field class created to store the temperature
 // distribution through the depth of section defined by temperature and location.
 
+// _CSS : modified for variable location vector size
 
 #include <Channel.h>
 #include <FEM_ObjectBroker.h>
@@ -39,7 +40,6 @@
 #include <Beam2dThermalAction.h>
 #include <Vector.h>
 #include <Element.h>
-Vector Beam2dThermalAction::data(18);
 
 Beam2dThermalAction::Beam2dThermalAction(int tag, 
 					 double t1, double locY1, double t2, double locY2,
@@ -48,7 +48,7 @@ Beam2dThermalAction::Beam2dThermalAction(int tag,
 					 double t7, double locY7, double t8, double locY8,
 					 double t9, double locY9, 
 					 int theElementTag)
-  :ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag), 
+  :ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag), data(0),
    ThermalActionType(LOAD_TAG_Beam2dThermalAction),theSeries(0)
 {
   Temp[0]=t1; Temp[1] = t2; Temp[2] = t3; Temp[3] = t4; Temp[4] = t5;
@@ -65,7 +65,7 @@ Beam2dThermalAction::Beam2dThermalAction(int tag,
 					 double locY1, double locY2,
 					 TimeSeries* theSeries,int theElementTag
 					 )
-:ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),theSeries(theSeries),
+:ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),theSeries(theSeries), data(0),
 ThermalActionType(LOAD_TAG_Beam2dThermalAction)
 {
   Loc[0]=locY1;
@@ -89,20 +89,13 @@ Beam2dThermalAction::Beam2dThermalAction(int tag,
 					 const Vector& locs,
 					 TimeSeries* theSeries,int theElementTag
 					 )
-:ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),theSeries(theSeries),
+:ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),theSeries(theSeries), data(0),
 ThermalActionType(LOAD_TAG_Beam2dThermalAction)
 {
-	if (locs.Size()!=9){
-		opserr<<" WARNING::Beam2DThermalAction constructor failed to get 9 loc values"<<endln;
-
-	}
-  
-  for(int i= 0; i<9;i++){
-		Loc[i]=locs(i);
-	}
+	Loc = locs;
 
 
-  for(int i=0 ;i<9;i++) {
+  for(int i=0 ;i<Loc.Size();i++) {
 		Temp[i]=0;
 		TempApp[i]=0;
 	}
@@ -113,7 +106,7 @@ ThermalActionType(LOAD_TAG_Beam2dThermalAction)
 
 Beam2dThermalAction::Beam2dThermalAction(int tag,  
 					 int theElementTag)
-  :ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),ThermalActionType(LOAD_TAG_NodalThermalAction),theSeries(0)  
+  :ElementalLoad(tag, LOAD_TAG_Beam2dThermalAction, theElementTag),ThermalActionType(LOAD_TAG_NodalThermalAction),theSeries(0),  data(0)
 {
 	 for(int i=0 ;i<9;i++) {
 		Temp[i]=0;
@@ -133,12 +126,13 @@ Beam2dThermalAction::~Beam2dThermalAction()
   theSeries=0;
 }
 
-const Vector &
+const Vector&
 Beam2dThermalAction::getData(int &type, double loadFactor)
 {
   type = ThermalActionType;
-
-  for(int i=0; i<9;i++) {
+  if (data.Size() == 0)
+	  data.resize(Loc.Size() * 2);
+  for(int i=0; i<Loc.Size();i++) {
 		data(2*i) = TempApp[i];
 		data(2*i+1)= Loc[i];
 	}
@@ -149,7 +143,7 @@ Beam2dThermalAction::getData(int &type, double loadFactor)
 void
 Beam2dThermalAction::applyLoad(const Vector &factors)
 {
-	for(int i=0; i<9 ;i++) {
+	for(int i=0; i<Loc.Size() ;i++) {
 		TempApp[i]= Temp[i]*factors(i);
 	}
 	if (theElement != 0)
@@ -161,13 +155,13 @@ Beam2dThermalAction::applyLoad(double loadfactor)
 {
 	// first determine the load factor
 	if (indicator==2) {
-		for(int i=0;i<9;i++) {
-		  Factors=((PathTimeSeriesThermal*)theSeries)->getFactors(loadfactor);
 		  //PathTimeSeriesThermal returns absolute temperature;
+		  Factors=((PathTimeSeriesThermal*)theSeries)->getFactors(loadfactor);
+		for(int i=0;i<Loc.Size();i++) {
 		  TempApp[i]=Factors(i);
 		}
 	}else if (indicator ==1){
-		for(int i=0;i<9;i++) {
+		for(int i=0;i<Loc.Size();i++) {
 		  TempApp[i]=Temp[i]*loadfactor;
 		}
 	}

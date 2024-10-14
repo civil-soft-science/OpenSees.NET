@@ -45,6 +45,8 @@
 //#include "ThermalField.h"
 //#include "ThermalField2d.h"
 
+// _CSS : modified for variable location vector size
+
 ID FiberSection2dThermal::code(2);
 
 void* OPS_FiberSection2dThermal()
@@ -69,7 +71,7 @@ FiberSection2dThermal::FiberSection2dThermal(int tag, int num, Fiber **fibers, b
   numFibers(num), sizeFibers(num), theMaterials(0), matData(0),
   QzBar(0.0), ABar(0.0), yBar(0.0), computeCentroid(compCentroid),
   sectionIntegr(0), e(2), eCommit(2), s(0), ks(0),
-  DataMixed(27), sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
+  sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
   dedh(2)//,theTemperatures(temperatures),theTemperatureFactor(0)
 {
   if (numFibers != 0) {
@@ -145,7 +147,7 @@ FiberSection2dThermal::FiberSection2dThermal(int tag, int num, bool compCentroid
   numFibers(0), sizeFibers(num), theMaterials(0), matData(0),
   QzBar(0.0), ABar(0.0), yBar(0.0), computeCentroid(compCentroid),
   sectionIntegr(0), e(2), eCommit(2), s(0), ks(0),
-  DataMixed(27), sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
+  sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
   dedh(2)
 {
     if(sizeFibers > 0) {
@@ -207,7 +209,7 @@ FiberSection2dThermal::FiberSection2dThermal(int tag, int num, UniaxialMaterial 
   numFibers(num), sizeFibers(num), theMaterials(0), matData(0),
   QzBar(0.0), ABar(0.0), yBar(0.0), computeCentroid(compCentroid),
   sectionIntegr(0), e(2), eCommit(2), s(0), ks(0),
-  DataMixed(27), sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
+  sT(0), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
   dedh(2)//,theTemperature(0)
 {
   if (numFibers != 0) {
@@ -290,7 +292,7 @@ FiberSection2dThermal::FiberSection2dThermal():
   numFibers(0), sizeFibers(0), theMaterials(0), matData(0),
   QzBar(0.0), ABar(0.0), yBar(0.0), computeCentroid(true),
   sectionIntegr(0), e(2), eCommit(2), s(0), ks(0),
-  DataMixed(27), Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
+  Fiber_Tangent(0), Fiber_ElongP(0), AverageThermalElong(2),
   dedh(2)//, theTemperatures(0),theTemperatureFactor(0)
 {
   s = new Vector(sData, 2);
@@ -468,7 +470,8 @@ FiberSection2dThermal::setTrialSectionDeformation(const Vector& deforms)
 		double ThermalElongation = 0.0;
 		double FiberTemperature = 0;
 		double FiberTempMax = 0;
-		if ( fabs(DataMixed(1)) <= 1e-10 && fabs(DataMixed(17)) <= 1e-10 ) //no tempe load
+        int nData = DataMixed.Size();
+		if (nData == 0 || (fabs(DataMixed(1)) <= 1e-10 && fabs(DataMixed(2*nData/3-1)) <= 1e-10) ) //no tempe load
 		{
 			FiberTemperature = 0;
 			FiberTempMax=0;
@@ -622,8 +625,8 @@ FiberSection2dThermal::getTemperatureStress(const Vector &dataMixed)
     double FiberTemperature = 0 ;
     double FiberTempMax=0; //PK add for max temp
     //if locY1 and locY9 are not less than zoro
-
-    if ( fabs(dataMixed(1)) <= 1e-10 && fabs(dataMixed(17)) <= 1e-10 ) //no tempe load
+    int nLoc = dataMixed.Size();
+    if ( fabs(dataMixed(1)) <= 1e-10 && fabs(dataMixed(nLoc-1)) <= 1e-10 ) //no tempe load
     {
 		FiberTemperature = 0;
 		FiberTempMax=0;
@@ -1415,7 +1418,27 @@ FiberSection2dThermal::determineFiberTemperature(const Vector& DataMixed, double
 {
 		double FiberTemperature = 0;
 		double FiberTempMax = 0;
-
+#ifdef _CSS
+        int nLocs = DataMixed.Size() / 3;
+        bool found = false;
+        if (fiberLoc < DataMixed[1] || fiberLoc > DataMixed[nLocs*2-1])
+        {
+            opserr << "FiberSection2dThermal::setTrialSectionDeformationTemperature -- fiber loc is out of the section\n";
+        }
+        for (int i = 1; i < nLocs; i++)
+        {
+            if (fiberLoc <= DataMixed[2 * i + 1])
+            {
+                double y1, y2, T1, T2;
+                y1 = DataMixed(2 * i-1);
+                y2 = DataMixed(2 * i+1);
+                T1 = DataMixed(2 * i-2);
+                T2 = DataMixed(2 * i);
+                FiberTemperature = T1 + (T2 - T1) / (y2 - y1) * (fiberLoc - y1);
+                break;
+            }
+        }
+#else
 		double dataTempe[27]; //PK changed 18 to 27 to pass max temps
 		for (int i = 0; i < 27; i++) {
 			dataTempe[i] = DataMixed(i);
@@ -1423,7 +1446,7 @@ FiberSection2dThermal::determineFiberTemperature(const Vector& DataMixed, double
 
 		if (  fiberLoc <= dataTempe[1])
 		{
-			opserr <<"FiberSection2dThermal::setTrialSectionDeformationTemperature -- fiber loc is out of the section";
+			opserr <<"FiberSection2dThermal::setTrialSectionDeformationTemperature -- fiber loc is out of the section\n";
 		}
 		else if (fiberLoc <= dataTempe[3])
 		{
@@ -1467,9 +1490,9 @@ FiberSection2dThermal::determineFiberTemperature(const Vector& DataMixed, double
 		}
 		else
 		{
-			opserr <<"FiberSection2dThermal::setTrialSectionDeformation -- fiber loc is out of the section";
+			opserr <<"FiberSection2dThermal::setTrialSectionDeformation -- fiber loc is out of the section\n";
 		}
-
+#endif
 		static Vector returnedTemperature(2);
 		returnedTemperature(0)=FiberTemperature;
 		returnedTemperature(1)=FiberTempMax;

@@ -376,6 +376,16 @@ extern void OPS_ResponseSpectrumAnalysis(void);
 #include <BandGenLinLapackSolver_Single.h>
 #endif
 
+#ifdef _HEATTRANSFER
+//Adding HeatTransfer Module-----------------//Liming Jiang,UoE,2014
+#include <HeatTransferDomain.h>
+#include <TclHeatTransferModule.h>
+
+int HeatTransfer(ClientData, Tcl_Interp*, int, TCL_Char**);
+int wipeHeatTransfer(ClientData, Tcl_Interp*, int, TCL_Char**);
+static TclHeatTransferModule* theTclHTModule = 0;
+//End of Adding 
+#endif
 
 // graph
 #include <RCM.h>
@@ -1116,6 +1126,17 @@ int OpenSeesAppInit(Tcl_Interp* interp) {
 	Tcl_CreateCommand(interp, "setMaxOpenFiles", &maxOpenFiles,
 		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
 
+#ifdef _HEATTRANSFER
+
+	//Added by Liming for HeatTransfer Module, UoE,2014
+
+	Tcl_CreateCommand(interp, "HeatTransfer", HeatTransfer,
+		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+	Tcl_CreateCommand(interp, "wipeHT", wipeHeatTransfer,
+		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
+
+#endif
+
 #ifdef _RELIABILITY
 	Tcl_CreateCommand(interp, "wipeReliability", wipeReliability,
 		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
@@ -1261,6 +1282,52 @@ OPS_SourceCmd(
 	return Tcl_FSEvalFileEx(interp, fileName, encodingName);
 #endif
 }
+
+#ifdef _HEATTRANSFER
+
+int
+HeatTransfer(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+	printArgv(interp, argc, argv);
+	if (theTclHTModule == 0) {
+		int ndm = 0;
+		if (argc == 1) {
+			ndm = 2;
+		}
+		else if (argc == 2) {
+			if ((strcmp(argv[1], "1d") == 0) || (strcmp(argv[1], "1D") == 0))
+				ndm = 1;
+			else if ((strcmp(argv[1], "2d") == 0) || (strcmp(argv[1], "2D") == 0))
+				ndm = 2;
+			else if ((strcmp(argv[1], "3d") == 0) || (strcmp(argv[1], "3D") == 0))
+				ndm = 3;
+			else
+				opserr << "WARNING: HeatTransfer recieves invalid ndm tag" << endln;
+
+		 }
+		else
+			opserr << "WARNING: HeatTransfer recieves invalid argument" << endln;
+
+		theTclHTModule = new TclHeatTransferModule(ndm, interp);
+		return TCL_OK;
+	 }
+	else
+		return TCL_ERROR;
+
+	}
+
+int
+wipeHeatTransfer(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
+{
+	printArgv(interp, argc, argv);
+	if (theTclHTModule != 0) {
+		delete theTclHTModule;
+		theTclHTModule = 0;
+	}
+	return TCL_OK;
+
+}
+#endif
 
 #ifdef _OPTIMIZATION
 
@@ -1497,6 +1564,12 @@ wipeModel(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv)
 
 	  // the domain deletes the record objects, 
 	  // just have to delete the private array
+#ifdef _HEATTRANSFER
+	if (theTclHTModule != 0) {
+		delete theTclHTModule;
+		theTclHTModule = 0;
+	}
+#endif
 	return TCL_OK;
 }
 

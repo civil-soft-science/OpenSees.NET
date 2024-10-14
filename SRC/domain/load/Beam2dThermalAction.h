@@ -82,10 +82,12 @@ class Beam2dThermalAction : public ElementalLoad
  protected:
   
  private:
-  double Temp[9]; //Initial Temperature 
-  double TempApp[9]; // Temperature applied
-  double Loc[9]; // Location through the depth of section
-  static Vector data; // data for temperature and locations
+// _CSS : modified for variable location vector size
+  Vector Temp; //Initial Temperature 
+  Vector TempApp; // Temperature applied
+  Vector Loc; // Location through the depth of section
+  //end _CSS
+  Vector data; // data for temperature and locations
 
   int ThermalActionType;
 

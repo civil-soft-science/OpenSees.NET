@@ -1566,6 +1566,7 @@ TclCommand_addSection(ClientData clientData, Tcl_Interp *interp,
 	bool hasBlock = false;
 	if (strcmp(argv[1], "Fiber") == 0 ||
 		strcmp(argv[1], "fiberSec") == 0 ||
+		strcmp(argv[1], "FiberThermal") == 0 ||
 		strcmp(argv[1], "NDFiber") == 0)
 		hasBlock = true;
 	printArgv(interp, argc, argv, hasBlock);
@@ -2766,6 +2767,20 @@ TclCommand_addElementalLoad(ClientData clientData, Tcl_Interp *interp, int argc,
 				  count++;
 				  const char *pwd = getInterpPWD(interp);
 				  simulationInfo.addInputFile(argv[count], pwd);
+#ifdef _CSS
+				  int nLocs = argc - count-1;
+				  TimeSeries* theSeries = new PathTimeSeriesThermal(eleLoadTag, argv[count], nLocs);
+
+				  count++;
+				  Vector locs(nLocs);
+				  for (int i = 0; i < nLocs; i++)
+				  {
+					  if (Tcl_GetDouble(interp, argv[count+i], &locs(i)) != TCL_OK) {
+						  opserr << "WARNING eleLoad - invalid y location value:  " << argv[count] << " for -beamThermal\n";
+						  return TCL_ERROR;
+					  }
+				  }
+#else
 				  TimeSeries* theSeries = new PathTimeSeriesThermal(eleLoadTag, argv[count]);
 
 				  count++;
@@ -2809,6 +2824,7 @@ TclCommand_addElementalLoad(ClientData clientData, Tcl_Interp *interp, int argc,
 #ifdef _DEBUG 
 				  opserr << "TclModelBuilder:: locs" << locs << endln;
 #endif
+#endif //_CSS
 				  for (int i = 0; i<theEleTags.Size(); i++) {
 					  theLoad = new Beam2dThermalAction(eleLoadTag, locs,
 						  theSeries, theEleTags(i));

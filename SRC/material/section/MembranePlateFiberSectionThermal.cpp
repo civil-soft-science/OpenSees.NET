@@ -376,7 +376,7 @@ MembranePlateFiberSectionThermal::getTemperatureStress(const Vector& dataMixed)
 	//calculate the fiber tempe, T=T1-(Y-Y1)*(T1-T2)/(Y1-Y2)
 	if (  yi < dataTempe[1]) 
 	{
-		opserr <<"MembranePlateFiberSectionThermal::setTrialSectionDeformationup -- fiber loc is out of the section";
+		opserr <<"MembranePlateFiberSectionThermal::setTrialSectionDeformationup -- fiber loc is out of the section\n";
 	}
 	else if (yi <= dataTempe[3])
 	{

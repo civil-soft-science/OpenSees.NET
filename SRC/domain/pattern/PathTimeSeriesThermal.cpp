@@ -270,7 +270,7 @@ PathTimeSeriesThermal::getFactors(double pseudoTime)
 	  for(int j=0;j<numCols;j++){
 		  (*CurrentFactors)(j)=cFactor * (*thePath)(currentTimeLoc,j);
 	  }
-	  return *CurrentFactors;
+      return *CurrentFactors;
   }
 
   int size = time->Size();
