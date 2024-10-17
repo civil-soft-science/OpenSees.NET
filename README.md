@@ -6,7 +6,7 @@
 برای ارسال هر گونه سؤال و یا پیشنهاد با ما از طریق ایمیل زیر در ارتباط باشید
 seyedalirezajalali@gmail.com
 و یا به وبسیات فارسی ما در آدرس زیر مراجعه فرمایید
-htps://www.OmranElmAfzar.ir
+htps://www.OpenSeesHouse.com
 
 با تشکر
 سیدعلیرضا جلالی
