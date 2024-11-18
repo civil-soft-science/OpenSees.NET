@@ -434,7 +434,7 @@ TzSimple1::revertToStart(void)
 	//
 	if(tult <= 0.0 || z50 <= 0.0){
 		opserr << "WARNING -- only accepts positive nonzero tult and z50" << endln;
-		opserr << "TzLiq1: " << endln;
+		opserr << "TzSimple1: tag= " << this->getTag() << endln;
 		opserr << "tzType: " << tzType << endln;
 		exit(-1);
 	}

@@ -648,7 +648,7 @@ PySimple2::revertToStart(void)
 	//
 	if(pult <= 0.0 || y50 <= 0.0) {
 		opserr << "WARNING -- only accepts positive nonzero pult and y50" << endln;
-		opserr << "PyLiq1: " << endln;
+		opserr << "PySimple2: tag= " << this->getTag() << endln;
 		opserr << "pult: " << pult << "   y50: " << y50 << endln;
 		exit(-1);
 	}
