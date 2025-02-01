@@ -82,7 +82,7 @@ protected:
 	double resFacP, resFacN;
 	double FydP, FydN;		//Pos and Neg Fy's affected by damage
 	double ExcurEnergy;
-   int cyclicFlagP, cyclicFlagN;
+   int cyclicFlagP, cyclicFlagN; // 1:Bilinear, 2:Peak-Oriented, 3:Pinched
    double pinchXP, pinchYP;
    double pinchXN, pinchYN;
    double FcP, FcN;
@@ -105,7 +105,7 @@ protected:
     double sigs0P;  //  = hstvP(5) : sig at asymptotes intersection
     double epssrP;  //  = hstvP(6) : eps at last inversion point
     double sigsrP;  //  = hstvP(7) : sig at last inversion point
-    int    konP;    //  = hstvP(8) : index for loading/unloading
+    int    statP;    //  = hstvP(8) : index for loading/unloading
     double RP;      // transition curve
     // hstv : STEEL HISTORY VARIABLES   
     double epsP;  //  = strain at previous converged step
@@ -122,7 +122,7 @@ protected:
     double sigs0; 
     double epsr;  
     double sigr;  
-    int    kon;    
+    int    stat;    
     double sig;   
     double e;     
     double eps;   //  = strain at current step

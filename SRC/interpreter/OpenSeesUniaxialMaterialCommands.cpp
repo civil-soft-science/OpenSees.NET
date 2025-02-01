@@ -237,6 +237,9 @@ void* OPS_TDConcreteEXP(void);
 void* OPS_TDConcrete(void);
 void* OPS_TDConcreteMC10(void);
 void* OPS_TDConcreteMC10NL(void);
+void* OPS_Steel05(void);
+void* OPS_ConfinedConcrete(void);
+void* OPS_IMKJ(void);
 
 namespace {
 
@@ -254,6 +257,12 @@ typedef std::map<const char*, void* (*)(void), char_cmp>
 static OPS_ParsingFunctionMap uniaxialMaterialsMap;
 
 static int setUpUniaxialMaterials(void) {
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Steel05", &OPS_Steel05));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ConfinedConcrete", &OPS_ConfinedConcrete));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("IMKJ", &OPS_IMKJ));
   uniaxialMaterialsMap.insert(
       std::make_pair("Elastic", &OPS_ElasticMaterial));
   uniaxialMaterialsMap.insert(

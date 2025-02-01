@@ -38,15 +38,17 @@
 
 static int numThisCall = 0;
 
+void printSyntax()
+{
+	opserr << "-------Syntax:\n";
+	opserr << "-------UniaxialMaterial Steel05 $matTag $Fy $E $b ductilityCapacity postCapEFac gama c resFac <$R0 $cR1 $cR2> <$a1 $a2 $a3 $a4> <$sigInit>\n\n";
+	opserr << "------------------------------------------------------------------------------------------------------------\n\n\n";
+}
 void *
 OPS_Steel05()
 {
 	if (numThisCall == 0) {
-		opserr << "------ Steel05 unaxialMaterial, Written by SAJalali @ Civil Soft Science, Iran, 2019-------\n";
-		opserr << "------------------------------ Please Send Comments to: seyedalirezajalali@gmail.com-----------------------------\n";
-		opserr<<  "-------Syntax:\n";
-		opserr<<  "-------UniaxialMaterial Steel05 $matTag $Fy $E $b ductilityCapacity postCapEFac gama c resFac <$R0 $cR1 $cR2> <$a1 $a2 $a3 $a4> <$sigInit>\n\n";
-		opserr << "------------------------------------------------------------------------------------------------------------\n\n\n";
+		opserr << "Steel05 unaxialMaterial, by SAJalali @ OpenSeesHouse, Iran, 2019\n";
 			numThisCall = 1;
 	}
   // Pointer to a uniaxial material that will be returned
@@ -58,6 +60,7 @@ OPS_Steel05()
 
   if (OPS_GetIntInput(numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel05 tag" << endln;
+		printSyntax();
     return 0;
   }
 
@@ -65,7 +68,8 @@ OPS_Steel05()
 
   if (numData != 8 && numData != 11 && numData != 15 && numData != 16) {
     opserr << "Invalid Steel05 #args for: " << iData[0] << " see the syntax" << endln;
-    return 0;
+		printSyntax();
+		return 0;
   }
 //default parameters:
 	dData[15] = 0;
@@ -79,7 +83,8 @@ OPS_Steel05()
 
     if (OPS_GetDoubleInput(numData, dData) != 0) {
     opserr << "Invalid Steel05 #args for: " << iData[0] << " see the syntax" << endln;
-    return 0;
+		printSyntax();
+		return 0;
     }
 
     // Parsing was successful, allocate the material
