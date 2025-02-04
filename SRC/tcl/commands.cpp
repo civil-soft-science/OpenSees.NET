@@ -840,7 +840,7 @@ int OpenSeesAppInit(Tcl_Interp* interp) {
 		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL); //by SAJalali
 #ifdef _CSS
 	//by SAJalali
-	Tcl_CreateCommand(interp, "logCommands", &OPS_LogCommandsCmd,
+	Tcl_CreateCommand(interp, "logCommand", &OPS_LogCommandsCmd,
 		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
 	Tcl_CreateCommand(interp, "nodeEleConnects", &OPS_NodeEleConnectsCmd,
 		(ClientData)NULL, (Tcl_CmdDeleteProc*)NULL);
