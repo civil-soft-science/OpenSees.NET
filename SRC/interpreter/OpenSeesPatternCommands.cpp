@@ -560,7 +560,7 @@ int OPS_ElementalLoad()
 	}
     	opserr << "Read numdata =  " << numdata << "" << endln;
 	if (numdata > 5) numdata = 5;
-	if (OPS_GetDoubleInput(&numdata, data) < 0) {
+	if (OPS_GetDoubleInput(numdata, data) < 0) {
 	    opserr<<"WARNING eleLoad - invalid value for IGAFollowerLoad\n";
 	    return -1;
 	}

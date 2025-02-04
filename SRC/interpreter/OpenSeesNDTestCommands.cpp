@@ -57,10 +57,10 @@ void* OPS_NDSetStrain()
 	double strains[6];
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 	
 	numdata = 6;
-	if (OPS_GetDoubleInput(&numdata, strains) < 0) return 0;
+	if (OPS_GetDoubleInput(numdata, strains) < 0) return 0;
 
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
@@ -84,7 +84,7 @@ void* OPS_NDPrintStrain()
 	int tag = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
 
@@ -100,7 +100,7 @@ void* OPS_NDPrintStress()
 	int tag = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
 
@@ -118,7 +118,7 @@ void* OPS_NDGetStrain()
 	int size = 6;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
 
@@ -128,7 +128,7 @@ void* OPS_NDGetStrain()
 	for (int i=0; i<6; i++) {
 	    values[i] = strain(i);
 	}
-	if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
+	if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
 	    opserr<<"WARNING OPS_NDGetStress - failed to set double inputs\n";
 	    return 0;
 	}
@@ -145,7 +145,7 @@ void* OPS_NDGetStress()
 	int size = 6;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
 
@@ -155,7 +155,7 @@ void* OPS_NDGetStress()
 	for (int i=0; i<6; i++) {
 	    values[i] = stress(i);
 	}
-	if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
+	if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
 	    opserr<<"WARNING OPS_NDGetStress - failed to set double inputs\n";
 	    return 0;
 	}
@@ -171,7 +171,7 @@ void* OPS_NDGetTangentStiffness()
 	int size = 36;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
 
@@ -185,7 +185,7 @@ void* OPS_NDGetTangentStiffness()
 	    	values[6*i+j] = one_value;
 		}
 	}
-	if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
+	if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
 	    opserr<<"WARNING OPS_NDGetStress - failed to set double inputs\n";
 	    return 0;
 	}
@@ -204,7 +204,7 @@ void* OPS_NDCommitState()
 	double stressdata[6] = {1 , 2 , 3, 4, 5, 6};
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
 	
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
@@ -222,9 +222,9 @@ void* OPS_NDUpdateIntegerParameter()
 	int theNewIntegerParameterValue = 0;
 	
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
-	if (OPS_GetIntInput(&numdata, &responseID) < 0) return 0;
-	if (OPS_GetIntInput(&numdata, &theNewIntegerParameterValue) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &responseID) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &theNewIntegerParameterValue) < 0) return 0;
 	
 
     NDMaterial* mat = OPS_getNDMaterial(tag);
@@ -246,9 +246,9 @@ void* OPS_NDUpdateDoubleParameter()
 	double theNewDoubleParameterValue = 0;
 	
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) return 0;
-	if (OPS_GetIntInput(&numdata, &responseID) < 0) return 0;
-	if (OPS_GetDoubleInput(&numdata, &theNewDoubleParameterValue) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &tag) < 0) return 0;
+	if (OPS_GetIntInput(numdata, &responseID) < 0) return 0;
+	if (OPS_GetDoubleInput(numdata, &theNewDoubleParameterValue) < 0) return 0;
 	
 
     NDMaterial* mat = OPS_getNDMaterial(tag);

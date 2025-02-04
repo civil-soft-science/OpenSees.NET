@@ -58,6 +58,7 @@ extern void* OPS_TDConcrete(void); // ntosic
 extern void* OPS_TDConcreteMC10(void); //ntosic
 extern void* OPS_TDConcreteMC10NL(void); //ntosicextern void *OPS_ElasticMaterial(void);
 extern void* OPS_ECC01(void);
+extern void* OPS_ENTMaterial(void);
 extern void* OPS_ElasticMaterial(void);
 extern void *OPS_ElasticPPMaterial(void);
 extern void *OPS_EPPGapMaterial(void);
@@ -65,12 +66,14 @@ extern void *OPS_ParallelMaterial(void);
 extern void *OPS_SeriesMaterial(void);
 extern void *OPS_HardeningMaterial(void);
 extern void *OPS_HystereticMaterial(void);
+extern void *OPS_BoucWenMaterial(void);
 extern void *OPS_CableMaterial(void);
 extern void *OPS_Bilin(void);
 extern void *OPS_Bilin02(void);
 extern void *OPS_Steel01(void);
 extern void *OPS_FRPConfinedConcrete02(void);
 extern void *OPS_Steel02(void);
+extern void *OPS_Steel03(void);
 extern void *OPS_SteelFractureDI(void); // galvisf
 extern void *OPS_Steel02Fatigue(void);
 extern void *OPS_RambergOsgoodSteel(void);
@@ -78,6 +81,9 @@ extern void *OPS_ReinforcingSteel(void);
 extern void *OPS_SteelDRC(void); // R. Carreno
 extern void *OPS_Concrete01(void);
 extern void *OPS_Concrete02(void);
+extern void *OPS_Concrete04(void);
+extern void *OPS_Concrete06(void);
+extern void *OPS_Concrete07(void);
 extern void *OPS_Concrete02IS(void);
 extern void *OPS_PinchingLimitStateMaterial(void);
 extern void *OPS_SAWSMaterial(void);
@@ -165,6 +171,15 @@ extern void* OPS_AxialSp(void);
 extern void* OPS_AxialSpHD(void);
 extern void* OPS_KikuchiAikenHDR(void);
 extern void* OPS_KikuchiAikenLRB(void);
+extern void* OPS_PathIndependentMaterial(void);
+extern void* OPS_BackboneMaterial(void);
+extern void* OPS_FatigueMaterial(void);
+extern void* OPS_Concrete01WithSITC(void);
+extern void* OPS_SelfCenteringMaterial(void);
+extern void* OPS_SteelMP(void);
+extern void* OPS_SmoothPSConcrete(void);
+extern void* OPS_UniaxialJ2Plasticity(void);
+extern void* OPS_Elastic2Material(void);
 
 extern UniaxialMaterial*
 Tcl_AddLimitStateMaterial(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** arg);
@@ -1104,10 +1119,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 		else
 			return TCL_ERROR;
 	}
-	if ((strcmp(argv[1], "ConfinedConcrete01") == 0) || (strcmp(argv[1], "ConfinedConcrete") == 0)) {
-
-
-    else if ((strcmp(argv[1],"ConfinedConcrete01") == 0)) {
+	if ((strcmp(argv[1],"ConfinedConcrete01") == 0)) {
 
       void *theMat = OPS_ConfinedConcrete01Material();
       if (theMat != 0) 
@@ -1116,6 +1128,7 @@ TclModelBuilderUniaxialMaterialCommand(ClientData clientData, Tcl_Interp* interp
 	return TCL_ERROR;
     }
 
+	if ((strcmp(argv[1], "Cable") == 0)) {
 		void* theMat = OPS_CableMaterial();
 		if (theMat != 0)
 			theMaterial = (UniaxialMaterial*)theMat;

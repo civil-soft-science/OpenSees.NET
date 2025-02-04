@@ -2001,7 +2001,7 @@ int OPS_printA()
 		int size = A->noRows() * A->noCols();
 		if (size >0) {
 		    double& ptr = (*A)(0,0);
-		    if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		    if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
 			opserr << "WARNING: printA - failed to set output\n";
 			return -1;
 		    }
@@ -2012,7 +2012,7 @@ int OPS_printA()
 	} else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -2020,7 +2020,7 @@ int OPS_printA()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -2070,14 +2070,14 @@ int OPS_printB()
 	    int size = b.Size();
 	    if (size > 0) {
 		double &ptr = b(0);
-		if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
 		    opserr << "WARNING: printb - failed to set output\n";
 		    return -1;
 		}
 	    } else {
             size = 0;
             double *ptr2 = 0;
-            if (OPS_SetDoubleOutput(&size, ptr2, false) < 0) {
+            if (OPS_SetDoubleOutput(size, ptr2, false) < 0) {
                 opserr << "WARNING: printA - failed to set output\n";
                 return -1;
             }
@@ -2088,7 +2088,7 @@ int OPS_printB()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }

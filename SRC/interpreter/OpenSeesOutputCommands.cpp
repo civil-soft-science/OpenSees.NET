@@ -1621,7 +1621,7 @@ int OPS_getFixedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1640,7 +1640,7 @@ int OPS_getFixedDOFs()
     int tag;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &tag) < 0) {
+    if (OPS_GetIntInput(numdata, &tag) < 0) {
 	  opserr << "WARNING getFixedDOFs fNodeTag? \n";
 	  return -1;
     }
@@ -1661,7 +1661,7 @@ int OPS_getFixedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1677,7 +1677,7 @@ int OPS_getConstrainedNodes()
     int numdata = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 2) {
-	  if (OPS_GetIntInput(&numdata, &rNodeTag) < 0) {
+	  if (OPS_GetIntInput(numdata, &rNodeTag) < 0) {
 		opserr << "WARNING getConstrainedNodes <rNodeTag?> - could not read rNodeTag\n";
 		return -1;
 	  }
@@ -1704,7 +1704,7 @@ int OPS_getConstrainedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1723,7 +1723,7 @@ int OPS_getConstrainedDOFs()
     int cNode;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &cNode) < 0) {
+    if (OPS_GetIntInput(numdata, &cNode) < 0) {
 	  opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read cNode? \n";
 	  return -1;
     }
@@ -1732,7 +1732,7 @@ int OPS_getConstrainedDOFs()
 	bool allNodes = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(&numdata, &rNode) < 0) {
+	  if (OPS_GetIntInput(numdata, &rNode) < 0) {
 		opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read rNode? \n";
 		return -1;
 	  }
@@ -1742,7 +1742,7 @@ int OPS_getConstrainedDOFs()
     int rDOF;
 	bool allDOFs = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(&numdata, &rDOF) < 0) {
+	  if (OPS_GetIntInput(numdata, &rDOF) < 0) {
 		opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read rDOF? \n";
 		return -1;
 	  }
@@ -1785,7 +1785,7 @@ int OPS_getConstrainedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1801,7 +1801,7 @@ int OPS_getRetainedNodes()
     int numdata = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 2) {
-	  if (OPS_GetIntInput(&numdata, &cNodeTag) < 0) {
+	  if (OPS_GetIntInput(numdata, &cNodeTag) < 0) {
 		opserr << "WARNING getRetainedNodes <cNodeTag?> - could not read cNodeTag\n";
 		return -1;
 	  }
@@ -1828,7 +1828,7 @@ int OPS_getRetainedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1848,7 +1848,7 @@ int OPS_getRetainedDOFs()
     int rNode;
     int numdata = 1;
 
-    if (OPS_GetIntInput(&numdata, &rNode) < 0) {
+    if (OPS_GetIntInput(numdata, &rNode) < 0) {
 	  opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read rNode? \n";
 	  return -1;
     }
@@ -1857,7 +1857,7 @@ int OPS_getRetainedDOFs()
 	bool allNodes = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(&numdata, &cNode) < 0) {
+	  if (OPS_GetIntInput(numdata, &cNode) < 0) {
 		opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read cNode? \n";
 		return -1;
 	  }
@@ -1867,7 +1867,7 @@ int OPS_getRetainedDOFs()
     int cDOF;
 	bool allDOFs = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(&numdata, &cDOF) < 0) {
+	  if (OPS_GetIntInput(numdata, &cDOF) < 0) {
 		opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read cDOF? \n";
 		return -1;
 	  }
@@ -1909,7 +1909,7 @@ int OPS_getRetainedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}

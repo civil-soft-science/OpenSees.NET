@@ -108,6 +108,7 @@
     <ClCompile Include="..\..\..\OTHER\tetgen1.4.3\predicates.cxx" />
     <ClCompile Include="..\..\..\OTHER\tetgen1.4.3\tetgen.cxx" />
     <ClCompile Include="..\..\..\OTHER\Triangle\triangle.c" />
+    <ClCompile Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping2d.cpp" />
     <ClCompile Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping3d.cpp" />
     <ClCompile Include="..\..\..\SRC\element\absorbentBoundaries\LysmerTriangle.cpp" />
     <ClCompile Include="..\..\..\SRC\element\absorbentBoundaries\ASDAbsorbingBoundary2D.cpp" />
@@ -395,6 +396,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\OTHER\tetgen1.4.3\tetgen.h" />
     <ClInclude Include="..\..\..\OTHER\Triangle\triangle.h" />
+    <ClInclude Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping2d.h" />
     <ClInclude Include="..\..\..\SRC\coordTransformation\CorotCrdTransfWarping3d.h" />
     <ClInclude Include="..\..\..\SRC\element\absorbentBoundaries\LysmerTriangle.h" />
     <ClInclude Include="..\..\..\SRC\element\absorbentBoundaries\ASDAbsorbingBoundary2D.h" />

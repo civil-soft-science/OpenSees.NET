@@ -187,9 +187,6 @@
     <ProjectReference Include="..\handler\handler.vcxproj">
       <Project>{a6947a93-dfd1-060e-f426-ae10230f7861}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\material\material.vcxproj">
-      <Project>{b3b28eab-160f-635a-cd8a-4c4baa55cf78}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\matrix\matrix.vcxproj">
       <Project>{a2422b53-1a88-cbc2-aaa3-3a727c91e852}</Project>
     </ProjectReference>

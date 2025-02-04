@@ -57,6 +57,7 @@
 //#include <FiberSectionGJThermal.h>
 #include <MembranePlateFiberSectionThermal.h>
 #include <LayeredShellFiberSectionThermal.h>
+#include <RCSectionIntegration.h>
 
 void* OPS_ElasticSection2d();
 void* OPS_ElasticSection3d();
@@ -294,8 +295,8 @@ namespace {
 	}
 
 	int data[2];
-	numdata = 2;
-	if (OPS_GetIntInput(&numdata, data) < 0) {
+	int numdata = 2;
+	if (OPS_GetIntInput(numdata, data) < 0) {
 	    opserr << "WARNING invalid integer" << endln;
 	    return 0;
 	}
@@ -355,35 +356,35 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section Tube tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section Tube matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &D) < 0) {
+	if (OPS_GetDoubleInput(numdata, &D) < 0) {
 	    opserr << "WARNING invalid D" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &t) < 0) {
+	if (OPS_GetDoubleInput(numdata, &t) < 0) {
 	    opserr << "WARNING invalid t" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfw) < 0) {
+	if (OPS_GetIntInput(numdata, &nfw) < 0) {
 	    opserr << "WARNING invalid nfw" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfr) < 0) {
+	if (OPS_GetIntInput(numdata, &nfr) < 0) {
 	    opserr << "WARNING invalid nfr" << endln;
 	    opserr << "Tube section: " << tag << endln;
 	    return 0;
@@ -397,7 +398,7 @@ namespace {
 
 	    double shape = 1.0;
 	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(&numdata, &shape) < 0) {
+		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
 		    opserr << "WARNING invalid shape" << endln;
 		    opserr << "Tube section: " << tag << endln;
 		    return 0;
@@ -467,41 +468,41 @@ namespace {
 	SectionForceDeformation* theSection = 0;
 
 	int numdata = 1;
-	if (OPS_GetIntInput(&numdata, &tag) < 0) {
+	if (OPS_GetIntInput(numdata, &tag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d tag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &matTag) < 0) {
+	if (OPS_GetIntInput(numdata, &matTag) < 0) {
 	    opserr << "WARNING invalid section WFSection2d matTag" << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &d) < 0) {
+	if (OPS_GetDoubleInput(numdata, &d) < 0) {
 	    opserr << "WARNING invalid d" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &tw) < 0) {
+	if (OPS_GetDoubleInput(numdata, &tw) < 0) {
 	    opserr << "WARNING invalid tw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &bf) < 0) {
+	if (OPS_GetDoubleInput(numdata, &bf) < 0) {
 	    opserr << "WARNING invalid bf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetDoubleInput(&numdata, &tf) < 0) {
+	if (OPS_GetDoubleInput(numdata, &tf) < 0) {
 	    opserr << "WARNING invalid tf" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
 	}
 
-	if (OPS_GetIntInput(&numdata, &nfdw) < 0) {
+	if (OPS_GetIntInput(numdata, &nfdw) < 0) {
 	    opserr << "WARNING invalid nfdw" << endln;
 	    opserr << "WFSection2d section: " << tag << endln;
 	    return 0;
