@@ -19,13 +19,13 @@ OPS_ConcreteSakaiKawashima(void)
   }
 
   numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ConcreteSakaiKawashima tag" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial DoddRestr " << iData[0] << " Eo? fy? esh? esh1? fsh1? esu? fsu? Pmajor? Pminor? <slcf? tlcf? Dcrit?>>" << endln;
     return 0;
   }

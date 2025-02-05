@@ -45,7 +45,7 @@ void* OPS_CircPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
 
     // get data
     double data[6] = {0,0,0,0,0,0};
@@ -53,7 +53,7 @@ void* OPS_CircPatch()
     static Vector centerPos(2);
     /*centerPos(0) = data[0];
     centerPos(1) = data[1];*/
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
     centerPos(0) = data[0];
     centerPos(1) = data[1];
 
@@ -233,6 +233,7 @@ CircPatch::getCopy (void) const
  
 void CircPatch::Print(OPS_Stream &s, int flag) const
 {
+	if (flag == OPS_PRINT_PRINTMODEL_SECTION || flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
    s << "\nPatch Type: CircPatch";
    s << "\nMaterial Id: " << matID;
    s << "\nNumber of subdivisions in the radial direction: " << nDivRad;
@@ -240,6 +241,14 @@ void CircPatch::Print(OPS_Stream &s, int flag) const
    s << "\nCenter Position: " << centerPosit;
    s << "\nInternal Radius: " << intRad << "\tExternal Radius: " << extRad;
    s << "\nInitial Angle: " << initAng << "\tFinal Angle: " << finalAng;
+}
+if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+	 s << "\t\t\t\t{\"type\": \"circ\", \"material\": "<<matID<<", \"divisions\":[" << nDivRad << ","<< nDivCirc<<"], ";
+	 s << "\"center\": ["<<centerPosit(0)<<","<<centerPosit(1)<<"], ";
+	 s << "\"radii\": ["<<intRad<<", "<<extRad<<"],";
+	 s << "\"angles\": ["<<initAng<<", "<<finalAng<<"]";
+	 s <<"}";
+}
 }
 
 

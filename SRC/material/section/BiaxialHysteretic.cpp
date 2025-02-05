@@ -64,16 +64,16 @@ void* OPS_BiaxialHysteretic()
   
     int tag;
   
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid BiaxialHysteretic tag" << endln;
 	return 0;
     }
   
     double data[] = {0.0,0.0,0.0,0.0,0.0, 0.6,0.0,0.0,0.0,0.0,0.0,0.0,0.1,0.0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 14) numdata = 14;
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 14) numData = 14;
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid BiaxialHysteretic input" << endln;
 	return 0;
     }
@@ -81,7 +81,7 @@ void* OPS_BiaxialHysteretic()
     int code[2];
     code[0] = SECTION_RESPONSE_MZ;
     code[1] = SECTION_RESPONSE_MY;
-    if (numdata == 14) {
+    if (numData == 14) {
       for (int i = 0; i < 2; i++) {
 	const char *type = OPS_GetString();
 	code[i] = 0;

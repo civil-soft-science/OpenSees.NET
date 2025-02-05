@@ -83,7 +83,7 @@ void* OPS_IGASurfacePatch()
     int noPtsX = 0;
     int noPtsY = 0;
 
-    int numdata = 1;
+    int numData = 1;
 
     ShellType shtype = ShellType::KLShell;
 
@@ -95,34 +95,34 @@ void* OPS_IGASurfacePatch()
     Vector gFact(3);
 
 
-
+    numData = 1;
     opserr << "Creating IGA Patch:" << endln;
-    if (OPS_GetIntInput(numdata, &tag) < 0){
+    if (OPS_GetIntInput(&numData, &tag) < 0){
       PrintSyntax();
       return 0;  
     } 
     opserr << "tag = " << tag << endln;
-    if (OPS_GetIntInput(numdata, &nodeStartTag) < 0){
+    if (OPS_GetIntInput(&numData, &nodeStartTag) < 0){
       PrintSyntax();
       return 0;  
     } 
     opserr << "nodeStartTag = " << nodeStartTag << endln;
-    if (OPS_GetIntInput(numdata, &P) < 0){
+    if (OPS_GetIntInput(&numData, &P) < 0){
       PrintSyntax();
       return 0;  
     } 
     opserr << "P = " << P << endln;
-    if (OPS_GetIntInput(numdata, &Q) < 0){
+    if (OPS_GetIntInput(&numData, &Q) < 0){
       PrintSyntax();
       return 0;  
     } 
     opserr << "Q = " << Q << endln;
-    if (OPS_GetIntInput(numdata, &noPtsX) < 0){
+    if (OPS_GetIntInput(&numData, &noPtsX) < 0){
       PrintSyntax();
       return 0;  
     } 
     opserr << "noPtsX = " << noPtsX << endln;
-    if (OPS_GetIntInput(numdata, &noPtsY) < 0){
+    if (OPS_GetIntInput(&numData, &noPtsY) < 0){
       PrintSyntax();
       return 0;  
     } 
@@ -175,7 +175,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-planeStressMatTags") == 0) { //matTags
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 int val;
-                if (OPS_GetIntInput(numdata, &val) < 0) {
+                if (OPS_GetIntInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -187,7 +187,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-theta") == 0) { //theta
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -199,7 +199,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-thickness") == 0) { //thickness
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -211,7 +211,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-uKnot") == 0) { //uKnot
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -223,7 +223,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-vKnot") == 0) { //vKnot
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -235,7 +235,7 @@ void* OPS_IGASurfacePatch()
         else if (strcmp(arg, "-controlPts") == 0) { //controlPts
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }
@@ -260,34 +260,34 @@ void* OPS_IGASurfacePatch()
         //     loc++;
         // }
         else if (strcmp(arg, "-sectionTag") == 0) {
-            numdata = 1;
+            numData = 1;
 
-            if (OPS_GetIntInput(numdata, &sectionTag) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &sectionTag) < 0) return 0;
             loc++;
         }
         else if (strcmp(arg, "-nodeStartTag") == 0) {
-            numdata = 1;
+            numData = 1;
 
-            if (OPS_GetIntInput(numdata, &nodeStartTag) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &nodeStartTag) < 0) return 0;
             loc++;
         }
         else if (strcmp(arg, "-elementStartTag") == 0) {
-            numdata = 1;
+            numData = 1;
 
-            if (OPS_GetIntInput(numdata, &elementStartTag) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &elementStartTag) < 0) return 0;
             loc++;
         }
         else if (strcmp(arg, "-nonLinearGeometry") == 0) {
-            numdata = 1;
+            numData = 1;
 
-            if (OPS_GetIntInput(numdata, &nonLinearGeometry) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &nonLinearGeometry) < 0) return 0;
             loc++;
         }
         else if (strcmp(arg, "-gFact") == 0) {
             int i = 0;
             while (OPS_GetNumRemainingInputArgs() > 0) {
                 double val;
-                if (OPS_GetDoubleInput(numdata, &val) < 0) {
+                if (OPS_GetDoubleInput(&numData, &val) < 0) {
                     OPS_ResetCurrentInputArg(loc);
                     break;
                 }

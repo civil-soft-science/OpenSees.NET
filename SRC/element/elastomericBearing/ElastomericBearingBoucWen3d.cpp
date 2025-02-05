@@ -60,7 +60,7 @@ void* OPS_ElastomericBearingBoucWen3d()
     // tags
     int idata[3];
     int num = 3;
-    if (OPS_GetIntInput(num, idata) < 0) {
+    if (OPS_GetIntInput(&num, idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -68,7 +68,7 @@ void* OPS_ElastomericBearingBoucWen3d()
     // data
     double data[8];
     num = 8;
-    if (OPS_GetDoubleInput(num, data) < 0) {
+    if (OPS_GetDoubleInput(&num, data) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -82,7 +82,7 @@ void* OPS_ElastomericBearingBoucWen3d()
     }
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(num, &matTag) < 0) {
+    if (OPS_GetIntInput(&num, &matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -98,7 +98,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 	return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(num, &matTag) < 0) {
+    if (OPS_GetIntInput(&num, &matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -114,7 +114,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 	return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(num, &matTag) < 0) {
+    if (OPS_GetIntInput(&num, &matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -130,7 +130,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 	return 0;
     }
     num = 1;
-    if (OPS_GetIntInput(num, &matTag) < 0) {
+    if (OPS_GetIntInput(&num, &matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -162,7 +162,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 	    }
 	    num = 3;
 	    x.resize(3);
-	    if (OPS_GetDoubleInput(num, &x(0)) < 0) {
+	    if (OPS_GetDoubleInput(&num, &x(0)) < 0) {
 		opserr<<"WARNING: invalid orient value\n";
 		return 0;
 	    }
@@ -172,7 +172,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 		continue;
 	    }
 	    y.resize(3);
-	    if (OPS_GetDoubleInput(num, &y(0)) < 0) {
+	    if (OPS_GetDoubleInput(&num, &y(0)) < 0) {
 		y = x;
 		x = Vector();
 		continue;
@@ -183,7 +183,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 		return 0;
 	    }
 	    num = 1;
-	    if (OPS_GetDoubleInput(num, &sDistI) < 0) {
+	    if (OPS_GetDoubleInput(&num, &sDistI) < 0) {
 		opserr<<"WARNING: invalid shearDist\n";
 		return 0;
 	    }
@@ -195,7 +195,7 @@ void* OPS_ElastomericBearingBoucWen3d()
 		return 0;
 	    }
 	    num = 1;
-	    if (OPS_GetDoubleInput(num, &mass) < 0) {
+	    if (OPS_GetDoubleInput(&num, &mass) < 0) {
 		opserr<<"WARNING: invalid mass\n";
 		return 0;
 	    }
@@ -205,11 +205,11 @@ void* OPS_ElastomericBearingBoucWen3d()
 		return 0;
 	    }
 	    num = 1;
-	    if (OPS_GetIntInput(num,&maxIter) < 0) {
+	    if (OPS_GetIntInput(&num,&maxIter) < 0) {
 		opserr<<"WARNING: invalid maxIter\n";
 		return 0;
 	    }
-	    if (OPS_GetDoubleInput(num,&tol) < 0) {
+	    if (OPS_GetDoubleInput(&num,&tol) < 0) {
 		opserr<<"WARNING: invalid tol\n";
 		return 0;
 	    }

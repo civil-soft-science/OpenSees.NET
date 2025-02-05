@@ -47,20 +47,20 @@ void* OPS_BBarFourNodeQuadUP()
     // BBarFourNodeQuadUPId, iNode, jNode, kNode, lNode
     int tags[5];
     int num = 5;
-    if (OPS_GetIntInput(num,tags) < 0) {
+    if (OPS_GetIntInput(&num,tags) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return 0;
     }
 
     double thk;
     num = 1;
-    if (OPS_GetDoubleInput(num,&thk) < 0) {
+    if (OPS_GetDoubleInput(&num,&thk) < 0) {
 	opserr<<"WARNING: invalid double input\n";
 	return 0;
     }
 
     int matTag;
-    if (OPS_GetIntInput(num,&matTag) < 0) {
+    if (OPS_GetIntInput(&num,&matTag) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return 0;
     }
@@ -75,7 +75,7 @@ void* OPS_BBarFourNodeQuadUP()
     // bk, r, perm1, perm2
     double data[4];
     num = 4;
-    if (OPS_GetDoubleInput(num,data) < 0) {
+    if (OPS_GetDoubleInput(&num,data) < 0) {
 	opserr<<"WARNING: invalid double input\n";
 	return 0;
     }
@@ -87,7 +87,7 @@ void* OPS_BBarFourNodeQuadUP()
 	num = 3;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(num,opt) < 0) {
+	if (OPS_GetDoubleInput(&num,opt) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}

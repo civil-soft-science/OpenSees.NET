@@ -66,8 +66,8 @@ void* OPS_LinearElasticSpring()
     
     // tags
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
         opserr << "WARNING: invalid integer data\n";
         return 0;
     }
@@ -82,9 +82,9 @@ void* OPS_LinearElasticSpring()
     int numDIR = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int dir;
-        numdata = 1;
+        numData = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(numdata, &dir) < 0) {
+        if (OPS_GetIntInput(&numData, &dir) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -109,11 +109,11 @@ void* OPS_LinearElasticSpring()
         opserr << "WARNING wrong number of kij specified\n";
         return 0;
     }
-    numdata = 1;
+    numData = 1;
     Matrix kb(numDIR, numDIR);
     for (int i = 0; i < numDIR; i++) {
         for (int j = 0; j < numDIR; j++) {
-            if (OPS_GetDoubleInput(numdata, &kb(i, j)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &kb(i, j)) < 0) {
                 opserr << "WARNING invalid stiffness value\n";
                     return 0;
             }
@@ -136,9 +136,9 @@ void* OPS_LinearElasticSpring()
                 opserr << "WARNING: insufficient arguments after -orient\n";
                 return 0;
             }
-            numdata = 3;
+            numData = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &x(0)) < 0) {
                 opserr << "WARNING: invalid -orient values\n";
                 return 0;
             }
@@ -148,7 +148,7 @@ void* OPS_LinearElasticSpring()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -157,17 +157,17 @@ void* OPS_LinearElasticSpring()
         else if (strcmp(type, "-pDelta") == 0) {
             Mratio.resize(4);
             Mratio.Zero();
-            numdata = 4;
+            numData = 4;
             double* ptr = &Mratio(0);
             if (ndm == 2) {
-                numdata = 2;
+                numData = 2;
                 ptr += 2;
             }
-            if (OPS_GetNumRemainingInputArgs() < numdata) {
+            if (OPS_GetNumRemainingInputArgs() < numData) {
                 opserr << "WARNING: insufficient data for -pDelta\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(numdata, ptr) < 0) {
+            if (OPS_GetDoubleInput(&numData, ptr) < 0) {
                 opserr << "WARNING: invalid -pDelta value\n";
                 return 0;
             }
@@ -180,12 +180,12 @@ void* OPS_LinearElasticSpring()
                 opserr << "WARNING wrong number of cij specified\n";
                 return 0;
             }
-            numdata = 1;
+            numData = 1;
             double cij;
             cb = new Matrix(numDIR, numDIR);
             for (int i = 0; i < numDIR; i++) {
                 for (int j = 0; j < numDIR; j++) {
-                    if (OPS_GetDoubleInput(numdata, &cij) < 0) {
+                    if (OPS_GetDoubleInput(&numData, &cij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete cb;
                         return 0;
@@ -236,7 +236,7 @@ LinearElasticSpring::LinearElasticSpring(int tag, int dim,
         theNodes[i] = 0;
     
     // check the number of directions
-    if (numDIR < 1 || numDIR > 6)  {
+    if (numDIR < 1) {
         opserr << "LinearElasticSpring::LinearElasticSpring() - element: "
             << this->getTag() << " wrong number of directions\n";
         exit(-1);
@@ -257,24 +257,32 @@ LinearElasticSpring::LinearElasticSpring(int tag, int dim,
     
     // check p-delta moment distribution ratios
     if (Mratio.Size() == 4) {
-        if (Mratio(0) < 0.0 || Mratio(1) < 0.0 ||
-            Mratio(2) < 0.0 || Mratio(3) < 0.0) {
-            opserr << "LinearElasticSpring::LinearElasticSpring() - "
-                << "p-delta moment ratios can not be negative\n";
-            exit(-1);
-        }
-        if (Mratio(0) + Mratio(1) > 1.0) {
-            opserr << "LinearElasticSpring::LinearElasticSpring() - "
-                << "incorrect p-delta moment ratios:\nrMy1 + rMy2 = "
-                << Mratio(0) + Mratio(1) << " > 1.0\n";
-            exit(-1);
-        }
-        if (Mratio(2) + Mratio(3) > 1.0) {
-            opserr << "LinearElasticSpring::LinearElasticSpring() - "
-                << "incorrect p-delta moment ratios:\nrMz1 + rMz2 = "
-                << Mratio(2) + Mratio(3) << " > 1.0\n";
-            exit(-1);
-        }
+      for (int i = 0; i < 4; i++) {
+	if (Mratio(i) < 0.0) {
+	  opserr << "LinearElasticSpring::LinearElasticSpring() - "
+		 << "P-Delta moment ratio " << i+1 << " is negative\n";
+	  Mratio(i) = -Mratio(i);
+	  opserr << "Making the value positive " << Mratio(i) << endln;
+	}
+      }
+      double sumRatio = Mratio(0)+Mratio(1);
+      if (sumRatio > 1.0)  {
+	opserr << "LinearElasticSpring::LinearElasticSpring() - "
+	       << "incorrect P-Delta moment ratios:\nrMy1 + rMy2 = "
+	       << sumRatio << " > 1.0\n";
+	Mratio(0) = Mratio(0)/sumRatio;
+	Mratio(1) = Mratio(1)/sumRatio;
+	opserr << "Scaling ratios down to " << Mratio(0) << " and " << Mratio(1) << endln;
+      }
+      sumRatio = Mratio(2)+Mratio(3);
+      if (sumRatio > 1.0)  {
+	opserr << "LinearElasticSpring::LinearElasticSpring() - "
+	       << "incorrect P-Delta moment ratios:\nrMz1 + rMz2 = "
+	       << sumRatio << " > 1.0\n";
+	Mratio(2) = Mratio(2)/sumRatio;
+	Mratio(3) = Mratio(3)/sumRatio;
+	opserr << "Scaling ratios down to " << Mratio(2) << " and " << Mratio(3) << endln;	    
+      }
     }
     
     // initialize optional damping matrix
@@ -878,7 +886,7 @@ Response* LinearElasticSpring::setResponse(const char **argv, int argc,
     output.attr("node1",connectedExternalNodes[0]);
     output.attr("node2",connectedExternalNodes[1]);
     
-    char outputData[10];
+    char outputData[80];
     
     // global forces
     if (strcmp(argv[0],"force") == 0 || strcmp(argv[0],"forces") == 0 ||

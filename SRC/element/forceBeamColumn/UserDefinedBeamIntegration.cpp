@@ -42,7 +42,7 @@ void* OPS_UserDefinedBeamIntegration(int& integrationTag, ID& secTags)
     // inputs: integrationTag,N
     int iData[2];
     int numData = 2;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) return 0;
 
     integrationTag = iData[0];
     int N = iData[1];
@@ -62,15 +62,15 @@ void* OPS_UserDefinedBeamIntegration(int& integrationTag, ID& secTags)
 
     // secTags
     int *secptr = &secTags(0);
-    if(OPS_GetIntInput(N,secptr) < 0) return 0;
+    if(OPS_GetIntInput(&N,secptr) < 0) return 0;
 
     // locations
     double *locptr = &pt(0);
-    if(OPS_GetDoubleInput(N,locptr) < 0) return 0;
+    if(OPS_GetDoubleInput(&N,locptr) < 0) return 0;
 
     // weights
     double *wtptr = &wt(0);
-    if(OPS_GetDoubleInput(N,wtptr) < 0) return 0;
+    if(OPS_GetDoubleInput(&N,wtptr) < 0) return 0;
     
     return new UserDefinedBeamIntegration(N,pt,wt);
 }
@@ -178,40 +178,64 @@ UserDefinedBeamIntegration::getCopy(void)
 int
 UserDefinedBeamIntegration::sendSelf(int cTag, Channel &theChannel)
 {
+  int res = 0;
+  
   int dbTag = this->getDbTag();
+
   int nIP = pts.Size();
   static ID iData(1);
   iData(0) = nIP;
-  theChannel.sendID(dbTag, cTag, iData);
+  res = theChannel.sendID(dbTag, cTag, iData);
+  if (res < 0) {
+    opserr << "UserDefinedBeamIntegration::sendSelf - failed to send ID data" << endln;
+    return res;
+  }  
 
   Vector dData(nIP*2);
   for (int i=0; i<nIP; i++) {
     dData(i) = pts(i);
     dData(i+nIP) = wts(i);
   }
-  return theChannel.sendVector(dbTag, cTag, dData);  
+  res = theChannel.sendVector(dbTag, cTag, dData);
+  if (res < 0) {
+    opserr << "UserDefinedBeamIntegration::sendSelf - failed to send Vector data" << endln;
+    return res;
+  }
+  
+  return res;
 }
 
 int
 UserDefinedBeamIntegration::recvSelf(int cTag, Channel &theChannel,
 				     FEM_ObjectBroker &theBroker)
 {
+  int res = 0;
+  
   int dbTag = this->getDbTag();
-  int nIP;
+  
   static ID iData(1);
-  theChannel.recvID(dbTag, cTag, iData);
-  nIP = iData(0);
+  res = theChannel.recvID(dbTag, cTag, iData);
+  if (res < 0) {
+    opserr << "UserDefinedBeamIntegration::recvSelf - failed to recv ID data" << endln;
+    return res;
+  }  
+  int nIP = iData(0);
+  
   pts.resize(nIP);
   wts.resize(nIP);
 
   Vector dData(nIP*2);
-  int res = theChannel.recvVector(dbTag, cTag, dData);  
-  if (res == 0) {
-    for (int i=0; i<nIP; i++) {
-      pts(i) = dData(i);
-      wts(i) = dData(i+nIP);
-    }
+  res = theChannel.recvVector(dbTag, cTag, dData);
+  if (res < 0) {
+    opserr << "UserDefinedBeamIntegration::recvSelf - failed to recv Vector data" << endln;
+    return res;
+  }    
+
+  for (int i=0; i<nIP; i++) {
+    pts(i) = dData(i);
+    wts(i) = dData(i+nIP);
   }
+  
   return res;
 }
 

@@ -61,14 +61,14 @@ void* OPS_NineNodeQuad()
 	// nNode, mNode, pNode, qNode, cNode
     int idata[10];
     int num = 10;
-    if (OPS_GetIntInput(num,idata) < 0) {
+    if (OPS_GetIntInput(&num,idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
 
     double thk = 1.0;
     num = 1;
-    if (OPS_GetDoubleInput(num,&thk) < 0) {
+    if (OPS_GetDoubleInput(&num,&thk) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_NineNodeQuad()
 
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(num,&matTag) < 0) {
+    if (OPS_GetIntInput(&num,&matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -97,7 +97,7 @@ void* OPS_NineNodeQuad()
 	num = 4;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(num,data) < 0) {
+	if (OPS_GetDoubleInput(&num,data) < 0) {
 	    opserr<<"WARNING: invalid integer data\n";
 	    return 0;
 	}
@@ -642,7 +642,10 @@ NineNodeQuad::addInertiaLoadToUnbalance(const Vector &accel)
   static double rhoi[nip];
   double sum = 0.0;
   for (i = 0; i < nip; i++) {
-    rhoi[i] = theMaterial[i]->getRho();
+    if (rho == 0)
+      rhoi[i] = theMaterial[i]->getRho();
+    else
+      rhoi[i] = rho;
     sum += rhoi[i];
   }
 
@@ -758,7 +761,10 @@ NineNodeQuad::getResistingForceIncInertia()
 	static double rhoi[nip];
 	double sum = 0.0;
 	for (i = 0; i < nip; i++) {
-	  rhoi[i] = theMaterial[i]->getRho();
+	  if (rho == 0)
+            rhoi[i] = theMaterial[i]->getRho();
+          else
+            rhoi[i] = rho;	 
 	  sum += rhoi[i];
 	}
 

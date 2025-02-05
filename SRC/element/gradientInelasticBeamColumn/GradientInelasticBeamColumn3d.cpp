@@ -78,7 +78,7 @@ void* OPS_GradientInelasticBeamColumn3d()
 	// inputs: 
 	int iData[5];
 	int numData = 5;
-	if (OPS_GetIntInput(numData, &iData[0]) < 0) {
+	if (OPS_GetIntInput(&numData, &iData[0]) < 0) {
 		opserr << "WARNING! gradientInelasticBeamColumn3d - invalid input tags\n";
 		return 0;
 	}
@@ -91,7 +91,7 @@ void* OPS_GradientInelasticBeamColumn3d()
 
 	double lc;
 	numData = 1;
-	if (OPS_GetDoubleInput(numData, &lc) < 0) {
+	if (OPS_GetDoubleInput(&numData, &lc) < 0) {
 		opserr << "WARNING! gradientInelasticBeamColumn2d - invalid double input\n";
 		return 0;
 	}
@@ -113,15 +113,15 @@ void* OPS_GradientInelasticBeamColumn3d()
 			constH = true;
 		else if (strcmp(word, "-iter") == 0) {
 			if (OPS_GetNumRemainingInputArgs() > 2) {
-				if (OPS_GetIntInput(numData, &maxIter) < 0) {
+				if (OPS_GetIntInput(&numData, &maxIter) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn3d - invalid maxIter\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(numData, &minTol) < 0) {
+				if (OPS_GetDoubleInput(&numData, &minTol) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn3d - invalid minTol\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(numData, &maxTol) < 0) {
+				if (OPS_GetDoubleInput(&numData, &maxTol) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn3d - invalid maxTol\n";
 					return 0;
 				}
@@ -135,11 +135,11 @@ void* OPS_GradientInelasticBeamColumn3d()
 			correctionControl = true;
 
 			if (OPS_GetNumRemainingInputArgs() > 1) {
-				if (OPS_GetDoubleInput(numData, &maxEpsInc) < 0) {
+				if (OPS_GetDoubleInput(&numData, &maxEpsInc) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn3d - invalid maxEpsInc\n";
 					return 0;
 				}
-				if (OPS_GetDoubleInput(numData, &maxPhiInc) < 0) {
+				if (OPS_GetDoubleInput(&numData, &maxPhiInc) < 0) {
 					opserr << "WARNING! gradientInelasticBeamColumn3d - invalid maxPhiInc\n";
 					return 0;
 				}
@@ -200,7 +200,7 @@ void* OPS_GradientInelasticBeamColumn3d()
 		return 0;
 	}
 
-	Element* theEle = new GradientInelasticBeamColumn3d(eleTag, nodeTagI, nodeTagJ, numIntegrPoints, &endSection1, &intSection, &endSection2,
+	Element* theEle = new GradientInelasticBeamColumn3d(eleTag, nodeTagI, nodeTagJ, numIntegrPoints, *endSection1, *intSection, *endSection2,
 		lam1, lam2, *beamIntegr, *theTransf, lc, minTol, maxTol, maxIter, constH, correctionControl, maxEpsInc, maxPhiInc);
 
 	return theEle;
@@ -212,7 +212,7 @@ Vector GradientInelasticBeamColumn3d::theVector(12);
 
 // Constructor 1 (for normal processing)
 GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d(int tag, int nodeI, int nodeJ,
-	int numSec, SectionForceDeformation **endSec1, SectionForceDeformation **sec, SectionForceDeformation **endSec2, double R1, double R2,
+	int numSec, SectionForceDeformation &endSec1, SectionForceDeformation &sec, SectionForceDeformation &endSec2, double R1, double R2,
 	BeamIntegration &BI, CrdTransf &CT, double LC,
 	double minTolerance, double maxTolerance, int maxNumIters,
 	bool constH,
@@ -254,22 +254,6 @@ GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d(int tag, int nodeI,
 		exit(-1);
 	}
 
-	// Get Copy of Sections
-	if (!endSec1) {
-		opserr << "ERROR! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - invalid first section pointer\n";
-		exit(-1);
-	}
-
-	if (!sec) {
-		opserr << "ERROR! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - invalid intermediate section pointer\n";
-		exit(-1);
-	}
-
-	if (!endSec2) {
-		opserr << "ERROR! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - invalid last section pointer\n";
-		exit(-1);
-	}
-
 	sections = new SectionForceDeformation *[numSections];
 	if (!sections) {
 		opserr << "WARNING! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - could not allocate section pointers\n";
@@ -281,11 +265,11 @@ GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d(int tag, int nodeI,
 
 	for (int i = 0; i < numSections; i++) {
 		if (secX[i] >= 1.0 - secLR2)
-			sections[i] = endSec2[0]->getCopy();
+			sections[i] = endSec2.getCopy();
 		else if (secX[i] > secLR1)
-			sections[i] = sec[0]->getCopy();
+			sections[i] = sec.getCopy();
 		else
-			sections[i] = endSec1[0]->getCopy();
+			sections[i] = endSec1.getCopy();
 
 		if (!sections[i]) {
 			opserr << "WARNING! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - could not create copy of section " << i + 1 << endln;
@@ -297,10 +281,10 @@ GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d(int tag, int nodeI,
 		delete[] secX;
 
 	// Check Sections Order
-	secOrder = sec[0]->getOrder();
+	secOrder = sec.getOrder();
 
 	if (secOrder < 4) {
-		opserr << "ERROR! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - section order must be larger than 4" << endln;
+		opserr << "ERROR! GradientInelasticBeamColumn3d::GradientInelasticBeamColumn3d() - element: " << this->getTag() << " - section order must be at least 4" << endln;
 		exit(-1);
 	}
 

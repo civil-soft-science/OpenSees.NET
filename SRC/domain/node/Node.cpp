@@ -88,14 +88,14 @@ int OPS_Node()
     // get tag
     int tag = 0;
     int numData = 1;
-    if(OPS_GetIntInput(numData, &tag) < 0) {
+    if(OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr<<"WARNING tag is not integer\n";
 	return -1;
     }
 
     // get crds
     Vector crds(ndm);
-    if(OPS_GetDoubleInput(ndm, &crds(0)) < 0) {
+    if(OPS_GetDoubleInput(&ndm, &crds(0)) < 0) {
 	opserr<<"WARNING noda coord are not double\n";
 	return -1;
     }
@@ -103,6 +103,7 @@ int OPS_Node()
     // check options
     Vector disp,vel,mass,dispLoc;
     Matrix ndmass;
+    double T = 0.0;
     while(OPS_GetNumRemainingInputArgs() > 0) {
 	const char* type = OPS_GetString();
 	
@@ -112,7 +113,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    disp.resize(ndf);
-	    if(OPS_GetDoubleInput(ndf, &disp(0)) < 0) {
+	    if(OPS_GetDoubleInput(&ndf, &disp(0)) < 0) {
 		opserr << "WARNING: failed to read disp\n";
 		return -1;
 	    }
@@ -123,7 +124,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    vel.resize(ndf);
-	    if(OPS_GetDoubleInput(ndf, &vel(0)) < 0) {
+	    if(OPS_GetDoubleInput(&ndf, &vel(0)) < 0) {
 		opserr << "WARNING: failed to read vel\n";
 		return -1;
 	    }
@@ -134,7 +135,7 @@ int OPS_Node()
 		return -1;
 	    }
 	    Vector data(ndf);
-	    if(OPS_GetDoubleInput(ndf, &data(0)) < 0) {
+	    if(OPS_GetDoubleInput(&ndf, &data(0)) < 0) {
 		opserr << "WARNING: failed to read mass\n";
 		return -1;
 	    }
@@ -144,13 +145,24 @@ int OPS_Node()
 		ndmass(i,i) = data(i);
 	    }
 
+  } else if(strcmp(type,"-temp")==0 || strcmp(type,"-Temp")==0) {
+      if(OPS_GetNumRemainingInputArgs() < 1) {
+        opserr<<"incorrect number of nodal temperature\n";
+        return -1;
+	    }
+      int num = 1;
+      if (OPS_GetDoubleInput(&num, &T) < 0) {
+        opserr << "WARNING: failed to read temperature\n";
+        return -1;
+      }
+
 	} else if(strcmp(type,"-dispLoc")==0 || strcmp(type,"-dispLoc")==0) {
 	    if(OPS_GetNumRemainingInputArgs() < ndm) {
 		opserr<<"incorrect number of nodal mass terms\n";
 		return -1;
 	    }
 	    dispLoc.resize(ndm);
-	    if(OPS_GetDoubleInput(ndm, &dispLoc(0)) < 0) {
+	    if(OPS_GetDoubleInput(&ndm, &dispLoc(0)) < 0) {
 		opserr << "WARNING: failed to read dispLoc\n";
 		return -1;
 	    }
@@ -160,8 +172,8 @@ int OPS_Node()
 		opserr<<"incorrect number for ndf\n";
 		return -1;
 	    }
-	    int numdata = 1;
-	    if(OPS_GetIntInput(numdata, &ndf) < 0) {
+	    int numData = 1;
+	    if(OPS_GetIntInput(&numData, &ndf) < 0) {
 		opserr << "WARNING: failed to read ndf\n";
 		return -1;
 	    }
@@ -197,6 +209,7 @@ int OPS_Node()
     if(dispLoc.Size() == ndm) {
 	theNode->setDisplayCrds(dispLoc);
     }
+    theNode->setTemp(T);
     theNode->commitState();
 
     // add node to domain
@@ -218,7 +231,7 @@ Node::Node(int theClassTag)
  incrDeltaDisp(0),
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
  R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0), 
- index(-1), reaction(0), displayLocation(0)
+ index(-1), reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
 	, prevT(0), curT(0), theAccelSeries(0) , theVelocSeries(0) , kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -245,7 +258,7 @@ Node::Node(int tag, int theClassTag)
  incrDeltaDisp(0), 
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
   R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0), 
- index(-1), reaction(0), displayLocation(0)
+ index(-1), reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
     , prevT(0), curT(0), theAccelSeries(0), theVelocSeries(0), kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -271,7 +284,7 @@ Node::Node(int tag, int ndof, double Crd1, Vector *dLoc)
  incrDeltaDisp(0), 
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
  R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0), 
- index(-1), reaction(0), displayLocation(0)
+ index(-1), reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
     , prevT(0), curT(0), theAccelSeries(0), theVelocSeries(0), kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -305,7 +318,7 @@ Node::Node(int tag, int ndof, double Crd1, double Crd2, Vector *dLoc)
  incrDeltaDisp(0), 
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
  R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0),
- reaction(0), displayLocation(0)
+ reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
     , prevT(0), curT(0), theAccelSeries(0), theVelocSeries(0), kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -342,7 +355,7 @@ Node::Node(int tag, int ndof, double Crd1, double Crd2, Vector *dLoc)
  incrDeltaDisp(0), 
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
  R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0),
- reaction(0), displayLocation(0)
+ reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
      , prevT(0), curT(0), theAccelSeries(0), theVelocSeries(0), kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -380,7 +393,7 @@ Node::Node(const Node &otherNode, bool copyMass)
  incrDeltaDisp(0), 
  disp(0), vel(0), accel(0), dbTag1(0), dbTag2(0), dbTag3(0), dbTag4(0),
  R(0), mass(0), unbalLoadWithInertia(0), alphaM(0.0), theEigenvectors(0),
-   reaction(0), displayLocation(0)
+   reaction(0), displayLocation(0), temperature(0)
 #ifdef _CSS
     , prevT(0), curT(0), theAccelSeries(0), theVelocSeries(0), kineticEnergy(0), dampEnergy(0), motionEnergy(0), lastCommitAccel(0), lastCommitVel(0), lastCommitDisp(0), theEleConnects(0), numEleConnects(0)
 #endif // _CSS
@@ -466,6 +479,7 @@ Node::Node(const Node &otherNode, bool copyMass)
   lastCommitDisp = otherNode.lastCommitDisp;
 #endif // _CSS
 
+  temperature = otherNode.temperature;
 
   index = -1;
 }
@@ -1324,7 +1338,7 @@ Node::setR(int row, int col, double Value)
   }
   
   // ensure row, col in range (matrix assignment will catch this - extra work)
-  if (row < 0 || row > numberDOF || col < 0 || col > R->noCols()) {
+  if (row < 0 || row >= numberDOF || col < 0 || col >= R->noCols()) {
     opserr << "Node:setR() - row, col index out of range\n";
     return -1;
   }
@@ -1408,9 +1422,11 @@ Node::setNumEigenvectors(int numVectorsToStore)
       opserr << "Node::setNumEigenvectors() - out of memory\n";
       return -2;
     }
-  } else
+  } else {
+
     // zero the eigenvector matrix
     theEigenvectors->Zero();
+  }
   
     return 0;
 }
@@ -1530,7 +1546,7 @@ Node::sendSelf(int cTag, Channel &theChannel)
     }
     
     if (R != 0) {
-	res = theChannel.sendMatrix(dataTag, cTag, *R);
+	res = theChannel.sendMatrix(dbTag2, cTag, *R);
 	if (res < 0) {
 	  opserr << " Node::sendSelf() - failed to send R data\n";
 	  return res;
@@ -1693,7 +1709,7 @@ Node::recvSelf(int cTag, Channel &theChannel,
 	}
       }
       // now recv the R matrix
-      if (theChannel.recvMatrix(dataTag, cTag, *R) < 0) {
+      if (theChannel.recvMatrix(dbTag2, cTag, *R) < 0) {
 	opserr << "Node::recvSelf() - failed to receive R data\n";
 	return res;
       }
@@ -2210,7 +2226,8 @@ Node::addReactionForce(const Vector &add, double factor){
   else if (factor == -1.0)
     *reaction -= add;
   else
-    *reaction = add * factor;
+    //*reaction = add * factor;
+    reaction->addVector(1.0,add,factor);
 
   return 0;
 }

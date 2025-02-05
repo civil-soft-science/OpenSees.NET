@@ -61,12 +61,12 @@ OPS_LinearCap(void) {
   dData[6] = tol;
 
   int numData = 2;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid nDMaterial LinearCap - problems reading first 2 integers" << endln;
     return 0;
   }
   numData = numArgs - 2;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid nDMaterial LinearCap - problems reading doubles" << endln;
     return 0;
   }

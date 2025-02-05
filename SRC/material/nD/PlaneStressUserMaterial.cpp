@@ -68,8 +68,8 @@ void* OPS_PlaneStressUserMaterial()
 
     // int tag, nstatevs, nprops;
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata,idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData,idata) < 0) {
 	opserr << "WARNING invalid nDMaterial PlaneStressUserMaterial int inputs" << endln;
 	return 0;
     }
@@ -85,7 +85,7 @@ void* OPS_PlaneStressUserMaterial()
     }
     double *props;
     props = new double[nprops];
-    if (OPS_GetDoubleInput(nprops , props) < 0) {
+    if (OPS_GetDoubleInput(&nprops , props) < 0) {
 	opserr << "WARNING invalid prop" << endln;
 	opserr << "PlaneStressUserMaterial: " << tag << endln;
 	return 0;
@@ -495,7 +495,7 @@ PlaneStressUserMaterial::recvSelf(int commitTag, Channel& theChannel, FEM_Object
           return matInfo.setVector(this->getCracking());
 
       default:
-          return -1;
+          return NDMaterial::getResponse(responseID, matInfo);
       }
   }
   //set/getResponse - added by V.K. Papanikolaou [AUTh] - end

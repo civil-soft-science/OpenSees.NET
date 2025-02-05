@@ -28,6 +28,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <string.h>
 #include <ID.h>
 #include <Channel.h>
 #include <Message.h>
@@ -217,8 +218,8 @@ DataFileStream::open(void)
 	return 0;
 }
 
-int
-DataFileStream::close(void)
+int 
+DataFileStream::close(openMode nextOpenMode)
 {
 #if _DLL
 	if (fileOpen == 1) {
@@ -237,6 +238,7 @@ DataFileStream::close(void)
 	if (fileOpen != 0)
 		theFile.close();
 	fileOpen = 0;
+	theOpenMode = nextOpenMode;
 
 	return 0;
 #endif
@@ -1116,26 +1118,28 @@ DataFileStream::setOrder(const ID& orderData)
 					printMapping(2, count) = columnCounter;
 					printMapping(4, count) = printMapping(4, count) + 1;
 
-					colAddCount += 2;
-
-					currentLoc(i) = loc;
-
-					if (loc < maxLoc)
-						currentCount(i) = (*theColumns[i])(loc);
-					else
-						currentCount(i) = -1;
-				}
-			}
-			count++;
-		}
-		/*
-		opserr << "PRINT MAPPING: " << printMapping;
-		opserr << "colADD" << *commonColumns;
-		opserr << "DONE";
-		*/
+	  colAddCount+=2;
+	  
+	  currentLoc(i) = loc;
+	  
+	  if (loc < maxLoc)
+	    currentCount(i) = (*theColumns[i])(loc);		
+	  else
+	    currentCount(i) = -1; 		
 	}
+      }
+      count++;
+    }
+  }
 
-	return 0;
+  return 0;
+}
+
+int DataFileStream::flush() {
+  if (theFile.is_open() && theFile.good()) {
+    theFile.flush();
+  }
+  return 0;
 }
 
 #if _DLL

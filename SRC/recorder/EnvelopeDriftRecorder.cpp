@@ -27,17 +27,32 @@
 //
 // Description: This file contains the class definition for EnvelopeDriftRecorder.
 
-#include <math.h>
-
-#include <EnvelopeDriftRecorder.h>
+#include <BinaryFileStream.h>
+#include <Channel.h>
+#include <DataFileStream.h>
 #include <Domain.h>
-#include <Node.h>
-#include <Vector.h>
+#include <EnvelopeDriftRecorder.h>
+#include <FEM_ObjectBroker.h>
 #include <ID.h>
 #include <Matrix.h>
+#include <Node.h>
+#include <StandardStream.h>
+#include <Vector.h>
+#include <XmlFileStream.h>
+#include <elementAPI.h>
+#include <math.h>
 #include <string.h>
-#include <Channel.h>
-#include <FEM_ObjectBroker.h>
+
+enum outputMode {
+  STANDARD_STREAM,
+  DATA_STREAM,
+  XML_STREAM,
+  DATABASE_STREAM,
+  BINARY_STREAM,
+  DATA_STREAM_CSV,
+  TCP_STREAM,
+  DATA_STREAM_ADD
+};
 
 EnvelopeDriftRecorder::EnvelopeDriftRecorder()
 	 :Recorder(RECORDER_TAGS_EnvelopeDriftRecorder),
@@ -407,23 +422,23 @@ int
 EnvelopeDriftRecorder::recvSelf(int commitTag, Channel& theChannel,
 	 FEM_ObjectBroker& theBroker)
 {
-	 static ID idData(5);
-	 if (theChannel.recvID(0, commitTag, idData) < 0) {
-		  opserr << "EnvelopeDriftRecorder::sendSelf() - failed to send idData\n";
-		  return -1;
-	 }
-
-	 if (idData(0) != 0) {
-		  ndI = new ID(idData(0));
-		  if (ndI == 0) {
-				opserr << "EnvelopeDriftRecorder::sendSelf() - out of memory\n";
-				return -1;
-		  }
-		  if (theChannel.recvID(0, commitTag, *ndI) < 0) {
-				opserr << "EnvelopeDriftRecorder::sendSelf() - failed to recv dof id's\n";
-				return -1;
-		  }
-	 }
+  static ID idData(6); 
+  if (theChannel.recvID(0, commitTag, idData) < 0) {
+    opserr << "EnvelopeDriftRecorder::sendSelf() - failed to send idData\n";
+    return -1;
+  }
+  
+  if (idData(0) != 0) {
+    ndI = new ID(idData(0));
+    if (ndI == 0) {
+      opserr << "EnvelopeDriftRecorder::sendSelf() - out of memory\n";
+      return -1;
+    }
+    if (theChannel.recvID(0, commitTag, *ndI) < 0) {
+      opserr << "EnvelopeDriftRecorder::sendSelf() - failed to recv dof id's\n";
+      return -1;
+    } 
+  }
 
 	 if (idData(1) != 0) {
 
@@ -644,14 +659,20 @@ EnvelopeDriftRecorder::initialize(void)
 //added by SAJalali
 double EnvelopeDriftRecorder::getRecordedValue(int clmnId, int rowOffset, bool reset)
 {
-	 double res = 0;
-	 if (!initializationDone)
-		  return res;
-	 if (clmnId >= data->noCols())
-		  return res;
-	 res = (*data)(2 - rowOffset, clmnId);
-	 if (reset)
-		  first = true;
-	 return res;
+	double res = 0;
+	if (!initializationDone)
+		return res;
+	if (clmnId >= data->noCols())
+		return res;
+	res = (*data)(2 - rowOffset, clmnId);
+	if (reset)
+		first = true;
+	return res;
 }
 
+int EnvelopeDriftRecorder::flush(void) {
+  if (theOutputHandler != 0) {
+    return theOutputHandler->flush();
+  }
+  return 0;
+}

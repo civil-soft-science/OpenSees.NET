@@ -54,16 +54,16 @@ void*  OPS_GimmeMCK(void)
         return 0;
     }
 
-    int numdata = 3;
+    int numData = 3;
     double ddata[3];    
-    if (OPS_GetDouble(numdata, ddata) != 0) {
+    if (OPS_GetDouble(&numData, ddata) != 0) {
         opserr << "WARNING - invalid args want GimmeMCK $m $c $k <$ki>\n";
         return 0;
     }
-    numdata = 1;
+    numData = 1;
     double ki = 0.0;
     if (argc > 3) {
-      if (OPS_GetDouble(numdata, &ki) != 0) {
+      if (OPS_GetDouble(&numData, &ki) != 0) {
         opserr << "WARNING - invalid args want GimmeMCK $m $c $k <$ki>\n";
         return 0;
       }
@@ -180,6 +180,13 @@ int GimmeMCK::revertToLastStep()
     }
     
     return 0;
+}
+
+int GimmeMCK::revertToStart()
+{
+  // Really shouldn't do anything here
+    
+    return 0;  
 }
 
 

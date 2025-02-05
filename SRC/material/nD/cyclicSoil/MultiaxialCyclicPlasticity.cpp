@@ -102,27 +102,27 @@ int MultiaxialCyclicPlasticity::IncrFormulationFlag=1;
 
 void* OPS_MultiaxialCyclicPlasticity()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 10) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 10) {
 	opserr << "WARNING: Insufficient arguments\n";
 	opserr << "Want: nDMaterial MultiaxialCyclicPlasticity tag? rho? K? G? Su? Ho? h? m? beta? KCoeff? <eta?>" << endln;
 	return 0;
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid MultiaxialCyclicPlasticity tag\n";
 	return 0;
     }
 
     double data[10];
     data[9] = 0.0;
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 10) {
-	numdata = 10;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 10) {
+	numData = 10;
     }
-    if (OPS_GetDoubleInput(numdata,data)) {
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING invalid MultiaxialCyclicPlasticity double inputs\n";
 	return 0;
     }

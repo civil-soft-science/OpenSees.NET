@@ -46,8 +46,8 @@
 
 void* OPS_Concrete04()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 5) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 5) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial Concrete04 tag? fpc? epsc0? epscu? Ec0?";
 	opserr << " <ft? etu? <beta?> >\n";
@@ -57,35 +57,35 @@ void* OPS_Concrete04()
     int type = 1;
 
     int tag;
-    numdata = 1;
-    if(OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if(OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[4];
-    numdata = 4;
-    if(OPS_GetDoubleInput(numdata,data) < 0) {
+    numData = 4;
+    if(OPS_GetDoubleInput(&numData,data) < 0) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
 
-    numdata = OPS_GetNumRemainingInputArgs();
+    numData = OPS_GetNumRemainingInputArgs();
     double data2[2];
-    if (numdata > 1) {
-	numdata = 2;
-	if (OPS_GetDoubleInput(numdata,data2)<0) {
+    if (numData > 1) {
+	numData = 2;
+	if (OPS_GetDoubleInput(&numData,data2)<0) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}
 	type = 2;
     }
 
-    numdata = OPS_GetNumRemainingInputArgs();
+    numData = OPS_GetNumRemainingInputArgs();
     double beta;
-    if (numdata > 0) {
-	numdata = 1;
-	if (OPS_GetDoubleInput(numdata,&beta)) {
+    if (numData > 0) {
+	numData = 1;
+	if (OPS_GetDoubleInput(&numData,&beta)) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}

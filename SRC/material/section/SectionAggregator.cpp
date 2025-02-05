@@ -56,27 +56,55 @@ void* OPS_SectionAggregator()
 	opserr << "Want: section Aggregator tag? uniTag1? code1? ... <-section secTag?>" << endln;
 	return 0;
     }
-	    
+
     int tag;
     int secTag;
     SectionForceDeformation *theSec = 0;
 
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid Aggregator tag" << endln;
 	return 0;
     }
 
+    int numArgs = OPS_GetNumRemainingInputArgs();
+    int numOptionalArgs = 0;
+    while (OPS_GetNumRemainingInputArgs() > 0) {
+      std::string arg = OPS_GetString();
+      if (arg == "-section") {
+	numOptionalArgs++;
+	if (OPS_GetNumRemainingInputArgs() > 0) {
+	  if (OPS_GetIntInput(&numData, &secTag) < 0) {
+	    opserr << "WARNING SectionAggregator: failed to get section tag";
+	    return 0;
+	  }
+	  numOptionalArgs++;
+
+	  theSec = OPS_getSectionForceDeformation(secTag);
+	  if (theSec == 0) {
+	    opserr << "WARNING section does not exist\n";
+	    opserr << "section: " << secTag; 
+	    opserr << "\nsection Aggregator: " << tag << endln;
+	    return 0;
+	  }
+	}	
+      }
+    }
+
+    OPS_ResetCurrentInputArg(-numArgs);    
+    numArgs = numArgs - numOptionalArgs;
+
     // uni mat tags and section dofs
     std::vector<UniaxialMaterial*> theMats;
     ID codes(0, 10);
-    while (OPS_GetNumRemainingInputArgs() > 1) {
+    while (numArgs > 1) {
 	int matTag;
-	if (OPS_GetIntInput(numdata, &matTag) < 0) {
-	    OPS_ResetCurrentInputArg(-1);
-	    break;
+	if (OPS_GetIntInput(&numData, &matTag) < 0) {
+	  opserr << "ERROR SectionAggregator - could not read matTag input" << endln;
+	  return 0;
 	}
-
+	numArgs--;
+	
 	UniaxialMaterial* mat = OPS_getUniaxialMaterial(matTag);
 	    
 	if (mat == 0) {
@@ -89,6 +117,8 @@ void* OPS_SectionAggregator()
 	theMats.push_back(mat);
 	
 	const char* type = OPS_GetString();
+	numArgs--;
+
 	int code = 0;
 	if (strcmp(type,"Mz") == 0) 
 	    code = SECTION_RESPONSE_MZ;
@@ -116,24 +146,6 @@ void* OPS_SectionAggregator()
       return 0;
     }
 
-    // section
-    if (OPS_GetNumRemainingInputArgs() > 1) {
-	const char* flag = OPS_GetString();
-	if (strcmp(flag, "-section") == 0) {
-	    if (OPS_GetIntInput(numdata, &secTag) < 0) {
-		opserr << "WARNING invalid Aggregator section tag" << endln;
-		return 0;
-	    }
-	    theSec = OPS_getSectionForceDeformation(secTag);
-	    if (theSec == 0) {
-		opserr << "WARNING section does not exist\n";
-		opserr << "section: " << secTag; 
-		opserr << "\nsection Aggregator: " << tag << endln;
-		return 0;
-	    }
-	}
-    }
-
     if (theSec) {
 	return new SectionAggregator (tag, *theSec, nMats, &theMats[0], codes);
     } else {
@@ -145,16 +157,16 @@ void* OPS_SectionAggregator()
 
 void* OPS_UniaxialSection()
 {
-  int numdata = OPS_GetNumRemainingInputArgs();
-  if (numdata < 3) {
+  int numData = OPS_GetNumRemainingInputArgs();
+  if (numData < 3) {
     opserr << "WARNING insufficient arguments\n";
     opserr << "Want: section Uniaxial tag? 1DTag? code?" << endln;
     return 0;
   }
   
   int data[2];
-  numdata = 2;
-  if (OPS_GetIntInput(numdata, data) < 0) {
+  numData = 2;
+  if (OPS_GetIntInput(&numData, data) < 0) {
     opserr << "WARNING invalid integer" << endln;
     return 0;
   }
@@ -974,14 +986,38 @@ SectionAggregator::setResponse(const char **argv, int argc, OPS_Stream &output)
 #endif // _CSS
   if (argc > 2 && (strcmp(argv[0], "addition") == 0) || (strcmp(argv[0], "material") == 0)) {
 
-    // Get the tag of the material
-    int materialTag = atoi(argv[1]);
-    
-    // Loop to find the right material
-    int ok = 0;
-    for (int i = 0; i < numMats; i++)
-      if (materialTag == theAdditions[i]->getTag())
-	return theAdditions[i]->setResponse(&argv[2], argc-2, output);
+    int sectionCode = SECTION_RESPONSE_NONE;
+    if (strcmp(argv[1],"Mz") == 0)
+      sectionCode = SECTION_RESPONSE_MZ;
+    if (strcmp(argv[1],"My") == 0)
+      sectionCode = SECTION_RESPONSE_MY;
+    if (strcmp(argv[1],"Vy") == 0)
+      sectionCode = SECTION_RESPONSE_VY;
+    if (strcmp(argv[1],"Vz") == 0)
+      sectionCode = SECTION_RESPONSE_VZ;                
+    if (strcmp(argv[1],"P") == 0)
+      sectionCode = SECTION_RESPONSE_P;
+    if (strcmp(argv[1],"T") == 0)
+      sectionCode = SECTION_RESPONSE_T;    
+    // Can add the warping and shell response too (would also need to
+    // add them in OPS_SectionAggregator)
+
+    if (sectionCode != SECTION_RESPONSE_NONE) {
+      int sectionOrder = (theSection == 0) ? 0 : theSection->getOrder();
+      for (int i = 0; i < numMats; i++)
+	if (sectionCode == (*theCode)(sectionOrder + i))
+	  return theAdditions[i]->setResponse(&argv[2], argc-2, output);
+    }
+    else {
+      // Get the tag of the material
+      int materialTag = atoi(argv[1]);
+      
+      // Loop to find the right material
+      int ok = 0;
+      for (int i = 0; i < numMats; i++)
+	if (materialTag == theAdditions[i]->getTag())
+	  return theAdditions[i]->setResponse(&argv[2], argc-2, output);
+    }
   }
 
   // For backward compatibility
@@ -1049,7 +1085,9 @@ SectionAggregator::Print(OPS_Stream &s, int flag)
     }
     
     if (flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
-        theSection->Print(s, flag);
+        if (theSection) {
+            theSection->Print(s, flag);
+        }
     }
     
     if (flag == OPS_PRINT_PRINTMODEL_JSON) {

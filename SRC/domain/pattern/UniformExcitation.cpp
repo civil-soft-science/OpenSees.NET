@@ -54,14 +54,14 @@ void* OPS_UniformExcitationPattern()
     }
     
     int patternID;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &patternID) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &patternID) < 0) {
 	opserr << "WARNING invalid patternID\n";
 	return 0;
     }
     
     int dir;
-    if (OPS_GetIntInput(numdata, &dir) < 0) {
+    if (OPS_GetIntInput(&numData, &dir) < 0) {
 	opserr << "WARNING invalid dir \n";
 	return 0;
     }
@@ -82,7 +82,7 @@ void* OPS_UniformExcitationPattern()
       
 	if ((strcmp(flag,"-vel0") == 0) || (strcmp(flag,"-initialVel") == 0)) {
 	
-	    if (OPS_GetDoubleInput(numdata, &vel0) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &vel0) < 0) {
 		opserr << "WARNING invalid vel0: pattern type UniformExciation\n";
 		return 0;
 	    }
@@ -90,7 +90,7 @@ void* OPS_UniformExcitationPattern()
       
 	else if ((strcmp(flag,"-fact") == 0) || (strcmp(flag,"-factor") == 0)) {
 	
-	    if (OPS_GetDoubleInput(numdata, &fact) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &fact) < 0) {
 		opserr << "WARNING invalid fact: pattern type UniformExciation\n";
 		return 0;
 	    }
@@ -100,7 +100,7 @@ void* OPS_UniformExcitationPattern()
 	else if ((strcmp(flag,"-accel") == 0) || (strcmp(flag,"-acceleration") == 0)) {
 
 	    int tsTag;
-	    if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	    if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 		opserr << "WARING invalid accel series tag\n";
 		return 0;
 	    }
@@ -116,7 +116,7 @@ void* OPS_UniformExcitationPattern()
 	} else if ((strcmp(flag,"-vel") == 0) || (strcmp(flag,"-velocity") == 0)) {
 
 	    int tsTag;
-	    if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	    if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 		opserr << "WARING invalid vel series tag\n";
 		return 0;
 	    }
@@ -131,7 +131,7 @@ void* OPS_UniformExcitationPattern()
 	} else if ((strcmp(flag,"-disp") == 0) || (strcmp(flag,"-displacement") == 0)) {
 
 	    int tsTag;
-	    if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	    if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 		opserr << "WARING invalid disp series tag\n";
 		return 0;
 	    }
@@ -307,7 +307,9 @@ UniformExcitation::applyLoad(double time)
         int ndm = crds.Size();
         
         if (ndm == 1) {
-            theNode->setR(theDof, 0, fact);
+	    if (theDof < 1) {
+                theNode->setR(theDof, 0, fact);
+	    }
         }
         else if (ndm == 2) {
             if (theDof < 2) {

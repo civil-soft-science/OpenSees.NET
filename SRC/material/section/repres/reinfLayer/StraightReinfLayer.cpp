@@ -45,12 +45,12 @@ void* OPS_StraightReinfLayer()
     // get idata
     int numData = 2;
     int idata[2];
-    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
 
     // get data
     double data[5];
     numData = 5;
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
     static Vector pos1(2), pos2(2);
     pos1(0) = data[1];
     pos1(1) = data[2];
@@ -209,12 +209,20 @@ StraightReinfLayer::getCopy (void) const
 
 void StraightReinfLayer::Print(OPS_Stream &s, int flag) const
 {
+	if (flag == OPS_PRINT_PRINTMODEL_SECTION || flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
    s << "\nReinforcing Layer type:  Straight";
    s << "\nMaterial ID: " << matID;
    s << "\nReinf. bar diameter: " << barDiam;
    s << "\nReinf. bar area: " << area;
    s << "\nInitial Position: " << initPosit;
    s << "\nFinal Position: " << finalPosit;
+}
+if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+	 s << "\t\t\t\t{\"type\": \"layerStraight\", \"material\": "<<matID<<", \"area\": "<<area << ", \"nReinfBars\": " << nReinfBars <<", ";
+	 s << "\"start\": ["<<initPosit(0)<<","<<initPosit(1)<<"], ";
+	 s << "\"end\": ["<<finalPosit(0)<<","<<finalPosit(1)<<"]";
+	 s <<"}";
+}   
 }
 
 

@@ -59,8 +59,8 @@ OPS_SteelDRC()
 	UniaxialMaterial *theMaterial = 0;
 
 	// Extract number of input parameters
-	int numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata < 6) {
+	int numData = OPS_GetNumRemainingInputArgs();
+	if (numData < 6) {
 		opserr << "WARNING insufficient arguments\n";
 		opserr << "uniaxialMaterial SteelDRC ";
 		opserr << "tag? Es? fy? eu? fu? esh?";
@@ -68,14 +68,14 @@ OPS_SteelDRC()
 		return 0;
 	}
 	int tag;
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &tag) < 0) {
 		opserr << "WARNING invalid tag\n";
 		return 0;
 	}
 	double data[5];
-	numdata = 5;
-	if (OPS_GetDoubleInput(numdata, data) < 0) {
+	numData = 5;
+	if (OPS_GetDoubleInput(&numData, data) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	}
@@ -91,57 +91,57 @@ OPS_SteelDRC()
 	while (OPS_GetNumRemainingInputArgs() > 0) {
 		const char * type = OPS_GetString();
 		if (strcmp(type, "-Psh") == 0 || strcmp(type, "-psh") == 0 || strcmp(type, "-PSh") == 0 || strcmp(type, "-PSH") == 0) {
-			numdata = 1;
-			if (OPS_GetDoubleInput(numdata, &Psh) < 0) {
+			numData = 1;
+			if (OPS_GetDoubleInput(&numData, &Psh) < 0) {
 				opserr << "WARNING invalid double data for -Psh\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-shPoint") == 0 || strcmp(type, "-SHpoint") == 0 || strcmp(type, "-shpoint") == 0) {
-			numdata = 2;
-			if (OPS_GetDoubleInput(numdata, temp) < 0) {
+			numData = 2;
+			if (OPS_GetDoubleInput(&numData, temp) < 0) {
 				opserr << "WARNING invalid double input for -shPoint\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-omegaFactor") == 0 || strcmp(type,"-omegaFac") == 0 || strcmp(type, "-OmegaFactor") == 0 || strcmp(type, "-omegafactor") == 0 || strcmp(type, "-OmegaFac") == 0 || strcmp(type, "-omegafac") == 0) {
-			numdata = 1;
-			if (OPS_GetDoubleInput(numdata, &omegaFac) < 0) {
+			numData = 1;
+			if (OPS_GetDoubleInput(&numData, &omegaFac) < 0) {
 				opserr << "WARNING invalid double data for -omegaFactor\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-fractStrain") == 0 || strcmp(type, "-FractStrain") == 0 || strcmp(type, "-fractstrain") == 0) {
-			numdata = 1;
-			if (OPS_GetDoubleInput(numdata, &efract) < 0) {
+			numData = 1;
+			if (OPS_GetDoubleInput(&numData, &efract) < 0) {
 				opserr << "WARNING invalid double data for -fractStrain\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-bausch") == 0 || strcmp(type, "-Bausch") == 0) {
-			numdata = 1;
-			if (OPS_GetIntInput(numdata, &bauschType) < 0) {
+			numData = 1;
+			if (OPS_GetIntInput(&numData, &bauschType) < 0) {
 				opserr << "WARNING invalid int data for -bausch\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-stiffOutput")== 0 || strcmp(type, "-StiffOutput") == 0 || strcmp(type, "-stiffoutput") == 0) {
-			numdata = 1;
-			if (OPS_GetIntInput(numdata, &stiffopt) < 0) {
+			numData = 1;
+			if (OPS_GetIntInput(&numData, &stiffopt) < 0) {
 				opserr << "WARNING invalid int data for -stiffOutput\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-viscousDamper") == 0 || strcmp(type, "-ViscousDamper") == 0 || strcmp(type, "-viscousdamper") == 0) {
-			numdata = 2;
-			if (OPS_GetDoubleInput(numdata, temp1) < 0) {
+			numData = 2;
+			if (OPS_GetDoubleInput(&numData, temp1) < 0) {
 				opserr << "WARNING invalid double data for -ViscousDamper\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-Dfu") == 0 || strcmp(type, "-dfu") == 0 || strcmp(type, "-DFu") == 0) {
-			numdata = 1;
-			if (OPS_GetDoubleInput(numdata, &Dfu) < 0) {
+			numData = 1;
+			if (OPS_GetDoubleInput(&numData, &Dfu) < 0) {
 				opserr << "WARNING invalid double data for -Dfu\n";
 				return 0;
 			}
@@ -175,8 +175,12 @@ OPS_SteelDRC()
 // Material Constructors and destructor
 // Simplest class constructor, used to generate copy of the object
 SteelDRC::SteelDRC(int tag)
-	:UniaxialMaterial(tag, MAT_TAG_SteelDRC) {
+	:UniaxialMaterial(tag, MAT_TAG_SteelDRC)
+{
+	// To initialize variables
+	this->revertToStart();
 }
+
 // Constructor for the case when all the model parameters are given and strain hardening is defined from (esh1, fsh1)
 SteelDRC::SteelDRC(int tag, double Es, double fy, double eu, double fu, double esh,
 	double esh1, double fsh1, double eft, double omegaFac, int bauschType,
@@ -669,7 +673,7 @@ SteelDRC::sendSelf(int cTag, Channel &theChannel)
 {
 	int res = 0;
 	int index = 0;
-	static Vector data(70);
+	static Vector data(85);
 	
 	data(index++) = this->getTag();
 	data(index++) = Teps;
@@ -771,7 +775,7 @@ SteelDRC::recvSelf(int cTag, Channel &theChannel,
 FEM_ObjectBroker &theBroker)
 {
 	int res = 0;
-	static Vector data(70);
+	static Vector data(85);
 	res = theChannel.recvVector(this->getDbTag(), cTag, data);
 	if (res < 0)
 		opserr << "SteelDRC::recvSelf() - failed to recv data\n";

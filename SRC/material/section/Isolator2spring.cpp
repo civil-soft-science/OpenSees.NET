@@ -49,16 +49,16 @@ void* OPS_Isolator2spring()
     }    
 	  
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid Iso2spring tag" << endln;
 	return 0;
     }
 
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 8) numdata = 8;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 8) numData = 8;
     double data[8] = {0,0,0,0,0,0,0,0};
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "section Iso2spring: " << tag << endln;
 	return 0;
@@ -100,13 +100,14 @@ Isolator2spring::Isolator2spring
 
 Isolator2spring::Isolator2spring():
  SectionForceDeformation(0, SEC_TAG_Isolator2spring),
- tol(1.0e-12), k1(0.0), Fyo(0.0), kbo(0.0), kvo(0.0), h(0.0), Pe(0.0), po(0.0)
+ tol(1.0e-12), k1(0.0), Fyo(0.0), kbo(0.0), kvo(0.0), h(0.0), Pe(0.0), po(0.0),
+ x0(5), ks(3,3)
 {
 
         this->revertToStart();
 
-	pcr = sqrt(Pe*kbo*h);
-	H = k1*kbo/(k1 - kbo);
+	//pcr = sqrt(Pe*kbo*h);
+	//H = k1*kbo/(k1 - kbo);
 
 	code(0) = SECTION_RESPONSE_P;
 	code(1) = SECTION_RESPONSE_VY;

@@ -27,18 +27,23 @@
 //
 // Description: This file contains the class definition for DriftRecorder.
 
-#include <math.h>
-
-#include <DriftRecorder.h>
+#include <BinaryFileStream.h>
+#include <Channel.h>
+#include <DataFileStream.h>
 #include <Domain.h>
-#include <Node.h>
-#include <Vector.h>
+#include <DriftRecorder.h>
+#include <FEM_ObjectBroker.h>
 #include <ID.h>
 #include <Matrix.h>
+#include <Node.h>
+#include <StandardStream.h>
+#include <Vector.h>
+#include <XmlFileStream.h>
+#include <elementAPI.h>
+#include <math.h>
 #include <string.h>
-#include <Channel.h>
-#include <FEM_ObjectBroker.h>
 
+enum outputMode  {STANDARD_STREAM, DATA_STREAM, XML_STREAM, DATABASE_STREAM, BINARY_STREAM, DATA_STREAM_CSV, TCP_STREAM, DATA_STREAM_ADD};
 
 DriftRecorder::DriftRecorder()
 	 :Recorder(RECORDER_TAGS_DriftRecorder),
@@ -578,4 +583,11 @@ double DriftRecorder::getRecordedValue(int clmnId, int rowOffset, bool reset)
 		  return res;
 	 res = (*data)(clmnId);
 	 return res;
+}
+
+int DriftRecorder::flush(void) {
+  if (theOutputHandler != 0) {
+    return theOutputHandler->flush();
+  }
+  return 0;
 }

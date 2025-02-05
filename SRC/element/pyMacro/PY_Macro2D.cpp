@@ -41,7 +41,7 @@ OPS_PY_Macro2D(void)
   int numData;
 
   numData = 3;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data for PY_Macro2D\n";
     return 0;
   }
@@ -49,13 +49,13 @@ OPS_PY_Macro2D(void)
   int eleTag = iData[0];
 
   numData = 13;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING error reading element data for PY_Macro2D element with tag: " << eleTag << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[3]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
     opserr << "WARNING invalid element data for PY_Macro2D\n";
     return 0;
   }

@@ -42,14 +42,10 @@
 
 #include <Element.h>
 #include <Matrix.h>
+class Damping;
 
 // Tolerance for zero length of element
 #define	LENTOL 1.0e-6
-
-// Type of dimension of element NxDy has dimension x=1,2,3 and
-// y=2,4,6,12 degrees-of-freedom for the element
-enum Etype { D1N2, D2N4, D2N6, D3N6, D3N12 };
-
 
 class Node;
 class Channel;
@@ -89,7 +85,8 @@ class ZeroLength : public Element
 	     int n1dMat,
 	     UniaxialMaterial** theMaterial,  
 	     const ID& direction,
-	     int doRaylieghDamping = 0);
+	     int doRaylieghDamping = 0,
+	     Damping *theDamping = 0);
 
   // Constructor for a multiple 1d material models
   ZeroLength(int tag, 			      
@@ -115,6 +112,7 @@ class ZeroLength : public Element
 
     int getNumDOF(void);	
     void setDomain(Domain *theDomain);
+    int setDamping(Domain *theDomain, Damping *theDamping);
 
     // public methods to set the state of the element    
     int commitState(void);
@@ -133,6 +131,7 @@ class ZeroLength : public Element
     int addInertiaLoadToUnbalance(const Vector &accel);    
 
     const Vector &getResistingForce(void);
+    const Vector &getDampingForce(void);
     const Vector &getResistingForceIncInertia(void);            
 
     // public methods for element output
@@ -163,7 +162,10 @@ class ZeroLength : public Element
   protected:
 
   private:
-    Etype elemType;
+  // Type of dimension of element NxDy has dimension x=1,2,3 and
+  // y=2,4,6,12 degrees-of-freedom for the element
+  enum Etype { D1N2, D2N4, D2N6, D3N6, D3N12 };
+  Etype elemType;
 
     // private methods
     void   setUp ( int Nd1, int Nd2, const Vector& x, const Vector& y);
@@ -205,6 +207,9 @@ class ZeroLength : public Element
     static Vector ZeroLengthV12;  // class wide Vector for size 12
 
     int mInitialize;  // tag to fix bug in recvSelf/setDomain when using database command
+
+    Damping *theDamping;
+    Vector *fd;
 };
 
 #endif

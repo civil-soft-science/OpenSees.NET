@@ -59,8 +59,8 @@ void* OPS_Broyden()
 	    formTangent = INITIAL_TANGENT;
 	    
 	} else if (strcmp(flag,"-count") == 0 && OPS_GetNumRemainingInputArgs()>0) {
-	    int numdata = 1;
-	    if (OPS_GetIntInput(numdata, &count) < 0) {
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &count) < 0) {
 		opserr << "WARNING Broyden failed to read count\n";
 		return 0;
 	    }

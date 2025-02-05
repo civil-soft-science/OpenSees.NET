@@ -64,7 +64,7 @@ void* OPS_UniaxialFiber2d()
     // get data
     int numData = 3;
     double data[3];
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) {
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) {
 	opserr<<"WARNING failed to read double\n";
 	return 0;
     }
@@ -72,7 +72,7 @@ void* OPS_UniaxialFiber2d()
     // get mat tag
     int tag;
     numData = 1;
-    if(OPS_GetIntInput(numData,&tag) < 0) {
+    if(OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr<<"WARNING failed to read int\n";
 	return 0;
     }
@@ -348,10 +348,16 @@ UniaxialFiber2d::recvSelf(int commitTag, Channel &theChannel, FEM_ObjectBroker &
 
 void UniaxialFiber2d::Print(OPS_Stream &s, int flag)
 {
+	if (flag == OPS_PRINT_PRINTMODEL_SECTION || flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
   s << "\nUniaxialFiber2d, tag: " << this->getTag() << endln;
   s << "\tArea: " << area << endln; 
   s << "\tMatrix as: " << 1.0 << " " << y << endln; 
   s << "\tMaterial, tag: " << theMaterial->getTag() << endln;
+  }
+if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+	 s << "\t\t\t\t{\"type\": \"fiber\", \"material\": "<<theMaterial->getTag()<<", ";
+	 s << "\"area\": "<<area<<", \"coord\": [" << y << ", 0.0]}";
+}
 }
 
 Response*

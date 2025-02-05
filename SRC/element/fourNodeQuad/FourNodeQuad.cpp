@@ -47,6 +47,8 @@
 
 void* OPS_FourNodeQuad()
 {
+    int dampingTag = 0;
+    Damping* theDamping = 0;
 #ifndef _CSS
     int ndm = OPS_GetNDM();
     int ndf = OPS_GetNDF();
@@ -73,14 +75,14 @@ void* OPS_FourNodeQuad()
     // FourNodeQuadId, iNode, jNode, kNode, lNode
     int idata[5];
     int num = 5;
-    if (OPS_GetIntInput(num,idata) < 0) {
+    if (OPS_GetIntInput(&num,idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
 
     double thk = 1.0;
     num = 1;
-    if (OPS_GetDoubleInput(num,&thk) < 0) {
+    if (OPS_GetDoubleInput(&num,&thk) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -89,7 +91,7 @@ void* OPS_FourNodeQuad()
 
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(num,&matTag) < 0) {
+    if (OPS_GetIntInput(&num,&matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -109,16 +111,182 @@ void* OPS_FourNodeQuad()
 	num = 4;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(num,data) < 0) {
+	if (OPS_GetDoubleInput(&num,data) < 0) {
 	    opserr<<"WARNING: invalid integer data\n";
 	    return 0;
 	}	
     }
 
-    return new FourNodeQuad(idata[0],idata[1],idata[2],idata[3],idata[4],
-			                *mat,type,thk,data[0],data[1],data[2],data[3]);
+    //option,written by Tang.S
+    int numData = 1;
+    while (OPS_GetNumRemainingInputArgs() > 0) {
+        std::string theType = OPS_GetString();
+        if (theType == "-damp") {
+
+            if (OPS_GetNumRemainingInputArgs() > 0) {
+                if (OPS_GetIntInput(&numData, &dampingTag) < 0) return 0;
+                theDamping = OPS_getDamping(dampingTag);
+                if (theDamping == 0) {
+                    opserr << "damping not found\n";
+                    return 0;
+                }
+            }
+        }
+    }
+    //Add theDamping at the end,Tang.S
+    return new FourNodeQuad(idata[0], idata[1], idata[2], idata[3], idata[4],
+        *mat, type, thk, data[0], data[1], data[2], data[3], theDamping);
 }
 
+void *OPS_FourNodeQuad(const ID &info) {
+    if (info.Size() == 0) {
+        opserr << "WARNING: info is empty -- FourNodeQuad\n";
+        return 0;
+    }
+
+    int dampingTag = 0;
+    Damping* theDamping = 0;
+
+    int ndm = OPS_GetNDM();
+    int ndf = OPS_GetNDF();
+
+    // mesh data
+    static std::map<int, Vector> meshdata;
+
+    // save data
+    if (info(0) == 1) {
+        // check input
+        if (info.Size() < 2) {
+            opserr << "WARNING: need info -- inmesh, meshtag\n";
+            return 0;
+        }
+        if (OPS_GetNumRemainingInputArgs() < 3) {
+            opserr << "WARNING: insuficient arguments -- thk? type? "
+                      "matTag? <pressure? rho? "
+                      "b1? b2?>\n";
+            return 0;
+        }
+        if (ndm != 2 || ndf != 2) {
+            opserr
+                << "WARNING -- model dimensions and/or nodal DOF not "
+                   "compatible with quad element\n";
+            return 0;
+        }
+
+        // save data
+        Vector &mdata = meshdata[info(1)];
+        mdata.resize(7);
+        mdata.Zero();
+
+        // get thk
+        double thk = 1.0;
+        int num = 1;
+        if (OPS_GetDoubleInput(&num, &thk) < 0) {
+            opserr << "WARNING: failed to get thk -- FourNodeQuad\n";
+            return 0;
+        }
+        mdata(0) = thk;
+
+        // get type
+        const char *type = OPS_GetString();
+        if (strcmp(type, "PlaneStrain") == 0 ||
+            strcmp(type, "PlaneStrain2D") == 0) {
+            mdata(1) = 1;
+        } else if (strcmp(type, "PlaneStress") == 0 ||
+                   strcmp(type, "PlaneStress2D") == 0) {
+            mdata(1) = 2;
+        }
+
+        // get matTag
+        int matTag;
+        num = 1;
+        if (OPS_GetIntInput(&num, &matTag) < 0) {
+            opserr << "WARNING: invalid matTag\n";
+            return 0;
+        }
+        mdata(2) = matTag;
+
+        // optional
+        // p, rho, b1, b2
+        double data[4] = {0, 0, 0, 0};
+        num = OPS_GetNumRemainingInputArgs();
+        if (num > 4) {
+            num = 4;
+        }
+        if (num > 0) {
+            if (OPS_GetDoubleInput(&num, data) < 0) {
+                opserr << "WARNING: invalid integer data\n";
+                return 0;
+            }
+        }
+        for (int i = 0; i < 4; ++i) {
+            mdata(3 + i) = data[i];
+        }
+
+        return &meshdata;
+    }
+
+    // load data
+    if (info(0) == 2) {
+        if (info.Size() < 7) {
+            opserr << "WARNING: need info -- inmesh, meshtag, "
+                      "eleTag, nd1, nd2, nd3, nd4\n";
+            return 0;
+        }
+
+        int eleTag = info(2);
+
+        // get data
+        Vector &mdata = meshdata[info(1)];
+        if (mdata.Size() < 7) {
+            return 0;
+        }
+
+        double thk = mdata(0);
+        const char *type = "PlaneStrain";
+        if (mdata(1) == 1) {
+            type = "PlaneStrain";
+        } else {
+            type = "PlaneStress";
+        }
+        int matTag = (int)mdata(2);
+        double pressure = mdata(3);
+        double rho = mdata(4);
+        double b1 = mdata(5);
+        double b2 = mdata(6);
+
+        NDMaterial *mat = OPS_getNDMaterial(matTag);
+        if (mat == 0) {
+            opserr << "WARNING material not found\n";
+            opserr << "Material: " << matTag;
+            opserr << "\nFourNodeQuad element: " << eleTag << endln;
+            return 0;
+        }
+
+        //option,written by Tang.S
+        int numData = 1;
+        while (OPS_GetNumRemainingInputArgs() > 0) {
+            std::string theType = OPS_GetString();
+            if (theType == "-damp") {
+
+                if (OPS_GetNumRemainingInputArgs() > 0) {
+                    if (OPS_GetIntInput(&numData, &dampingTag) < 0) return 0;
+                    theDamping = OPS_getDamping(dampingTag);
+                    if (theDamping == 0) {
+                        opserr << "damping not found\n";
+                        return 0;
+                    }
+                }
+            }
+        }
+        //Add theDamping at the end,Tang.S
+        return new FourNodeQuad(eleTag, info(3), info(4), info(5),
+                                info(6), *mat, type, thk, pressure,
+                                rho, b1, b2, theDamping);
+    }
+
+    return 0;
+}
 
 double FourNodeQuad::matrixData[64];
 Matrix FourNodeQuad::K(matrixData, 8, 8);
@@ -129,7 +297,8 @@ double FourNodeQuad::wts[4];
 
 FourNodeQuad::FourNodeQuad(int tag, int nd1, int nd2, int nd3, int nd4,
 			   NDMaterial &m, const char *type, double t,
-			   double p, double r, double b1, double b2)
+			   double p, double r, double b1, double b2,
+         Damping *damping)
 :Element (tag, ELE_TAG_FourNodeQuad), 
   theMaterial(0), connectedExternalNodes(4), 
  Q(8), pressureLoad(8), thickness(t), applyLoad(0), pressure(p), rho(r), Ki(0)
@@ -179,6 +348,23 @@ FourNodeQuad::FourNodeQuad(int tag, int nd1, int nd2, int nd3, int nd4,
       }
     }
 
+    if (damping)
+    {
+      for (i = 0; i < 4; i++)
+      {
+        theDamping[i] =(*damping).getCopy();
+      
+        if (!theDamping[i]) {
+          opserr << "FourNodeQuad::FourNodeQuad -- failed to get copy of damping\n";
+          exit(-1);
+        }
+      }
+    }
+    else
+    {
+      for (i = 0; i < 4; i++) theDamping[i] = 0;
+    }
+
     // Set connected external node IDs
     connectedExternalNodes(0) = nd1;
     connectedExternalNodes(1) = nd2;
@@ -210,6 +396,9 @@ FourNodeQuad::FourNodeQuad()
 
     for (int i=0; i<4; i++)
       theNodes[i] = 0;
+
+  for (int i = 0 ;  i < 4; i++ ) 
+    theDamping[i] = 0;
 }
 
 FourNodeQuad::~FourNodeQuad()
@@ -222,6 +411,15 @@ FourNodeQuad::~FourNodeQuad()
   // Delete the array of pointers to NDMaterial pointer arrays
   if (theMaterial)
     delete [] theMaterial;
+
+  for (int i = 0; i < 4; i++)
+  {
+    if (theDamping[i])
+    {
+      delete theDamping[i];
+      theDamping[i] = 0;
+    }
+  }
 
   if (Ki != 0)
     delete Ki;
@@ -300,6 +498,39 @@ FourNodeQuad::setDomain(Domain *theDomain)
 
     // Compute consistent nodal loads due to pressure
     this->setPressureLoadAtNodes();
+    
+    for (int i = 0; i < 4; i++)
+    {
+      if (theDamping[i] && theDamping[i]->setDomain(theDomain, 3)) {
+        opserr << "FourNodeQuad::setDomain -- Error initializing damping\n";
+        return;
+      }
+    }
+
+}
+
+int
+FourNodeQuad::setDamping(Domain *theDomain, Damping *damping)
+{
+  if (theDomain && damping)
+  {
+    for (int i = 0; i < 4; i++)
+    {
+      if (theDamping[i]) delete theDamping[i];
+
+      theDamping[i] =(*damping).getCopy();
+      
+      if (!theDamping[i]) {
+        opserr << "FourNodeQuad::setDamping -- failed to get copy of damping\n";
+        return -1;
+      }
+      if (theDamping[i]->setDomain(theDomain, 3)) {
+        opserr << "FourNodeQuad::setDamping -- Error initializing damping\n";
+        return -2;
+      }
+    }
+  }
+  return 0;
 }
 
 int
@@ -316,6 +547,9 @@ FourNodeQuad::commitState()
     for (int i = 0; i < 4; i++)
       retVal += theMaterial[i]->commitState();
 
+    for (int i = 0; i < 4; i++ )
+      if (theDamping[i]) retVal += theDamping[i]->commitState();
+
     return retVal;
 }
 
@@ -328,6 +562,9 @@ FourNodeQuad::revertToLastCommit()
     for (int i = 0; i < 4; i++)
 		retVal += theMaterial[i]->revertToLastCommit();
 
+    for (int i = 0; i < 4; i++ )
+      if (theDamping[i]) retVal += theDamping[i]->revertToLastCommit();
+
     return retVal;
 }
 
@@ -339,6 +576,9 @@ FourNodeQuad::revertToStart()
     // Loop over the integration points and revert states to start
     for (int i = 0; i < 4; i++)
 		retVal += theMaterial[i]->revertToStart();
+
+    for (int i = 0; i < 4; i++ )
+      if (theDamping[i]) retVal += theDamping[i]->revertToStart();
 
     return retVal;
 }
@@ -394,6 +634,7 @@ FourNodeQuad::update()
 const Matrix&
 FourNodeQuad::getTangentStiff()
 {
+  static Matrix D(3,3);
 
 	K.Zero();
 
@@ -408,7 +649,8 @@ FourNodeQuad::getTangentStiff()
 	  dvol *= (thickness*wts[i]);
 	  
 	  // Get the material tangent
-	  const Matrix &D = theMaterial[i]->getTangent();
+	  D = theMaterial[i]->getTangent();
+    if(theDamping[i]) D *= theDamping[i]->getStiffnessMultiplier();
 	  
 	  // Perform numerical integration
 	  //K = K + (B^ D * B) * intWt(i)*intWt(j) * detJ;
@@ -453,6 +695,7 @@ FourNodeQuad::getTangentStiff()
 const Matrix&
 FourNodeQuad::getInitialStiff()
 {
+  static Matrix D(3,3);
   if (Ki != 0)
     return *Ki;
 
@@ -469,7 +712,8 @@ FourNodeQuad::getInitialStiff()
     dvol *= (thickness*wts[i]);
     
     // Get the material tangent
-    const Matrix &D = theMaterial[i]->getInitialTangent();
+    D = theMaterial[i]->getInitialTangent();
+    if(theDamping[i]) D *= theDamping[i]->getStiffnessMultiplier();
 
     double D00 = D(0,0); double D01 = D(0,1); double D02 = D(0,2);
     double D10 = D(1,0); double D11 = D(1,1); double D12 = D(1,2);
@@ -584,7 +828,10 @@ FourNodeQuad::addInertiaLoadToUnbalance(const Vector &accel)
   static double rhoi[4];
   double sum = 0.0;
   for (i = 0; i < 4; i++) {
-    rhoi[i] = theMaterial[i]->getRho();
+    if (rho == 0)
+      rhoi[i] = theMaterial[i]->getRho();
+    else
+      rhoi[i] = rho;
     sum += rhoi[i];
   }
   
@@ -628,6 +875,7 @@ FourNodeQuad::addInertiaLoadToUnbalance(const Vector &accel)
 const Vector&
 FourNodeQuad::getResistingForce()
 {
+  static Vector sigma(3);
 	P.Zero();
 
 	double dvol;
@@ -640,7 +888,13 @@ FourNodeQuad::getResistingForce()
 		dvol *= (thickness*wts[i]);
 
 		// Get material stress response
-		const Vector &sigma = theMaterial[i]->getStress();
+		sigma = theMaterial[i]->getStress();
+
+    if (theDamping[i])
+    {
+      theDamping[i]->update(sigma);
+      sigma += theDamping[i]->getDampingForce();
+    }
 
 		// Perform numerical integration on internal force
 		//P = P + (B^ sigma) * intWt(i)*intWt(j) * detJ;
@@ -684,7 +938,10 @@ FourNodeQuad::getResistingForceIncInertia()
 	static double rhoi[4];
 	double sum = 0.0;
 	for (i = 0; i < 4; i++) {
-	  rhoi[i] = theMaterial[i]->getRho();
+	  if (rho == 0)
+	    rhoi[i] = theMaterial[i]->getRho();
+	  else
+	    rhoi[i] = rho;
 	  sum += rhoi[i];
 	}
 
@@ -744,7 +1001,7 @@ FourNodeQuad::sendSelf(int commitTag, Channel &theChannel)
   
   // Quad packs its data into a Vector and sends this to theChannel
   // along with its dbTag and the commitTag passed in the arguments
-  static Vector data(9);
+  static Vector data(11);
   data(0) = this->getTag();
   data(1) = thickness;
   data(2) = b[0];
@@ -756,6 +1013,20 @@ FourNodeQuad::sendSelf(int commitTag, Channel &theChannel)
   data(7) = betaK0;
   data(8) = betaKc;
   
+  data(9) = 0;
+  data(10) = 0;
+  if (theDamping[0]) {
+    data(9) = theDamping[0]->getClassTag();
+    int dbTag = theDamping[0]->getDbTag();
+    if (dbTag == 0) {
+      dbTag = theChannel.getDbTag();
+      if (dbTag != 0)
+        for (int i = 0 ;  i < 4; i++)
+	        theDamping[i]->setDbTag(dbTag);
+	  }
+    data(10) = dbTag;
+  }
+
   res += theChannel.sendVector(dataTag, commitTag, data);
   if (res < 0) {
     opserr << "WARNING FourNodeQuad::sendSelf() - " << this->getTag() << " failed to send Vector\n";
@@ -802,6 +1073,17 @@ FourNodeQuad::sendSelf(int commitTag, Channel &theChannel)
     }
   }
   
+  // Ask the Damping to send itself
+  if (theDamping[0]) {
+    for (int i = 0 ;  i < 4; i++) {
+      res += theDamping[i]->sendSelf(commitTag, theChannel);
+      if (res < 0) {
+        opserr << "FourNodeQuad::sendSelf -- could not send Damping\n";
+        return res;
+      }
+    }
+  }
+
   return res;
 }
 
@@ -815,7 +1097,7 @@ FourNodeQuad::recvSelf(int commitTag, Channel &theChannel,
 
   // Quad creates a Vector, receives the Vector and then sets the 
   // internal data with the data in the Vector
-  static Vector data(9);
+  static Vector data(11);
   res += theChannel.recvVector(dataTag, commitTag, data);
   if (res < 0) {
     opserr << "WARNING FourNodeQuad::recvSelf() - failed to receive Vector\n";
@@ -897,6 +1179,49 @@ FourNodeQuad::recvSelf(int commitTag, Channel &theChannel,
     }
   }
   
+  int dmpTag = (int)data(9);
+  if (dmpTag) {
+    for (int i = 0 ;  i < 4; i++) {
+      // Check if the Damping is null; if so, get a new one
+      if (theDamping[i] == 0) {
+        theDamping[i] = theBroker.getNewDamping(dmpTag);
+        if (theDamping[i] == 0) {
+          opserr << "FourNodeQuad::recvSelf -- could not get a Damping\n";
+          exit(-1);
+        }
+      }
+  
+      // Check that the Damping is of the right type; if not, delete
+      // the current one and get a new one of the right type
+      if (theDamping[i]->getClassTag() != dmpTag) {
+        delete theDamping[i];
+        theDamping[i] = theBroker.getNewDamping(dmpTag);
+        if (theDamping[i] == 0) {
+          opserr << "FourNodeQuad::recvSelf -- could not get a Damping\n";
+          exit(-1);
+        }
+      }
+  
+      // Now, receive the Damping
+      theDamping[i]->setDbTag((int)data(10));
+      res += theDamping[i]->recvSelf(commitTag, theChannel, theBroker);
+      if (res < 0) {
+        opserr << "FourNodeQuad::recvSelf -- could not receive Damping\n";
+        return res;
+      }
+    }
+  }
+  else {
+    for (int i = 0; i < 4; i++)
+    {
+      if (theDamping[i])
+      {
+        delete theDamping[i];
+        theDamping[i] = 0;
+      }
+    }
+  }
+    
   return res;
 }
 
@@ -1117,6 +1442,27 @@ FourNodeQuad::setResponse(const char **argv, int argc,
     theResponse =  new ElementResponse(this, 4, Vector(12));
   }
 
+  else if (theDamping[0] && strcmp(argv[0],"dampingStresses") ==0) {
+    for (int i=0; i<4; i++) {
+      output.tag("GaussPoint");
+      output.attr("number",i+1);
+      output.attr("eta",pts[i][0]);
+      output.attr("neta",pts[i][1]);
+
+      output.tag("NdMaterialOutput");
+      output.attr("classType", theMaterial[i]->getClassTag());
+      output.attr("tag", theMaterial[i]->getTag());
+      
+      output.tag("ResponseType","sigma11");
+      output.tag("ResponseType","sigma22");
+      output.tag("ResponseType","sigma12");
+      
+      output.endTag(); // GaussPoint
+      output.endTag(); // NdMaterialOutput
+      }
+    theResponse =  new ElementResponse(this, 5, Vector(12));
+  }
+
   output.endTag(); // ElementOutput
 
   return theResponse;
@@ -1200,6 +1546,23 @@ FourNodeQuad::getResponse(int responseID, Information &eleInfo)
 
     return eleInfo.setVector(stresses);
 	
+  } else if (responseID == 5) {
+
+    // Loop over the integration points
+    static Vector stresses(12);
+    int cnt = 0;
+    for (int i = 0; i < 4; i++) {
+
+      // Get material stress response
+      const Vector &sigma = theDamping[i]->getDampingForce();
+      stresses(cnt) = sigma(0);
+      stresses(cnt+1) = sigma(1);
+      stresses(cnt+2) = sigma(2);
+      cnt += 3;
+    }
+    
+    return eleInfo.setVector(stresses);
+      
   } else
 
     return -1;

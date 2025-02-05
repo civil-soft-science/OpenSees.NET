@@ -39,14 +39,45 @@
 
 #include <superlu_ddefs.h>
 
+#ifdef SUPERLU_DIST_MAJOR_VERSION 
+  // SuperLU_Dist 6.2.0 brought a major change that separated several structures tobe "precision-dependent"
+  // which changes the name (prefixes with 'd' or 'z')
+  #if (SUPERLU_DIST_MAJOR_VERSION >= 6 && SUPERLU_DIST_MINOR_VERSION >= 2)
+    #include <superlu_FCnames.h>
+    #ifndef _SUPERLU_DIST_6 
+      #define _SUPERLU_DIST_6
+    #endif
+  #endif
 
-superlu_options_t options;
-SuperLUStat_t this_stat;
+  // SuperLU_DIST 'options' was redefined starting in Version 5.X.X
+  #if SUPERLU_DIST_MAJOR_VERSION >= 5
+      superlu_dist_options_t options;
+  #else
+      superlu_options_t options;
+  #endif
+
+#else
+
+  #if defined(SUPERLU_DIST_MAJOR_VERSION) && SUPERLU_DIST_MAJOR_VERSION >= 5
+    superlu_dist_options_t options;
+  #else
+    superlu_options_t options;
+  #endif
+
+#endif
+
+SuperLUStat_t stat;
 SuperMatrix A;
-ScalePermstruct_t ScalePermstruct;
-LUstruct_t LUstruct;
 gridinfo_t grid;
 MPI_Comm comm_SuperLU;
+
+#ifdef _SUPERLU_DIST_6
+  dScalePermstruct_t ScalePermstruct;
+  dLUstruct_t LUstruct;
+#else
+  ScalePermstruct_t ScalePermstruct;
+  LUstruct_t LUstruct;
+#endif
 
 
 DistributedSuperLU::DistributedSuperLU(int npR, int npC)
@@ -70,8 +101,13 @@ DistributedSuperLU::DistributedSuperLU()
 DistributedSuperLU::~DistributedSuperLU()
 {
   //Destroy_LU(theSOE->size, &grid, &LUstruct); 
-  ScalePermstructFree(&ScalePermstruct);
-  LUstructFree(&LUstruct); 
+  #ifdef _SUPERLU_DIST_6
+    dScalePermstructFree(&ScalePermstruct);
+    dLUstructFree(&LUstruct); 
+  #else
+    ScalePermstructFree(&ScalePermstruct);
+    LUstructFree(&LUstruct); 
+  #endif
 
   //superlu_gridexit(&grid);
 
@@ -152,7 +188,7 @@ DistributedSuperLU::solve(void)
     //
 
     pdgssvx_ABglobal(&options, &A, &ScalePermstruct, Xptr, ldb, nrhs, &grid,
-		     &LUstruct, berr, &this_stat, &info);
+		     &LUstruct, berr, &stat, &info);
 
     if (theSOE->factored == false) {
       options.Fact = FACTORED;      
@@ -203,15 +239,22 @@ DistributedSuperLU::setSize()
 
   // free old structures if resize already called
   } else {
-    Destroy_LU(theSOE->size, &grid, &LUstruct); 
-    ScalePermstructFree(&ScalePermstruct);
-    LUstructFree(&LUstruct); 
+    
+    #ifdef _SUPERLU_DIST_6
+      dDestroy_LU(theSOE->size, &grid, &LUstruct); 
+      dScalePermstructFree(&ScalePermstruct);
+      dLUstructFree(&LUstruct); 
+    #else
+      Destroy_LU(theSOE->size, &grid, &LUstruct); 
+      ScalePermstructFree(&ScalePermstruct);
+      LUstructFree(&LUstruct); 
+    #endif
   }
   
   //
   // Initialize the statistics variables.
   //
-  PStatInit(&this_stat);
+  PStatInit(&stat);
   
   //
   // Create compressed column matrix for A. 
@@ -232,8 +275,13 @@ DistributedSuperLU::setSize()
     //
     // Initialize ScalePermstruct and LUstruct.
     //
-    ScalePermstructInit(n, n, &ScalePermstruct);
-    LUstructInit(n, &LUstruct);
+    #ifdef _SUPERLU_DIST_6
+      dScalePermstructInit(n, n, &ScalePermstruct);
+      dLUstructInit(n, &LUstruct);
+    #else
+      ScalePermstructInit(n, n, &ScalePermstruct);
+      LUstructInit(n, &LUstruct);
+    #endif
   }  
 			      
 			      
@@ -246,7 +294,7 @@ DistributedSuperLU::setSize()
   //
   // Initialize the statistics variables. 
   //
-  PStatInit(&this_stat);
+  PStatInit(&stat);
 
   return 0;
 }

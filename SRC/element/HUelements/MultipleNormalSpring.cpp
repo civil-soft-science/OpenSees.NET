@@ -131,8 +131,8 @@ void* OPS_MultipleNormalSpring()
 
 	//argv[2~5]
 	int idata[4];
-	int numdata = 4;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
+	int numData = 4;
+	if (OPS_GetIntInput(&numData, idata) < 0) {
 	    ifNoError = errDetected(ifNoError,"invalid int inputs");
 	}
 
@@ -151,8 +151,8 @@ void* OPS_MultipleNormalSpring()
 	    const char* flag = OPS_GetString();
 	    if (strcmp(flag,"-mat")==0 && OPS_GetNumRemainingInputArgs()>0) { // -mat matTag?
 
-		numdata = 1;
-		if (OPS_GetIntInput(numdata, &matTag) < 0) {
+		numData = 1;
+		if (OPS_GetIntInput(&numData, &matTag) < 0) {
 		    ifNoError = errDetected(ifNoError,"invalid matTag");
 		}
 
@@ -178,16 +178,16 @@ void* OPS_MultipleNormalSpring()
 	
 	    } else if (strcmp(flag,"-size")==0 && OPS_GetNumRemainingInputArgs()>0) { // -size size?
 
-		numdata = 1;
-		if (OPS_GetDoubleInput(numdata, &size)<0 || size<=0) {
+		numData = 1;
+		if (OPS_GetDoubleInput(&numData, &size)<0 || size<=0) {
 		    ifNoError = errDetected(ifNoError,"invalid size");
 		}
 
 		recvSize++ ;
 
 	    } else if (strcmp(flag,"-lambda")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-lambda lambda?>
-		numdata = 1;
-		if (OPS_GetDoubleInput(numdata, &lambda)<0 || lambda<0) {
+		numData = 1;
+		if (OPS_GetDoubleInput(&numData, &lambda)<0 || lambda<0) {
 		    ifNoError = errDetected(ifNoError,"invalid lambda");
 		}
 
@@ -198,8 +198,8 @@ void* OPS_MultipleNormalSpring()
 		oriX.resize(3);
 
 		for (int j=1; j<=3; j++) {
-		    numdata = 1;
-		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
+		    numData = 1;
+		    if (OPS_GetDoubleInput(&numData, &value) < 0) {
 			ifNoError = errDetected(ifNoError,"invalid orient");
 		    } else {
 			oriX(j-1) = value;
@@ -207,8 +207,8 @@ void* OPS_MultipleNormalSpring()
 		}
 
 		for (int j=1; j<=3; j++) {
-		    numdata = 1;
-		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
+		    numData = 1;
+		    if (OPS_GetDoubleInput(&numData, &value) < 0) {
 			ifNoError = errDetected(ifNoError,"invalid orient");
 		    } else {
 			oriYp(j-1) = value;
@@ -220,8 +220,8 @@ void* OPS_MultipleNormalSpring()
 	    } else if (strcmp(flag,"-orient")==0 && OPS_GetNumRemainingInputArgs()>=3) { // <-orient yp1? yp2? yp3?>
 
 		for (int j=1; j<=3; j++) {
-		    numdata = 1;
-		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
+		    numData = 1;
+		    if (OPS_GetDoubleInput(&numData, &value) < 0) {
 			ifNoError = errDetected(ifNoError,"invalid orient");
 		    } else {
 			oriYp(j-1) = value;
@@ -231,8 +231,8 @@ void* OPS_MultipleNormalSpring()
 		recvOrient++ ;
 
 	    } else if (strcmp(flag,"-mass")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-mass m?> �̓ǂݍ���
-		numdata = 1;
-		if (OPS_GetDoubleInput(numdata, &mass)<0 || mass<=0) {
+		numData = 1;
+		if (OPS_GetDoubleInput(&numData, &mass)<0 || mass<=0) {
 		    ifNoError = errDetected(ifNoError,"invalid mass");
 		}
 

@@ -63,13 +63,13 @@ OPS_Maxwell()
 
   // Check tag
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  Maxwell tag" << endln;
     return 0;
   }
   // Check if we have 4 input variables for K, C, Alpha, L
   numData = 4;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid Args want: uniaxialMaterial Maxwell tag? K? C? Alpha? Length L?"<< endln;
     return 0;	
   }
@@ -79,7 +79,6 @@ OPS_Maxwell()
     // OPS_GetStringCopy(&cArray);
     if ((strcmp(cArray, "-returnD") == 0) || (strcmp(cArray, "-D") == 0)) 
       iData[1] = 1;
-    delete [] cArray;
   }      
   
   // Parsing was successful, allocate the material with zero index

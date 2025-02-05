@@ -49,30 +49,30 @@
 
 void* OPS_AxialSp()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 4) {
 	opserr << "WARNING invalid number of arguments\n";
 	return 0;
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid AxialSp tag\n";
 	return 0;
     }
 
     double data[3];
-    numdata = 3;
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    numData = 3;
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
 
     double opt[4] = {0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 4) numdata = 4;
-    if (OPS_GetDoubleInput(numdata, opt) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 4) numData = 4;
+    if (OPS_GetDoubleInput(&numData, opt) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -123,35 +123,7 @@ AxialSp::AxialSp(int tag, double sce, double fty, double fcy,
     opserr << "uniaxialMaterial AxialSp: " << tag << endln;
   }
 
-  //initialize
-  trialDeformation   = 0.0;
-  trialForce   = 0.0;
-  trialStiffness  = sce;
-  commitDeformation  = 0.0;
-  commitForce  = 0.0;
-  commitStiffness = sce;
-
-  trialStg = 1;
-  commitStg = 1;
-
-  ste  = bte * sce;
-  sty  = bty * sce;
-  scy  = bcy * sce;
-  uty  = fty / ste;
-  ucy  = fcy / sce;
-  ucr  = fcr / sce;
-  uc0  = 0.0;
-  ur1  = 0.0;
-  fr1  = 0.0;
-  ur2  = 0.0;
-  fr2  = 0.0;
-  ur3  = 0.0;
-  fr3  = 0.0;
-  ur4  = 0.0;
-  fr4  = 0.0;
-  ur5  = 0.0;
-  fr5  = 0.0;
-
+  this->revertToStart();
 }
 
 AxialSp::AxialSp()
@@ -571,7 +543,7 @@ AxialSp::sendSelf(int cTag, Channel &theChannel)
 {
   int res = 0;
 
-  static Vector data(16);
+  static Vector data(16+11);
 
   data(0)  = this->getTag();
   data(1)  = sce;
@@ -590,6 +562,18 @@ AxialSp::sendSelf(int cTag, Channel &theChannel)
   data(14) = trialStiffness;
   data(15) = trialStg;
 
+  data(16) = uc0;
+  data(17) = ur1;
+  data(18) = fr1;
+  data(19) = ur2;
+  data(20) = fr2;
+  data(21) = ur3;
+  data(22) = fr3;
+  data(23) = ur4;
+  data(24) = fr4;
+  data(25) = ur5;
+  data(26) = fr5;
+  
   res = theChannel.sendVector(this->getDbTag(), cTag, data);
   if ( res < 0 )
     opserr << "AxialSp::sendSelf() - failed to send data\n";
@@ -603,7 +587,7 @@ AxialSp::recvSelf(int cTag, Channel &theChannel,
 {
   int res = 0;
 
-  static Vector data(16);
+  static Vector data(16+11);
   res = theChannel.recvVector(this->getDbTag(), cTag, data);
 
   if ( res < 0 ) {
@@ -628,6 +612,25 @@ AxialSp::recvSelf(int cTag, Channel &theChannel,
     trialForce = data(13);
     trialStiffness = data(14);
     trialStg = (int)data(15);
+
+    ste  = bte * sce;
+    sty  = bty * sce;
+    scy  = bcy * sce;
+    uty  = fty / ste;
+    ucy  = fcy / sce;
+    ucr  = fcr / sce;
+
+    uc0 = data(16);
+    ur1 = data(17);
+    fr1 = data(18);
+    ur2 = data(19);
+    fr2 = data(20);
+    ur3 = data(21);
+    fr3 = data(22);
+    ur4 = data(23);
+    fr4 = data(24);
+    ur5 = data(25);
+    fr5 = data(26);
   }
 
   return res;

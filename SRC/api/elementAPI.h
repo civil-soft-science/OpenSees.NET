@@ -121,8 +121,14 @@ class ConvergenceTest;
 #define OPS_Error ops_error_
 #define OPS_GetIntInput ops_getintinput_
 #define OPS_SetIntOutput ops_setintoutput_
+#define OPS_SetIntListsOutput ops_setintlistsoutput_
+#define OPS_SetIntDictOutput ops_setintdictoutput_
+#define OPS_SetIntDictListOutput ops_setintdictlistoutput_
 #define OPS_GetDoubleInput ops_getdoubleinput_
 #define OPS_SetDoubleOutput ops_setdoubleoutput_
+#define OPS_SetDoubleListsOutput ops_setdoublelistsoutput_
+#define OPS_SetDoubleDictOutput ops_setdoubledictoutput_
+#define OPS_SetDoubleDictListOutput ops_setdoubledictlistoutput_
 #define OPS_AllocateMaterial ops_allocatematerial_
 #define OPS_AllocateElement ops_allocateelement_
 #define OPS_GetMaterialType ops_getmaterialtype_
@@ -139,9 +145,15 @@ class ConvergenceTest;
 #define OPS_InvokeMaterialDirectly ops_invokematerialdirectly_
 #define OPS_GetInt ops_getintinput_
 #define OPS_GetDouble ops_getdoubleinput_
+#define OPS_GetDoubleListInput ops_getdoublelistinput_
+#define OPS_EvalDoubleStringExpression ops_evaldoublestringexpression_
 #define OPS_GetString ops_getstring
 #define OPS_GetStringFromAll ops_getstringfromall_
 #define OPS_SetString ops_setstring
+#define OPS_SetStringList ops_setstringlist
+#define OPS_SetStringLists ops_setstringlists
+#define OPS_SetStringDict ops_setstringdict
+#define OPS_SetStringDictList ops_setstringdictlist_
 #define OPS_GetNDM ops_getndm_
 #define OPS_GetNDF ops_getndf_
 #define OPS_GetFEDatastore ops_getfedatastore_
@@ -166,6 +178,8 @@ class ConvergenceTest;
 #define OPS_GetDomain ops_getdomain_
 
 #include <OPS_Globals.h>
+#include <vector>
+#include <map>
 // #include <tcl.h>
 //#include "TclModelBuilder.h"
 
@@ -176,34 +190,46 @@ extern "C" int         OPS_Error(char* errorMessage, int length);
 extern "C" int         OPS_GetNumRemainingInputArgs();
 extern "C" int         OPS_ResetCurrentInputArg(int cArg);
 //extern "C" int       OPS_ResetInput(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain, TclModelBuilder * builder);
-// extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
-extern "C" int         OPS_GetIntInput(int numData, int* data);
-extern "C" int         OPS_SetIntOutput(int numData, int* data, bool scalar);
-extern "C" int         OPS_GetDoubleInput(int numData, double* data);
-extern "C" int         OPS_SetDoubleOutput(int numData, double* data, bool scalar);
+//extern "C" int       OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp * interp, int cArg, int mArg, TCL_Char * *argv, Domain * domain);
+extern "C" int         OPS_GetIntInput(const int* numData, int* data);
+extern "C" int         OPS_SetIntOutput(int* numData, int* data, bool scalar);
+extern "C" int         OPS_SetIntListsOutput(std::vector<std::vector<int>>& data);
+extern "C" int         OPS_SetIntDictOutput(std::map<const char*, int>& data);
+extern "C" int         OPS_SetIntDictListOutput(std::map<const char*, std::vector<int>>& data);
+extern "C" int         OPS_GetDoubleInput(int* numData, double* data);
+extern "C" int         OPS_GetDoubleListInput(int* size, Vector * data);
+extern "C" int         OPS_EvalDoubleStringExpression(const char* theExpression, double& current_val);
+extern "C" int         OPS_SetDoubleOutput(int* numData, double* data, bool scalar);
+extern "C" int         OPS_SetDoubleListsOutput(std::vector<std::vector<double>>& data);
+extern "C" int         OPS_SetDoubleDictOutput(std::map<const char*, double>& data);
+extern "C" int         OPS_SetDoubleDictListOutput(std::map<const char*, std::vector<double>>& data);
 extern "C" const char* OPS_GetString(); // does a strcpy
 extern "C" const char* OPS_GetStringFromAll(char* buffer, int len); // does a strcpy
 extern "C" int         OPS_SetString(const char* str);
+extern "C" int         OPS_SetStringList(std::vector<const char*>& data);
+extern "C" int         OPS_SetStringLists(std::vector<std::vector<const char*>>& data);
+extern "C" int         OPS_SetStringDict(std::map<const char*, const char*>& data);
+extern "C" int         OPS_SetStringDictList(std::map<const char*, std::vector<const char*>>& data);
 extern "C" int         OPS_GetStringCopy(char** cArray); // returns a new copy
-extern "C" matObj*     OPS_GetMaterial(int matTag, int matType);
-extern "C" eleObj*     OPS_GetElement(int eleTag);
+extern "C" matObj*     OPS_GetMaterial(int* matTag, int* matType);
+extern "C" eleObj*     OPS_GetElement(int* eleTag);
 extern "C" matObj*     OPS_GetMaterialType(char* type, int sizeType);
 extern "C" eleObj*     OPS_GetElementType(char* type, int sizeType);
-extern "C" int         OPS_AllocateElement(eleObject * theEle, int* matTags, int matType);
+extern "C" int         OPS_AllocateElement(eleObject * theEle, int* matTags, int* matType);
 extern "C" int         OPS_AllocateMaterial(matObject * theMat);
 extern "C" limCrvObj*  OPS_GetLimitCurveType(char* type, int sizeType);
 extern "C" int         OPS_AllocateLimitCurve(limCrvObject * theLimCrv);
 
-extern "C" int         OPS_InvokeMaterial(eleObject*, int, modelState*, double*, double*, double*, int*);
+extern "C" int         OPS_InvokeMaterial(eleObject*, int*, modelState*, double*, double*, double*, int*);
 extern "C" int         OPS_InvokeMaterialDirectly(matObject**, modelState*, double*, double*, double*, int*);
 extern "C" int         OPS_InvokeMaterialDirectly2(matObject*, modelState*, double*, double*, double*, int*);
 
-extern "C" int         OPS_GetNodeCrd(int nodeTag, int sizeData, double* data);
-extern "C" int         OPS_GetNodeDisp(int nodeTag, int sizeData, double* data);
-extern "C" int         OPS_GetNodeVel(int nodeTag, int sizeData, double* data);
-extern "C" int         OPS_GetNodeAccel(int nodeTag, int sizeData, double* data);
-extern "C" int         OPS_GetNodeIncrDisp(int nodeTag, int sizeData, double* data);
-extern "C" int         OPS_GetNodeIncrDeltaDisp(int nodeTag, int sizeData, double* data);
+extern "C" int         OPS_GetNodeCrd(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeDisp(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeVel(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeAccel(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeIncrDisp(int* nodeTag, int* sizeData, double* data);
+extern "C" int         OPS_GetNodeIncrDeltaDisp(int* nodeTag, int* sizeData, double* data);
 
 class UniaxialMaterial;
 class NDMaterial;
@@ -248,17 +274,17 @@ int     OPS_GetNDF();
 int     OPS_GetNDM();
 
 int     OPS_Error(char*, int length);
-int     OPS_GetIntInput(int numData, int* data);
-int     OPS_GetDoubleInput(int numData, double* data);
+int     OPS_GetIntInput(int* numData, int* data);
+int     OPS_GetDoubleInput(int* numData, double* data);
 int     OPS_GetString(char* cArray, int sizeArray);
 
 
-matObj* OPS_GetMaterial(int matTag, int matType);
-void    OPS_GetMaterialPtr(int, matObj*);
-eleObj* OPS_GetElement(int);
+matObj* OPS_GetMaterial(int* matTag, int* matType);
+void    OPS_GetMaterialPtr(int*, matObj*);
+eleObj* OPS_GetElement(int*);
 matObj* OPS_GetMaterialType(char* type, int sizeType);
 eleObj* OPS_GetElementType(char*, int);
-int     OPS_AllocateElement(eleObj*, int matTags, int maType);
+int     OPS_AllocateElement(eleObj*, int* matTags, int* maType);
 int     OPS_AllocateMaterial(matObj*);
 
 limCrv* OPS_GetLimitCurveType(char* type, int sizeType);//**MRL

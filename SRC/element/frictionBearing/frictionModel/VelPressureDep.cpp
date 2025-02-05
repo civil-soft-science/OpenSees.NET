@@ -52,12 +52,12 @@ OPS_VelPressureDep(void)
     int tag[1];
     double dData[6];
     int numData = 1;
-    if (OPS_GetIntInput(numData, tag) != 0) {
+    if (OPS_GetIntInput(&numData, tag) != 0) {
         opserr << "WARNING invalid tag for frictionModel VelPressureDep\n";
         return 0;
     }
     numData = 6;
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
         opserr << "Invalid data for frictionModel VelPressureDep " << tag[0] << endln;
         return 0;
     }

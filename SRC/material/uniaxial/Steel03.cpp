@@ -64,8 +64,8 @@ void* OPS_Steel03()
     }
       
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING invalid uniaxialMaterial Steel03 tag\n";
         return 0;
     }
@@ -73,8 +73,8 @@ void* OPS_Steel03()
     // Read required Steel01 material parameters
     // fy, E, b, r, cR1, cR2;
     double data[6];
-    numdata = 6;
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    numData = 6;
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
         opserr << "WARNING invalid double inputs\n";
         return 0;
     }
@@ -83,14 +83,14 @@ void* OPS_Steel03()
     // a1, a2, a3, a4
     if (argc > 9) {
 	double opt[4];
-	numdata = 4;
+	numData = 4;
 
 	if (argc < 13) {
 	    opserr << "WARNING insufficient number of hardening parameters\n";
 	    opserr << "uniaxialMaterial Steel03: " << tag << "\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(numdata, opt) < 0) {
+	if (OPS_GetDoubleInput(&numData, opt) < 0) {
 	    opserr << "WARNING invalid double inputs\n";
 	    return 0;
 	}

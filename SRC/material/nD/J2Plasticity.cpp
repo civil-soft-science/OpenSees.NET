@@ -70,26 +70,26 @@ double J2Plasticity::IbunI[3][3][3][3] ; //rank 4 I bun I
 
 void* OPS_J2Plasticity()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 7) {
 	opserr << "WARNING: Insufficient arguments\n";
 	opserr << "Want: nDMaterial J2Plasticity tag? K? G? sig0? sigInf? delta? H? <eta?>\n";
 	return 0;
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid J2Plasticity tag\n";
 	return 0;
     }
 
     double data[7] = {0,0,0,0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 7) {
-	numdata = 7;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 7) {
+	numData = 7;
     }
-    if (OPS_GetDoubleInput(numdata,data)) {
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING invalid J2Plasticity double inputs\n";
 	return 0;
     }
@@ -741,16 +741,12 @@ J2Plasticity::getCopy (void)
 const char*
 J2Plasticity::getType (void) const
 {
-    opserr << "J2Plasticity::getType -- subclass responsibility\n";
-    exit(-1);
-    return 0;
+    return "BaseClass";
 }
 
 int
 J2Plasticity::getOrder (void) const
 {
-    opserr << "J2Plasticity::getOrder -- subclass responsibility\n";
-    exit(-1);
     return 0;
 }
 

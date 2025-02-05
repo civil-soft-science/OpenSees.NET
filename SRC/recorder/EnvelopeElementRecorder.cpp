@@ -1,5 +1,5 @@
 /* ****************************************************************** **
-**    OpenSees - Open System for Earthquake Engineering Simulation    **
+**    OpenSeesite - Open System for Earthquake Engineering Simulation    **
 **          Pacific Earthquake Engineering Research Center            **
 **                                                                    **
 **                                                                    **
@@ -965,3 +965,9 @@ int EnvelopeElementRecorder::removeComponentResponse(int compTag)
 }
 
 #endif // _CSS
+int EnvelopeElementRecorder::flush(void) {
+	if (theHandler != 0) {
+		return theHandler->flush();
+	}
+	return 0;
+}

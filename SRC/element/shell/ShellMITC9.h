@@ -54,6 +54,8 @@ class ShellMITC9 : public Element
     //destructor 
     virtual ~ShellMITC9( ) ;
 
+    const char *getClassType(void) const {return "ShellMITC9";}
+    
     //get the number of external nodes
     int getNumExternalNodes( ) const ;
     //return connected external nodes
@@ -95,7 +97,8 @@ class ShellMITC9 : public Element
     int recvSelf (int commitTag, Channel &theChannel, FEM_ObjectBroker 
 		  &theBroker);
 
-
+  int setParameter(const char **argv, int argc, Parameter &param);
+  
     Response* setResponse(const char **argv, int argc, OPS_Stream &output);
     int getResponse(int responseID, Information &eleInfo);
       

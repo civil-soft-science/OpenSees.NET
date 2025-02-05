@@ -80,25 +80,25 @@ OPS_BeamContact3D(void)
   int icSwitch = 0;
 
   int numData = 5;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element BeamContact3DElement" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid data: element BeamContact3D " << iData[0] << endln;
     return 0;  
   }
 
   numData = 2;
-  if (OPS_GetIntInput(numData, &iData[5]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[5]) != 0) {
     opserr << "WARNING invalid integer data: element BeamContact3DElement" << iData[0] << endln;
     return 0;
   }
 
   numData = 2;
-  if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
+  if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
     opserr << "WARNING invalid data: element BeamContact3D " << iData[0] << endln;
     return 0;  
   }
@@ -122,7 +122,7 @@ OPS_BeamContact3D(void)
   numRemainingInputArgs -= 10;
   while (numRemainingInputArgs >= 1) {
 	  numData = 1;
-	  if (OPS_GetIntInput(numData, &icSwitch) != 0) {
+	  if (OPS_GetIntInput(&numData, &icSwitch) != 0) {
 		  opserr << "WARNING invalid initial contact flag: element BeamContact3D " << iData[0] << endln;
 	  	  return 0;
       }

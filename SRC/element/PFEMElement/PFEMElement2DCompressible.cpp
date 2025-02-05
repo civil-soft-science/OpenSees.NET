@@ -56,19 +56,19 @@ void* OPS_PFEMElement2DCompressible(const ID &info)
 
     int idata[5];
     double data[6] = {0,0,0,0,1.0,2.15e9};
-    int numdata;
+    int numData;
 
     // regular element, not in a mesh, get tags
     if (info.Size() == 0) {
-	numdata = OPS_GetNumRemainingInputArgs();
-	if(numdata < 5) {
+	numData = OPS_GetNumRemainingInputArgs();
+	if(numData < 5) {
 	    opserr<<"WARNING: insufficient number of arguments: tag, nd1, nd2, nd3, nd4\n";
 	    return 0;
 	}
 
 	// tag, nd1, nd2, nd3, nd4
-	numdata = 5;
-	if(OPS_GetIntInput(numdata,idata)<0) {
+	numData = 5;
+	if(OPS_GetIntInput(&numData,idata)<0) {
 	    opserr << "WARNING: failed to get tags\n";
 	    return 0;
 	}
@@ -82,9 +82,9 @@ void* OPS_PFEMElement2DCompressible(const ID &info)
 	}
 
 	// rho, mu, b1, b2, (thickness, kappa)
-	numdata = OPS_GetNumRemainingInputArgs();
-	if(numdata > 6) numdata = 6;
-	if(OPS_GetDoubleInput(numdata,data) < 0) {
+	numData = OPS_GetNumRemainingInputArgs();
+	if(numData > 6) numData = 6;
+	if(OPS_GetDoubleInput(&numData,data) < 0) {
 	    opserr << "WARNING: failed to get fluid properties\n";
 	    return 0;
 	}

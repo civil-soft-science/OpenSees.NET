@@ -43,13 +43,13 @@ void* OPS_QuadPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
 
     // get data
     static Matrix vertexCoords(4,2);
     double data[8];
     numData = 8;
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
     for(int i=0; i<4; i++) {
 	for(int j=0; j<2; j++) {
 	    vertexCoords(i,j) = data[i*2+j];
@@ -69,13 +69,13 @@ void* OPS_RectPatch()
     // get idata
     int numData = 3;
     int idata[3];
-    if(OPS_GetIntInput(numData,&idata[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&idata[0]) < 0) return 0;
 
     // get data
     static Matrix vertexCoords(4,2);
     double data[4];
     numData = 4;
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
     double dyOverdz = (data[2]-data[0])/(data[3]-data[1]);
     if (dyOverdz < 0) {
       // Swap coordinates so we get all positive areas
@@ -240,11 +240,22 @@ QuadPatch::getCopy (void) const
  
 void QuadPatch::Print(OPS_Stream &s, int flag) const
 {
+	if (flag == OPS_PRINT_PRINTMODEL_SECTION || flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
    s << "\nPatch Type: QuadPatch";
    s << "\nMaterial Id: " << matID;
    s << "\nNumber of subdivisions in the IJ direction: " << nDivIJ;
    s << "\nNumber of subdivisions in the JK direction: " << nDivJK;
    s << "\nVertex Coordinates: " << vertCoord;
+}
+if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+	 s << "\t\t\t\t{\"type\": \"quad\", \"material\": "<<matID<<", \"divisions\":[" << nDivIJ << ","<< nDivJK<<"], ";
+	 s << "\"vertices\": [";
+	 s << "["<<vertCoord(0,0)<<","<<vertCoord(0,1)<<"], ";
+	 s << "["<<vertCoord(1,0)<<","<<vertCoord(1,1)<<"], ";
+	 s << "["<<vertCoord(2,0)<<","<<vertCoord(2,1)<<"], ";
+	 s << "["<<vertCoord(3,0)<<","<<vertCoord(3,1)<<"]";
+	 s <<"]}";
+}
 }
 
 

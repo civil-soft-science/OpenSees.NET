@@ -55,6 +55,11 @@ OPS_RambergOsgoodSteel(void)
     numRambergOsgoodSteel++;
   }
 
+  opserr << "Due to known issues and unreliable results, this material has been" << endln;
+  opserr << "temporarily removed from the compiled versions of OpenSees (Tcl and Py)" << endln;
+  opserr << "The material source code remains available. Compile at your own risk." << endln;
+  return 0;
+  
   // Pointer to a uniaxial material that will be returned
   UniaxialMaterial *theMaterial = 0;
 
@@ -64,14 +69,14 @@ OPS_RambergOsgoodSteel(void)
   int numData;
 
   numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RambergOsgoodSteel tag" << endln;
     return 0;
   }
 
  
   numData = 4;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid E & ep\n";
     return 0;  
   }

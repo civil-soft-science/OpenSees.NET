@@ -53,9 +53,9 @@ OPS_DamperMaterial(void)
   }
 
   int numData = 2;
-  int *iData = new int[2];
+  int iData[2];
   
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid data for uniaxialMaterial Damper" << endln;
     return 0;
   }
@@ -64,7 +64,6 @@ OPS_DamperMaterial(void)
   if (theMat == 0) {
     opserr << "WARNING no existing material with tag " << iData[1] 
 	   << " for uniaxialMaterial Damper" << iData[0] << endln;
-    delete [] iData;
     return 0;
   }
 
@@ -74,8 +73,6 @@ OPS_DamperMaterial(void)
     opserr << "WARNING could not create uniaxialMaterial of type Damper\n";
     return 0;
   }
-  
-  delete [] iData;
 
   return theMaterial;
 }
@@ -268,21 +265,33 @@ DamperMaterial::recvSelf(int cTag, Channel &theChannel,
     }
 
     this->setTag(int(data(0)));
-    if (theMaterial != 0)
-      delete theMaterial;
-
     int matClassTag = data[1];
-    dbTag = data[2];
-    UniaxialMaterial *theMaterial = theBroker.getNewUniaxialMaterial(matClassTag);
-    if (theMaterial  == 0) {
-      opserr << "FATAL DamperMaterial::recvSelf() ";
-      opserr << " could not get a UniaxialMaterial \n";
-      //exit(-1);
-      return -1;
-    }    	    
-    theMaterial->setDbTag(dbTag);
-    theMaterial->recvSelf(cTag, theChannel, theBroker);
 
+    if (theMaterial == 0) {
+      theMaterial = theBroker.getNewUniaxialMaterial(matClassTag);
+      if (theMaterial == 0) {
+	opserr << "DamperMaterial::recvSelf -- could not get UniaxialMaterial" << endln;
+	return -1;
+      }
+    }
+    
+    dbTag = data[2];
+    if (theMaterial->getClassTag() != matClassTag) {
+      delete theMaterial;
+      theMaterial = theBroker.getNewUniaxialMaterial(matClassTag);
+      if (theMaterial == 0) {
+	opserr << "DamperMaterial::recvSelf -- could not get UniaxialMaterial" << endln;
+	return -1;
+      }
+    }
+ 
+    theMaterial->setDbTag(dbTag);
+    res = theMaterial->recvSelf(cTag, theChannel, theBroker);
+    if (res < 0) {
+      opserr << "DamperMaterial::recvSelf -- count not receive Uniaxialmaterial" << endln;
+      return res;
+    }
+ 
     return 0;
 }
 

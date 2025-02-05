@@ -57,8 +57,8 @@
 
 void* OPS_Concrete01WithSITC()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 5) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 5) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial Concrete01WithSITC tag? ";
 	opserr << "fpc? epsc0? fpcu? epscu? <endStrainSITC?>\n";
@@ -66,25 +66,25 @@ void* OPS_Concrete01WithSITC()
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[4];
-    numdata = 4;
-    if (OPS_GetDoubleInput(numdata,data)) {
+    numData = 4;
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
     UniaxialMaterial* mat = 0;
     
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 0) {
 	double endStrainSITC;
-	numdata = 1;
-	if (OPS_GetDoubleInput(numdata,&endStrainSITC) < 0) {
+	numData = 1;
+	if (OPS_GetDoubleInput(&numData,&endStrainSITC) < 0) {
 	    opserr << "WARNING invalid double data\n";
 	    return 0;
 	}
@@ -137,7 +137,7 @@ Concrete01WithSITC::Concrete01WithSITC
 Concrete01WithSITC::Concrete01WithSITC():UniaxialMaterial(0, MAT_TAG_Concrete01WithSITC),
  fpc(0.0), epsc0(0.0), fpcu(0.0), epscu(0.0),
  CminStrain(0.0), CunloadSlope(0.0), CendStrain(0.0),
- Cstrain(0.0), Cstress(0.0), CmaxStrain(0.0),
+ Cstrain(0.0), Cstress(0.0), Ctangent(0.0), CmaxStrain(0.0),
  CslopeSITC(0.0), CendStrainSITC(0.0), Cindex(0), CsmallStrainIndex(0)
 
 {
@@ -715,18 +715,20 @@ int Concrete01WithSITC::recvSelf (int commitTag, Channel& theChannel,
       Cstress = data(9);
       Ctangent = data(10);
 
-	  // variables added by WL
-	  data(11) = CmaxStrain;
-      data(12) = CslopeSITC;
-      data(13) = CendStrainSITC;
-      data(14) = Cindex;
-      data(15) = CsmallStrainIndex;
+      // variables added by WL
+      CmaxStrain = data(11);
+      CslopeSITC = data(12);
+      CendStrainSITC = data(13);
+      Cindex = data(14);
+      CsmallStrainIndex = data(15);
 
 
       // Set trial state variables
       Tstrain = Cstrain;
       Tstress = Cstress;
       Ttangent = Ctangent;
+
+      this->revertToLastCommit();
    }
 
    return res;

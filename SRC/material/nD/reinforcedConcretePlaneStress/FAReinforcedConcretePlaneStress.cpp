@@ -56,25 +56,25 @@ OPS_FAReinforcedConcretePlaneStressMaterial()
   int numData = 0;
 
   numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid tag nDMaterial FAReinforcedConcretePlaneStress tag" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDouble(numData, &rho) != 0) {
+  if (OPS_GetDouble(&numData, &rho) != 0) {
     opserr << "Invalid Arg rho: uniaxialMaterial FAReinforcedConcretePlaneStress tag:" << tag << endln;
     return 0;	
   }
 
   numData = 4;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial FAReinforcedConcretePlaneStress tag: " << tag << endln;
     return 0;
   }
 
   numData = 8;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid data FAReinforcedConcretePlaneStress tag: " << tag << endln;
     return 0;
   }

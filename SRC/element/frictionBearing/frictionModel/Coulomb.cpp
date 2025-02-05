@@ -52,11 +52,11 @@ OPS_Coulomb(void)
     int tag[1];
     double dData[1];
     int numData = 1;
-    if (OPS_GetIntInput(numData, tag) != 0) {
+    if (OPS_GetIntInput(&numData, tag) != 0) {
         opserr << "WARNING invalid tag for frictionModel Coulomb\n";
         return 0;
     }
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
         opserr << "Invalid data for frictionModel Coulomb " << tag[0] << endln;
         return 0;
     }

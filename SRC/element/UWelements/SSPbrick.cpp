@@ -73,7 +73,7 @@ OPS_SSPbrick(void)
 	dData[2] = 0.0;
 
   	int numData = 10;
-  	if (OPS_GetIntInput(numData, iData) != 0) {
+  	if (OPS_GetIntInput(&numData, iData) != 0) {
     	opserr << "WARNING invalid integer data: element SSPbrick " << iData[0] << endln;
 		return 0;
   	}
@@ -88,7 +88,7 @@ OPS_SSPbrick(void)
 
 	if (numRemainingInputArgs == 13) {
     	numData = 3;
-    	if (OPS_GetDoubleInput(numData, dData) != 0) {
+    	if (OPS_GetDoubleInput(&numData, dData) != 0) {
       		opserr << "WARNING invalid optional data: element SSPbrick " << iData[0] << endln;
 	  		return 0;
     	}

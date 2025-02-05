@@ -48,7 +48,7 @@ OPS_OriginCentered(void)
   double dData[12];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial OriginCentered tag" << endln;
     return 0;
   }
@@ -61,7 +61,7 @@ OPS_OriginCentered(void)
     return 0;
   }
 
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial OriginCentered " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -259,7 +259,7 @@ int
 int 
 	OriginCentered::sendSelf(int commitTag, Channel &theChannel)
 {
-	static Vector data(15);
+	static Vector data(14);
 	data(0) = f1;
 	data(1) = e1;
 	data(2) = f2;
@@ -286,7 +286,7 @@ int
 	OriginCentered::recvSelf(int commitTag, Channel &theChannel, 
 	FEM_ObjectBroker &theBroker)
 {
-	static Vector data(34);
+	static Vector data(14);
 
 	if (theChannel.recvVector(this->getDbTag(), commitTag, data) < 0) {
 		opserr << "OriginCentered::recvSelf() - failed to recvSelf\n";
@@ -311,7 +311,7 @@ int
 	Csig = data(10);
 	Ceps = data(11);
 	Ctan = data(12);
-	this->setTag(data(13));
+	this->setTag(int(data(13)));
 
 	this->revertToLastCommit();
 

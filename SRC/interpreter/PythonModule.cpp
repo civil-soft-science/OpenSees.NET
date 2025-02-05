@@ -179,6 +179,55 @@ PythonModule::getDouble(double *data, int numArgs) {
     return 0;
 }
 
+int PythonModule::getDoubleList(int* size, Vector* data)
+{
+    if (wrapper.getCurrentArg() >= wrapper.getNumberArgs()) {
+        return -1;
+    }
+
+    PyObject* o = PyTuple_GetItem(wrapper.getCurrentArgv(), wrapper.getCurrentArg());
+    wrapper.incrCurrentArg();
+
+    if (PyList_Check(o)) {
+        *size = PyList_Size(o);
+        data->resize(*size);
+        for (int i = 0; i < *size; i++) {
+            PyErr_Clear();
+            PyObject* item = PyList_GetItem(o, i);
+            if (!(PyLong_Check(item) || PyFloat_Check(item) || PyBool_Check(item))) {
+                opserr << "PythonModule::getDoubleList error: item " << i << " in list is not a float (or int or bool)\n";
+                return -1;
+            }
+            (*data)(i) = PyFloat_AsDouble(item);
+            if (PyErr_Occurred()) {
+                return -1;
+            }
+        }
+    }
+    else if (PyTuple_Check(o)) {
+        *size = PyTuple_Size(o);
+        data->resize(*size);
+        for (int i = 0; i < *size; i++) {
+            PyErr_Clear();
+            PyObject* item = PyTuple_GetItem(o, i);
+            if (!(PyLong_Check(item) || PyFloat_Check(item) || PyBool_Check(item))) {
+                opserr << "PythonModule::getDoubleList error: item " << i << " in tuple is not a float (or int or bool)\n";
+                return -1;
+            }
+            (*data)(i) = PyFloat_AsDouble(item);
+            if (PyErr_Occurred()) {
+                return -1;
+            }
+        }
+    }
+    else {
+        opserr << "PythonModule::getDoubleList error: input is neither a list nor a tuple\n";
+        return -1;
+    }
+
+    return 0;
+}
+
 const char *
 PythonModule::getString() {
     if (wrapper.getCurrentArg() >= wrapper.getNumberArgs()) {
@@ -253,7 +302,7 @@ const char *PythonModule::getStringFromAll(char* buffer, int len) {
     // Py_DECREF(space);
     // Py_DECREF(empty);
 
-    int lenres = strlen(res) + 1;
+    int lenres = int(strlen(res)) + 1;
     if (lenres > len) {
         lenres = len;
     }
@@ -275,6 +324,43 @@ PythonModule::getStringCopy(char **stringPtr) {
     return -1;
 }
 
+int 
+PythonModule::evalDoubleStringExpression(const char* theExpression, double& current_val)
+{
+    if (theExpression == 0) {
+        opserr << "OPS_EvalDoubleStringExpression Error: Expression not set\n";
+        return -1;
+    }
+
+    // run the string and get results
+    PyObject* py_main = PyImport_AddModule("__main__");
+    if (py_main == NULL) {
+        opserr << "OPS_EvalDoubleStringExpression Error: cannot add module  __main__\n";
+        return -1;
+    }
+    PyObject* py_dict = PyModule_GetDict(py_main);
+    if (py_main == NULL) {
+        opserr << "OPS_EvalDoubleStringExpression Error: cannot get dict of module __main__\n";
+        return -1;
+    }
+    PyObject* PyRes = PyRun_String(theExpression, Py_eval_input, py_dict, py_dict);
+
+    if (PyRes == NULL) {
+        opserr << "OPS_EvalDoubleStringExpression Error: failed to evaluate expression\n";
+        return -1;
+    }
+
+    // get results
+    if (!(PyLong_Check(PyRes) || PyFloat_Check(PyRes) || PyBool_Check(PyRes))) {
+        opserr << "OPS_EvalDoubleStringExpression Error: the expression must return a float (or int or bool)\n";
+        return -1;
+    }
+    current_val = PyFloat_AsDouble(PyRes);
+
+    // done
+    return 0;
+}
+
 void
 PythonModule::resetInput(int cArg) {
     wrapper.resetCommandLine(cArg);
@@ -287,6 +373,21 @@ PythonModule::setInt(int *data, int numArgs, bool scalar) {
     return 0;
 }
 
+int PythonModule::setInt(std::vector<std::vector<int>> &data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setInt(std::map<const char*, int>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setInt(std::map<const char*, std::vector<int>>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
 int
 PythonModule::setDouble(double *data, int numArgs, bool scalar) {
     wrapper.setOutputs(data, numArgs, scalar);
@@ -294,10 +395,47 @@ PythonModule::setDouble(double *data, int numArgs, bool scalar) {
     return 0;
 }
 
+int PythonModule::setDouble(std::vector<std::vector<double>> &data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setDouble(std::map<const char*, double>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setDouble(std::map<const char*, std::vector<double>>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
 int
 PythonModule::setString(const char *str) {
     wrapper.setOutputs(str);
 
+    return 0;
+}
+
+int
+PythonModule::setString(std::vector<const char*>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int
+PythonModule::setString(std::vector<std::vector<const char*>>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setString(std::map<const char*, const char*>& data) {
+    wrapper.setOutputs(data);
+    return 0;
+}
+
+int PythonModule::setString(std::map<const char*, std::vector<const char*>>& data) {
+    wrapper.setOutputs(data);
     return 0;
 }
 
@@ -402,7 +540,7 @@ initopensees(void)
     PyModule_AddObject(pymodule, "OpenSeesError", st->error);
 
     // add OpenSeesParameter dict
-    PyObject *par = PyDict_New();
+    auto *par = PyDict_New();
     if (par == NULL) {
       INITERROR;
     }
@@ -410,16 +548,6 @@ initopensees(void)
         Py_DECREF(par);
         INITERROR;
     }
-
-    // char version[10];
-    // const char *py_version = ".6";
-    // for (int i = 0; i < 5; ++i) {
-    //     version[i] = OPS_VERSION[i];
-    // }
-    // for (int i = 0; i < 3; ++i) {
-    //     version[5 + i] = py_version[i];
-    // }
-    // PyModule_AddStringConstant(pymodule, "__version__", version);
 
     sserr.setError(st->error);
 

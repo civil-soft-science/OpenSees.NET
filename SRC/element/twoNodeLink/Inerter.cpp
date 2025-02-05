@@ -65,8 +65,8 @@ void* OPS_Inerter()
     
     // tags
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
         opserr << "WARNING: invalid integer data\n";
         return 0;
     }
@@ -81,9 +81,9 @@ void* OPS_Inerter()
     int numDIR = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int dir;
-        numdata = 1;
+        numData = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(numdata, &dir) < 0) {
+        if (OPS_GetIntInput(&numData, &dir) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -108,11 +108,11 @@ void* OPS_Inerter()
         opserr << "WARNING wrong number of ib values specified\n";
         return 0;
     }
-    numdata = 1;
+    numData = 1;
     Matrix ib(numDIR, numDIR);
     for (int i = 0; i < numDIR; i++) {
         for (int j = 0; j < numDIR; j++) {
-            if (OPS_GetDoubleInput(numdata, &ib(i, j)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &ib(i, j)) < 0) {
                 opserr << "WARNING invalid inertance value\n";
                 return 0;
             }
@@ -136,9 +136,9 @@ void* OPS_Inerter()
                 opserr << "WARNING: insufficient arguments after -orient\n";
                 return 0;
             }
-            numdata = 3;
+            numData = 3;
             x.resize(3);
-            if (OPS_GetDoubleInput(numdata, &x(0)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &x(0)) < 0) {
                 opserr << "WARNING: invalid -orient values\n";
                 return 0;
             }
@@ -148,7 +148,7 @@ void* OPS_Inerter()
                 continue;
             }
             y.resize(3);
-            if (OPS_GetDoubleInput(numdata, &y(0)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &y(0)) < 0) {
                 y = x;
                 x = Vector();
                 continue;
@@ -157,17 +157,17 @@ void* OPS_Inerter()
         else if (strcmp(type, "-pDelta") == 0) {
             Mratio.resize(4);
             Mratio.Zero();
-            numdata = 4;
+            numData = 4;
             double* ptr = &Mratio(0);
             if (ndm == 2) {
-                numdata = 2;
+                numData = 2;
                 ptr += 2;
             }
-            if (OPS_GetNumRemainingInputArgs() < numdata) {
+            if (OPS_GetNumRemainingInputArgs() < numData) {
                 opserr << "WARNING: insufficient data for -pDelta\n";
                 return 0;
             }
-            if (OPS_GetDoubleInput(numdata, ptr) < 0) {
+            if (OPS_GetDoubleInput(&numData, ptr) < 0) {
                 opserr << "WARNING: invalid -pDelta value\n";
                 return 0;
             }
@@ -180,12 +180,12 @@ void* OPS_Inerter()
                 opserr << "WARNING wrong number of cb values specified\n";
                 return 0;
             }
-            numdata = 1;
+            numData = 1;
             double cij;
             cb = new Matrix(numDIR, numDIR);
             for (int i = 0; i < numDIR; i++) {
                 for (int j = 0; j < numDIR; j++) {
-                    if (OPS_GetDoubleInput(numdata, &cij) < 0) {
+                    if (OPS_GetDoubleInput(&numData, &cij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete cb;
                         return 0;
@@ -199,8 +199,8 @@ void* OPS_Inerter()
                 opserr << "WANRING: insufficient mass value\n";
                 return 0;
             }
-            numdata = 1;
-            if (OPS_GetDoubleInput(numdata, &mass) < 0) {
+            numData = 1;
+            if (OPS_GetDoubleInput(&numData, &mass) < 0) {
                 opserr << "WANRING: invalid -mass value\n";
                 return 0;
             }
@@ -246,7 +246,7 @@ Inerter::Inerter(int tag, int dim, int Nd1, int Nd2,
         theNodes[i] = 0;
     
     // check the number of directions
-    if (numDIR < 1 || numDIR > 6)  {
+    if (numDIR < 1) {
         opserr << "Inerter::Inerter() - element: "
             << this->getTag() << " wrong number of directions\n";
         exit(-1);
@@ -267,24 +267,32 @@ Inerter::Inerter(int tag, int dim, int Nd1, int Nd2,
     
     // check p-delta moment distribution ratios
     if (Mratio.Size() == 4) {
-        if (Mratio(0) < 0.0 || Mratio(1) < 0.0 ||
-            Mratio(2) < 0.0 || Mratio(3) < 0.0) {
-            opserr << "Inerter::Inerter() - "
-                << "p-delta moment ratios can not be negative\n";
-            exit(-1);
-        }
-        if (Mratio(0) + Mratio(1) > 1.0) {
-            opserr << "Inerter::Inerter() - "
-                << "incorrect p-delta moment ratios:\nrMy1 + rMy2 = "
-                << Mratio(0) + Mratio(1) << " > 1.0\n";
-            exit(-1);
-        }
-        if (Mratio(2) + Mratio(3) > 1.0) {
-            opserr << "Inerter::Inerter() - "
-                << "incorrect p-delta moment ratios:\nrMz1 + rMz2 = "
-                << Mratio(2) + Mratio(3) << " > 1.0\n";
-            exit(-1);
-        }
+      for (int i = 0; i < 4; i++) {
+	if (Mratio(i) < 0.0) {
+	  opserr << "Inerter::Inerter() - "
+		 << "P-Delta moment ratio " << i+1 << " is negative\n";
+	  Mratio(i) = -Mratio(i);
+	  opserr << "Making the value positive " << Mratio(i) << endln;
+	}
+      }
+      double sumRatio = Mratio(0)+Mratio(1);
+      if (sumRatio > 1.0)  {
+	opserr << "Inerter::Inerter() - "
+	       << "incorrect P-Delta moment ratios:\nrMy1 + rMy2 = "
+	       << sumRatio << " > 1.0\n";
+	Mratio(0) = Mratio(0)/sumRatio;
+	Mratio(1) = Mratio(1)/sumRatio;
+	opserr << "Scaling ratios down to " << Mratio(0) << " and " << Mratio(1) << endln;
+      }
+      sumRatio = Mratio(2)+Mratio(3);
+      if (sumRatio > 1.0)  {
+	opserr << "Inerter::Inerter() - "
+	       << "incorrect P-Delta moment ratios:\nrMz1 + rMz2 = "
+	       << sumRatio << " > 1.0\n";
+	Mratio(2) = Mratio(2)/sumRatio;
+	Mratio(3) = Mratio(3)/sumRatio;
+	opserr << "Scaling ratios down to " << Mratio(2) << " and " << Mratio(3) << endln;	    
+      }
     }
     
     // initialize optional damping matrix
@@ -973,7 +981,7 @@ Response* Inerter::setResponse(const char **argv, int argc,
     output.attr("node1",connectedExternalNodes[0]);
     output.attr("node2",connectedExternalNodes[1]);
     
-    char outputData[10];
+    char outputData[80];
     
     // global forces
     if (strcmp(argv[0],"force") == 0 || strcmp(argv[0],"forces") == 0 ||

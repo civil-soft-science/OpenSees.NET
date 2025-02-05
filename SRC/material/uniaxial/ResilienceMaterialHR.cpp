@@ -28,7 +28,7 @@ OPS_ResilienceMaterialHR(void)
   int    iData[1];
   double dData[7];
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ResilienceMaterialHR tag" << endln;
     return 0;
   }
@@ -38,7 +38,7 @@ OPS_ResilienceMaterialHR(void)
     return 0;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial ResilienceMaterialHR " << iData[0] << " DY PY DPmax Pmax Ke Kd coefficient" << endln;
     return 0;
   }

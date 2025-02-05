@@ -70,7 +70,7 @@ OPS_ViscousDamper(void)
   double dData[8];
   int numData = 1;
         // Check tag
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  ViscousDamper tag" << endln;
     return 0;
   }
@@ -82,7 +82,7 @@ OPS_ViscousDamper(void)
     return 0;
   }
   
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args want: uniaxialMaterial ViscousDamper " << iData[0] <<  " K? C? Alpha? <LGap?> <NM? RelTol? AbsTol? MaxHalf?>" << endln;
     
     return 0;   

@@ -38,24 +38,24 @@ const double PYtolerance = 1.0e-12;
 
 void* OPS_PySimple3()
 {
-  int numdata = OPS_GetNumRemainingInputArgs();
-  if (numdata < 5) {
+  int numData = OPS_GetNumRemainingInputArgs();
+  if (numData < 5) {
     opserr << "WARNING insufficient arguments\n";
     opserr << "Want: uniaxialMaterial PySimple3 tag? pult? pyield? ke? C? dashpot? " << endln;
     return 0;
   }
     
   int idata[1];
-  numdata = 1;
-  if (OPS_GetIntInput(numdata, idata) < 0) {
+  numData = 1;
+  if (OPS_GetIntInput(&numData, idata) < 0) {
     opserr << "WARNING invalid int inputs\n";
     return 0;
   }
     
   double ddata[5] = {0,0,0,0,0};
-  numdata = OPS_GetNumRemainingInputArgs();
-  if (numdata > 5) numdata = 5;
-  if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+  numData = OPS_GetNumRemainingInputArgs();
+  if (numData > 5) numData = 5;
+  if (OPS_GetDoubleInput(&numData, ddata) < 0) {
     opserr << "WARNING invalid double inputs\n";
     return 0;
   }

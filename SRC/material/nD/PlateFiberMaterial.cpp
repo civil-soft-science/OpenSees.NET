@@ -44,16 +44,16 @@ Matrix  PlateFiberMaterial::tangent(5,5);
 
 void* OPS_PlateFiberMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 2) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 2) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: nDMaterial PlateFiber tag? matTag?" << endln;
 	return 0;
     }
 
     int tag[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata,tag)<0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData,tag)<0) {
 	opserr << "WARNING invalid tags\n";
 	return 0;
     }
@@ -453,13 +453,20 @@ PlateFiberMaterial::getInitialTangent()
 void  
 PlateFiberMaterial::Print(OPS_Stream &s, int flag)
 {
-  s << "General Plate Fiber Material \n";
-  s << " Tag: " << this->getTag() << "\n"; 
-  s << "using the 3D material : \n";
-
-  theMaterial->Print(s, flag);
-
-  return;
+  if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+    s << "\t\t\t{";
+    s << "\"name\": \"" << this->getTag() << "\", ";
+    s << "\"type\": \"PlateFiberMaterial\", ";
+    s << "\"material\": \"" << theMaterial->getTag() << "\"";    
+    s << "\t\t\t}";
+  }
+  else {
+    s << "General Plate Fiber Material \n";
+    s << " Tag: " << this->getTag() << "\n"; 
+    s << "using the 3D material : \n";
+    
+    theMaterial->Print(s, flag);
+  }
 }
 
 

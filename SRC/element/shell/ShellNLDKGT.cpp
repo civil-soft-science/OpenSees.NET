@@ -71,9 +71,27 @@ OPS_ShellNLDKGT(void)
   
   int iData[5];
   int numData = 5;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: element ShellNLDKGT \n";
     return 0;
+  }
+
+  int dampingTag = 0;
+  Damping *theDamping = 0;
+
+  while(OPS_GetNumRemainingInputArgs() > 0) {
+    const char* type = OPS_GetString();    
+    if(strcmp(type,"-damp") == 0) {
+	    if(OPS_GetNumRemainingInputArgs() > 0) {
+	      numData = 1;
+        if(OPS_GetIntInput(&numData,&dampingTag) < 0) return 0;
+		    theDamping = OPS_getDamping(dampingTag);
+        if(theDamping == 0) {
+	        opserr<<"damping not found\n";
+	        return 0;
+        }
+	    }
+    } 
   }
 
   SectionForceDeformation *theSection = OPS_getSectionForceDeformation(iData[4]);
@@ -84,9 +102,93 @@ OPS_ShellNLDKGT(void)
   }
   
   theElement = new ShellNLDKGT(iData[0], iData[1], iData[2], iData[3],
-			       *theSection);
+			       *theSection, theDamping);
 
   return theElement;
+}
+
+void *
+OPS_ShellNLDKGT(const ID& info)
+{
+
+    if (info.Size() == 0) {
+	opserr << "WARNING: info is empty -- ShellNLDKGT\n";
+	return 0;
+    }
+
+    // save data
+    static std::map<int,Vector> meshdata;
+    if (info(0) == 1) {
+
+	// check input
+	if (info.Size() < 2) {
+	    opserr << "WARNING: need info -- inmesh, meshtag\n";
+	    return 0;
+	}
+	if (OPS_GetNumRemainingInputArgs() < 1) {
+	    opserr << "WARNING: insuficient arguments -- secTag <-updateBasis>\n";
+	    return 0;
+	}
+
+	// save data
+	Vector& mdata = meshdata[info(1)];
+	mdata.resize(2);
+	mdata.Zero();
+
+	// get secTag
+	int numData = 1;
+	int secTag;
+	if (OPS_GetIntInput(&numData, &secTag) < 0) {
+	    opserr << "WARNING: failed to get section tag -- ShellNLDKGT\n";
+	    return 0;
+	}
+	mdata(0) = (double)secTag;
+
+	// update basis
+	if (OPS_GetNumRemainingInputArgs() > 0) {
+	    const char* type = OPS_GetString();
+	    if (strcmp(type, "-updateBasis") == 0) {
+		mdata(1) = 1;
+	    }
+	}
+
+	return &meshdata;
+    }
+
+    // load data
+    if (info(0) == 2) {
+	if (info.Size() < 6) {
+	    opserr << "WARNING: need info -- inmesh, meshtag, eleTag, nd1, nd2, nd3\n";
+	    return 0;
+	}
+	int eleTag = info(2);
+
+	// get data
+	Vector& mdata = meshdata[info(1)];
+	if (mdata.Size() < 2) {
+	    return 0;
+	}
+
+	// get section
+	int secTag = (int)mdata(0);
+	SectionForceDeformation *theSection = OPS_getSectionForceDeformation(secTag);
+	if (theSection == 0) {
+	    opserr << "ERROR:  element ShellNLDKGT " << info(2) << "section " << secTag << " not found\n";
+	    return 0;
+	}
+
+	// update basis
+	bool updateBasis = false;
+	if (mdata(1) == 1) {
+	    updateBasis = true;
+	}
+
+	return new ShellNLDKGT(info(2), info(3), info(4), info(5),
+			       *theSection);
+    }
+    
+
+    return 0;
 }
 
 
@@ -114,10 +216,13 @@ double ShellNLDKGT::wg[4] ;
 //null constructor
 ShellNLDKGT::ShellNLDKGT( ) :                              
 Element( 0, ELE_TAG_ShellNLDKGT ),
-connectedExternalNodes(3), CstrainGauss(32),TstrainGauss(32),load(0), Ki(0), nodePointers(), xl(), g1(), g2(), g3()
+connectedExternalNodes(3), CstrainGauss(32),TstrainGauss(32),load(0), Ki(0)
 { 
   for (int i = 0 ;  i < 4; i++ ) 
     materialPointers[i] = 0;
+
+  for (int i = 0 ;  i < 4; i++ ) 
+    theDamping[i] = 0;
 
   sg[0] = one_over_three;
   sg[1] =  one_over_five;
@@ -149,9 +254,10 @@ ShellNLDKGT::ShellNLDKGT(  int tag,
                          int node1,
                          int node2,
    	                     int node3,
-	                     SectionForceDeformation &theMaterial ) :
-Element( tag, ELE_TAG_ShellNLDKGT),
-connectedExternalNodes(3), CstrainGauss(32),TstrainGauss(32),load(0), Ki(0), nodePointers(), xl(), g1(), g2(), g3()
+	                     SectionForceDeformation &theMaterial,
+                       Damping *damping) :
+Element( tag, ELE_TAG_ShellNLDKGT ),
+connectedExternalNodes(3), CstrainGauss(32),TstrainGauss(32),load(0), Ki(0)
 {
   int i;
   connectedExternalNodes(0) = node1 ;           
@@ -167,6 +273,22 @@ connectedExternalNodes(3), CstrainGauss(32),TstrainGauss(32),load(0), Ki(0), nod
       } //end if
       
   } //end for i 
+
+  if (damping)
+  {
+    for (i = 0; i < 4; i++)
+    {
+      theDamping[i] =(*damping).getCopy();
+    
+      if (!theDamping[i]) {
+        opserr << "ShellNLDKGT::ShellNLDKGT -- failed to get copy of damping\n";
+      }
+    }
+  }
+  else
+  {
+    for (i = 0; i < 4; i++) theDamping[i] = 0;
+  }
 
   sg[0] = one_over_three;
   sg[1] =  one_over_five;
@@ -209,6 +331,15 @@ ShellNLDKGT::~ShellNLDKGT( )
        nodePointers[i] = 0 ;
   }
 
+  for (i = 0; i < 4; i++)
+  {
+    if (theDamping[i])
+    {
+      delete theDamping[i];
+      theDamping[i] = 0;
+    }
+  }
+
   if (load != 0)
     delete load;
 
@@ -238,9 +369,41 @@ void  ShellNLDKGT::setDomain( Domain *theDomain )
   //basis vectors and local coordinates
  updateBasis( ) ;                                    
 
+  for (i = 0; i < 4; i++)
+  {
+    if (theDamping[i] && theDamping[i]->setDomain(theDomain, 8)) {
+      opserr << "ShellNLDKGT::setDomain -- Error initializing damping\n";
+      exit(-1);
+    }
+  }
+
   this->DomainComponent::setDomain(theDomain);
 }
 
+
+int
+ShellNLDKGT::setDamping(Domain *theDomain, Damping *damping)
+{
+  if (theDomain && damping)
+  {
+    for (int i = 0; i < 4; i++)
+    {
+      if (theDamping[i]) delete theDamping[i];
+
+      theDamping[i] =(*damping).getCopy();
+    
+      if (!theDamping[i]) {
+        opserr << "ShellNLDKGT::setDamping -- failed to get copy of damping\n";
+        return -1;
+      }
+      if (theDamping[i]->setDomain(theDomain, 8)) {
+        opserr << "ShellNLDKGT::setDamping -- Error initializing damping\n";
+        return -2;
+      }
+    }
+  }
+  return 0;
+}
 
 //get the number of external nodes
 int  ShellNLDKGT::getNumExternalNodes( ) const
@@ -282,6 +445,9 @@ int  ShellNLDKGT::commitState( )
   for (int i = 0; i < 4; i++ ) 
     success += materialPointers[i]->commitState( ) ;
 
+  for (int i = 0; i < 4; i++ )
+    if (theDamping[i]) success += theDamping[i]->commitState();
+
   //add for geometric nonlinearity
   //save the prev. step strain
   CstrainGauss = TstrainGauss;
@@ -300,6 +466,9 @@ int  ShellNLDKGT::revertToLastCommit( )
   for ( i = 0; i < 4; i++ ) 
     success += materialPointers[i]->revertToLastCommit( ) ;
 
+  for (int i = 0; i < 4; i++ )
+    if (theDamping[i]) success += theDamping[i]->revertToLastCommit();
+  
   //add for geometric nonlinearity
  TstrainGauss = CstrainGauss;
   
@@ -316,6 +485,9 @@ int  ShellNLDKGT::revertToStart( )
   for ( i = 0; i < 4; i++ ) 
     success += materialPointers[i]->revertToStart( ) ;
 
+  for (int i = 0; i < 4; i++ )
+    if (theDamping[i]) success += theDamping[i]->revertToStart();
+  
    //add for geometric nonlinearity
   CstrainGauss.Zero( );
   
@@ -405,7 +577,8 @@ ShellNLDKGT::setResponse(const char **argv, int argc, OPS_Stream &output)
     theResponse = new ElementResponse(this, 1, this->getResistingForce());
   } 
 
-  else if (strcmp(argv[0],"material") == 0 || strcmp(argv[0],"Material") == 0) {
+  else if (strcmp(argv[0],"material") == 0 || strcmp(argv[0],"Material") == 0 ||
+	   strcmp(argv[0],"section") == 0) {
     if (argc < 2) {
       opserr << "ShellNLDKGT::setResponse() - need to specify more data\n";
       return 0;
@@ -437,7 +610,7 @@ ShellNLDKGT::setResponse(const char **argv, int argc, OPS_Stream &output)
       
       output.tag("ResponseType","p11");
       output.tag("ResponseType","p22");
-      output.tag("ResponseType","p1212");
+      output.tag("ResponseType","p12");
       output.tag("ResponseType","m11");
       output.tag("ResponseType","m22");
       output.tag("ResponseType","m12");
@@ -477,6 +650,34 @@ ShellNLDKGT::setResponse(const char **argv, int argc, OPS_Stream &output)
     }
     
     theResponse =  new ElementResponse(this, 3, Vector(32));
+  }
+
+  else if (theDamping[0] && strcmp(argv[0],"dampingStresses") ==0) {
+
+    for (int i=0; i<4; i++) {
+      output.tag("GaussPoint");
+      output.attr("number",i+1);
+      output.attr("eta",sg[i]);
+      output.attr("neta",tg[i]);
+      
+      output.tag("SectionForceDeformation");
+      output.attr("classType", theDamping[i]->getClassTag());
+      output.attr("tag", theDamping[i]->getTag());
+      
+      output.tag("ResponseType","p11");
+      output.tag("ResponseType","p22");
+      output.tag("ResponseType","p12");
+      output.tag("ResponseType","m11");
+      output.tag("ResponseType","m22");
+      output.tag("ResponseType","m12");
+      output.tag("ResponseType","q1");
+      output.tag("ResponseType","q2");
+      
+      output.endTag(); // GaussPoint
+      output.endTag(); // NdMaterialOutput
+    }
+    
+    theResponse =  new ElementResponse(this, 4, Vector(32));
   }
 
   output.endTag();
@@ -530,6 +731,23 @@ ShellNLDKGT::getResponse(int responseID, Information &eleInfo)
     }
     return eleInfo.setVector(strains);
     break;
+  case 4: // damping stresses
+    for (int i = 0; i < 4; i++) {
+
+      // Get material stress response
+      const Vector &sigma = theDamping[i]->getDampingForce();
+      stresses(cnt) = sigma(0);
+      stresses(cnt+1) = sigma(1);
+      stresses(cnt+2) = sigma(2);
+      stresses(cnt+3) = sigma(3);
+      stresses(cnt+4) = sigma(4);
+      stresses(cnt+5) = sigma(5);
+      stresses(cnt+6) = sigma(6);
+      stresses(cnt+7) = sigma(7);
+      cnt += 8;
+    }
+    return eleInfo.setVector(stresses);
+    break;
   default:
     return -1;
   }
@@ -538,6 +756,19 @@ ShellNLDKGT::getResponse(int responseID, Information &eleInfo)
   //return 0;
 }
 
+int
+ShellNLDKGT::setParameter(const char **argv, int argc, Parameter &param)
+{
+  int res = -1;
+  // Send to all sections
+  for (int i = 0; i < 4; i++) {
+    int secRes = materialPointers[i]->setParameter(argv, argc, param);
+    if (secRes != -1) {
+      res = secRes;
+    }
+  }
+  return res;
+}
 
 //return stiffness matrix 
 const Matrix&  ShellNLDKGT::getTangentStiff( ) 
@@ -568,7 +799,6 @@ const Matrix&  ShellNLDKGT::getInitialStiff( )
 	int p1,q1;
 	int p2,q2;
 	int p3,q3;
-	int pp,qq;
 	int success;
 	double volume = 0.0;
 	static double xsj; //determinant jacabian matrix
@@ -844,6 +1074,7 @@ const Matrix&  ShellNLDKGT::getInitialStiff( )
 		membraneForce *= dvol[i]; //for stiffJKgeo integration
 
 		dd = materialPointers[i]->getInitialTangent( );
+    if(theDamping[i]) dd *= theDamping[i]->getStiffnessMultiplier();
 		dd *= dvol[i];
 
 		//tangent stiff matrix calculations node loops
@@ -1219,6 +1450,8 @@ ShellNLDKGT::formResidAndTangent( int tang_flag )
 	static Vector Cstress(nstress);
 	//static Vector dstress(nstress); //add for geometric nonlinearity
 
+  static Vector dampingStress(nstress); // damping stress resultants
+
 	static Matrix dd(nstress,nstress);//material tangent
 
 	//static Matrix J0(2,2); //Jacobian at center
@@ -1427,7 +1660,13 @@ ShellNLDKGT::formResidAndTangent( int tang_flag )
 		//compute the stress
 		stress = materialPointers[i]->getStressResultant( );
 	
-		
+    if (theDamping[i])
+    {
+      theDamping[i]->update(stress);
+      dampingStress = theDamping[i]->getDampingForce();
+      dampingStress *= dvol[i];
+    }
+
 		//add for geometric nonlinearity
 		//update strain in gauss points
 		//define TstrainGauss
@@ -1449,6 +1688,7 @@ ShellNLDKGT::formResidAndTangent( int tang_flag )
 
 		if(tang_flag == 1){
 			dd = materialPointers[i]->getSectionTangent( );
+      if(theDamping[i]) dd *= theDamping[i]->getStiffnessMultiplier();
 			dd *= dvol[i];
 		}//end if tang_flag
 
@@ -1477,6 +1717,7 @@ ShellNLDKGT::formResidAndTangent( int tang_flag )
 
 			//compute residual force
 			residJlocal.addMatrixVector(0.0,BJtran,stress,1.0);
+      if (theDamping[i]) residJlocal.addMatrixVector(1.0, BJtran,dampingStress,1.0 ) ;
 			residJ1.addMatrixVector(0.0,PmatTran,residJlocal,1.0);
 			residJ.addMatrixVector(0.0,TmatTran,residJ1,1.0);
 
@@ -1732,8 +1973,6 @@ ShellNLDKGT::assembleB( const Matrix &Bmembrane,
 	static Matrix B(8,6);
 	
 	int p,q;
-
-	int pp;
 
 // For Shell : 
 //
@@ -2230,7 +2469,7 @@ int  ShellNLDKGT::sendSelf (int commitTag, Channel &theChannel)
   // Now quad sends the ids of its materials
   int matDbTag;
   
-  static ID idData(12);
+  static ID idData(14);
   
   int i;
   for (i = 0; i < 4; i++) {
@@ -2251,6 +2490,20 @@ int  ShellNLDKGT::sendSelf (int commitTag, Channel &theChannel)
   idData(10) = connectedExternalNodes(1);
   idData(11) = connectedExternalNodes(2);
 
+  idData(12) = 0;
+  idData(13) = 0;
+  if (theDamping[0]) {
+    idData(12) = theDamping[0]->getClassTag();
+    int dbTag = theDamping[0]->getDbTag();
+    if (dbTag == 0) {
+      dbTag = theChannel.getDbTag();
+      if (dbTag != 0)
+        for (i = 0 ;  i < 4; i++)
+	        theDamping[i]->setDbTag(dbTag);
+	  }
+    idData(13) = dbTag;
+  }
+
   res += theChannel.sendID(dataTag, commitTag, idData);
   if (res < 0) {
     opserr << "WARNING ShellNLDKGT::sendSelf() - " << this->getTag() << " failed to send ID\n";
@@ -2270,12 +2523,29 @@ int  ShellNLDKGT::sendSelf (int commitTag, Channel &theChannel)
     return res;
   }
 
+  res += theChannel.sendVector(dataTag, commitTag, CstrainGauss);
+  if (res < 0) {
+    opserr << "WARNING ShellNLDKGT::sendSelf() - " << this->getTag() << " failed to send committed strains\n";
+    return res;
+  }  
+
   // Finally, quad asks its material objects to send themselves
   for (i = 0; i < 4; i++) {
     res += materialPointers[i]->sendSelf(commitTag, theChannel);
     if (res < 0) {
       opserr << "WARNING ShellNLDKGT::sendSelf() - " << this->getTag() << " failed to send its Material\n";
       return res;
+    }
+  }
+
+  // Ask the Damping to send itself
+  if (theDamping[0]) {
+    for (int i = 0 ;  i < 4; i++) {
+      res += theDamping[i]->sendSelf(commitTag, theChannel);
+      if (res < 0) {
+        opserr << "ShellNLDKGT::sendSelf -- could not send Damping\n";
+        return res;
+      }
     }
   }
 
@@ -2291,7 +2561,7 @@ int  ShellNLDKGT::recvSelf (int commitTag,
   
   int dataTag = this->getDbTag();
 
-  static ID idData(12);
+  static ID idData(14);
   // Quad now receives the tags of its four external nodes
   res += theChannel.recvID(dataTag, commitTag, idData);
   if (res < 0) {
@@ -2318,6 +2588,13 @@ int  ShellNLDKGT::recvSelf (int commitTag,
   betaK0 = vectData(2);
   betaKc = vectData(3);
 
+  res += theChannel.recvVector(dataTag, commitTag, CstrainGauss);
+  if (res < 0) {
+    opserr << "WARNING ShellNLDKGT::sendSelf() - " << this->getTag() << " failed to send ID\n";
+    return res;
+  }
+  TstrainGauss = CstrainGauss;
+  
   int i;
 
   if (materialPointers[0] == 0) {
@@ -2364,6 +2641,49 @@ int  ShellNLDKGT::recvSelf (int commitTag,
     }
   }
   
+  int dmpTag = (int)idData(13);
+  if (dmpTag) {
+    for (i = 0 ;  i < 4; i++) {
+      // Check if the Damping is null; if so, get a new one
+      if (theDamping[i] == 0) {
+        theDamping[i] = theBroker.getNewDamping(dmpTag);
+        if (theDamping[i] == 0) {
+          opserr << "ShellNLDKGT::recvSelf -- could not get a Damping\n";
+          exit(-1);
+        }
+      }
+  
+      // Check that the Damping is of the right type; if not, delete
+      // the current one and get a new one of the right type
+      if (theDamping[i]->getClassTag() != dmpTag) {
+        delete theDamping[i];
+        theDamping[i] = theBroker.getNewDamping(dmpTag);
+        if (theDamping[i] == 0) {
+          opserr << "ShellNLDKGT::recvSelf -- could not get a Damping\n";
+          exit(-1);
+        }
+      }
+  
+      // Now, receive the Damping
+      theDamping[i]->setDbTag((int)idData(14));
+      res += theDamping[i]->recvSelf(commitTag, theChannel, theBroker);
+      if (res < 0) {
+        opserr << "ShellNLDKGT::recvSelf -- could not receive Damping\n";
+        return res;
+      }
+    }
+  }
+  else {
+    for (i = 0; i < 4; i++)
+    {
+      if (theDamping[i])
+      {
+        delete theDamping[i];
+        theDamping[i] = 0;
+      }
+    }
+  }
+    
   return res;
 }
 //**************************************************************************

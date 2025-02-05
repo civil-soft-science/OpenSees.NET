@@ -65,7 +65,7 @@ void* OPS_MINI()
 	num = 5;
     }
     int idata[5];
-    if(OPS_GetIntInput(num,idata)<0) {
+    if(OPS_GetIntInput(&num,idata)<0) {
 	opserr << "WARNING: failed to read integers -- MINI\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_MINI()
 	num = 7;
     }
     double data[7];
-    if(OPS_GetDoubleInput(num,data) < 0) {
+    if(OPS_GetDoubleInput(&num,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- MINI\n";
 	return 0;
     }

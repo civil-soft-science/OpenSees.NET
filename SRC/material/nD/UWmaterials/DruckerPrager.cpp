@@ -77,7 +77,7 @@ OPS_DruckerPragerMaterial(void)
   double dData[14];
 
   int numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid nDMaterial DruckerPrager material  tag" << endln;
     return 0;
   }
@@ -89,7 +89,7 @@ OPS_DruckerPragerMaterial(void)
 	  numData = 13;
   }
 
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial DruckerPrager material  with tag: " << tag << endln;
     return 0;
   }

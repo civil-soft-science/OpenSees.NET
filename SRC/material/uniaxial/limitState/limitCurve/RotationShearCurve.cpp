@@ -88,7 +88,7 @@ OPS_RotationShearCurve(void)
   
   int numData;
   numData = 2;
-  if (OPS_GetIntInput(numData, iTagData) != 0) {
+  if (OPS_GetIntInput(&numData, iTagData) != 0) {
     opserr << "WARNING RotationShearCurve -- invalid crvTag? eleTag?\n" << endln;
     return 0;
   }
@@ -106,7 +106,7 @@ OPS_RotationShearCurve(void)
     return 0;
   }
   numData = 3;
-  if (OPS_GetIntInput(numData, iNodeData) != 0) {
+  if (OPS_GetIntInput(&numData, iNodeData) != 0) {
     opserr << "WARNING RotationShearCurve -- invalid ndI? ndJ? rotAxis?\n" << endln;
     return 0;
   }
@@ -132,7 +132,7 @@ OPS_RotationShearCurve(void)
   }
   if (argc == 9) {
     numData = 3;
-    if (OPS_GetDoubleInput(numData, dKdegData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dKdegData) != 0) {
       opserr << "WARNING RotationShearCurve -- invalid Vn? Vr? Kdeg?\n" << endln;
       return 0;
     }
@@ -155,7 +155,7 @@ OPS_RotationShearCurve(void)
       return 0;
     }
     numData = 1;
-    if (OPS_GetDoubleInput(numData, dRotLimData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dRotLimData) != 0) {
       opserr << "WARNING RotationShearCurve -- invalid rotLim?\n" << endln;
       return 0;
     }
@@ -177,7 +177,7 @@ OPS_RotationShearCurve(void)
   } 
   else {
     numData = 3;
-    if (OPS_GetDoubleInput(numData, dKdegData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dKdegData) != 0) {
       opserr << "WARNING RotationShearCurve -- invalid Vn? Vr? Kdeg?\n" << endln;
       return 0;
     }
@@ -202,7 +202,7 @@ OPS_RotationShearCurve(void)
       return 0;
     }
     numData = 1;
-    if (OPS_GetIntInput(numData, iTypeData) != 0) {
+    if (OPS_GetIntInput(&numData, iTypeData) != 0) {
       opserr << "WARNING RotationShearCurve -- invalid defType?\n" << endln;
       return 0;
     }
@@ -216,7 +216,7 @@ OPS_RotationShearCurve(void)
       return 0;
     }
     numData = 14;
-    if (OPS_GetDoubleInput(numData, dPropData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dPropData) != 0) {
       opserr << "WARNING RotationShearCurve -- invalid b? d? h? L? st? As? Acc? ld? db? rhot? f'c? fy? fyt? delta?\n" << endln;
       return 0;
     }

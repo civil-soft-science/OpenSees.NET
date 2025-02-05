@@ -42,8 +42,8 @@
 
 void* OPS_DuctileFracture()
 {
-	int numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata < 5) {
+	int numData = OPS_GetNumRemainingInputArgs();
+	if (numData < 5) {
 		opserr << "WARNING insufficient arguments\n";
 		opserr << "Want: uniaxialMaterial DuctileFracture tag? matTag?";
 		opserr << " -c_mono c_mono? -c_cycl c_cycl? -c_symm c_symm?" << endln;
@@ -55,8 +55,8 @@ void* OPS_DuctileFracture()
 
   // material tags
 	int idata[2];
-	numdata = 2;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
+	numData = 2;
+	if (OPS_GetIntInput(&numData, idata) < 0) {
 		opserr << "WARNING invalid int inputs\n";
 		return 0;
 	}
@@ -78,89 +78,89 @@ void* OPS_DuctileFracture()
 	double c_dete = 0.0; // deteriroation coefficient (c_dete = 0: no deterioration)
 
   // modeling parameter inputs
-	numdata = 1;
+	numData = 1;
 	while (OPS_GetNumRemainingInputArgs() > 1) {
 		const char* type = OPS_GetString();
 		if (strcmp(type, "-FImax") == 0) {
-			if (OPS_GetDouble(numdata, &FImax) < 0) {
+			if (OPS_GetDouble(&numData, &FImax) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_mono") == 0) {
-			if (OPS_GetDouble(numdata, &c_mono) < 0) {
+			if (OPS_GetDouble(&numData, &c_mono) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_cycl") == 0) {
-			if (OPS_GetDouble(numdata, &c_cycl) < 0) {
+			if (OPS_GetDouble(&numData, &c_cycl) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_symm") == 0) {
-			if (OPS_GetDouble(numdata, &c_symm) < 0) {
+			if (OPS_GetDouble(&numData, &c_symm) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-E_s") == 0) {
-			if (OPS_GetDouble(numdata, &E_s) < 0) {
+			if (OPS_GetDouble(&numData, &E_s) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-esu") == 0) {
-			if (OPS_GetDouble(numdata, &esu) < 0) {
+			if (OPS_GetDouble(&numData, &esu) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-k1") == 0) {
-			if (OPS_GetDouble(numdata, &k1) < 0) {
+			if (OPS_GetDouble(&numData, &k1) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-k2") == 0) {
-			if (OPS_GetDouble(numdata, &k2) < 0) {
+			if (OPS_GetDouble(&numData, &k2) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-db") == 0) {
-			if (OPS_GetDouble(numdata, &db) < 0) {
+			if (OPS_GetDouble(&numData, &db) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-b1") == 0) {
-			if (OPS_GetDouble(numdata, &b1) < 0) {
+			if (OPS_GetDouble(&numData, &b1) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-b2") == 0) {
-			if (OPS_GetDouble(numdata, &b2) < 0) {
+			if (OPS_GetDouble(&numData, &b2) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-c_dete") == 0) {
-			if (OPS_GetDouble(numdata, &c_dete) < 0) {
+			if (OPS_GetDouble(&numData, &c_dete) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
     else if (strcmp(type, "-minStrain") == 0) {
-			if (OPS_GetDouble(numdata, &epsmin) < 0) {
+			if (OPS_GetDouble(&numData, &epsmin) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
 		}
 		else if (strcmp(type, "-maxStrain") == 0) {
-			if (OPS_GetDouble(numdata, &epsmax) < 0) {
+			if (OPS_GetDouble(&numData, &epsmax) < 0) {
 				opserr << "WARNING invalid double inputs\n";
 				return 0;
 			}
@@ -448,6 +448,19 @@ DuctileFracture::revertToLastCommit(void)
 int 
 DuctileFracture::revertToStart(void)
 {
+  FI  = 0; // Fracture index
+  FI_VGM	= 0; // Void growth damage component
+  FI_MVC	= 0; // Multi-void coalescence damage component
+  ep_prev	= 0; // Previous plastic strain
+  ep_curr	= 0; // Current plastic strain
+  dep		= 0; // Incremental plastic strain
+  cep_comp	= 0; // Cumulative compressive plastic strain
+  es_local = 0; // Local strain
+  T = 0; // Triaxiality
+  es_max = 0; // The maximum steel strain
+  es_min = 0; // The minimum steel strain
+  e_memo = 0; // The strain memory factor
+	
   fracFailure = false;
   return theMaterial->revertToStart();
 }

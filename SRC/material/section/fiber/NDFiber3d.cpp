@@ -63,12 +63,12 @@ void* OPS_NDFiber3d()
     // get data
     int numData = 3;
     double data[3];
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
 
     // get mat tag
     int tag;
     numData = 1;
-    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
 
     // get material
     NDMaterial* theMat = OPS_getNDMaterial(tag);

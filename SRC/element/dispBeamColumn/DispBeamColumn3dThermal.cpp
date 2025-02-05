@@ -66,7 +66,7 @@ void* OPS_DispBeamColumn3dThermal()
     // inputs:
     int iData[5];
     int numData = 5;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -78,7 +78,7 @@ void* OPS_DispBeamColumn3dThermal()
 	const char* type = OPS_GetString();
 	if(strcmp(type,"-mass") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(numData,&mass) < 0) {
+		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
 		    opserr<<"WARNING: invalid mass\n";
 		    return 0;
 		}
@@ -852,10 +852,7 @@ else if (type == LOAD_TAG_Beam3dThermalAction) {
 	// Zero for integration
 	//q.Zero();
 	  Vector* dataMixV;
-	  if(data.Size()==18)
-		  dataMixV = new Vector(18);
-	  else
-		  dataMixV = new Vector(25);
+      dataMixV = new Vector(data.Size());
 
       *dataMixV=data;
 

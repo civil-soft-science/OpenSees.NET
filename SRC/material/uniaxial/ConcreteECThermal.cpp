@@ -50,7 +50,7 @@ OPS_ConcreteECThermal(void)
   double dData[7];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial ConcreteECThermal tag" << endln;
     return 0;
   }
@@ -62,7 +62,7 @@ OPS_ConcreteECThermal(void)
     return 0;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial ConcreteECThermal " << iData[0] << "fpc? epsc0? fpcu? epscu? rat? ft? Ets?\n";
     return 0;
   }

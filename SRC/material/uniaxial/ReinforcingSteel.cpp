@@ -50,8 +50,8 @@
 
 void* OPS_ReinforcingSteel()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 7) {
 	opserr<<"WARNING insufficient arguments\n";
 	opserr<<"uniaxialMaterial ReinforcingSteel ";
 	opserr<<"tag? fy? fu? Es? Esh? esh? eult? ";
@@ -60,15 +60,15 @@ void* OPS_ReinforcingSteel()
     }
 
     int tag;
-    numdata = 1;
-    if(OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if(OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[6];
-    numdata = 6;
-    if(OPS_GetDoubleInput(numdata,data) < 0) {
+    numData = 6;
+    if(OPS_GetDoubleInput(&numData,data) < 0) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }
@@ -83,30 +83,30 @@ void* OPS_ReinforcingSteel()
 	const char* type = OPS_GetString();
 
 	if(strcmp(type,"-GABuck") == 0) {
-	    numdata = OPS_GetNumRemainingInputArgs();
-	    if(numdata < 4) {
+	    numData = OPS_GetNumRemainingInputArgs();
+	    if(numData < 4) {
 		opserr << "WARNING insufficient optional arguments for -GABuck\n";
 		opserr << "Want: <-GABuck lsr? beta? r? gama?>\n";
 		return 0;
 	    }
 	    buckModel = 1;
-	    numdata = 4;
-	    if(OPS_GetDoubleInput(numdata,gabuckdata) < 0) {
+	    numData = 4;
+	    if(OPS_GetDoubleInput(&numData,gabuckdata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
 	    
 	} else if(strcmp(type, "-DMBuck") == 0) {
-	    numdata = OPS_GetNumRemainingInputArgs();
-	    if(numdata < 2) {
+	    numData = OPS_GetNumRemainingInputArgs();
+	    if(numData < 2) {
 		opserr << "WARNING insufficient optional arguments for -DMBuck\n";
 		opserr << "Want: <-DMBuck lsr? alpha?>\n";
 		return 0;
 	    }
 	    buckModel = 2;
-	    numdata = 2;
+	    numData = 2;
 	    
-	    if(OPS_GetDoubleInput(numdata,dmbuckdata) < 0) {
+	    if(OPS_GetDoubleInput(&numData,dmbuckdata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
@@ -116,39 +116,39 @@ void* OPS_ReinforcingSteel()
 	    }
 	    
 	} else if(strcmp(type,"-CMFatigue") == 0) {
-	    numdata = OPS_GetNumRemainingInputArgs();
-	    if(numdata < 3) {
+	    numData = OPS_GetNumRemainingInputArgs();
+	    if(numData < 3) {
 		opserr << "WARNING insufficient optional arguments for -CMFatigue\n";
 		opserr << "Want: <-CMFatigue Cf? alpha? Cd?>\n";
 		return 0;
 	    }
-	    numdata = 3;
-	    if(OPS_GetDoubleInput(numdata,fatiguedata) < 0) {
+	    numData = 3;
+	    if(OPS_GetDoubleInput(&numData,fatiguedata) < 0) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
 
 	} else if(strcmp(type, "-MPCurveParams") == 0) {
-	    numdata = OPS_GetNumRemainingInputArgs();
-	    if (numdata < 3) {
+	    numData = OPS_GetNumRemainingInputArgs();
+	    if (numData < 3) {
 		opserr << "WARNING insufficient optional arguments for -MPCurveParams\n";
 		opserr << "Want: <-CMFatigue R1? R2? R3?>\n";
 		return 0;
 	    }
-	    numdata = 3;
-	    if (OPS_GetDoubleInput(numdata,mpdata)) {
+	    numData = 3;
+	    if (OPS_GetDoubleInput(&numData,mpdata)) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-IsoHard") == 0) {
-	    numdata = OPS_GetNumRemainingInputArgs();
-	    if (numdata < 2) {
+	    numData = OPS_GetNumRemainingInputArgs();
+	    if (numData < 2) {
 		opserr << "WARNING insufficient optional arguments for -IsoHard\n";
 		opserr << "Want: <-IsoHard a1 limit>\n";
 		return 0;
 	    }
-	    numdata = 2;
-	    if (OPS_GetDoubleInput(numdata,isodata)) {
+	    numData = 2;
+	    if (OPS_GetDoubleInput(&numData,isodata)) {
 		opserr << "WARNING invalid double data\n";
 		return 0;
 	    }

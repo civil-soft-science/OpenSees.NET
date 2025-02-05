@@ -32,7 +32,7 @@ OPS_ConcreteD(void)
   
   int numData;
   numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid ConcreteD tag" << endln;
     return 0;
   }
@@ -46,7 +46,7 @@ OPS_ConcreteD(void)
     }
   
   if(numData==7)  {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid #args: uniaxialMaterial ConcreteD "<< iData[0] <<"(fcr? epcr? ft? eptr? Ec? alphac? alphat? <cesp? etap?>)" << endln;
       return 0;
     } 
@@ -55,7 +55,7 @@ OPS_ConcreteD(void)
 				dData[3],dData[4],dData[5],dData[6]);  
     
   }else if (numData==9){
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid #args: uniaxialMaterial ConcreteD "<< iData[0] <<"(fcr? epcr? ft? eptr? Ec? alphac? alphat? <cesp? etap?>)" << endln;
       return 0;
     } 

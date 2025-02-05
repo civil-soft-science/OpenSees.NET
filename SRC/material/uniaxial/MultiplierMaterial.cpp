@@ -46,9 +46,8 @@
 #include <OPS_Globals.h>
 
 #include <elementAPI.h>
-#define OPS_Export 
 
-OPS_Export void *
+void *
 OPS_MultiplierMaterial(void)
 {
   // Pointer to a uniaxial material that will be returned
@@ -57,13 +56,13 @@ OPS_MultiplierMaterial(void)
   int    iData[2];
 
   int argc = OPS_GetNumRemainingInputArgs();
-  if (argc < 2) {
+  if (argc < 3) {
     opserr << "WARNING insufficient args, uniaxialMaterial Multiplier $tag $otherTag $multiplier" << endln;
     return 0;
   }
 
   int numData = 2;
-  if (OPS_GetIntInput(numData, iData) < 0) {
+  if (OPS_GetIntInput(&numData, iData) < 0) {
     opserr << "WARNING invalid uniaxialMaterial Multiplier $tag $otherTag $multiplier" << endln;
     return 0;
   }
@@ -76,7 +75,7 @@ OPS_MultiplierMaterial(void)
 
   double multiplier = 1.0;
   numData = 1;
-  if (OPS_GetDouble(numData,&multiplier) < 0) {
+  if (OPS_GetDouble(&numData,&multiplier) < 0) {
     opserr << "WARNING invalid input uniaxialMaterial Multiplier tag: " << iData[0] << endln;
     return 0;
   }
@@ -416,4 +415,12 @@ MultiplierMaterial::commitSensitivity(double strainGradient, int gradIndex, int 
     return theMaterial->commitSensitivity(strainGradient, gradIndex, numGrads);
   else
     return -1;
+}
+
+double MultiplierMaterial::getEnergy(void)
+{
+    if (theMaterial)
+        return multiplier * theMaterial->getEnergy();
+    else
+        return 0.0;
 }

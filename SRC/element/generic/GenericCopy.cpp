@@ -50,8 +50,8 @@ void* OPS_GenericCopy()
     
     // tags
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING: invalid tag\n";
         return 0;
     }
@@ -66,8 +66,8 @@ void* OPS_GenericCopy()
     int numNodes = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int node;
-        numdata = 1;
-        if (OPS_GetIntInput(numdata, &node) < 0) {
+        numData = 1;
+        if (OPS_GetIntInput(&numData, &node) < 0) {
             break;
         }
         nodes(numNodes++) = node;
@@ -76,13 +76,13 @@ void* OPS_GenericCopy()
     
     // source element
     int srcTag;
-    numdata = 1;
+    numData = 1;
     type = OPS_GetString();
     if (strcmp(type, "-src") != 0) {
         opserr << "WARNING expecting -src srcTag\n";
         return 0;
     }
-    if (OPS_GetIntInput(numdata, &srcTag) < 0) {
+    if (OPS_GetIntInput(&numData, &srcTag) < 0) {
         opserr << "WARNING: invalid srcTag\n";
         return 0;
     }

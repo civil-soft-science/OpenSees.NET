@@ -56,8 +56,8 @@ void* OPS_UniaxialJ2Plasticity()
     }    
       
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial UniaxialJ2Plasticity tag\n";
 	return 0;	
     }
@@ -65,8 +65,8 @@ void* OPS_UniaxialJ2Plasticity()
     // double E, sigmaY, Hkin, Hiso;
     // Hiso =0.0;
     double data[4] = {0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 4) numdata = 4;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 4) numData = 4;
 	      
     // Parsing was successful, allocate the material
     return new UniaxialJ2Plasticity(tag, data[0], data[1], data[2], data[3]);

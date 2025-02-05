@@ -53,19 +53,19 @@ void* OPS_Trilinwp()
   int numDatatot;
 
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[0]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[0]) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Trilinwp tag" << endln;
     return 0;
   }
   numDatatot=numData;
   numData = 19;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid parameters\n";
     return 0;	
   }
   numDatatot=numDatatot+numData;
    numData = 1;
-  if (OPS_GetIntInput(numData, &iData[1]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[1]) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Trilinwp type" << endln;
     return 0;
   }

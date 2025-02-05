@@ -114,20 +114,20 @@ OPS_PM4SandMaterial(void)
 	oData[23] = 1.0e-8;	// TolR
 
 	int numData = 1;
-	if (OPS_GetInt(numData, &tag) != 0) {
+	if (OPS_GetInt(&numData, &tag) != 0) {
 		opserr << "WARNING invalid nDMaterial PM4Sand material tag" << endln;
 		return 0;
 	}
 
 	numData = 4;
-	if (OPS_GetDouble(numData, dData) != 0) {
+	if (OPS_GetDouble(&numData, dData) != 0) {
 		opserr << "WARNING invalid material data for nDMaterial PM4Sand material  with tag: " << tag << endln;
 		return 0;
 	}
 
 	numData = numArgs - 5;
 	if (numData != 0)
-		if (OPS_GetDouble(numData, oData) != 0) {
+		if (OPS_GetDouble(&numData, oData) != 0) {
 			opserr << "WARNING invalid material data for nDMaterial PM4Sand material  with tag: " << tag << endln;
 			return 0;
 		}
@@ -734,7 +734,7 @@ PM4Sand::setParameter(const char **argv, int argc, Parameter &param)
 	if (theMaterialTag == this->getTag()) {
 
 		if (strcmp(argv[0], "updateMaterialStage") == 0) {     // enforce elastic/elastoplastic response
-			opserr << this->getTag() << " update Material Stage\n";
+			//opserr << this->getTag() << " update Material Stage\n";
 			return param.addObject(1, this);
 		}
 		else if (strcmp(argv[0], "materialState") == 0) {     // enforce elastic/elastoplastic response

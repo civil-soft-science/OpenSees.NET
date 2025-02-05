@@ -37,20 +37,20 @@ OPS_SteelZ01Material(void)
   double dData[6];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial SteelZ01 tag" << endln;
     return 0;
   }
 
   numRemainingArgs = OPS_GetNumRemainingInputArgs();
   if (numRemainingArgs == 4) {
-    if (OPS_GetDoubleInput(numRemainingArgs, dData) != 0) {
+    if (OPS_GetDoubleInput(&numRemainingArgs, dData) != 0) {
       opserr << "Invalid Args want: uniaxialMaterial SteelZ01 tag? fy? E0? fpc? rou? <ac?> <rc?>" << endln;
       return 0;	
     } else
       theMaterial = new SteelZ01(iData[0], dData[0], dData[1], dData[2], dData[3]);
   } else if (numRemainingArgs == 6) {
-    if (OPS_GetDoubleInput(numRemainingArgs, dData) != 0) {
+    if (OPS_GetDoubleInput(&numRemainingArgs, dData) != 0) {
       opserr << "Invalid Args want: uniaxialMaterial SteelZ01 tag? fy? E0? fpc? rou? <ac?> <rc?>" << endln;
       return 0;	
     } else

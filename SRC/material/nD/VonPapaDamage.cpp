@@ -99,14 +99,14 @@ void* OPS_VonPapaDamage(void)
   double dData[21];
 
   int numData = 1;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid integer values: nDMaterial VonPapaDamage \n";
     return 0;
   }
   tag = iData[0];
 
   numData = 21;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid double values: nDMaterial VonPapaDamage " << tag << endln;
     return 0;
   }

@@ -28,6 +28,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <string.h>
 #include <ID.h>
 #include <Channel.h>
 #include <Message.h>
@@ -124,8 +125,15 @@ XmlFileStream::~XmlFileStream()
 		delete[] theColumns;
 	}
 
-	if (xmlColumns != 0)
-		delete xmlColumns;
+  if (xmlColumns != 0)
+    delete xmlColumns;
+
+  if (tags != nullptr) {
+    for (int i=0; i<sizeTags; i++)
+      if (tags[i] != nullptr)
+        delete[] tags[i];
+    delete[] tags;
+  }
 }
 
 int
@@ -460,30 +468,31 @@ XmlFileStream::tag(const char* tagName, const char* value)
 int
 XmlFileStream::endTag()
 {
-	//  if (sendSelfCount == 0) {
-	if (numTag != 0) {
-		if (attributeMode == true) {
-			theFile << "/>\n";
+  //  if (sendSelfCount == 0) {
+    if (numTag != 0) {
+      if (attributeMode == true) {
+	theFile << "/>\n";
 #if _DLL
-			headers.append("/>\n");
+	headers.append("/>\n");
 #endif
-			delete[] tags[numTag - 1];
-			numTag--;
-		}
-		else {
-			this->indent();
-			theFile << "</" << tags[numTag - 1] << ">\n";
+	delete [] tags[numTag-1];
+	tags[numTag-1] = nullptr;
+	numTag--;
+      } else {
+	this->indent();
+	theFile << "</" << tags[numTag-1] << ">\n";
 #if _DLL
-			headers.append("</");
-			headers.append(tags[numTag - 1]);
-			headers.append(">\n");
+	headers.append("</");
+	headers.append(tags[numTag - 1]);
+	headers.append(">\n");
 #endif
-			delete[] tags[numTag - 1];
-			numTag--;
-		}
-
-		attributeMode = false;
-		numIndent--;
+	delete [] tags[numTag-1];
+	tags[numTag-1] = nullptr;
+	numTag--;
+      }    
+      
+      attributeMode = false;
+      numIndent--;
 
 		if (sendSelfCount != 0)
 			(*xmlColumns)[numXMLTags] += 1;
@@ -511,6 +520,7 @@ XmlFileStream::endTag()
 
 	strcat(xmlString,"/>\n");
 	delete [] tags[numTag-1];
+	tags[numTag-1] = nullptr;
 	numTag--;
 
 	  } else {
@@ -535,6 +545,7 @@ XmlFileStream::endTag()
 	strcat(xmlString, ">\n");
 
 	delete [] tags[numTag-1];
+	tags[numTag-1] = nullptr;
 	numTag--;
 	  }
 

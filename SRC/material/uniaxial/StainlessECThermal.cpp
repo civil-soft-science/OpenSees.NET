@@ -51,7 +51,7 @@ OPS_StainlessECThermal(void)
 	int numData = 1;
 	//string gradeInput;
 
-	if (OPS_GetIntInput(numData, iData) != 0)
+	if (OPS_GetIntInput(&numData, iData) != 0)
 	{
 		opserr << "WARNING invalid uniaxialMaterial StainlessECThermal tag?" << endln;
 		return 0;
@@ -93,7 +93,7 @@ OPS_StainlessECThermal(void)
 	}
 //
 
-	if (OPS_GetDoubleInput(numData, dData) != 0)
+	if (OPS_GetDoubleInput(&numData, dData) != 0)
 	{
 			opserr << "Invalid #args, want: uniaxialMaterial StainlessECThermal " << iData[0] << " fy? E? fu?" << endln;
 			return 0;

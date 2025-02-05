@@ -47,6 +47,8 @@ class DataFileStreamAdd : public OPS_Stream
 	  return this->close();
   }
 #endif
+  int flush(void);
+
   int setPrecision(int precision);
   int setFloatField(floatField);
   int precision(int precision) {return 0;};

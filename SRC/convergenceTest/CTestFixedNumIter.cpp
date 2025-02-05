@@ -50,7 +50,7 @@ void* OPS_CTestFixedNumIter()
     int numData = OPS_GetNumRemainingInputArgs();
     if (numData > 3) numData = 3;
     int data[3] = { 0,0,2 };
-    if (OPS_GetIntInput(numData, &data[0]) < 0) {
+    if (OPS_GetIntInput(&numData, &data[0]) < 0) {
         opserr << "WARNING FixedNumIter failed to read int values\n";
         return 0;
     }

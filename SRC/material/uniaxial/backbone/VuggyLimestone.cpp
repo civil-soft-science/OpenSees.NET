@@ -42,7 +42,7 @@ void *OPS_VuggyLimestone() {
   // get tag
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(numData, &tag) < 0) {
+  if (OPS_GetIntInput(&numData, &tag) < 0) {
     opserr << "WARNING: invalid tag for hystereticBackbone "
               "VuggyLimestone\n";
     return 0;
@@ -51,7 +51,7 @@ void *OPS_VuggyLimestone() {
   // get b su
   double data[2];
   numData = 2;
-  if (OPS_GetDoubleInput(numData, &data[0]) < 0) {
+  if (OPS_GetDoubleInput(&numData, &data[0]) < 0) {
     opserr << "WARNING: invalid data for hystereticBackbone "
               "VuggyLimestone\n";
     return 0;
@@ -105,12 +105,13 @@ VuggyLimestone::~VuggyLimestone() {}
  * @return double
  */
 double VuggyLimestone::getTangent(double strain) {
+  strain = fabs(strain);
   if (strain <= 0.0004 * diameter) {
     return 2000.0 * shearStrength;
   } else if (strain <= 0.0024 * diameter) {
     return 100.0 * shearStrength;
   }
-  return shearStrength;
+  return 0.0;
 }
 
 /**
@@ -120,16 +121,18 @@ double VuggyLimestone::getTangent(double strain) {
  * @return double
  */
 double VuggyLimestone::getStress(double strain) {
-  if (strain <= 0.0004 * diameter) {
-    return 2000.0 * shearStrength * strain;
-  } else if (strain <= 0.0024 * diameter) {
-    return 0.8 * diameter * shearStrength +
-           100.0 * shearStrength * (strain - 0.0004 * diameter);
-  }
-  return 0.0;
-}
+  int signStrain = (strain > 0.0) ? 1 : -1;
+  strain = signStrain * strain;
+  double stress = 0.0;
 
-double VuggyLimestone::getEnergy(double strain) { return 0.0; }
+  if (strain <= 0.0004 * diameter) {
+    stress = 2000.0 * shearStrength * strain;
+  } else if (strain <= 0.0024 * diameter) {
+    stress = 0.8 * diameter * shearStrength +
+             100.0 * shearStrength * (strain - 0.0004 * diameter);
+  }
+  return signStrain * stress;
+}
 
 double VuggyLimestone::getYieldStrain(void) { return 0.0; }
 

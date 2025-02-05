@@ -63,13 +63,13 @@ OPS_CableMaterial(void)
   double dData[4];
 
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Cable" << endln;
     return 0;
   }
 
   numData = 4;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid data for uniaxial Cable " << iData[0] << endln;
     return 0;	
   }

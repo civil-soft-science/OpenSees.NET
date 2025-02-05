@@ -57,7 +57,7 @@ int OPS_HomogeneousBC()
     // get tag and constr values
     int num = OPS_GetNumRemainingInputArgs();
     ID vals(num);
-    if(OPS_GetIntInput(num, &vals(0)) < 0) {
+    if(OPS_GetIntInput(&num, &vals(0)) < 0) {
 	opserr << "WARNING invalid int values\n";
 	return -1;
     }
@@ -106,8 +106,8 @@ int OPS_HomogeneousBC_X()
 
     // get the xCrd of nodes to be constrained
     double xLoc;
-    int numdata = 1;
-    if (OPS_GetDoubleInput(numdata, &xLoc) < 0) {
+    int numData = 1;
+    if (OPS_GetDoubleInput(&numData, &xLoc) < 0) {
 	opserr << "WARNING invalid xLoc\n";
 	return -1;
     }
@@ -116,7 +116,7 @@ int OPS_HomogeneousBC_X()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(numdata, &fix) < 0) {
+	if (OPS_GetIntInput(&numData, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -130,7 +130,7 @@ int OPS_HomogeneousBC_X()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }
@@ -156,8 +156,8 @@ int OPS_HomogeneousBC_Y()
 
     // get the yCrd of nodes to be constrained
     double yLoc;
-    int numdata = 1;
-    if (OPS_GetDoubleInput(numdata, &yLoc) < 0) {
+    int numData = 1;
+    if (OPS_GetDoubleInput(&numData, &yLoc) < 0) {
 	opserr << "WARNING invalid yLoc\n";
 	return -1;
     }
@@ -166,7 +166,7 @@ int OPS_HomogeneousBC_Y()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(numdata, &fix) < 0) {
+	if (OPS_GetIntInput(&numData, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -180,7 +180,7 @@ int OPS_HomogeneousBC_Y()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }
@@ -206,8 +206,8 @@ int OPS_HomogeneousBC_Z()
 
     // get the zCrd of nodes to be constrained
     double zLoc;
-    int numdata = 1;
-    if (OPS_GetDoubleInput(numdata, &zLoc) < 0) {
+    int numData = 1;
+    if (OPS_GetDoubleInput(&numData, &zLoc) < 0) {
 	opserr << "WARNING invalid zLoc\n";
 	return -1;
     }
@@ -216,7 +216,7 @@ int OPS_HomogeneousBC_Z()
     ID fixity(0,3);
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	int fix;
-	if (OPS_GetIntInput(numdata, &fix) < 0) {
+	if (OPS_GetIntInput(&numData, &fix) < 0) {
 	    // back one arg
 	    OPS_ResetCurrentInputArg(-1);
 	    break;
@@ -230,7 +230,7 @@ int OPS_HomogeneousBC_Z()
     if (OPS_GetNumRemainingInputArgs() > 1) {
 	const char* arg = OPS_GetString();
 	if (strcmp(arg, "-tol") == 0) {
-	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &tol) < 0) {
 		opserr << "WARNING invalid tol\n";
 		return -1;
 	    }
@@ -257,8 +257,8 @@ int SP_Constraint_GetNextTag(void) {
 // constructor for FEM_ObjectBroker
 SP_Constraint::SP_Constraint(int clasTag)
 :DomainComponent(0,clasTag),
- nodeTag(0), dofNumber(0), valueR(0.0), valueC(0.0), isConstant(true), 
- loadPatternTag(-1)
+ nodeTag(0), dofNumber(0), valueR(0.0), valueC(0.0), initialValue(0.0),
+ initialized(false), isConstant(true), retZeroInitValue(true), loadPatternTag(-1)
 {
   numSPs++;
 }
@@ -266,8 +266,8 @@ SP_Constraint::SP_Constraint(int clasTag)
 // constructor for a subclass to use
 SP_Constraint::SP_Constraint(int node, int ndof, int clasTag)
 :DomainComponent(nextTag++, clasTag),
- nodeTag(node), dofNumber(ndof), valueR(0.0), valueC(0.0), isConstant(true), 
- loadPatternTag(-1)
+ nodeTag(node), dofNumber(ndof), valueR(0.0), valueC(0.0), initialValue(0.0),
+ initialized(false), isConstant(true),  retZeroInitValue(true), loadPatternTag(-1)
  // valueC is set to 1.0 so that homo will be false when recvSelf() invoked
  // should be ok as valueC cannot be used by subclasses and subclasses should
  // not be used if it is a homogeneous constraint.
@@ -276,10 +276,10 @@ SP_Constraint::SP_Constraint(int node, int ndof, int clasTag)
 }
 
 // constructor for object of type SP_Constraint
-SP_Constraint::SP_Constraint(int node, int ndof, double value, bool ISconstant)
+SP_Constraint::SP_Constraint(int node, int ndof, double value, bool ISconstant, bool zInit)
 :DomainComponent(nextTag++, CNSTRNT_TAG_SP_Constraint),
- nodeTag(node), dofNumber(ndof), valueR(value), valueC(value), isConstant(ISconstant),
- loadPatternTag(-1)
+ nodeTag(node), dofNumber(ndof), valueR(value), valueC(value), initialValue(0.0),
+ initialized(false), isConstant(ISconstant), retZeroInitValue(zInit), loadPatternTag(-1)
 {
   numSPs++;
 }
@@ -311,6 +311,20 @@ SP_Constraint::getValue(void)
 {
     // return the value of the constraint
     return valueC;
+}
+
+double
+SP_Constraint::getInitialValue(void)
+{
+
+  if (retZeroInitValue == false)
+    
+    // return the initial value of the constraint if retZeroInitValue is false,
+    //   - constraint handlers will subtract this off the current getValue()    
+    return initialValue;
+  
+  else
+    return 0;
 }
 
 int
@@ -345,10 +359,37 @@ SP_Constraint::getLoadPatternTag(void) const
   return loadPatternTag;
 }
 
+void 
+SP_Constraint::setDomain(Domain* theDomain)
+{
+    // store initial state
+    if (theDomain) {
+        if (!initialized) { // don't do it if setDomain called after recvSelf when already initialized!
+            Node* theNode = theDomain->getNode(nodeTag);
+            if (theNode == 0) {
+                opserr << "FATAL SP_Constraint::setDomain() - Constrained";
+                opserr << " Node does not exist in Domain\n";
+                opserr << nodeTag << endln;
+                exit(-1);
+            }
+            const Vector& U = theNode->getTrialDisp();
+            if (dofNumber < 0 || dofNumber >= U.Size()) {
+                opserr << "SP_Constraint::setDomain FATAL Error: Constrained DOF " << dofNumber << " out of bounds [0-" << U.Size() << "]\n";
+                exit(-1);
+            }
+            initialValue = U(dofNumber);
+            initialized = true;
+        }
+    }
+
+    // call base class implementation
+    DomainComponent::setDomain(theDomain);
+}
+
 int 
 SP_Constraint::sendSelf(int cTag, Channel &theChannel)
 {
-    static Vector data(8);  // we send as double to avoid having 
+    static Vector data(11);  // we send as double to avoid having 
                      // to send two messages.
     data(0) = this->getTag(); 
     data(1) = nodeTag;
@@ -362,6 +403,9 @@ SP_Constraint::sendSelf(int cTag, Channel &theChannel)
     data(6) = this->getLoadPatternTag();
 
     data(7) = nextTag;
+    data(8) = initialValue;
+    data(9) = static_cast<double>(initialized);
+    data(10) = static_cast<double>(retZeroInitValue);    
 
     int result = theChannel.sendVector(this->getDbTag(), cTag, data);
     if (result != 0) {
@@ -376,7 +420,7 @@ int
 SP_Constraint::recvSelf(int cTag, Channel &theChannel, 
 			FEM_ObjectBroker &theBroker)
 {
-    static Vector data(8);  // we sent the data as double to avoid having to send
+    static Vector data(11);  // we sent the data as double to avoid having to send
                      // two messages
     int result = theChannel.recvVector(this->getDbTag(), cTag, data);
     if (result < 0) {
@@ -399,6 +443,9 @@ SP_Constraint::recvSelf(int cTag, Channel &theChannel,
     this->setLoadPatternTag((int)data(6));
 
     nextTag = (int)data(7);
+    initialValue = data(8);
+    initialized = static_cast<bool>(data(9));
+    retZeroInitValue = static_cast<bool>(data(10));    
 
     return 0;
 }
@@ -409,7 +456,7 @@ SP_Constraint::Print(OPS_Stream &s, int flag)
 {
     s << "SP_Constraint: " << this->getTag();
     s << "\t Node: " << nodeTag << " DOF: " << dofNumber+1;
-    s << " ref value: " << valueR << " current value: " << valueC << endln;
+    s << " ref value: " << valueR << " current value: " << valueC << " initial value: " << initialValue << endln;
 }
 
 

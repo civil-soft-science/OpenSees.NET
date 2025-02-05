@@ -71,7 +71,7 @@ OPS_ElasticIsotropicMaterialThermal(void)
 	dData[3] = 0.0;
 
 	int numData = 1;
-	if (OPS_GetInt(numData, iData) != 0) {
+	if (OPS_GetInt(&numData, iData) != 0) {
 		opserr << "WARNING invalid integer tag: nDMaterial EasticIsotropic \n";
 		return 0;
 	}
@@ -81,7 +81,7 @@ OPS_ElasticIsotropicMaterialThermal(void)
 	else
 		numData = 2;
 
-	if (OPS_GetDouble(numData, dData) != 0) {
+	if (OPS_GetDouble(&numData, dData) != 0) {
 		opserr << "WARNING invalid data: nDMaterial EasticIsotropic : " << iData[0] << "\n";
 		return 0;
 	}
@@ -256,18 +256,13 @@ ElasticIsotropicMaterialThermal::getCopy(void)
 const char*
 ElasticIsotropicMaterialThermal::getType(void) const
 {
-	opserr << "ElasticIsotropicMaterialThermal::getType -- subclass responsibility\n";
-	exit(-1);
-
-	return 0;
+	return "BaseClass";
 }
 
 int
 ElasticIsotropicMaterialThermal::getOrder(void) const
 {
-	opserr << "ElasticIsotropicMaterialThermal::getOrder -- subclass responsibility\n";
-	exit(-1);
-	return -1;
+	return 0;
 }
 
 int

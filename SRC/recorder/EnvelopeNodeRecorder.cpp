@@ -1102,3 +1102,10 @@ double EnvelopeNodeRecorder::getRecordedValue(int clmnId, int rowOffset, bool re
 		  first = true;
 	 return res;
 }
+
+int EnvelopeNodeRecorder::flush(void) {
+	if (theHandler != 0) {
+		return theHandler->flush();
+	}
+	return 0;
+}

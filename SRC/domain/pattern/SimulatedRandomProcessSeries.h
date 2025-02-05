@@ -38,6 +38,7 @@
 #include <TimeSeries.h>
 #include <Spectrum.h>
 #include <RandomNumberGenerator.h>
+#include <CStdLibRandGenerator.h>
 
 class SimulatedRandomProcessSeries : public TimeSeries
 {
@@ -60,7 +61,7 @@ public:
     double getDuration () {return 0.0;} // dummy function
     double getPeakFactor () {return 0.0;} // dummy function
     double getTimeIncr (double pseudoTime) {return 1.0;} // dummy function
-    
+    double getStartTime() { return 0.0; } // dummy function
     // methods for output    
     int sendSelf(int commitTag, Channel &theChannel);
     int recvSelf(int commitTag, Channel &theChannel, 
@@ -76,8 +77,10 @@ private:
 	int numFreqIntervals;
 	double mean;
 	double deltaW;
-	Vector *theta;
-	Vector *A;
+	Vector theta;
+	Vector A;
+
+  static CStdLibRandGenerator randGenerator;
 };
 
 #endif

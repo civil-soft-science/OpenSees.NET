@@ -62,7 +62,7 @@ void* OPS_PenaltyConstraintHandler()
 
     double data[2];
     int numData = 2;
-    if(OPS_GetDoubleInput(numData, &data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData, &data[0]) < 0) return 0;
 
     return new PenaltyConstraintHandler(data[0], data[1]);
 }

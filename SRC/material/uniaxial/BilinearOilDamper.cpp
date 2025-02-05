@@ -71,7 +71,7 @@ OPS_BilinearOilDamper(void)
   double dData[9];
   int numData = 1;
         // Check tag
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  BilinearOilDamper tag" << endln;
     return 0;
   }
@@ -84,7 +84,7 @@ OPS_BilinearOilDamper(void)
     return 0;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args want: uniaxialMaterial BilinearOilDamper " 
 	   << iData[0] << " K? C? <Fr? p?> <LGap?> <NM? RelTol? AbsTol? MaxHalf?>" << endln;
     
@@ -344,20 +344,18 @@ double BilinearOilDamper::getStress(void)
 
 double BilinearOilDamper::getTangent(void)
 {
-  // Why is this return 0.0? -- MHS
   return 0.0;
 }
 
 double BilinearOilDamper::getInitialTangent(void)
 {
-  //return 0.0;
-  return K; // MHS
+  return 0.0;
 }
 
 double BilinearOilDamper::getDampTangent(void)
 {
-  //return 0.0;
-  return C; // Needs to return something, something is better than nothing -- MHS
+  
+  return 0.0; 
 }
 
 

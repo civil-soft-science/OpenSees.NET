@@ -1,17 +1,189 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (OpenSeesWrapper.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (OpenSeesWrapper.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   stdafx.cpp
   AcceleratorWrapper.cpp
   AlgorithmsWrapper.cpp
   LineSearchWrapper.cpp
   AnalysisWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(181,16): warning C4490: 'override': incorrect use of override specifier; 'OpenSees::Analysis::PFEMAnalysisAnalysisWrapper::Analyze' does not match a base ref class method
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(181,16): message : 'new' or 'override' are only allowed when a matching base method from a ref class exists
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(206,16): warning C4490: 'override': incorrect use of override specifier; 'OpenSees::Analysis::VariableTimeStepDirectIntegrationAnalysisWrapper::Analyze' does not match a base ref class method
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(206,16): message : 'new' or 'override' are only allowed when a matching base method from a ref class exists
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(181,16): warning C4490: 'override': incorrect use of override specifier; 'OpenSees::Analysis::PFEMAnalysisAnalysisWrapper::Analyze' does not match a base ref class method
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(181,16):
+      'new' or 'override' are only allowed when a matching base method from a ref class exists
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(206,16): warning C4490: 'override': incorrect use of override specifier; 'OpenSees::Analysis::VariableTimeStepDirectIntegrationAnalysisWrapper::Analyze' does not match a base ref class method
+  (compiling source file '/analysis/analysis/AnalysisWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\analysis\analysis\AnalysisWrapper.h(206,16):
+      'new' or 'override' are only allowed when a matching base method from a ref class exists
+  
   ConstraintHandlerWrapper.cpp
   IncrementalIntegratorWrapper.cpp
   IntegratorWrapper.cpp
   StaticIntegratorWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/analysis/integrators/StaticIntegratorWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
   TransientIntegratorWrapper.cpp
   AnalysisModelWrapper.cpp
   DOF_NumbererWrapper.cpp
@@ -20,87 +192,1577 @@ F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\analysis
   DamageModelWrapper.cpp
   DomainComponentWrapper.cpp
   ConstraintWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/domains/constraints/ConstraintWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   BaseDomainWrapper.cpp
   DomainEvent.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/domains/domain/DomainEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
   DomainWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/domains/domain/DomainWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
   GroudMotionWrapper.cpp
   Generating Code...
   Compiling...
   LoadWrapper.cpp
   NodeWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/domains/nodes/NodeWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/domains/nodes/NodeWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/domains/nodes/NodeWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/domains/nodes/NodeWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/domains/nodes/NodeWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
   LoadPatternWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/domains/patterns/LoadPatternWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   TimeSeriesWrapper.cpp
   AdapterWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/adaptors/AdapterWrapper.cpp')
+  
   BaseElementWrapper.cpp
   BeamColumnWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\src\element\dispBeamColumn\DispBeamColumn2d.h(44,10): error C1083: Cannot open include file: 'Damping.h': No such file or directory
+  (compiling source file '/elements/beamColumn/BeamColumnWrapper.cpp')
+  
   BeamIntegrationWrapper.cpp
   BearingWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/bearing/BearingWrapper.cpp')
+  
   BrickWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/brick/BrickWrapper.cpp')
+  
   CatenaryCableWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/catenaryCable/CatenaryCableWrapper.cpp')
+  
   CrdTransfWrapper.cpp
   ElementWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
   ExternalElementWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/External/ExternalElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
   OtherElementWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/other/OtherElementWrapper.cpp')
+  
   Quad4FiberOverlayWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/other/Quad4FiberOverlayWrapper.cpp')
+  
   SurfaceLoadWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\TriSurfaceLoad.h(38,1): warning C4005: 'SL_NUM_NODE': macro redefinition
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\SurfaceLoad.h(39): message : see previous definition of 'SL_NUM_NODE'
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\TriSurfaceLoad.h(42,1): warning C4005: 'SL_NUM_DOF': macro redefinition
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\SurfaceLoad.h(43): message : see previous definition of 'SL_NUM_DOF'
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\TriSurfaceLoad.h(44,1): warning C4005: 'SL_NUM_DDOF': macro redefinition
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\src\element\surfaceLoad\SurfaceLoad.h(45): message : see previous definition of 'SL_NUM_DDOF'
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/other/SurfaceLoadWrapper.cpp')
+  
   QuadWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\src\element\fourNodeQuad\FourNodeQuad.h(42,10): error C1083: Cannot open include file: 'Damping.h': No such file or directory
+  (compiling source file '/elements/Quad/QuadWrapper.cpp')
+  
   ShellWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\shell\ShellWrapper.h(3,10): error C1083: Cannot open include file: 'shell/ShellANDeS.h': No such file or directory
+  (compiling source file '/elements/shell/ShellWrapper.cpp')
+  
   TrussWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/truss/TrussWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/truss/TrussWrapper.cpp')
+  
   Generating Code...
   Compiling...
   ULBeamColumnWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\elements\ULBeamColumn\ULBeamColumnWrapper.h(19,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ULBeamColumn\ULBeamColumnWrapper.h(19,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  (compiling source file '/elements/ULBeamColumn/ULBeamColumnWrapper.cpp')
+  
   CoupledZeroLengthWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/ZeroLength/CoupledZeroLengthWrapper.cpp')
+  
   ZeroLengthElementWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/elements/ZeroLength/ZeroLengthElementWrapper.cpp')
+  
   GraphNumbererWrapper.cpp
   HandlerWrapper.cpp
   MaterialWrapper.cpp
   NDMaterialWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/ndmaterial/NDMaterialWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/materials/ndmaterial/NDMaterialWrapper.cpp')
+  
   FiberWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/section/fiber/FiberWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/materials/section/fiber/FiberWrapper.cpp')
+  
   SectionIntegrationWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/section/integrations/SectionIntegrationWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/materials/section/integrations/SectionIntegrationWrapper.cpp')
+  
   PatchWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/section/repres/patch/PatchWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   ReinfLayerWrapper.cpp
   SectionRepresWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/section/repres/sect/SectionRepresWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   SectionForceDeformationWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/section/SectionForceDeformationWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/materials/section/SectionForceDeformationWrapper.cpp')
+  
   LimitCurveWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/uniaxial/LimitCurveWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/materials/uniaxial/LimitCurveWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/materials/uniaxial/LimitCurveWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/materials/uniaxial/LimitCurveWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/materials/uniaxial/LimitCurveWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
   UniaxialMaterialWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/uniaxial/UniaxialMaterialWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   UniaxialMaterialWrapper_all.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/uniaxial/UniaxialMaterialWrapper_all.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/materials/uniaxial/UniaxialMaterialWrapper_all.cpp')
+  
   YieldSurfaceWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/materials/yieldSurface/YieldSurfaceWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   IDWrapper.cpp
   MatrixWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/matrix/MatrixWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   VectorWrapper.cpp
   Generating Code...
   Compiling...
   OPS.cpp
   InformationWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/recorders/InformationWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
   RecorderWrapper.cpp
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(17,32): error C2661: 'DamageRecorder::DamageRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(17,32):
+      while trying to match the argument list '(int, ID, int, DamageModel *, Domain, bool, double, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(26,30): error C2661: 'NodeRecorder::NodeRecorder': no overloaded function takes 6 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(26,30):
+      while trying to match the argument list '(ID, ID *, int, char *, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(34,31): error C2661: 'DriftRecorder::DriftRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(34,31):
+      while trying to match the argument list '(int, int, int, int, Domain, OPS_Stream, bool, double)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(43,16): error C2661: 'DriftRecorder::DriftRecorder': no overloaded function takes 6 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(43,16):
+      while trying to match the argument list '(int, int, int, int, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(54,16): error C2661: 'DriftRecorder::DriftRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(54,16):
+      while trying to match the argument list '(ID, ID, int, int, Domain, OPS_Stream, bool, double)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(63,16): error C2661: 'DriftRecorder::DriftRecorder': no overloaded function takes 6 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(63,16):
+      while trying to match the argument list '(ID, ID, int, int, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(81,33): error C2661: 'ElementRecorder::ElementRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(81,33):
+      while trying to match the argument list '(ID *, const char **, int, bool, Domain, OPS_Stream, double, ID *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(98,34): error C2661: 'ElementRecorder::ElementRecorder': no overloaded function takes 6 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(98,34):
+      while trying to match the argument list '(ID *, const char **, int, bool, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(105,39): error C2661: 'EnvelopeDriftRecorder::EnvelopeDriftRecorder': no overloaded function takes 7 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(105,39):
+      while trying to match the argument list '(int, int, int, int, Domain, OPS_Stream, bool)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(114,24): error C2661: 'EnvelopeDriftRecorder::EnvelopeDriftRecorder': no overloaded function takes 7 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(114,24):
+      while trying to match the argument list '(ID, ID, int, int, Domain, OPS_Stream, bool)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(129,41): error C2661: 'EnvelopeElementRecorder::EnvelopeElementRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(129,41):
+      while trying to match the argument list '(ID *, const char **, int, Domain, OPS_Stream, double, bool, ID *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(144,42): error C2661: 'EnvelopeElementRecorder::EnvelopeElementRecorder': no overloaded function takes 5 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(144,42):
+      while trying to match the argument list '(ID *, const char **, int, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(162,38): error C2661: 'EnvelopeNodeRecorder::EnvelopeNodeRecorder': no overloaded function takes 8 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(162,38):
+      while trying to match the argument list '(ID, ID *, char *, Domain, OPS_Stream, double, bool, TimeSeries **)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(172,23): error C2661: 'EnvelopeNodeRecorder::EnvelopeNodeRecorder': no overloaded function takes 5 arguments
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(172,23):
+      while trying to match the argument list '(ID, ID *, char *, Domain, OPS_Stream)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(193,37): error C2665: 'NormElementRecorder::NormElementRecorder': no overloaded function could convert all the argument types
+  (compiling source file '/recorders/RecorderWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\recorder\NormElementRecorder.h(55,5):
+      could be 'NormElementRecorder::NormElementRecorder(const ID *,const char **,int,bool,Domain &,OPS_Stream &,double,double,const ID *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(193,37):
+          'NormElementRecorder::NormElementRecorder(const ID *,const char **,int,bool,Domain &,OPS_Stream &,double,double,const ID *)': cannot convert argument 8 from 'ID *' to 'double'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(193,146):
+              There is no context in which this conversion is possible
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\recorders\RecorderWrapper.cpp(193,37):
+      while trying to match the argument list '(ID *, const char **, int, bool, Domain, OPS_Stream, double, ID *)'
+  
   ResponseWrapper.cpp
   ResponseWrapper_all.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/recorders/ResponseWrapper_all.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/recorders/ResponseWrapper_all.cpp')
+  
   ArpackSOEWrapper.cpp
   BandGENWrapper.cpp
   BandSPDWrapper.cpp
@@ -121,7 +1783,99 @@ F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\material
   UmfpackGenWrapper.cpp
   TaggedObjectWrapper.cpp
   ModelBuilderEvent.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/tcl/ModelBuilderEvent.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/tcl/ModelBuilderEvent.cpp')
+  
   TclWrapper.cpp
-F:\Omran Elm Afzar\OpenSees.NET new\OpenSees.NET\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): fatal error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(99,19): error C2039: 'Print': is not a member of 'Matrix'
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\matrix\Matrix.h(48,7):
+      see declaration of 'Matrix'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27): error C2665: 'OpenSees::MatrixWrapper::GetMatrixWrapper': no overloaded function could convert all the argument types
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(122,25):
+      could be 'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(114,25):
+      or       'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+          'OpenSees::MatrixWrapper ^OpenSees::MatrixWrapper::GetMatrixWrapper(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,66):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(167,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type '_T'
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         with
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         [
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:             _T=OpenSees::MatrixWrapper ^
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699:         ]
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><OpenSees::MatrixWrapper ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27): error C2665: 'OpenSees::MatrixWrapper::GetArray': no overloaded function could convert all the argument types
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(150,28):
+      could be 'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(Matrix *)': cannot convert argument 1 from 'const Matrix *' to 'Matrix *'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Conversion loses qualifiers
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(136,27):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(const Matrix &)': cannot convert argument 1 from 'const Matrix *' to 'const Matrix &'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Reason: cannot convert from 'const Matrix *' to 'const Matrix'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\matrix\MatrixWrapper.h(78,28):
+      or       'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)'
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+          'array<double,2> ^OpenSees::MatrixWrapper::GetArray(OpenSees::MatrixWrapper ^)': cannot convert argument 1 from 'const Matrix *' to 'OpenSees::MatrixWrapper ^'
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              No user-defined-conversion operator available, or
+              I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,58):
+              Cannot convert a native type to a managed type
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\domains\nodes\NodeWrapper.h(172,27):
+      while trying to match the argument list '(const Matrix *)'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16): error C3699: '&&': cannot use this indirection on type 'array<double,2> ^'
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(23,16):
+      the template instantiation context (the oldest one first) is
+          I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\predefined C++ types (compiler internal)(26,72):
+          see reference to class template instantiation '<add_rvalue_reference><array<double,2> ^>' being compiled
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(84,54): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\elements\ElementWrapper.h(88,46): error C2248: 'Element::getRayleighDampingForces': cannot access protected member declared in class 'Element'
+  (compiling source file '/tcl/TclWrapper.cpp')
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(132,16):
+      see declaration of 'Element::getRayleighDampingForces'
+      I:\OmranElmAfzar\OpenSees\src\element\Element.h(51,7):
+      see declaration of 'Element'
+  
+I:\OmranElmAfzar\OpenSees\Win64\proj\OpenSeesNET\materials\uniaxial\UniaxialMaterialWrapper_all.h(57,10): error C1083: Cannot open include file: 'snap/Bilin.h': No such file or directory
+  (compiling source file '/tcl/TclWrapper.cpp')
+  
   Generating Code...

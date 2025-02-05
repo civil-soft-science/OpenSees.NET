@@ -49,13 +49,13 @@ OPS_TrilinearBackbone(void)
   double dData[6];
   
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid tag for hystereticBackbone Trilinear" << endln;
     return 0;
   }
 
   numData = 6;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid data for hystereticBackbone Trilinear" << endln;
     return 0;
   }
@@ -83,13 +83,13 @@ OPS_BilinearBackbone(void)
   double dData[4];
   
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid tag for hystereticBackbone Bilinear" << endln;
     return 0;
   }
 
   numData = 4;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid data for hystereticBackbone Bilinear" << endln;
     return 0;
   }

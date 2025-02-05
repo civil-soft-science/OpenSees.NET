@@ -67,8 +67,8 @@ static Node *theNodes[2];
 void* OPS_ZeroLengthND()
 {
     int ndm = OPS_GetNDM();
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 4) {
         opserr << "WARNING too few arguments " <<
             "want - element zeroLengthND eleTag? iNode? jNode? " <<
 	    "NDTag? <1DTag?>" <<
@@ -78,8 +78,8 @@ void* OPS_ZeroLengthND()
     }
 
     int idata [4];
-    numdata = 4;
-    if (OPS_GetIntInput(numdata,idata) < 0) {
+    numData = 4;
+    if (OPS_GetIntInput(&numData,idata) < 0) {
         opserr << "WARNING: failed to get integer data\n";
         return 0;
     }
@@ -91,7 +91,7 @@ void* OPS_ZeroLengthND()
 
     UniaxialMaterial* umat = 0;
     int uniTag;
-    if (OPS_GetIntInput(numdata,&uniTag) >= 0) {
+    if (OPS_GetIntInput(&numData,&uniTag) >= 0) {
 	umat = OPS_getUniaxialMaterial(uniTag);
 	if (umat == 0) {
 	    opserr<<"WARNING: uniaxial material "<<uniTag<<" is not defined\n";
@@ -109,12 +109,12 @@ void* OPS_ZeroLengthND()
 	    opserr<<"WARNING: insufficient orient values\n";
 	    return 0;
 	}
-	numdata = 3;
-	if (OPS_GetDoubleInput(numdata,&x(0)) < 0) {
+	numData = 3;
+	if (OPS_GetDoubleInput(&numData,&x(0)) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}
-	if (OPS_GetDoubleInput(numdata,&y(0)) < 0) {
+	if (OPS_GetDoubleInput(&numData,&y(0)) < 0) {
 	    opserr<<"WARNING: invalid double input\n";
 	    return 0;
 	}

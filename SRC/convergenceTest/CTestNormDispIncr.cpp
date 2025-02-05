@@ -40,7 +40,7 @@ void* OPS_CTestNormDispIncr()
     // tolerance
     double tol = 1e-6;
     int numData = 1;
-    if(OPS_GetDoubleInput(numData,&tol) < 0) {
+    if(OPS_GetDoubleInput(&numData,&tol) < 0) {
 	opserr << "WARNING NormDispIncr failed to read tol\n";
 	return 0;
     }
@@ -49,7 +49,7 @@ void* OPS_CTestNormDispIncr()
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 3) numData = 3;
     int data[3] = {0,0,2};
-    if(OPS_GetIntInput(numData,&data[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&data[0]) < 0) {
 	opserr << "WARNING NormDispIncr failed to read int values\n";
 	return 0;
     }
@@ -58,7 +58,7 @@ void* OPS_CTestNormDispIncr()
     double maxTol = OPS_MAXTOL;
     if(OPS_GetNumRemainingInputArgs() > 0) {
 	numData = 1;
-	if(OPS_GetDoubleInput(numData,&maxTol) < 0) {
+	if(OPS_GetDoubleInput(&numData,&maxTol) < 0) {
 	    opserr << "WARNING NormDispIncr failed to read maxTol\n";
 	    return 0;
 	}

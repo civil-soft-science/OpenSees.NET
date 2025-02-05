@@ -45,15 +45,15 @@ void* OPS_ElasticWarpingShearSection2d()
     }
 	
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid section ElasticWarpingShearSection2d tag" << endln;
 	return 0;
     }
 
-    numdata = 8;
+    numData = 8;
     double data[8];
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid double inputs" << endln;
 	opserr << "ElasticWarpingShearSection2d section: " << tag << endln;	    
 	return 0;
@@ -332,19 +332,19 @@ ElasticWarpingShearSection2d::recvSelf(int commitTag, Channel &theChannel,
   }
   
   this->setTag((int)data(0));
-  data(1) = E;
-  data(2) = A;
-  data(3) = I;    
-  data(4) = G;    
-  data(5) = alpha;  
-  data(6) = J;
-  data(7) = B;
-  data(8) = C;
-  data(9) =  eCommit(0);
-  data(10) = eCommit(1);
-  data(11) = eCommit(2);
-  data(12) = eCommit(3);
-  data(13) = eCommit(4);
+  E = data(1);
+  A = data(2);
+  I = data(3);
+  G = data(4);
+  alpha = data(5);
+  J = data(6);
+  B = data(7);
+  C= data(8);
+  eCommit(0) = data(9);
+  eCommit(1) = data(10);
+  eCommit(2) = data(11);
+  eCommit(3) = data(12);
+  eCommit(4) = data(13);
   
   return res;
 }

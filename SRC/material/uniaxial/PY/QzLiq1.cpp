@@ -36,8 +36,6 @@
 #include <elementAPI.h>
 
 // Control on internal iteration between spring components
-const int QZmaxIterations = 20;
-const double QZtolerance = 1.0e-12;
 
 int QzLiq1::loadStage = 0;
 Vector QzLiq1::stressV3(3);
@@ -47,8 +45,8 @@ void* OPS_QzLiq1()
 {
     UniaxialMaterial* theMat = 0;
     
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 8) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 8) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial QzLiq1 tag? qzType? qult? z50? suction? dashpot? alpha? solidElem1? solidElem2?\n";
 	opserr << "or: uniaxialMaterial QzLiq1 tag? qzType? qult? z50? suction? dashpot? alpha? -timeSeries seriesTag?\n";
@@ -56,15 +54,15 @@ void* OPS_QzLiq1()
     }
 
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
 
     double ddata[5];
-    numdata = 5;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 5;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -75,8 +73,8 @@ void* OPS_QzLiq1()
     
     if (strcmp(arg, "-timeSeries") == 0) {
 	int tsTag;
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 	    opserr << "WARNING invalid time series tag\n";
 	    return 0;
 	}
@@ -91,8 +89,8 @@ void* OPS_QzLiq1()
 	OPS_ResetCurrentInputArg(-1);
 	
 	int eleTags[2];
-	numdata = 2;
-	if (OPS_GetIntInput(numdata, eleTags) < 0) {
+	numData = 2;
+	if (OPS_GetIntInput(&numData, eleTags) < 0) {
 	    opserr << "WARNING invalid element tags\n";
 	    return 0;
 	}
@@ -253,6 +251,8 @@ QzLiq1::setTrialStrain (double newz, double zRate)
 double 
 QzLiq1::getStress(void)
 {
+  const double QZtolerance = 1.0e-12;
+
 	double dashForce = getStrainRate()*this->getDampTangent();
 
 	// Limit the combined force to qult*(1-ru).

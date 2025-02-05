@@ -81,13 +81,13 @@ OPS_CycLiqCPSPMaterial(void)
   double dData[16];
 
   int numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid nDMaterial CycLiqCPSP material  tag" << endln;
     return 0;
   }
   if (numArgs == 16) {
   numData = 15;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial CycLiqCPSP  with tag: " << tag << endln;
     return 0;
   }
@@ -96,7 +96,7 @@ OPS_CycLiqCPSPMaterial(void)
   }
   else if (numArgs > 16) {
   numData = 16;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial CycLiqCPSP  with tag: " << tag << endln;
     return 0;
   }

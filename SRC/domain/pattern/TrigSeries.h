@@ -65,13 +65,20 @@ public:
     double getDuration () {return tFinish-tStart;}
     double getPeakFactor () {return cFactor;}
     double getTimeIncr (double pseudoTime) {return tFinish-tStart;}
-
+    double getStartTime() { return tStart; } 
     // methods for output    
     int sendSelf(int commitTag, Channel &theChannel);
     int recvSelf(int commitTag, Channel &theChannel, 
         FEM_ObjectBroker &theBroker);
 
     void Print(OPS_Stream &s, int flag = 0);
+
+    // AddingSensitivity:BEGIN //////////////////////////////////////////
+    double getFactorSensitivity(double pseudoTime);
+    int setParameter(const char **argv, int argc, Parameter &param);
+    int updateParameter(int parameterID, Information &info);
+    int activateParameter(int parameterID);
+    // AddingSensitivity:BEGIN //////////////////////////////////////////  
 
 protected:
 
@@ -82,6 +89,7 @@ private:
     double phaseShift;  // phase shift of trig series (rad)
     double cFactor;     // amplitude of trig series
     double zeroShift;   // zero shift of trig series
+  int parameterID;
 };
 
 #endif

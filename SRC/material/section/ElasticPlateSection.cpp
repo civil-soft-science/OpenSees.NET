@@ -44,15 +44,15 @@ void* OPS_ElasticPlateSection()
     }
 	
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid section ElasticPlateSection tag" << endln;
 	return 0;
     }
 
-    numdata = 3;
+    numData = 3;
     double data[3];
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid section ElasticPlateSection double inputs" << endln;
 	return 0;
     }

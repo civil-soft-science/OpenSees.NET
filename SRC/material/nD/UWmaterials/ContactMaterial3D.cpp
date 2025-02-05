@@ -68,12 +68,12 @@ OPS_ContactMaterial3DMaterial(void)
   double dData[4];
 
   int numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid tag for  ContactMaterial3D material" << endln;
     return 0;
   }
   numData = 4;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial ContactMaterial3D material  with tag: " << tag << endln;
     return 0;
   }

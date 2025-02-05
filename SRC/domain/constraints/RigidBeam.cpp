@@ -60,7 +60,7 @@ int OPS_RigidLink(Domain* theDomain)
     // get all data
     num = 2;
     ID data(num);
-    if(OPS_GetIntInput(num,&data(0)) < 0) return -1;
+    if(OPS_GetIntInput(&num,&data(0)) < 0) return -1;
 
     // construct a rigid rod or beam depending on type
     if (strcmp(type,"-bar")==0 || strcmp(type,"bar")==0) {

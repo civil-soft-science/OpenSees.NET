@@ -42,8 +42,8 @@
 
 void* OPS_SelfCenteringMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 5) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 5) {
 	opserr << "WARNING: Insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial SelfCentering tag? k1? k2? ";
 	opserr << "ActF? beta? <SlipDef? BearDef? rBear?>" << endln;
@@ -51,18 +51,18 @@ void* OPS_SelfCenteringMaterial()
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[7] = {0,0,0,0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 7) {
-	numdata = 7;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 7) {
+	numData = 7;
     }
-    if (OPS_GetDoubleInput(numdata,data)) {
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }

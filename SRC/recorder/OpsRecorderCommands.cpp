@@ -173,7 +173,7 @@ void* OPS_NodeRecorder(const char* type)
 	 ID nodes(0, 6);
 	 ID dofs(0, 6);
 	 ID timeseries(0, 6);
-
+	 int numData = 1;
 	 while (OPS_GetNumRemainingInputArgs() > 0) {
 
 		  const char* option = OPS_GetString();
@@ -211,7 +211,7 @@ void* OPS_NodeRecorder(const char* type)
 					 inetAddr = OPS_GetString();
 				}
 				if (OPS_GetNumRemainingInputArgs() > 0) {
-					 if (OPS_GetIntInput(1, &inetPort) < 0) {
+					 if (OPS_GetIntInput(&numData, &inetPort) < 0) {
 						  opserr << "WARNING: failed to read inetPort\n";
 						  return 0;
 					 }
@@ -232,7 +232,7 @@ void* OPS_NodeRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-dT") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
-					 if (OPS_GetDoubleInput(1, &dT) < 0) {
+					 if (OPS_GetDoubleInput(&numData, &dT) < 0) {
 						  opserr << "WARNING: failed to read dT\n";
 						  return 0;
 					 }
@@ -246,7 +246,7 @@ void* OPS_NodeRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 
 					 int ts;
-					 if (OPS_GetIntInput(1, &ts) < 0) {
+					 if (OPS_GetIntInput(&numData, &ts) < 0) {
 						  break;
 					 }
 					 timeseries[numTimeSeries++] = ts;
@@ -261,7 +261,7 @@ void* OPS_NodeRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-precision") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
-					 if (OPS_GetIntInput(1, &precision) < 0) {
+					 if (OPS_GetIntInput(&numData, &precision) < 0) {
 						  opserr << "WARNING: failed to read precision\n";
 						  return 0;
 					 }
@@ -272,7 +272,7 @@ void* OPS_NodeRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 
 					 int nd;
-					 if (OPS_GetIntInput(1, &nd) < 0) {
+					 if (OPS_GetIntInput(&numData, &nd) < 0) {
 						  break;
 					 }
 					 nodes[numNodes++] = nd;
@@ -282,14 +282,14 @@ void* OPS_NodeRecorder(const char* type)
 				int start = 0, end = 0;
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &start) < 0) {
+					 if (OPS_GetIntInput(&numData, &start) < 0) {
 						  opserr << "WARNING: failed to read start node\n";
 						  return 0;
 					 }
 				}
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &end) < 0) {
+					 if (OPS_GetIntInput(&numData, &end) < 0) {
 						  opserr << "WARNING: failed to read end node\n";
 						  return 0;
 					 }
@@ -313,7 +313,7 @@ void* OPS_NodeRecorder(const char* type)
 				int tag = 0;
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &tag) < 0) {
+					 if (OPS_GetIntInput(&numData, &tag) < 0) {
 						  opserr << "WARNING: failed to read region tag\n";
 						  return 0;
 					 }
@@ -334,7 +334,7 @@ void* OPS_NodeRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 
 					 int dof;
-					 if (OPS_GetIntInput(1, &dof) < 0) {
+					 if (OPS_GetIntInput(&numData, &dof) < 0) {
 						  break;
 					 }
 					 dofs[numDOF++] = dof - 1;
@@ -344,7 +344,7 @@ void* OPS_NodeRecorder(const char* type)
 		  else if (strcmp(option, "-controlRecorder") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &cntrlRcrdrTag) < 0) {
+					 if (OPS_GetIntInput(&numData, &cntrlRcrdrTag) < 0) {
 						  opserr << "WARNING recorder Node -controlRecorder $ntrlRcrdrTag - invalid ntrlRcrdrTag " << endln;
 						  return 0;
 					 }
@@ -370,7 +370,7 @@ void* OPS_NodeRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-procGrpNum") == 0) {
 				int num = 1;
-				if (OPS_GetIntInput(1, &nProcGrp) < 0) {
+				if (OPS_GetIntInput(&numData, &nProcGrp) < 0) {
 					 opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << endln;
 					 return 0;
 				}
@@ -451,7 +451,7 @@ void* OPS_ElementRecorder(const char* type)
 	 int cntrlRcrdrTag = 0;
 
 	 char** argv = 0;
-
+	 int numData = 1;
 	 while (OPS_GetNumRemainingInputArgs() > 0) {
 
 		  const char* option = OPS_GetString();
@@ -489,7 +489,7 @@ void* OPS_ElementRecorder(const char* type)
 				}
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &inetPort) < 0) {
+					 if (OPS_GetIntInput(&numData, &inetPort) < 0) {
 						  opserr << "WARNING: failed to read inetPort\n";
 						  return 0;
 					 }
@@ -511,7 +511,7 @@ void* OPS_ElementRecorder(const char* type)
 		  else if (strcmp(option, "-dT") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetDoubleInput(1, &dT) < 0) {
+					 if (OPS_GetDoubleInput(&numData, &dT) < 0) {
 						  opserr << "WARNING: failed to read dT\n";
 						  return 0;
 					 }
@@ -520,7 +520,7 @@ void* OPS_ElementRecorder(const char* type)
 		  else if (strcmp(option, "-rTolDt") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetDoubleInput(1, &rTolDt) < 0) {
+					 if (OPS_GetDoubleInput(&numData, &rTolDt) < 0) {
 						  opserr << "WARNING: failed to read rTolDt\n";
 						  return 0;
 					 }
@@ -529,7 +529,7 @@ void* OPS_ElementRecorder(const char* type)
 		  else if (strcmp(option, "-precision") == 0) {
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &precision) < 0) {
+					 if (OPS_GetIntInput(&numData, &precision) < 0) {
 						  opserr << "WARNING: failed to read precision\n";
 						  return 0;
 					 }
@@ -540,7 +540,7 @@ void* OPS_ElementRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 
 					 int el;
-					 if (OPS_GetIntInput(1, &el) < 0) {
+					 if (OPS_GetIntInput(&numData, &el) < 0) {
 						  break;
 					 }
 					 elements[numEle++] = el;
@@ -550,14 +550,14 @@ void* OPS_ElementRecorder(const char* type)
 				int start, end;
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &start) < 0) {
+					 if (OPS_GetIntInput(&numData, &start) < 0) {
 						  opserr << "WARNING: failed to read start element\n";
 						  return 0;
 					 }
 				}
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &end) < 0) {
+					 if (OPS_GetIntInput(&numData, &end) < 0) {
 						  opserr << "WARNING: failed to read end element\n";
 						  return 0;
 					 }
@@ -580,7 +580,7 @@ void* OPS_ElementRecorder(const char* type)
 				int tag = 0;
 				if (OPS_GetNumRemainingInputArgs() > 0) {
 
-					 if (OPS_GetIntInput(1, &tag) < 0) {
+					 if (OPS_GetIntInput(&numData, &tag) < 0) {
 						  opserr << "WARNING: failed to read region tag\n";
 						  return 0;
 					 }
@@ -601,7 +601,7 @@ void* OPS_ElementRecorder(const char* type)
 				while (OPS_GetNumRemainingInputArgs() > 0) {
 
 					 int dof;
-					 if (OPS_GetIntInput(1, &dof) < 0) {
+					 if (OPS_GetIntInput(&numData, &dof) < 0) {
 						  break;
 					 }
 					 dofs[numDOF++] = dof - 1;
@@ -609,7 +609,7 @@ void* OPS_ElementRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-controlRecorder") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &cntrlRcrdrTag) != 0) {
+				if (OPS_GetInt(&numData, &cntrlRcrdrTag) != 0) {
 					 opserr << "WARNING recorder ConditionalElement -controlRecorder $ntrlRcrdrTag - invalid cntrlRcrdrTag " << option << endln;
 					 return 0;
 				}
@@ -631,7 +631,7 @@ void* OPS_ElementRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-procGrpNum") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &nProcGrp) != 0) {
+				if (OPS_GetInt(&numData, &nProcGrp) != 0) {
 					 opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << option << endln;
 					 return 0;
 				}
@@ -711,6 +711,8 @@ void* OPS_DriftRecorder(const char* type)
 	 int procDataMethod = 0;
 	 int nProcGrp = -1;
 	 const char* fileName;
+	 int numData = 1;
+	 opserr << "here1\n";
 	 while (OPS_GetNumRemainingInputArgs() > 0) {
 		  const char* option = OPS_GetString();
 
@@ -731,7 +733,7 @@ void* OPS_DriftRecorder(const char* type)
 #ifdef _CSS
 		  else if (strcmp(option, "-controlRecorder") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &cntrlRcrdrTag) != 0) {
+				if (OPS_GetInt(&numData, &cntrlRcrdrTag) != 0) {
 					 opserr << "WARNING recorder ConditionalNode -controlRecorder $ntrlRcrdrTag - invalid ntrlRcrdrTag " << endln;
 					 return 0;
 				}
@@ -754,7 +756,7 @@ void* OPS_DriftRecorder(const char* type)
 		  }
 		  else if (strcmp(option, "-procGrpNum") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &nProcGrp) != 0) {
+				if (OPS_GetInt(&numData, &nProcGrp) != 0) {
 					 opserr << "Failed to read $nGrp after -procGrpNum option in recorder" << endln;
 					 return 0;
 				}
@@ -795,7 +797,7 @@ void* OPS_DriftRecorder(const char* type)
 
 		  else if (strcmp(option, "-precision") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &precision) != 0)
+				if (OPS_GetInt(&numData, &precision) != 0)
 				{
 					 opserr << "inavlid precision, wants integer number\n";
 					 return 0;
@@ -807,7 +809,7 @@ void* OPS_DriftRecorder(const char* type)
 				int numNodes = 0;
 				while (OPS_GetNumRemainingInputArgs() > 0)
 				{
-					 if (OPS_GetInt(1, &node) != 0) {
+					 if (OPS_GetInt(&numData, &node) != 0) {
 						  break;
 					 }
 					 iNodes[numNodes++] = node;
@@ -818,7 +820,7 @@ void* OPS_DriftRecorder(const char* type)
 				int node;
 				int numNodes = 0;
 				while (OPS_GetNumRemainingInputArgs() > 0) {
-					 if (OPS_GetInt(1, &node) != 0) {
+					 if (OPS_GetInt(&numData, &node) != 0) {
 						  break;
 					 }
 					 jNodes[numNodes++] = node;
@@ -826,7 +828,7 @@ void* OPS_DriftRecorder(const char* type)
 		  }
 
 		  else if (strcmp(option, "-dof") == 0) {
-				if (OPS_GetInt(1, &dof) != 0) {
+				if (OPS_GetInt(&numData, &dof) != 0) {
 					 opserr << "WARNING: INVALID dof number\n";
 					 return 0;
 				}
@@ -834,7 +836,7 @@ void* OPS_DriftRecorder(const char* type)
 
 		  else if (strcmp(option, "-perpDirn") == 0) {
 				int num = 0;
-				if (OPS_GetInt(1, &perpDirn) != 0) {
+				if (OPS_GetInt(&numData, &perpDirn) != 0) {
 					 opserr << "WARNING: INVALID perpDirn\n";
 					 return 0;
 				}
@@ -847,7 +849,7 @@ void* OPS_DriftRecorder(const char* type)
 		  else if (strcmp(option, "-dT") == 0) {
 				// allow user to specify time step size for recording
 				int num = 0;
-				if (OPS_GetDouble(1, &dT) != 0) {
+				if (OPS_GetDouble(&numData, &dT) != 0) {
 					 opserr << "WARNING: INVALID perpDirn\n";
 					 return 0;
 				}

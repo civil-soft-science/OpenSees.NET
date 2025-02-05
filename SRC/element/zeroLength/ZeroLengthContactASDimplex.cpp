@@ -118,16 +118,16 @@ void* OPS_ZeroLengthContactASDimplex(void) {
     // start with mandatory inputs
     // read eleTag, iNode, jNode
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
         opserr << "ZeroLengthContactASDimplex: WARNING: invalid int inputs\n";
         return theElement;
     }
 
     // read Kn, Kt, mu
     double ddata[3];
-    numdata = 3;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 3;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
         opserr << "ZeroLengthContactASDimplex: WARNING: invalid double inputs\n";
         return theElement;
     }
@@ -143,8 +143,8 @@ void* OPS_ZeroLengthContactASDimplex(void) {
                     opserr << "ZeroLengthContactASDimplex: WARNING: insufficient orient values in 2D\n";
                     return theElement;
                 }
-                numdata = 3;
-                if (OPS_GetDoubleInput(numdata, &x_e(0)) < 0) {
+                numData = 3;
+                if (OPS_GetDoubleInput(&numData, &x_e(0)) < 0) {
                     opserr << "ZeroLengthContactASDimplex: WARNING: invalid double input after -orient\n";
                     return theElement;
                 }
@@ -154,8 +154,8 @@ void* OPS_ZeroLengthContactASDimplex(void) {
                     opserr << "ZeroLengthContactASDimplex: WARNING: insufficient orient values in 3D\n";
                     return theElement;
                 }
-                numdata = 3;
-                if (OPS_GetDoubleInput(numdata, &x_e(0)) < 0) {
+                numData = 3;
+                if (OPS_GetDoubleInput(&numData, &x_e(0)) < 0) {
                     opserr << "ZeroLengthContactASDimplex: WARNING: invalid double input after -orient\n";
                     return theElement;
                 }
@@ -166,8 +166,8 @@ void* OPS_ZeroLengthContactASDimplex(void) {
             }
         }
         else if (strcmp(inputstring, "-intType") == 0) {                             // #2 read type of integration 
-            numdata = 1;
-            if (OPS_GetIntInput(numdata, &integrationType) < 0) {
+            numData = 1;
+            if (OPS_GetIntInput(&numData, &integrationType) < 0) {
                 opserr << "ZeroLengthContactASDimplex: WARNING: invalid integer after -intType\n";
                 return theElement;
             }

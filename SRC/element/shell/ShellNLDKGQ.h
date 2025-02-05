@@ -41,6 +41,7 @@
 #include <Element.h>
 #include <Node.h>
 #include <SectionForceDeformation.h>
+#include <Damping.h>
 
 class ShellNLDKGQ : public Element {
 
@@ -55,13 +56,17 @@ class ShellNLDKGQ : public Element {
 	          int node2,
 			  int node3,
 			  int node4,
-			  SectionForceDeformation &theMaterial ) ;
+			  SectionForceDeformation &theMaterial,
+	      Damping *theDamping = 0);
   
   //destructor 
   virtual ~ShellNLDKGQ( ) ;
 
+  const char *getClassType(void) const {return "ShellNLDKGQ";}
+	
   //set domain because frank is a dumb ass 
   void setDomain( Domain *theDomain ) ;
+  int setDamping(Domain *theDomain, Damping *theDamping);
   
   //get the number of external nodes
   int getNumExternalNodes( ) const ;
@@ -109,7 +114,9 @@ class ShellNLDKGQ : public Element {
 
     Response* setResponse( const char **argv, int argc, OPS_Stream &output );
     int getResponse( int responseID, Information &eleInfo );
-      
+
+  int setParameter(const char **argv, int argc, Parameter &param);
+  
     //plotting 
     int displaySelf(Renderer &, int mode, float fact, const char **displayModes=0, int numModes=0);
 
@@ -199,4 +206,5 @@ class ShellNLDKGQ : public Element {
     // vector for applying loads
     Vector *load;
     Matrix *Ki;
+    Damping *theDamping[4];
 } ; 

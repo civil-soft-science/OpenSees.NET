@@ -43,35 +43,35 @@
 
 void* OPS_BoucWenOriginal()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 4) {
         opserr << "WARNING: Insufficient arguments\n";
         opserr << "Want: uniaxialMaterial BoucWenOriginal tag E fy alphaL" << endln;
         return 0;
     }
     
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING invalid tag\n";
         return 0;
     }
     
     double data[9] = { 0.0, 0.0, 0.0, 0.0, 2.0, 1.0, 0.5, 0.5, 1.0E-8 };
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 9) {
-        numdata = 9;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 9) {
+        numData = 9;
     }
-    if (OPS_GetDoubleInput(numdata, data)) {
+    if (OPS_GetDoubleInput(&numData, data)) {
         opserr << "WARNING invalid double inputs\n";
         return 0;
     }
     
     int maxIter = 25;
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 0) {
-        numdata = 1;
-        if (OPS_GetIntInput(numdata, &maxIter) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 0) {
+        numData = 1;
+        if (OPS_GetIntInput(&numData, &maxIter) < 0) {
             opserr << "WARNING invalid int inputs\n";
             return 0;
         }
@@ -296,7 +296,7 @@ int BoucWenOriginal::sendSelf(int cTag, Channel &theChannel)
 int BoucWenOriginal::recvSelf(int cTag, Channel &theChannel, FEM_ObjectBroker &theBroker)
 {
     int res = 0;
-    static Vector data(11);
+    static Vector data(13);
     res = theChannel.recvVector(this->getDbTag(), cTag, data);
     
     if (res < 0) {

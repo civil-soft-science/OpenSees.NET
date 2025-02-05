@@ -41,10 +41,6 @@
 #include <UP-ucsd/Nine_Four_Node_QuadUP.h>
 #include <TimeSeries.h>
 
-// Control on internal iteration between spring components
-const int TZmaxIterations = 20;
-const double TZtolerance = 1.0e-12;
-
 int TzLiq1::loadStage = 0;
 Vector TzLiq1::stressV3(3);
 int TzConstructorType = 0;
@@ -53,8 +49,8 @@ void* OPS_TzLiq1()
 {
     UniaxialMaterial* theMat = 0;
     
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 7) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial TzLiq1 tag? tzType? tult? z50? dashpot? solidElem1? solidElem2?\n";
 	opserr << "or: uniaxialMaterial TzLiq1 tag? tzType? tult? z50? dashpot? -timeSeries seriesTag?\n";
@@ -62,15 +58,15 @@ void* OPS_TzLiq1()
     }
 
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
 
     double ddata[3];
-    numdata = 3;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 3;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -81,8 +77,8 @@ void* OPS_TzLiq1()
     
     if (strcmp(arg, "-timeSeries") == 0) {
 	int tsTag;
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 	    opserr << "WARNING invalid time series tag\n";
 	    return 0;
 	}
@@ -97,8 +93,8 @@ void* OPS_TzLiq1()
 	OPS_ResetCurrentInputArg(-1);
 	
 	int eleTags[2];
-	numdata = 2;
-	if (OPS_GetIntInput(numdata, eleTags) < 0) {
+	numData = 2;
+	if (OPS_GetIntInput(&numData, eleTags) < 0) {
 	    opserr << "WARNING invalid element tags\n";
 	    return 0;
 	}
@@ -139,7 +135,7 @@ theDomain(the_Domain), theSeries(the_Series)
 //	Default constructor
 
 TzLiq1::TzLiq1()
-:TzSimple1(), solidElem1(0), solidElem2(0), theDomain(0)
+  :TzSimple1(0, MAT_TAG_TzLiq1), solidElem1(0), solidElem2(0), theDomain(0)
 {
 }
 /////////////////////////////////////////////////////////////////////
@@ -255,6 +251,8 @@ TzLiq1::setTrialStrain (double newz, double zRate)
 double 
 TzLiq1::getStress(void)
 {
+  const double TZtolerance = 1.0e-12;
+
 	double dashForce = getStrainRate()*this->getDampTangent();
 
 	// Limit the combined force to tult*(1-ru).

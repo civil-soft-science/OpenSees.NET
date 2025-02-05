@@ -19,39 +19,62 @@
 #==============================================================================
 
 cmake_minimum_required(VERSION 3.16)
-project(OpenSeesFramework C CXX Fortran)
+project(OpenSeesFramework LANGUAGES C CXX Fortran)
+
 
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(OPS_EXTERN_SOURCE_DIR "${PROJECT_SOURCE_DIR}/OTHER/")
 set(OPS_EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/OTHER/")
 set(OPS_BUNDLED_DIR "${PROJECT_SOURCE_DIR}/OTHER/")
 set(OPS_SRC_DIR "${PROJECT_SOURCE_DIR}/SRC/")
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/BuildTools/cmake")
 
-#include(OpenSeesFunctions)
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake/cmake")
+include(OpenSeesFunctions)
+
+# include user config
+include(${PROJECT_SOURCE_DIR}/Conf.cmake)
+
+#
+# for ubuntu this has to be before the Compiler SPECIFIC stuff below .. go figure!
+#
+
+find_package(MPI)
+
+
+
 #cmake -DCMAKE_RULE_MESSAGES:BOOL=OFF -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON .
-
-# STAMPEDE2
-# module load python3
-# export CC=icc CXX=icpc FC=ifort
-# export MUMPS_DIR=$HOME/MUMPS_5.0.0
 
 #
 # Compiler SPECIFIC
 #
 
+
+
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
- MESSAGE("Clang")
+ MESSAGE("COMPILER: Clang")
+ # set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+ set(BUILD_SHARED_LIBS OFF)
+ # set(CMAKE_EXE_LINKER_FLAGS "-static")
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+ set(CMAKE_FIND_LIBRARY_SUFFIXES ".so")
+ set(BUILD_SHARED_LIBS OFF)
+ # set(CMAKE_EXE_LINKER_FLAGS "-static")
  add_compile_options(-fPIC)
- MESSAGE("Clang")
+ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+ MESSAGE("COMPILER: GNU")
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Intel") 
- MESSAGE("Intel")
+ MESSAGE("COMPILER: Intel")
+ add_compile_options(-fPIC)
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
- MESSAGE("MSVC")
+ MESSAGE("COMPILER: MSVC")
+ set(CMAKE_FIND_LIBRARY_SUFFIXES ".lib")
+ set(BUILD_SHARED_LIBS OFF)
+ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 else()
- MESSAFE("UKNOWN COMPILER ${CMAKE_CXX_COMPILER_ID}")
+  MESSAGE("COMPILER: UKNOWN COMPILER ${CMAKE_CXX_COMPILER_ID}")
 endif()
+
  
 #
 # external packages
@@ -60,27 +83,40 @@ endif()
 add_library(OPS_External_packages INTERFACE)
 add_library(OPS_OS_Specific_libs INTERFACE)
 
-# include user config
-include(${PROJECT_SOURCE_DIR}/Conf.cmake)
-
 # 
 # Conan (manages external dependencies for a typical build)
 # 
 
+MESSAGE("${CMAKE_BINARY_DIR}")
+
 if(EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+
+   MESSAGE("USING CONAN")
    include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
    conan_basic_setup()
+   set (Eigen3_FOUND TRUE)
    set (HDF5_FOUND TRUE)
    set (HDF5_LIBRARIES ${CONAN_LIBS_HDF5} ${CONAN_LIBS_ZLIB})
    set (HDF5_VERSION "1.12.0")
    set(USING_CONAN TRUE)
+   set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
+   set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR} ${CMAKE_PREFIX_PATH})
+   set(TCL_LIBRARIES ${TCL_LIBRARY})
+   include_directories(${TCL_INCLUDE_PATH})
+
 else()
+
+  MESSAGE("NOT USING CONAN")
   include(OpenSeesFunctions)
   set(NOT_USING_CONAN TRUE)
   set (CONAN_LIBS )
   find_package(HDF5 REQUIRED)
   find_package(TCL REQUIRED)
-  find_package(MYSQL REQUIRED)   
+  find_package(Eigen3 REQUIRED)
+  include_directories(${TCL_INCLUDE_DIR})
+  set(TCL_INCLUDE_PATH ${TCL_INCLUDE_DIR})
+  set(TCL_LIBRARY ${TCL_LIBRARIES})
+
 endif()
 
 # define user-selectable options for end target
@@ -131,8 +167,9 @@ enable_language(Fortran)
 
 # C++
 #--------------------------------------
-#add_link_options(-rdynamic)
+
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_FORTRAN_STANDARD 08)
 
 set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> cqls <TARGET> <LINK_FLAGS> <OBJECTS>")
@@ -166,6 +203,7 @@ include_directories(
   ${OPS_SRC_DIR}/element/forceBeamColumn
   ${OPS_SRC_DIR}/element/nonlinearBeamColumn/matrixutil
   ${OPS_SRC_DIR}/coordTransformation
+  ${OPS_SRC_DIR}/damping
   ${OPS_SRC_DIR}/tagged
   ${OPS_SRC_DIR}/tagged/storage
   ${OPS_SRC_DIR}/recorder
@@ -209,10 +247,8 @@ include_directories(
   ${OPS_SRC_DIR}/actor/channel
   ${OPS_SRC_DIR}/actor/objectBroker
   ${OPS_SRC_DIR}/actor/message
+  ${OPS_BUNDLED_DIR}/eigenAPI
 )
-
-#include_directories(${TCL_INCLUDE_PATH})
-#include_directories(${MYSQL_INCLUDE_DIR})
 
 # TODO: Temporary fix; include all directories with .h files through glob
 file(GLOB_RECURSE ops_include_files CONFIGURE_DEPENDS 
@@ -253,10 +289,23 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/tetgen1.4.3")
 set (TETGEN_LIBRARIES tet)
 add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/Triangle")
 set (TRIANGLE_LIBRARIES triangle)
+# add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/eigenAPI")
+# set (EIGENAPI_LIBRARIES EIGENAPI)
 
-find_package(BLAS)
-find_package(LAPACK)
-find_package (Python COMPONENTS Interpreter Development)
+
+if (NOT DEFINED LAPACK_LIBRARIES) 
+   find_package(LAPACK)
+else()
+   set (LAPACK_FOUND TRUE CACHE BOOL "providing own lapack lib")
+endif()
+
+if (NOT DEFINED Python_LIBRARIES) 
+   find_package(Python COMPONENTS Interpreter Development)
+else()
+   set (PYTHON_FOUND TRUE CACHE BOOL "providing own python lib")
+endif()
+
+
 find_package(MPI)
 find_package(MKL)
 
@@ -268,35 +317,51 @@ if(LAPACK_FOUND)
   message(STATUS "LAPACK_LINKER_FLAGS = ${LAPACK_LINKER_FLAGS}")
   message(STATUS "LAPACK_LIBRARIES = ${LAPACK_LIBRARIES}" )
 else()
+  add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/BLAS") 
   add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/LAPACK")
   set(LAPACK_LIBRARIES LAPACK)
 endif()
 
 if(PYTHON_FOUND)
   message("Python_FOUND:${Python_FOUND}")
-  message("Python_VERSION:${Python_VERSION}")
-  message("Python_Development_FOUND:${Python_Development_FOUND}")
+  #message("Python_VERSION:${Python_VERSION}")
+  #message("Python_Development_FOUND:${Python_Development_FOUND}")
   message("Python_LIBRARIES:${Python_LIBRARIES}")
   message("Python_INCLUDES:${Python_INCLUDE_DIRS}")  
 else()
   message(STATUS "PYTHON NOT FOUND")
 endif()
 
-if(BLAS_FOUND)
-  message(STATUS "BLAS was found.")
-  message(STATUS "BLAS_LINKER_FLAGS = ${BLAS_LINKER_FLAGS}")
-  message(STATUS "BLAS_LIBRARIES = ${BLAS_LIBRARIES}" )
-else()
-  add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/BLAS")
-  set(BLAS_LIBRARIES BLAS)
-endif()
 
 if(MPI_FOUND)
   message(STATUS "MPI was found.")
   message(STATUS "MPI was found .. path added ${MPI_C_INCLUDE_DIRS} ${MPI_FOUND}")
-  # set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch")
   include_directories(SYSTEM ${MPI_C_INCLUDE_DIRS})
-  add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/MUMPS_5.4.1")
+  #add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/MUMPS_5.4.1")
+  #if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  if (NOT DEFINED MUMPS_DIR)
+  #    include(ExternalProject)
+  #    ExternalProject_Add(mumps
+  #       GIT_REPOSITORY    https://github.com/scivision/mumps.git
+  #       GIT_TAG           v5.5.1.5
+  #       SOURCE_DIR        "${CMAKE_BINARY_DIR}/mumps-src"
+  #       BINARY_DIR        "${CMAKE_BINARY_DIR}"
+  #       INSTALL_COMMAND   ""
+  #     )
+  #
+  #    set (MUMPS_LIBRARIES "${CMAKE_BINARY_DIR}/libdmumps.lib;${CMAKE_BINARY_DIR}/libmumps_common.lib;${CMAKE_BINARY_DIR}/libpord.lib")
+     set (MUMPS_FLAG -D_NOMUMPS)
+     set (MUMPS_LIBRARIES "")
+  else()
+     set (MUMPS_FLAG -D_MUMPS)  
+     if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+       set (MUMPS_LIBRARIES "${MUMPS_DIR}/dmumps;${MUMPS_DIR}/mumps_common;${MUMPS_DIR}/pord")
+     else()
+       set (MUMPS_LIBRARIES "${MUMPS_DIR}/libdmumps.a;${MUMPS_DIR}/libmumps_common.a;${MUMPS_DIR}/libpord.a")
+     endif()
+
+  endif()
+
   add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/SuperLU_DIST_4.3/SRC")
   add_subdirectory("${PROJECT_SOURCE_DIR}/OTHER/METIS")    
 else()
@@ -306,17 +371,28 @@ endif()
 
 if(MKL_FOUND)
   message(STATUS "MKL was found.")
-  set (SCALAPACK_LIBRARIES ${MKL_LIBRARIES})
+  if (NOT DEFINED SCALAPACK_LIBRARIES)
+     set (SCALAPACK_LIBRARIES ${MKL_LIBRARIES})
+  endif()
+  if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set (MKL_LPATH ${MKL_ROOT}/lib/intel64)
+    set (SCALAPACK_LIBRARIES "${MKL_LPATH}/mkl_scalapack_ilp64.lib;${MKL_LPATH}/mkl_intel_ilp64.lib;${MKL_LPATH}/mkl_sequential.lib;${MKL_LPATH}/mkl_core.lib;${MKL_LPATH}/mkl_blacs_intelmpi_ilp64.lib")
+  endif() 
+
 else()
-  message(STATUS "MKL NOT found.")
-  set(SCALAPACK_LIBRARIES "/usr/lib/x86_64-linux-gnu/libmkl_blacs_openmpi_lp64.so;/usr/lib/x86_64-linux-gnu/libscalapack-openmpi.so.2.1")
+  message(STATUS "MKL NOT found .. user to provide -DSCALAPACK_LIBRARIES=")
+
 endif()
+
+message(STATUS "SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES}")
   
-get_cmake_property(_variableNames VARIABLES)
-list (SORT _variableNames)
-foreach (_variableName ${_variableNames})
-  message(STATUS "${_variableName}=${${_variableName}}")
-endforeach()	 
+#get_cmake_property(_variableNames VARIABLES)
+#list (SORT _variableNames)
+#foreach (_variableName ${_variableNames})
+#  message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()  
+
+  
 
 add_library(OPS_Numerics INTERFACE)
 
@@ -330,10 +406,11 @@ target_link_libraries(OPS_Numerics INTERFACE
        ${AMD_LIBRARIES}
        ${AMD_LIBRARIES}       
        ${LAPACK_LIBRARIES}
-       ${BLAS_LIBRARIES} 
+       ${EIGENAPI_LIBRARIES}
 )
 
 set(TCL_LIBRARIES ${TCL_LIBRARY})
+
 
 #
 # OpenSees OBJECT LIBRARIES
@@ -364,7 +441,6 @@ add_library(OPS_Database           OBJECT)
 add_library(OPS_INTERPRETER        OBJECT)
 
 
-include_directories(${TCL_INCLUDE_PATH})
 
 #
 # Optional Extensions
@@ -397,6 +473,7 @@ add_library(G3)
 
 target_link_libraries(G3
     coordTransformation
+    damping
     OPS_Matrix
     OPS_Analysis 
     OPS_ModelBuilder
@@ -444,6 +521,7 @@ target_link_libraries(OpenSeesLIB
     OPS_PFEM
     OPS_Recorder
     coordTransformation
+    damping
     OPS_Renderer
     OPS_Section_Repres
     OPS_Section_YieldSurface
@@ -472,6 +550,8 @@ target_link_libraries(OpenSeesLIB
 add_executable(OpenSees EXCLUDE_FROM_ALL 
   ${OPS_SRC_DIR}/tcl/tclAppInit.cpp
   ${OPS_SRC_DIR}/tcl/tclMain.cpp
+  ${OPS_SRC_DIR}/tcl/commands.cpp
+  ${OPS_SRC_DIR}/actor/objectBroker/FEM_ObjectBrokerAllClasses.cpp
 )
 
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
@@ -484,11 +564,11 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
 else ()
      FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib/tcl8.6)
      add_custom_command(
-     	TARGET OpenSees POST_BUILD
-	COMMENT("Copying init.tcl to ${CMAKE_CURRENT_BINARY_DIR}")
-     	COMMAND ${CMAKE_COMMAND} -E copy
-        ${CONAN_LIB_DIRS_TCL}/tcl8.6/init.tcl
-	${CMAKE_CURRENT_BINARY_DIR}/lib/tcl8.6
+       TARGET OpenSees POST_BUILD
+       COMMENT("Copying init.tcl to ${CMAKE_CURRENT_BINARY_DIR}")
+       COMMAND ${CMAKE_COMMAND} -E copy
+       ${CONAN_LIB_DIRS_TCL}/tcl8.6/init.tcl
+       ${CMAKE_CURRENT_BINARY_DIR}/lib/tcl8.6
      )
 endif()
 
@@ -503,7 +583,6 @@ target_link_libraries(OpenSees
   OPS_Recorder
   ${CMAKE_DL_LIBS} 
   ${HDF5_LIBRARIES} 
-  ${MYSQL_LIBRARIES}
   ${CONAN_LIBS}
 )
 
@@ -515,18 +594,61 @@ target_link_libraries(OpenSees
 
 if(MPI_FOUND)
 
-   add_executable(OpenSeesSP  EXCLUDE_FROM_ALL 
-	  ${OPS_SRC_DIR}/tcl/tclAppInit.cpp
-  	  ${OPS_SRC_DIR}/tcl/tclMain.cpp
-   )
+    add_executable(OpenSeesSP EXCLUDE_FROM_ALL 
+      ${OPS_SRC_DIR}/tcl/mpiMain.cpp
+      ${OPS_SRC_DIR}/tcl/tclMain.cpp
+      ${OPS_SRC_DIR}/tcl/commands.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomain.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomainEleIter.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomainSubIter.cpp
+      ${OPS_SRC_DIR}/actor/objectBroker/FEM_ObjectBrokerAllClasses.cpp
+      ${OPS_SRC_DIR}/actor/machineBroker/MPI_MachineBroker.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/diagonal/MPIDiagonalSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/diagonal/MPIDiagonalSolver.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsSolver.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsParallelSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsParallelSolver.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/sparseGEN/DistributedSuperLU.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenColLinSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/sparseGEN/DistributedSparseGenRowLinSOE.cpp
+      ${OPS_SRC_DIR}/domain/subdomain/ActorSubdomain.cpp
+      ${OPS_SRC_DIR}/domain/subdomain/ShadowSubdomain.cpp
+    )
 
-   target_compile_definitions(OpenSeesSP
-	PUBLIC _PARALLEL_PROCESSING
-   )
 
-   target_link_libraries(OpenSeesSP OpenSeesLIB)
+    target_include_directories(OpenSeesSP PRIVATE ${MUMPS_DIR}/_deps/mumps-src/include ${MPI_CXX_INCLUDE_DIRS})
+    target_compile_options(OpenSeesSP PRIVATE ${MPI_CXX_COMPILE_FLAGS})
+
+    if (DEFINED OPENMPI)
+        target_compile_definitions(OpenSeesSP 
+        PUBLIC _PARALLEL_PROCESSING ${MUMPS_FLAG} _OPENMPI)
+    else()
+        target_compile_definitions(OpenSeesSP 
+        PUBLIC _PARALLEL_PROCESSING ${MUMPS_FLAG})
+    endif()
+
+    target_link_libraries(OpenSeesSP 
+       OPS_InterpTcl 
+       OpenSeesLIB
+       OPS_Reliability
+       OPS_ReliabilityTcl
+       OPS_Recorder
+       METIS
+       SUPERLU_DIST
+       OPS_Numerics
+       ${MUMPS_LIBRARIES}
+       ${CMAKE_DL_LIBS} 
+       ${HDF5_LIBRARIES} 
+       ${CONAN_LIBS}
+       ${MPI_CXX_LIBRARIES}
+       ${SCALAPACK_LIBRARIES}
+       ${MPI_Fortran_LIBRARIES}       
+       ${MPI_CXX_LINK_FLAGS}
+    )
+    
 endif()
-   
+
 
 #
 # OpenSeesMP Tcl MPI Interpreter
@@ -535,32 +657,52 @@ endif()
 if(MPI_FOUND)
 
     add_executable(OpenSeesMP EXCLUDE_FROM_ALL 
-      ${OPS_SRC_DIR}/tcl/tclAppInit.cpp
+      ${OPS_SRC_DIR}/tcl/mpiParameterMain.cpp
       ${OPS_SRC_DIR}/tcl/tclMain.cpp
+      ${OPS_SRC_DIR}/tcl/commands.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomain.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomainEleIter.cpp
+      ${OPS_SRC_DIR}/domain/domain/partitioned/PartitionedDomainSubIter.cpp        
+      ${OPS_SRC_DIR}/actor/machineBroker/MPI_MachineBroker.cpp
+      ${OPS_SRC_DIR}/actor/objectBroker/FEM_ObjectBrokerAllClasses.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/diagonal/MPIDiagonalSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/diagonal/MPIDiagonalSolver.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsSolver.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsParallelSOE.cpp
+      ${OPS_SRC_DIR}/system_of_eqn/linearSOE/mumps/MumpsParallelSolver.cpp
+      ${OPS_SRC_DIR}/domain/subdomain/ActorSubdomain.cpp
+      ${OPS_SRC_DIR}/domain/subdomain/ShadowSubdomain.cpp
     )
 
+    target_include_directories(OpenSeesMP PRIVATE ${MUMPS_DIR}/_deps/mumps-src/include ${MPI_CXX_INCLUDE_DIRS})
 
-    target_include_directories(OpenSeesMP PRIVATE ${MPI_CXX_INCLUDE_DIRS})
     target_compile_options(OpenSeesMP PRIVATE ${MPI_CXX_COMPILE_FLAGS})
+    
+    if (NOT DEFINED MUMPS_DIR)
+        add_dependencies(OpenSeesMP mumps)
+    endif()         
 
-    target_compile_definitions(OpenSeesMP 
-      PUBLIC _PARALLEL_INTERPRETERS
-    )
+    if (DEFINED OPENMPI)
+        target_compile_definitions(OpenSeesMP 
+        PUBLIC _PARALLEL_INTERPRETERS ${MUMPS_FLAG} _OPENMPI)
+    else()
+        target_compile_definitions(OpenSeesMP 
+        PUBLIC _PARALLEL_INTERPRETERS ${MUMPS_FLAG})
+    endif()
     
     target_link_libraries(OpenSeesMP 
        OPS_InterpTcl 
        OpenSeesLIB
        OPS_Reliability
        OPS_ReliabilityTcl
-       OPS_Recorder
-       MUMPS_F
-       MUMPS_C       
+       OPS_Recorder      
        METIS
        SUPERLU_DIST
        OPS_Numerics
+       ${MUMPS_LIBRARIES}
        ${CMAKE_DL_LIBS} 
        ${HDF5_LIBRARIES} 
-       ${MYSQL_LIBRARIES}
        ${CONAN_LIBS}
        ${MPI_CXX_LIBRARIES}
        ${SCALAPACK_LIBRARIES}
@@ -577,6 +719,7 @@ endif()
 
 add_library(OpenSeesPy SHARED EXCLUDE_FROM_ALL
     ${OPS_SRC_DIR}/interpreter/PythonModule.cpp
+    ${OPS_SRC_DIR}/actor/objectBroker/FEM_ObjectBrokerAllClasses.cpp
 )
 
 set_target_properties(OpenSeesPy PROPERTIES PREFIX "")
@@ -599,6 +742,8 @@ target_link_libraries(OpenSeesPy
 #
 
 install (TARGETS OpenSees DESTINATION bin)
+set (TCL_INIT_FILE "${TCL_INCLUDE_PATH}/../lib/tcl8.6/init.tcl")
+install(FILES ${TCL_INIT_FILE} DESTINATION lib/tcl8.6)
 
 # Set selected executable to be built by default
 set_target_properties(${OPS_FINAL_TARGET} PROPERTIES EXCLUDE_FROM_ALL OFF)
@@ -694,15 +839,24 @@ endif()
 if(HDF5_FOUND)
    include_directories(${HDF5_INCLUDE_DIR})
    set(_hdf5_libs hdf5 hdf5_cpp)
-   add_compile_definitions(_H5DRM)
    if (HDF5_VERSION VERSION_GREATER_EQUAL 1.12.0)
-      add_compile_definitions(_HDF5)
-         message(STATUS "OPS >>> Have HDF5 and VERSION >= 1.12.0")      
+         add_compile_definitions(_H5DRM)
+         add_compile_definitions(_HDF5)
+         message(STATUS "OPS >>> Have HDF5 and VERSION >= 1.12.0")    
    endif()
 else()
    message(STATUS "OPS >>> Could not find HDF5")
 endif()
 
+#----------------------------
+# Eigen3
+#----------------------------
+if(Eigen3_FOUND)
+   include_directories(${Eigen3_INCLUDE_DIR})
+   add_compile_definitions(_EIGEN3)
+else()
+   message(STATUS "OPS >>> Could not find Eigen3")
+endif()
 
 if (OPS_Use_Dev_Directories)
   add_subdirectory("${PROJECT_SOURCE_DIR}/DEVELOPER/")

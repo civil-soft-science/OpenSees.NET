@@ -68,20 +68,20 @@ OPS_ManzariDafaliasMaterialRO(void)
   oData[5] = 1.0e-7;	// TolR
 
   int numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid nDMaterial ManzariDafaliasRO material tag" << endln;
     return 0;
   }
 
   numData = 21;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid material data for nDMaterial ManzariDafaliasRO material  with tag: " << tag << endln;
     return 0;
   }
 
   numData = numArgs - 22;
   if (numData != 0)
-	if (OPS_GetDouble(numData, oData) != 0) {
+	if (OPS_GetDouble(&numData, oData) != 0) {
 		opserr << "WARNING invalid material data for nDMaterial ManzariDafaliasRO material  with tag: " << tag << endln;
 		return 0;
 	}

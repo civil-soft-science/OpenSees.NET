@@ -46,8 +46,8 @@
 
 void* OPS_ECC01()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 15) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 15) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial ECC01 TAG? SIGT0? EPST0? SIGT1? EPST1? EPST2? SIGC0? EPSC0? EPSC1? ";
 	opserr << "ALPHAT1? ALPHAT2? ALPHAC? ALPHACU? BETAT? BETAC\n";
@@ -55,14 +55,14 @@ void* OPS_ECC01()
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	return 0;
     }
 
     double data[14];
-    numdata = 14;
-    if (OPS_GetDoubleInput(numdata,data)) {
+    numData = 14;
+    if (OPS_GetDoubleInput(&numData,data)) {
 	return 0;
     }
 

@@ -75,7 +75,7 @@ class PathTimeSeries : public TimeSeries
     double getDuration ();
     double getPeakFactor ();
     double getTimeIncr (double pseudoTime);
-
+    double getStartTime() { return 0.0; } // dummy function
     // methods for output
     int sendSelf(int commitTag, Channel &theChannel);
     int recvSelf(int commitTag, Channel &theChannel, 
@@ -91,8 +91,6 @@ class PathTimeSeries : public TimeSeries
     int currentTimeLoc;   // current location in time
     double cFactor;       // additional factor on the returned load factor
     int dbTag1, dbTag2;   // additional database tags needed for vector objects
-    int lastSendCommitTag;
-    Channel *lastChannel;
     bool useLast;
 };
 

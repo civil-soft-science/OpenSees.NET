@@ -46,14 +46,14 @@ void* OPS_FluidSolidPorousMaterial()
 	return 0;
     }
 
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid FluidSolidPorous tag" << endln;
 	return 0;
     }
 
     for (int i=3; i<6; i++)
-	if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
+	if (OPS_GetDoubleInput(&numData, &param[i-3]) < 0) {
 	    opserr << "WARNING invalid " << " double" << "\n";
 	    opserr << "nDMaterial FluidSolidPorous: " << tag << endln;
 	    return 0;
@@ -68,7 +68,7 @@ void* OPS_FluidSolidPorousMaterial()
 
     param[3] = 101.;
     if (argc == 7) {
-	if (OPS_GetDoubleInput(numdata, &param[3]) < 0) {
+	if (OPS_GetDoubleInput(&numData, &param[3]) < 0) {
 	    opserr << "WARNING invalid " << " double" << "\n";
 	    opserr << "nDMaterial FluidSolidPorous: " << tag << endln;
 	    return 0;
@@ -393,13 +393,14 @@ NDMaterial * FluidSolidPorousMaterial::getCopy (void)
 
 NDMaterial * FluidSolidPorousMaterial::getCopy (const char *code)
 {
-	if (strcmp(code,"FluidSolidPorous") == 0 || strcmp(code,"PlaneStrain") == 0 ||
-		strcmp(code,"ThreeDimensional") == 0) {
+	if (strcmp(code,"PlaneStrain") == 0 || strcmp(code,"ThreeDimensional") == 0) {
      FluidSolidPorousMaterial * copy = new FluidSolidPorousMaterial(*this);
 	   return copy;
 	}
-
-	return 0;
+	else {
+		opserr << "ERROR FluidSolidPorousMaterial::getCopy -- cannot make copy for type " << code << endln;
+		return 0;
+	}
 }
 
 

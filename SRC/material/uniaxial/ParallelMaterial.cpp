@@ -90,7 +90,7 @@ OPS_ParallelMaterial(void)
       theFactors = new Vector(dData, numMats);
   }
   
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid data for uniaxialMaterial Parallel" << endln;
     delete [] iData;
     delete [] theMats;
@@ -119,7 +119,7 @@ OPS_ParallelMaterial(void)
   
   if (gotFactors) {
     const char *argvLoc = OPS_GetString();
-    if (OPS_GetDoubleInput(numMats, dData) != 0) {
+    if (OPS_GetDoubleInput(&numMats, dData) != 0) {
       opserr << "WARNING invalid factors for uniaxialMaterial Parallel" << endln;
       delete [] iData;
       delete [] theMats;
@@ -482,7 +482,7 @@ ParallelMaterial::recvSelf(int cTag, Channel &theChannel,
     for (int i=0; i<numMaterials; i++) {
       int matClassTag = classTags(i);
       if (theModels[i] == 0 || theModels[i]->getClassTag() != matClassTag) {
-	if (theModels[i] == 0)
+	if (theModels[i] != 0)
 	  delete theModels[i];
 	UniaxialMaterial *theMaterialModel = 
 	    theBroker.getNewUniaxialMaterial(matClassTag);

@@ -51,6 +51,7 @@ OPS_ModIMKPeakOriented02()
   if (numModIMKPeakOriented02Materials == 0) {
     numModIMKPeakOriented02Materials++;
     opserr << "Modified Ibarra-Medina-Krawinkler Model with Peak-Oriented02 Hysteretic Response\n";
+    opserr << "WARNING: DO NOT USE THE \"ModIMKPeakOriented02\" MATERIAL, IT HAS BEEN REPLACED. Use \"IMKPeakOriented\" or \"HystereticSM\" INSTEAD.\n";        
   }
  
   // Pointer to a uniaxial material that will be returned
@@ -60,7 +61,7 @@ OPS_ModIMKPeakOriented02()
   double dData[26];                     // Updated:Filipe Ribeiro and Andre Barbosa      
   int numData = 1;
   // Check tag
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  ModIMKPeakOriented02 tag" << endln;
     return 0;
   }
@@ -79,7 +80,7 @@ OPS_ModIMKPeakOriented02()
         }
        
         if (numData == 23) {
-                if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
+                if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
                         opserr << "Invalid Args want: uniaxialMaterial ModIMKPeakOriented02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?";
                         opserr << "Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?, thetaPCpos?, thetaPCneg? ";
                         opserr << "ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, C_Fp?, C_Fn?, <nFactor?>";               // Updated:Filipe Ribeiro and Andre Barbosa
@@ -97,7 +98,7 @@ OPS_ModIMKPeakOriented02()
                                              dData[20], dData[21], dData[22]);                                  // Updated:Filipe Ribeiro and Andre Barbosa
        
         } else if (numData == 24) {                     // Updated:Filipe Ribeiro and Andre Barbosa
-        if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
+        if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
                 opserr << "Invalid Args want: uniaxialMaterial ModIMKPeakOriented02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?";
                 opserr << "Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?, thetaPCpos?, thetaPCneg? ";
                 opserr << "ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, C_Fp?, C_Fn?, <nFactor?>";                // Updated:Filipe Ribeiro and Andre Barbosa
@@ -114,7 +115,7 @@ OPS_ModIMKPeakOriented02()
                             dData[20], dData[21], dData[22], dData[23]); // Updated:Filipe Ribeiro and Andre Barbosa
    
         } else if (numData == 25) {                     // Updated:Filipe Ribeiro and Andre Barbosa
-        if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
+        if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
                 opserr << "Invalid Args want: uniaxialMaterial ModIMKPeakOriented02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?";
                 opserr << "Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?, thetaPCpos?, thetaPCneg? ";
                 opserr << "ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, C_Fp?, C_Fn?, <nFactor?>";                // Updated:Filipe Ribeiro and Andre Barbosa
@@ -131,7 +132,7 @@ OPS_ModIMKPeakOriented02()
                             dData[20], dData[21], dData[22], dData[23], dData[24]); // Updated:Filipe Ribeiro and Andre Barbosa
    
         } else if (numData == 26) {                     // Updated:Filipe Ribeiro and Andre Barbosa
-        if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
+        if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated:Filipe Ribeiro and Andre Barbosa
                 opserr << "Invalid Args want: uniaxialMaterial ModIMKPeakOriented02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?";
                 opserr << "Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?, thetaPCpos?, thetaPCneg? ";
                 opserr << "ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, C_Fp?, C_Fn?, <nFactor?>";                // Updated:Filipe Ribeiro and Andre Barbosa

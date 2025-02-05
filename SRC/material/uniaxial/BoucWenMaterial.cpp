@@ -43,8 +43,8 @@
 
 void* OPS_BoucWenMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 10) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 10) {
 	opserr << "WARNING: Insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial BoucWen tag? alpha? ko? n? gamma?" << endln 
 	       << " beta? Ao? deltaA? deltaNu? deltaEta?" << endln;
@@ -52,27 +52,27 @@ void* OPS_BoucWenMaterial()
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
       opserr << "WARNING BoucWen - invalid tag" << endln;
 	return 0;
     }
 
     double data[10] = {0,0,0,0,0,0,0,0,0,1.0e-8};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 10) {
-	numdata = 10;
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 10) {
+	numData = 10;
     }
-    if (OPS_GetDoubleInput(numdata,data)) {
+    if (OPS_GetDoubleInput(&numData,data)) {
       opserr << "WARNING BoucWen - invalid double inputs" << endln;
 	return 0;
     }
 
     int maxNumIter = 20;
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 0) {
-	numdata = 1;
-	if (OPS_GetIntInput(numdata,&maxNumIter) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData,&maxNumIter) < 0) {
 	  opserr << "WARNING BoucWen - invalid int inputs" << endln;
 	    return 0;
 	}

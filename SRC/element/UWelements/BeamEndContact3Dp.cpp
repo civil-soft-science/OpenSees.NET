@@ -69,13 +69,13 @@ OPS_BeamEndContact3Dp(void)
   	int icSwitch = 0;
 
   	int numData = 4;
-  	if (OPS_GetIntInput(numData, iData) != 0) {
+  	if (OPS_GetIntInput(&numData, iData) != 0) {
     	opserr << "WARNING invalid integer data: element BeamEndContact3Dp " << iData[0] << endln;
 		return 0;
   	}
 
   	numData = 2;
-  	if (OPS_GetDoubleInput(numData, dData) !=0) {
+  	if (OPS_GetDoubleInput(&numData, dData) !=0) {
     	opserr << "WARNING invalid double data: element BeamEndContact3Dp " << iData[0] << endln;
 		return 0;
   	}
@@ -83,7 +83,7 @@ OPS_BeamEndContact3Dp(void)
   	numRemainingInputArgs -= 6;
   	while (numRemainingInputArgs >= 1) {
     	numData = 1;
-    	if (OPS_GetIntInput(numData, &icSwitch) != 0) {
+    	if (OPS_GetIntInput(&numData, &icSwitch) != 0) {
       		opserr << "WARNING invalid initial contact flag: element BeamEndContact3Dp " << iData[0] << endln;
 	  		return 0;
     	}

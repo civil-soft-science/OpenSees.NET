@@ -52,12 +52,12 @@ OPS_VelDependent(void)
     int tag[1];
     double dData[3];
     int numData = 1;
-    if (OPS_GetIntInput(numData, tag) != 0) {
+    if (OPS_GetIntInput(&numData, tag) != 0) {
         opserr << "WARNING invalid tag for frictionModel VelDependent\n";
         return 0;
     }
     numData = 3;
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
         opserr << "Invalid data for frictionModel VelDependent " << tag[0] << endln;
         return 0;
     }

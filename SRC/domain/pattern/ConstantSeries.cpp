@@ -59,7 +59,7 @@ OPS_ConstantSeries(void)
   
     if (numRemainingArgs == 1 || numRemainingArgs == 3) {
       numData = 1;
-      if (OPS_GetIntInput(numData, &tag) != 0) {
+      if (OPS_GetIntInput(&numData, &tag) != 0) {
 	opserr << "WARNING invalid series tag in ConstantSeries tag? <-factor factor?>" << endln;
 	return 0;
       }
@@ -73,7 +73,7 @@ OPS_ConstantSeries(void)
 		return 0;
 	  }
       numData = 1;
-      if (OPS_GetDouble(numData, &cFactor) != 0) {
+      if (OPS_GetDouble(&numData, &cFactor) != 0) {
 	  opserr << "WARNING invalid factor in  ConstantSeries with tag: " << tag << endln;
 	  return 0;
       }
@@ -151,7 +151,7 @@ ConstantSeries::Print(OPS_Stream &s, int flag)
     s << "Constant Series: factor: " << cFactor << "\n";
 }
 
-    // AddingSensitivity:BEGIN //////////////////////////////////////////
+
 double
 ConstantSeries::getFactorSensitivity(double pseudoTime)
 {
@@ -164,7 +164,7 @@ ConstantSeries::getFactorSensitivity(double pseudoTime)
 int 
 ConstantSeries::setParameter(const char **argv, int argc, Parameter &param)
 {
-  if (strstr(argv[0],"factor") != 0) {
+  if (strncmp(argv[0],"factor",80) == 0) {
     param.setValue(cFactor);
     return param.addObject(1, this);
   }

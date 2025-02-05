@@ -64,24 +64,24 @@ const double PYtolerance = 1.0e-12;
 
 void* OPS_PySimple2()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 5) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 5) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial PySimple2 tag? soilType? pult? y50? drag? dashpot?\n";
 	return 0;
     }
     
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
     
     double ddata[4] = {0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 4) numdata = 4;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 4) numData = 4;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -390,10 +390,26 @@ PySimple2::setTrialStrain (double newy, double yRate)
 	//
 	int numSteps = 1;
 	double stepSize = 1.0;
-	if(fabs(dp/pult) > 0.5) numSteps = 1 + int(fabs(dp/(0.5*pult)));
-	if(fabs(dy/y50)  > 1.0 ) numSteps = 1 + int(fabs(dy/(1.0*y50)));
-	stepSize = 1.0/float(numSteps);
+	double temp = fabs(dp/pult);
+	if(temp > 0.5) {
+		if (temp > 50) {
+			numSteps = 100;
+		} else {
+			numSteps = 1 + int(temp * 2.0);
+		}
+	}
+
+	temp = fabs(dy/y50);
+	if(temp > 1.0) {
+		if (temp > 100) {
+			numSteps = 100;
+		} else {
+			numSteps = 1 + int(temp);
+		}
+	}
+
 	if(numSteps > 100) numSteps = 100;
+	stepSize = 1.0/double(numSteps);
 
 	dy = stepSize * dy;
 

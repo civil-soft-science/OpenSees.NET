@@ -67,7 +67,7 @@ OPS_ElasticOrthotropicMaterial(void)
   dData[9] = 0.0;
   
   int numData = 1;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: nDMaterial ElasticOrthotropic \n";
     return 0;
   }
@@ -77,7 +77,7 @@ OPS_ElasticOrthotropicMaterial(void)
   else
     numData = 9;
   
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid data: nDMaterial EasticIsotropic : " << iData[0] <<"\n";
     return 0;
   }  
@@ -252,18 +252,13 @@ ElasticOrthotropicMaterial::getCopy (void)
 const char*
 ElasticOrthotropicMaterial::getType (void) const
 {
-  opserr << "ElasticOrthotropicMaterial::getType -- subclass responsibility\n";
-  exit(-1);	
-
-  return 0;
+  return "BaseClass";
 }
 
 int
 ElasticOrthotropicMaterial::getOrder (void) const
 {
-  opserr << "ElasticOrthotropicMaterial::getOrder -- subclass responsibility\n";
-  exit(-1);
-  return -1;
+  return 0;
 }
 
 int

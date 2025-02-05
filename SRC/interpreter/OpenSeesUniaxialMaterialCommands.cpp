@@ -50,6 +50,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <StrengthDegradation.h>
 #include <UniaxialMaterial.h>
 #include <UnloadingRule.h>
+#include <PipeMaterial.h>
 #include <elementAPI.h>
 
 #include <map>
@@ -97,6 +98,7 @@ void* OPS_SPSW02();
 void* OPS_Concrete01();
 void* OPS_Steel4();
 void* OPS_HystereticMaterial();
+void* OPS_HystereticSMMaterial();
 void* OPS_ReinforcingSteel();
 void* OPS_Dodd_Restrepo();
 void* OPS_RambergOsgoodSteel();
@@ -114,6 +116,7 @@ void* OPS_FRPConfinedConcrete();
 void* OPS_ConcreteCM();
 void* OPS_Cast();
 void* OPS_ViscousDamper();
+void* OPS_DamperMaterial();
 void* OPS_BilinearOilDamper();
 void* OPS_Bilin();
 void* OPS_Bilin02();
@@ -126,15 +129,18 @@ void* OPS_BarSlipMaterial();
 void* OPS_Bond_SP01();
 void* OPS_FatigueMaterial();
 void* OPS_HardeningMaterial();
+void* OPS_FlagShapeMaterial();
 void* OPS_ImpactMaterial();
 void* OPS_HyperbolicGapMaterial();
 void* OPS_LimiStateMaterial();
 void* OPS_MinMaxMaterial();
+void* OPS_PenaltyMaterial();
 void* OPS_TensionOnlyMaterial();
 void* OPS_ElasticBilin();
 void* OPS_ElasticMultiLinear();
 void* OPS_ElasticPowerFunc();
 void* OPS_MultiLinear();
+void* OPS_ContinuumUniaxialMaterial();
 void* OPS_InitStrainMaterial();
 void* OPS_InitStressMaterial();
 void* OPS_PathIndependentMaterial();
@@ -143,8 +149,10 @@ void* OPS_Pinching4Material();
 void* OPS_ECC01();
 void* OPS_SelfCenteringMaterial();
 void* OPS_ASD_SMA_3K();
+void* OPS_ASDConcrete1DMaterial();
 void* OPS_ViscousMaterial();
 void* OPS_BoucWenMaterial();
+void* OPS_BoucWenOriginal();
 void* OPS_BoucWenInfill();
 void* OPS_BWBN();
 void* OPS_PySimple1();
@@ -174,6 +182,7 @@ void* OPS_OriginCentered();
 void* OPS_HookGap();
 void* OPS_FRPConfinedConcrete02();
 void* OPS_pyUCLA();
+void* OPS_ElasticMaterialThermal();
 void* OPS_Steel01Thermal();
 void* OPS_Steel02Thermal();
 void* OPS_ConcretewBeta();
@@ -194,17 +203,22 @@ void* OPS_SmoothPSConcrete();
 void* OPS_UniaxialJ2Plasticity();
 void* OPS_OOHystereticMaterial();
 void* OPS_UVCuniaxial();
+void* OPS_GNGMaterial();
 void* OPS_IMKBilin();
 void* OPS_IMKPinching();
 void* OPS_IMKPeakOriented();
 void* OPS_SLModel();
 void* OPS_SMAMaterial();
+void* OPS_FRCC();
+void* OPS_ConcreteZBH_original();
+void* OPS_ConcreteZBH_fitted();
+void* OPS_ConcreteZBH_smoothed();
 
-void* OPS_ArctangentBackbone();
-void* OPS_BilinearBackbone();
-void* OPS_ManderBackbone();
-void* OPS_MultilinearBackbone();
-void* OPS_TrilinearBackbone();
+void *OPS_ArctangentBackbone(void);
+void *OPS_ManderBackbone(void);
+void *OPS_TrilinearBackbone(void);
+void *OPS_BilinearBackbone(void);
+void *OPS_MultilinearBackbone(void);
 void* OPS_MaterialBackbone();
 void* OPS_ReeseStiffClayBelowWS();
 void* OPS_ReeseStiffClayAboveWS();
@@ -212,6 +226,11 @@ void* OPS_VuggyLimestone();
 void* OPS_CementedSoil();
 void* OPS_WeakRock();
 void* OPS_LiquefiedSand();
+void* OPS_RaynorBackbone();
+void* OPS_ReeseSandBackbone();
+void* OPS_ReeseSoftClayBackbone();
+void* OPS_CappedBackbone();
+void* OPS_LinearCappedBackbone();
 
 void* OPS_ConstantStiffnessDegradation();
 void* OPS_DuctilityStiffnessDegradation();
@@ -240,8 +259,31 @@ void* OPS_DuctileFracture();  // Kuanshi Zhong
 
 void* OPS_TDConcreteEXP(void);
 void* OPS_TDConcrete(void);
+void* OPS_TDConcreteNL(void);
 void* OPS_TDConcreteMC10(void);
 void* OPS_TDConcreteMC10NL(void);
+void* OPS_CreepMaterial(void);
+
+void* OPS_CoulombDamperMaterial();
+void* OPS_GMG_CyclicReinforcedConcrete();
+
+void *OPS_Hertzdamp(void);
+void *OPS_JankowskiImpact(void);
+void *OPS_ViscoelasticGap(void);
+
+void *OPS_Masonry(void);
+void *OPS_Trilinwp(void);
+void *OPS_Trilinwp2(void);
+void *OPS_Masonryt(void);
+
+void* OPS_Ratchet(void); // Yi Xiao
+void* OPS_APDVFD(void);
+void* OPS_APDMD(void);
+void* OPS_APDFMD(void);
+void* OPS_PipeMaterial();
+void* OPS_TzSandCPT(void);
+void* OPS_QbSandCPT(void);
+
 
 namespace {
 
@@ -288,6 +330,8 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("Hysteretic", &OPS_HystereticMaterial));
   uniaxialMaterialsMap.insert(
+      std::make_pair("HystereticSM", &OPS_HystereticSMMaterial));
+  uniaxialMaterialsMap.insert(
       std::make_pair("ReinforcingSteel", &OPS_ReinforcingSteel));
   uniaxialMaterialsMap.insert(
       std::make_pair("Dodd_Restrepo", &OPS_Dodd_Restrepo));
@@ -332,6 +376,10 @@ static int setUpUniaxialMaterials(void) {
       std::make_pair("CastFuse", &OPS_Cast));
   uniaxialMaterialsMap.insert(
       std::make_pair("ViscousDamper", &OPS_ViscousDamper));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Damper", &OPS_DamperMaterial));	
+  uniaxialMaterialsMap.insert(
+      std::make_pair("DamperMaterial", &OPS_DamperMaterial));	
   uniaxialMaterialsMap.insert(std::make_pair(
       "BilinearOilDamper", &OPS_BilinearOilDamper));
   uniaxialMaterialsMap.insert(
@@ -363,6 +411,8 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("Hardening", &OPS_HardeningMaterial));
   uniaxialMaterialsMap.insert(
+      std::make_pair("FlagShape", &OPS_FlagShapeMaterial));  
+  uniaxialMaterialsMap.insert(
       std::make_pair("Impact", &OPS_ImpactMaterial));
   uniaxialMaterialsMap.insert(
       std::make_pair("ImpactMaterial", &OPS_ImpactMaterial));
@@ -375,7 +425,9 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("MinMaxMaterial", &OPS_MinMaxMaterial));
   uniaxialMaterialsMap.insert(
-      std::make_pair("TensionOnly", &OPS_TensionOnlyMaterial));
+      std::make_pair("Penalty", &OPS_PenaltyMaterial));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("TensionOnly", &OPS_TensionOnlyMaterial));  
   uniaxialMaterialsMap.insert(
       std::make_pair("ElasticBilin", &OPS_ElasticBilin));
   uniaxialMaterialsMap.insert(
@@ -386,6 +438,8 @@ static int setUpUniaxialMaterials(void) {
       std::make_pair("ElasticPowerFunc", &OPS_ElasticPowerFunc));
   uniaxialMaterialsMap.insert(
       std::make_pair("MultiLinear", &OPS_MultiLinear));
+  uniaxialMaterialsMap.insert(std::make_pair(
+      "Continuum", &OPS_ContinuumUniaxialMaterial));
   uniaxialMaterialsMap.insert(std::make_pair(
       "InitStrainMaterial", &OPS_InitStrainMaterial));
   uniaxialMaterialsMap.insert(
@@ -407,10 +461,14 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("ASD_SMA_3K", &OPS_ASD_SMA_3K));
   uniaxialMaterialsMap.insert(
+      std::make_pair("ASDConcrete1D", &OPS_ASDConcrete1DMaterial));
+  uniaxialMaterialsMap.insert(
       std::make_pair("Viscous", &OPS_ViscousMaterial));
   uniaxialMaterialsMap.insert(
       std::make_pair("BoucWen", &OPS_BoucWenMaterial));
   uniaxialMaterialsMap.insert(
+      std::make_pair("BoucWenOriginal", &OPS_BoucWenOriginal));
+  uniaxialMaterialsMap.insert(			      
       std::make_pair("BoucWenInfill", &OPS_BoucWenInfill));  
   uniaxialMaterialsMap.insert(
       std::make_pair("BWBN", &OPS_BWBN));
@@ -471,6 +529,8 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("PYUCLA", &OPS_pyUCLA));
   uniaxialMaterialsMap.insert(
+      std::make_pair("ElasticThermal", &OPS_ElasticMaterialThermal));
+  uniaxialMaterialsMap.insert(			      
       std::make_pair("Steel01Thermal", &OPS_Steel01Thermal));
   uniaxialMaterialsMap.insert(
       std::make_pair("Steel02Thermal", &OPS_Steel02Thermal));
@@ -519,6 +579,8 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("UVCuniaxial", &OPS_UVCuniaxial));
   uniaxialMaterialsMap.insert(
+      std::make_pair("GNG", &OPS_GNGMaterial));
+  uniaxialMaterialsMap.insert(			      
       std::make_pair("SteelFractureDI", &OPS_SteelFractureDI));
   uniaxialMaterialsMap.insert(
       std::make_pair("IMKBilin", &OPS_IMKBilin));
@@ -530,6 +592,14 @@ static int setUpUniaxialMaterials(void) {
       std::make_pair("SLModel", &OPS_SLModel));
   uniaxialMaterialsMap.insert(
       std::make_pair("SMA", &OPS_SMAMaterial));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("FRCC", &OPS_FRCC));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ConcreteZBH_original", &OPS_ConcreteZBH_original));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ConcreteZBH_fitted", &OPS_ConcreteZBH_fitted));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ConcreteZBH_smoothed", &OPS_ConcreteZBH_smoothed));      
   uniaxialMaterialsMap.insert(std::make_pair(
       "HystereticPoly",
       &OPS_HystereticPoly));  // Salvatore Sessa 14-Jan-2021 Mail: salvatore.sessa2@unina.it
@@ -545,10 +615,39 @@ static int setUpUniaxialMaterials(void) {
   uniaxialMaterialsMap.insert(
       std::make_pair("TDConcrete", &OPS_TDConcrete));
   uniaxialMaterialsMap.insert(
+      std::make_pair("TDConcreteNL", &OPS_TDConcreteNL));  
+  uniaxialMaterialsMap.insert(
       std::make_pair("TDConcreteMC10", &OPS_TDConcreteMC10));
   uniaxialMaterialsMap.insert(
       std::make_pair("TDConcreteMC10NL", &OPS_TDConcreteMC10NL));
-
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Creep", &OPS_CreepMaterial));  
+  uniaxialMaterialsMap.insert(
+      std::make_pair("CoulombDamper", &OPS_CoulombDamperMaterial));
+  uniaxialMaterialsMap.insert(std::make_pair(
+	  "GMG_CyclicReinforcedConcrete", &OPS_GMG_CyclicReinforcedConcrete));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("APDVFD", &OPS_APDVFD));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("APDMD", &OPS_APDMD));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("APDFMD", &OPS_APDFMD));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Hertzdamp", &OPS_Hertzdamp));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("HertzDamp", &OPS_Hertzdamp));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("JankowskiImpact", &OPS_JankowskiImpact));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ViscoelasticGap", &OPS_ViscoelasticGap));
+  uniaxialMaterialsMap.insert(std::make_pair("Masonry", &OPS_Masonry));
+  uniaxialMaterialsMap.insert(std::make_pair("Masonryt", &OPS_Masonryt));
+  uniaxialMaterialsMap.insert(std::make_pair("Trilinwp", &OPS_Trilinwp));
+  uniaxialMaterialsMap.insert(std::make_pair("Trilinwp2", &OPS_Trilinwp2));
+  uniaxialMaterialsMap.insert(std::make_pair("Ratchet", &OPS_Ratchet));
+  uniaxialMaterialsMap.insert(std::make_pair("Pipe", &OPS_PipeMaterial));
+  uniaxialMaterialsMap.insert(std::make_pair("TzSandCPT", &OPS_TzSandCPT));
+  uniaxialMaterialsMap.insert(std::make_pair("QbSandCPT", &OPS_QbSandCPT));
   return 0;
 }
 
@@ -569,17 +668,17 @@ static int setUpHystereticBackbones(void) {
       std::make_pair("Material", &OPS_MaterialBackbone));  
   hystereticBackbonesMap.insert(std::make_pair(
       "ReeseStiffClayBelowWS", &OPS_ReeseStiffClayBelowWS));
-  hystereticBackbonesMap.insert(std::make_pair(
-      "ReeseStiffClayAboveWS", &OPS_ReeseStiffClayAboveWS));
   hystereticBackbonesMap.insert(
-      std::make_pair("VuggyLimestone", &OPS_VuggyLimestone));
+      std::make_pair("Raynor", &OPS_RaynorBackbone));
   hystereticBackbonesMap.insert(
-      std::make_pair("CementedSoil", &OPS_CementedSoil));
+      std::make_pair("ReeseSand", &OPS_ReeseSandBackbone));
   hystereticBackbonesMap.insert(
-      std::make_pair("WeakRock", &OPS_WeakRock));
+      std::make_pair("ReeseSoftClay", &OPS_ReeseSoftClayBackbone));  
   hystereticBackbonesMap.insert(
-      std::make_pair("LiquefiedSand", &OPS_LiquefiedSand));
-
+      std::make_pair("Capped", &OPS_CappedBackbone));
+  hystereticBackbonesMap.insert(
+      std::make_pair("LinearCapped", &OPS_LinearCappedBackbone));
+  
   return 0;
 }
 
@@ -683,7 +782,7 @@ int OPS_testUniaxialMaterial() {
 
   int tag;
   int numData = 1;
-  if (OPS_GetIntInput(numData, &tag) < 0) {
+  if (OPS_GetIntInput(&numData, &tag) < 0) {
     opserr << "invalid int value\n";
     return -1;
   }
@@ -701,7 +800,7 @@ int OPS_testUniaxialMaterial() {
 }
 
 int OPS_setStrain() {
-  if (OPS_GetNumRemainingInputArgs() != 1) {
+  if (OPS_GetNumRemainingInputArgs() < 1) {
     opserr << "testUniaxialMaterial - You must provide a strain "
               "value.\n";
     return -1;
@@ -717,12 +816,20 @@ int OPS_setStrain() {
 
   double strain;
   int numData = 1;
-  if (OPS_GetDoubleInput(numData, &strain) < 0) {
+  if (OPS_GetDoubleInput(&numData, &strain) < 0) {
     opserr << "invalid double value\n";
     return -1;
   }
 
-  material->setTrialStrain(strain);
+  double strainRate = 0.0;
+  if (OPS_GetNumRemainingInputArgs() > 0) {
+      if (OPS_GetDoubleInput(&numData, &strainRate) < 0) {
+          opserr << "invalid strain rate\n";
+          return -1;
+      }
+  }
+
+  material->setTrialStrain(strain, strainRate);
   material->commitState();
 
   return 0;
@@ -740,7 +847,7 @@ int OPS_getStrain() {
 
   int numData = 1;
 
-  if (OPS_SetDoubleOutput(numData, &strain, true) < 0) {
+  if (OPS_SetDoubleOutput(&numData, &strain, true) < 0) {
     opserr << "failed to set strain\n";
     return -1;
   }
@@ -760,7 +867,7 @@ int OPS_getStress() {
 
   int numData = 1;
 
-  if (OPS_SetDoubleOutput(numData, &stress, true) < 0) {
+  if (OPS_SetDoubleOutput(&numData, &stress, true) < 0) {
     opserr << "failed to set stress\n";
     return -1;
   }
@@ -780,7 +887,7 @@ int OPS_getTangent() {
 
   int numData = 1;
 
-  if (OPS_SetDoubleOutput(numData, &tangent, true) < 0) {
+  if (OPS_SetDoubleOutput(&numData, &tangent, true) < 0) {
     opserr << "failed to set tangent\n";
     return -1;
   }
@@ -800,7 +907,7 @@ int OPS_getDampTangent() {
 
   int numData = 1;
 
-  if (OPS_SetDoubleOutput(numData, &tangent, true) < 0) {
+  if (OPS_SetDoubleOutput(&numData, &tangent, true) < 0) {
     opserr << "failed to set damp tangent\n";
     return -1;
   }
@@ -811,6 +918,7 @@ int OPS_getDampTangent() {
 void* OPS_RotationShearCurve();
 void* OPS_ThreePointCurve();
 void* OPS_ShearCurve();
+void* OPS_AxialCurve();
 
 int OPS_LimitCurve() {
   // Make sure there is a minimum number of arguments
@@ -829,7 +937,15 @@ int OPS_LimitCurve() {
   LimitCurve* theCurve = 0;
 
   if (strcmp(type, "Axial") == 0) {
-    opserr << "WARNING to be implemented ...\n";
+    // opserr << "WARNING to be implemented ...\n";
+    void* curve = OPS_AxialCurve();
+    if (curve != 0) {
+      theCurve = (LimitCurve*)curve;
+    } else {
+      return -1;
+    }
+    return -1;
+
     return -1;
 
   } else if (strcmp(type, "RotationShearCurve") == 0) {
@@ -841,7 +957,7 @@ int OPS_LimitCurve() {
     }
 
   } else if (strcmp(type, "ThreePoint") == 0) {
-    void* curve = OPS_RotationShearCurve();
+    void* curve = OPS_ThreePointCurve();
     if (curve != 0) {
       theCurve = (LimitCurve*)curve;
     } else {

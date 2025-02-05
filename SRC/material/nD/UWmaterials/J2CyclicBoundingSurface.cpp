@@ -42,9 +42,9 @@ char  unsigned      J2CyclicBoundingSurface::m_ElastFlag = 1;  // --> default vi
 
 void* OPS_J2CyclicBoundingSurfaceMaterial()
 {
-	int numdata = OPS_GetNumRemainingInputArgs();
+	int numData = OPS_GetNumRemainingInputArgs();
 
-	if (numdata < 10) {
+	if (numData < 10) {
 		opserr << "WARNING: Insufficient arguements\n";
 		opserr << "Want: nDMaterial J2CyclicBoundingSurface tag? G? K? su? rho? h? m? k_in?  chi? beta?\n";
 		return 0;
@@ -52,19 +52,19 @@ void* OPS_J2CyclicBoundingSurfaceMaterial()
 
 	int tag;
 
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &tag) < 0) {
 		opserr << "WARNING invalid J2CyclicBoundingSurface tag\n";
 		return 0;
 	}
 
 	double data[9] = { 0,0,0,0,0,0,0,0,0 };
-	numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata != 9) {
+	numData = OPS_GetNumRemainingInputArgs();
+	if (numData != 9) {
 		opserr << "WARNING error in  J2CyclicBoundingSurface number of arg incorrect\n";
 		return 0;
 	}
-	if (OPS_GetDoubleInput(numdata, data)) {
+	if (OPS_GetDoubleInput(&numData, data)) {
 		opserr << "WARNING invalid J2CyclicBoundingSurface double inputs\n";
 		return 0;
 	}

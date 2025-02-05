@@ -80,7 +80,7 @@ OPS_TFP_Bearing()
   int numData;
 
   numData = 3;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -91,11 +91,11 @@ OPS_TFP_Bearing()
     numData = 21;
     dData[21] = 10.0; // initial Axial Load = 0.0
     dData[22] = 1.0e12;
-    dData[23] = 0.01;
+    dData[23] = 1.0e12;
   } else if (numRemainingArgs == 25) {
     numData = 22;
     dData[22] = 1.0e12;    
-    dData[23] = 0.01;
+    dData[23] = 1.0e12;
   } else if (numRemainingArgs == 26) {
     numData = 23;
     dData[22] = 1.0e12;
@@ -103,7 +103,7 @@ OPS_TFP_Bearing()
     numData = 24;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING error reading element area for element" << eleTag << endln;
     return 0;
   }

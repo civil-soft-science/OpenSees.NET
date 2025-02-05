@@ -60,19 +60,19 @@ void* OPS_PFEMElement2DBubble(const ID &info)
 
     int idata[4];
     double data[7] = {0,0,0,0,1.0,-1,1e-16};
-    int numdata;
+    int numData;
 
     // regular element, not in a mesh, get tags
     if (info.Size() == 0) {
-        numdata = OPS_GetNumRemainingInputArgs();
-        if(numdata < 4) {
+        numData = OPS_GetNumRemainingInputArgs();
+        if(numData < 4) {
             opserr<<"WARNING: insufficient number of arguments: tag, nd1, nd2, nd3\n";
             return 0;
         }
 
         // tag, nd1, nd2, nd3
-        numdata = 4;
-        if(OPS_GetIntInput(numdata,idata)<0) {
+        numData = 4;
+        if(OPS_GetIntInput(&numData,idata)<0) {
             opserr << "WARNING: failed to get tags\n";
             return 0;
         }
@@ -81,14 +81,14 @@ void* OPS_PFEMElement2DBubble(const ID &info)
     // regular element, or save data
     if (info.Size()==0 || info(0)==1) {
         if(OPS_GetNumRemainingInputArgs() < 4) {
-            opserr<<"insufficient arguments: rho, mu, b1, b2, (thinknes,kappa,minJ)\n";
+            opserr<<"insufficient arguments: rho, mu, b1, b2, (thinknes,kappa)\n";
             return 0;
         }
 
-        // rho, mu, b1, b2, (thinknes,kappa,minJ)
-        numdata = OPS_GetNumRemainingInputArgs();
-        if(numdata > 7) numdata = 7;
-        if(OPS_GetDoubleInput(numdata,data) < 0) {
+        // rho, mu, b1, b2, thinknes,kappa
+        numData = OPS_GetNumRemainingInputArgs();
+        if(numData > 6) numData = 6;
+        if(OPS_GetDoubleInput(&numData,data) < 0) {
             opserr << "WARNING: failed to get fluid properties\n";
             return 0;
         }
@@ -149,7 +149,7 @@ PFEMElement2DBubble::PFEMElement2DBubble()
         :Element(0, ELE_TAG_PFEMElement2DBubble), ntags(6),
          rho(0), mu(0), bx(0), by(0), J(0.0), dJ(6),
          numDOFs(),thickness(1.0), kappa(-1), minJ(1e-16),parameterID(0),
-         M(), D(), F(), Fp()
+         M(), D(), F(), Fp(), Q()
 {
     for(int i=0;i<3;i++)
     {
@@ -168,7 +168,7 @@ PFEMElement2DBubble::PFEMElement2DBubble(int tag, int nd1, int nd2, int nd3,
         :Element(tag, ELE_TAG_PFEMElement2DBubble), ntags(6),
          rho(r), mu(m), bx(b1), by(b2), J(0.0), dJ(6), numDOFs(),
          thickness(thk), kappa(ka), minJ(minj), parameterID(0),
-         M(), D(), F(), Fp()
+         M(), D(), F(), Fp(), Q()
 {
     ntags(0)=nd1; ntags(2)=nd2; ntags(4)=nd3;
     ntags(1)=nd1; ntags(3)=nd2; ntags(5)=nd3;
@@ -346,9 +346,27 @@ PFEMElement2DBubble::getInitialStiff()
     return K;
 }
 
-int
-PFEMElement2DBubble::addInertiaLoadToUnbalance(const Vector &accel)
-{
+void
+PFEMElement2DBubble::zeroLoad() {
+    int ndf = this->getNumDOF();
+    Q.resize(ndf);
+    Q.Zero();
+}
+
+int PFEMElement2DBubble::addInertiaLoadToUnbalance(
+    const Vector& accel) {
+    double m = getM();
+    if (m == 0) {
+        return 0;
+    }
+
+    // take advantage of lumped mass matrix
+    for (int a = 0; a < 3; ++a) {
+        const Vector& Raccel = nodes[2 * a]->getRV(accel);
+        Q(numDOFs(2 * a)) -= m * Raccel(0);
+        Q(numDOFs(2 * a) + 1) -= m * Raccel(1);
+    }
+
     return 0;
 }
 
@@ -407,6 +425,8 @@ PFEMElement2DBubble::getResistingForceIncInertia()
         P(numDOFs(2*i)+1) -= F(2*i+1);
         P(numDOFs(2*i+1)) -= Fp(i);
     }
+
+    P.addVector(1.0, Q, -1.0);
 
     return P;
 }

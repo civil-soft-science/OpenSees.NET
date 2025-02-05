@@ -50,7 +50,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
 
   int iData[2];
   int numData = 2;
-  if (OPS_GetIntInput(numData,&iData[0]) < 0) {
+  if (OPS_GetIntInput(&numData,&iData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read int data" << endln;
     return 0;
   }
@@ -81,7 +81,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
   // Read information for hinge at end I
   double lpI, zetaI;
   numData = 2;
-  if (OPS_GetDoubleInput(numData,&dData[0]) < 0) {
+  if (OPS_GetDoubleInput(&numData,&dData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read hinge I data" << endln;
     return 0;
   }
@@ -92,7 +92,7 @@ OPS_RegularizedHingeBeamIntegration(int &integrationTag, ID &secTags)
   // Read information for hinge at end J
   double lpJ, zetaJ;
   numData = 2;
-  if (OPS_GetDoubleInput(numData,&dData[0]) < 0) {
+  if (OPS_GetDoubleInput(&numData,&dData[0]) < 0) {
     opserr << "RegularizedHingeIntegration - unable to read hinge J data" << endln;
     return 0;
   }
@@ -404,42 +404,92 @@ RegularizedHingeIntegration::getWeightsDeriv(int numSections,
 int
 RegularizedHingeIntegration::sendSelf(int cTag, Channel &theChannel)
 {
-  static Vector data(4);
+  int res = 0;
+  
+  int dbTag = this->getDbTag();
 
+  static ID idata(3);
+  //  idata(0) = this->getTag();
+  idata(1) = beamInt->getClassTag();
+  int matDbTag = beamInt->getDbTag();
+  if (matDbTag == 0) {
+    matDbTag = theChannel.getDbTag();
+    beamInt->setDbTag(matDbTag);
+  }
+  idata(2) = matDbTag;
+  res = theChannel.sendID(dbTag, cTag, idata);
+  if (res < 0) {
+    opserr << "RegularizedHingeIntegration::sendSelf() - failed to send the ID" << endln;
+    return res;
+  }
+  
+  static Vector data(4);
   data(0) = lpI;
   data(1) = lpJ;
   data(2) = epsI;
   data(3) = epsJ;
 
-  int dbTag = this->getDbTag();
-
-  if (theChannel.sendVector(dbTag, cTag, data) < 0) {
-    opserr << "RegularizedHingeIntegration::sendSelf() - failed to send Vector data\n";
-    return -1;
+  res = theChannel.sendVector(dbTag, cTag, data);
+  if (res < 0) {
+    opserr << "RegularizedHingeIntegration::sendSelf() - failed to send Vector data" << endln;
+    return res;
   }    
 
-  return 0;
+  res = beamInt->sendSelf(cTag, theChannel);
+  if (res < 0) {
+    opserr << "RegularizedHingeIntegration::sendSelf() - failed to send the Material" << endln;
+    return res;
+  }
+  
+  return res;
 }
 
 int
 RegularizedHingeIntegration::recvSelf(int cTag, Channel &theChannel,
 				      FEM_ObjectBroker &theBroker)
 {
-  static Vector data(4);
-
+  int res = 0;
+  
   int dbTag = this->getDbTag();
 
-  if (theChannel.recvVector(dbTag, cTag, data) < 0)  {
-    opserr << "RegularizedHingeIntegration::recvSelf() - failed to receive Vector data\n";
-    return -1;
+  static ID idata(3);
+  res = theChannel.recvID(dbTag, cTag, idata);
+  if (res < 0) {
+    opserr << "RegularizedHingeIntegration::recvSelf() - failed to get the ID" << endln;;
+    return res;
   }
+  //this->setTag(int(idata(0)));
+
+  // as no way to change material, don't have to check classTag of the material 
+  if (beamInt == 0) {
+    int matClassTag = int(idata(1));
+    beamInt = theBroker.getNewBeamIntegration(matClassTag);
+    if (beamInt == 0) {
+      opserr << "RegularizedHingeIntegration::recvSelf() - failed to create BeamIntegration with classTag " 
+	   << idata(1) << endln;
+      return -2;
+    }
+  }
+  beamInt->setDbTag(idata(2));
   
+  static Vector data(4);
+  res = theChannel.recvVector(dbTag, cTag, data);
+  if (res < 0)  {
+    opserr << "RegularizedHingeIntegration::recvSelf() - failed to receive Vector data" << endln;
+    return res;
+  }
   lpI = data(0);
   lpJ = data(1);
   epsI = data(2);
   epsJ = data(3);
 
-  return 0;
+  res = beamInt->recvSelf(cTag, theChannel, theBroker);
+  if (res < 0) {
+    opserr << "RegularizedHingeIntegration::recvSelf() - failed to recv BeamIntegration" << endln;
+    return res;
+  }
+
+  return res;
 }
 
 void

@@ -64,24 +64,24 @@ const double TZtolerance = 1.0e-12;
 
 void* OPS_TzSimple2()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 4) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial TzSimple2 tag? tzType? tult? z50? dashpot?\n";
 	return 0;
     }
     
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
     
     double ddata[3] = {0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 3) numdata = 3;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 3) numData = 3;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -232,10 +232,25 @@ TzSimple2::setTrialStrain (double newz, double zRate)
 	//
 	int numSteps = 1;
 	double stepSize = 1.0;
-	if(fabs(dt/tult) > 0.5)  numSteps = 1 + int(fabs(dt/(0.5*tult)));
-	if(fabs(dz/z50)  > 1.0 ) numSteps = 1 + int(fabs(dz/(1.0*z50)));
-	stepSize = 1.0/float(numSteps);
+	double temp = fabs(dt/tult);
+	if(temp > 0.5) {
+		if (temp > 50) {
+			numSteps = 100;
+		} else {
+			numSteps = 1 + int(temp * 2.0);
+		}
+	}
+
+	temp = fabs(dz/z50);
+	if(temp > 1.0) {
+		if (temp > 100) {
+			numSteps = 100;
+		} else {
+			numSteps = 1 + int(temp);
+		}
+	}
 	if(numSteps > 100) numSteps = 100;
+	stepSize = 1.0/double(numSteps);
 
 	dz = stepSize * dz;
 

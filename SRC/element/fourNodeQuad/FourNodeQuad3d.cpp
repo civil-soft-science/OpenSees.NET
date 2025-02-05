@@ -10,7 +10,7 @@
 ** University of California, Berkeley, is strictly prohibited.  See   **
 ** file 'COPYRIGHT'  in main directory for information on usage and   **
 ** redistribution,  and for a DISCLAIMER OF ALL WARRANTIES.           **
-**                                                                    **
+**                                                             .       **
 ** Developed by:                                                      **
 **   Frank McKenna (fmckenna@ce.berkeley.edu)                         **
 **   Gregory L. Fenves (fenves@ce.berkeley.edu)                       **
@@ -80,30 +80,25 @@ OPS_FourNodeQuad3d()
   int numData;
   int matTag = 0;
   int eleTag = 0;
-  const char *pType;
 
   numData = 5;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid element data\n";
     return 0;
   }
   eleTag = iData[0];
 
   numData = 1;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid thickness for element: " << eleTag << "\n";
     return 0;
   }
 
-  pType = OPS_GetString();
-  if (pType != 0) {
-    opserr << "WARNING element FourNodeQuad3d : invalid pType for element: " << eleTag << "\n";
-  }
+  const char *pType = OPS_GetString();
 
   numData = 1;
-  if (OPS_GetIntInput(numData, &matTag) != 0) {
+  if (OPS_GetIntInput(&numData, &matTag) != 0) {
     opserr << "WARNING element FourNodeQuad3d : invalid matTag for element: " << eleTag << "\n";
-    delete [] pType;
     return 0;
   }
 
@@ -117,9 +112,8 @@ OPS_FourNodeQuad3d()
 
   if (numRemainingArgs == 12) {
     numData = 4;
-    if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
+    if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
       opserr << "WARNING element FourNodeQuad3d : invalid optional args for element: " << eleTag << "\n";
-      delete [] pType;
       return 0;
     }
   }
@@ -132,11 +126,9 @@ OPS_FourNodeQuad3d()
   if (theEle == 0) {
     opserr << "WARNING ran out of memory creating element with tag " << eleTag << endln;
     delete theMaterial;
-      delete [] pType;
     return 0;
   }
 
-  delete [] pType;
   return theEle;
 }
 
@@ -659,7 +651,10 @@ FourNodeQuad3d::addInertiaLoadToUnbalance(const Vector &accel)
   static double rhoi[4];
   double sum = 0.0;
   for (i = 0; i < 4; i++) {
-    rhoi[i] = theMaterial[i]->getRho();
+    if (rho == 0)
+      rhoi[i] = theMaterial[i]->getRho();
+    else
+      rhoi[i] = rho;
     sum += rhoi[i];
   }
   
@@ -759,7 +754,10 @@ FourNodeQuad3d::getResistingForceIncInertia()
   static double rhoi[4];
   double sum = 0.0;
   for (i = 0; i < 4; i++) {
-    rhoi[i] = theMaterial[i]->getRho();
+    if (rho == 0)
+      rhoi[i] = theMaterial[i]->getRho();
+    else
+      rhoi[i] = rho;	 
     sum += rhoi[i];
   }
   

@@ -61,14 +61,14 @@ void* OPS_SixNodeTri()
 	// nNode, mNode
     int idata[7];
     int num = 7;
-    if (OPS_GetIntInput(num,idata) < 0) {
+    if (OPS_GetIntInput(&num,idata) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
 
     double thk = 1.0;
     num = 1;
-    if (OPS_GetDoubleInput(num,&thk) < 0) {
+    if (OPS_GetDoubleInput(&num,&thk) < 0) {
 	opserr<<"WARNING: invalid double inputs\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_SixNodeTri()
 
     int matTag;
     num = 1;
-    if (OPS_GetIntInput(num,&matTag) < 0) {
+    if (OPS_GetIntInput(&num,&matTag) < 0) {
 	opserr<<"WARNING: invalid matTag\n";
 	return 0;
     }
@@ -97,7 +97,7 @@ void* OPS_SixNodeTri()
 	num = 4;
     }
     if (num > 0) {
-	if (OPS_GetDoubleInput(num,data) < 0) {
+	if (OPS_GetDoubleInput(&num,data) < 0) {
 	    opserr<<"WARNING: invalid integer data\n";
 	    return 0;
 	}
@@ -593,7 +593,10 @@ SixNodeTri::addInertiaLoadToUnbalance(const Vector &accel)
   static double rhoi[nip];
   double sum = 0.0;
   for (i = 0; i < nip; i++) {
-    rhoi[i] = theMaterial[i]->getRho();
+    if (rho == 0)
+      rhoi[i] = theMaterial[i]->getRho();
+    else
+      rhoi[i] = rho;
     sum += rhoi[i];
   }
 
@@ -699,7 +702,10 @@ SixNodeTri::getResistingForceIncInertia()
 	static double rhoi[nip];
 	double sum = 0.0;
 	for (i = 0; i < nip; i++) {
-	  rhoi[i] = theMaterial[i]->getRho();
+	  if (rho == 0)
+            rhoi[i] = theMaterial[i]->getRho();
+          else
+            rhoi[i] = rho;	 
 	  sum += rhoi[i];
 	}
 
@@ -853,7 +859,7 @@ SixNodeTri::recvSelf(int commitTag, Channel &theChannel,
   betaK0 = data(7);
   betaKc = data(8);
 
-  static ID idData(18); // 2*3 + 6
+  static ID idData(2*nip+nnodes);
   // Quad now receives the tags of its nine external nodes
   res += theChannel.recvID(dataTag, commitTag, idData);
   if (res < 0) {

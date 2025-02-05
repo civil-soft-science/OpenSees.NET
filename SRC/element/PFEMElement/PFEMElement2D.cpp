@@ -44,22 +44,22 @@ Vector PFEMElement2D::P;
 
 void* OPS_PFEMElement2D()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 8) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 8) {
 	opserr<<"WARNING: insufficient number of arguments\n";
 	return 0;
     }
 
     // tag, nd1, nd2, nd3
-    numdata = 4;
+    numData = 4;
     int idata[4];
-    if(OPS_GetIntInput(numdata,idata)<0) return 0;
+    if(OPS_GetIntInput(&numData,idata)<0) return 0;
 
     // rho, mu, b1, b2, (thickness, kappa, lumped)
-    numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata > 7) numdata = 7;
+    numData = OPS_GetNumRemainingInputArgs();
+    if(numData > 7) numData = 7;
     double data[7] = {0,0,0,0,1.0,-1,1};
-    if(OPS_GetDoubleInput(numdata,data) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,data) < 0) return 0;
 
     return new PFEMElement2D(idata[0],idata[1],idata[2],idata[3],
 			     data[0],data[1],data[2],data[3],data[4],data[5],data[6]);
@@ -67,17 +67,17 @@ void* OPS_PFEMElement2D()
 
 int OPS_PFEMElement2D(Domain& theDomain, const ID& elenodes, ID& eletags)
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 4) {
 	opserr<<"WARNING: insufficient number of arguments\n";
 	return 0;
     }
 
     // rho, mu, b1, b2, (thickness, kappa, lumped)
-    numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata > 7) numdata = 7;
+    numData = OPS_GetNumRemainingInputArgs();
+    if(numData > 7) numData = 7;
     double data[7] = {0,0,0,0,1.0,-1,1};
-    if(OPS_GetDoubleInput(numdata,data) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,data) < 0) return 0;
 
     // create elements
     ElementIter& theEles = theDomain.getElements();

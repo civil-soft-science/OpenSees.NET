@@ -42,6 +42,7 @@ loads hdf5 shared library at runtime. if uncommented, hdf5 will be linked static
 */
 #ifndef _HDF5
 #define MPCO_HDF5_LOADED_AT_RUNTIME
+#define H5_BUILT_AS_DYNAMIC_LIB
 #endif // !_HDF5 
 
 /* if hdf5 is loaded at runtime, this macro makes the process of loading hdf5 verbose */
@@ -61,7 +62,7 @@ loads hdf5 shared library at runtime. if uncommented, hdf5 will be linked static
 enables SWMR (Single Writer - Multiple Readers) to allow reading this database from multiple processes
 while opensees is writing data. Warning: this is a new feature in hdf5 version 1.10.0.
 */
-//#define MPCO_USE_SWMR
+#define MPCO_USE_SWMR
 
 // opensees
 #include "MPCORecorder.h"
@@ -114,6 +115,12 @@ while opensees is writing data. Warning: this is a new feature in hdf5 version 1
 #include <algorithm>
 #include <limits>
 #include <stdint.h>
+
+// for parallel
+#ifdef _PARALLEL_PROCESSING
+extern bool OPS_PARTITIONED;
+#include <mpi.h>
+#endif // _PARALLEL_PROCESSING
 
 /*************************************************************************************
 
@@ -171,10 +178,10 @@ HDF5 version info
 
 #define H5_VERS_MAJOR	1	/* For major interface/format changes  	     */
 #define H5_VERS_MINOR	12	/* For minor interface/format changes  	     */
-#define H5_VERS_RELEASE	0	/* For tweaks, bug-fixes, or development     */
+#define H5_VERS_RELEASE	2	/* For tweaks, bug-fixes, or development     */
 #define H5_VERS_SUBRELEASE ""	/* For pre-releases like snap0       */
                               /* Empty string for real releases.           */
-#define H5_VERS_INFO    "HDF5 library version: 1.12.0"      /* Full version string */
+#define H5_VERS_INFO    "HDF5 library version: 1.12.2"      /* Full version string */
 
 /*
 cout wrapper for library loader verbosity
@@ -637,7 +644,6 @@ namespace utils {
 				ele_tag == ELE_TAG_ShellNLDKGQThermal ||
 				ele_tag == ELE_TAG_ShellDKGT ||
 				ele_tag == ELE_TAG_ShellNLDKGT ||
-				ele_tag == ELE_TAG_ShellANDeS ||
 				ele_tag == ELE_TAG_ASDShellQ4 ||
 				ele_tag == ELE_TAG_ASDShellT3
 				);
@@ -753,11 +759,20 @@ namespace utils {
 		void bufferNodeResponseVec3u(size_t node_counter, int ndim, const Vector &iresponse, std::vector<double> &buffer)
 		{
 			size_t j = node_counter * ndim;
-			buffer[j] = iresponse[0];
+			if (iresponse.Size() > 0)
+				buffer[j] = iresponse[0];
+			else
+				buffer[j] = 0.0;
 			if (ndim > 1) {
-				buffer[j + 1] = iresponse[1];
+				if (iresponse.Size() > 1)
+					buffer[j + 1] = iresponse[1];
+				else
+					buffer[j + 1] = 0.0;
 				if (ndim > 2) {
-					buffer[j + 2] = iresponse[2];
+					if (iresponse.Size() > 2)
+						buffer[j + 2] = iresponse[2];
+					else
+						buffer[j + 2] = 0.0;
 				}
 			}
 		}
@@ -1259,6 +1274,10 @@ namespace mpco {
 			ReactionMomentIncludingInertia,
 			RayleighForce,
 			RayleighMoment,
+			UnbalancedForce,
+			UnbalancedForceIncludingInertia,
+			UnbalancedMoment,
+			UnbalancedMomentIncludingInertia,
 			Pressure,
 			ModesOfVibration,
 			ModesOfVibrationRotational,
@@ -1286,7 +1305,8 @@ namespace mpco {
 			Tetrahedron_10N,
 			Hexahedron_8N = 400,
 			Hexahedron_20N,
-			Hexahedron_27N
+			Hexahedron_27N,
+			Quadrilateral_CohesiveBand_4N = 500
 		};
 	};
 
@@ -1790,6 +1810,113 @@ namespace mpco {
 			}
 		protected:
 			virtual int getReactionFlag()const { return 2; }
+		};
+
+		class ResultRecorderUnbalancedForce : public ResultRecorder
+		{
+		public:
+			ResultRecorderUnbalancedForce(const mpco::ProcessInfo& info)
+				: ResultRecorder(info)
+			{
+				std::stringstream ss_buffer;
+				ss_buffer << "MODEL_STAGE[" << info.current_model_stage_id << "]/RESULTS/ON_NODES/UNBALANCED_FORCE";
+				m_result_name = ss_buffer.str();
+				m_result_display_name = "Unbalanced Force";
+				m_num_components = 0;
+				if (m_ndim == 1) {
+					m_components_name = "Fx";
+					m_num_components = 1;
+					m_result_data_type = mpco::ResultDataType::Scalar;
+				}
+				else if (m_ndim == 2) {
+					m_components_name = "Fx,Fy";
+					m_num_components = 2;
+					m_result_data_type = mpco::ResultDataType::Vectorial;
+				}
+				else if (m_ndim == 3) {
+					m_components_name = "Fx,Fy,Fz";
+					m_num_components = 3;
+					m_result_data_type = mpco::ResultDataType::Vectorial;
+				}
+				m_dimension = "F";
+				m_description = "Nodal unbalanced force field";
+				m_result_type = mpco::ResultType::Generic;
+			}
+		protected:
+			virtual void bufferResponse(mpco::ProcessInfo& info, std::vector<Node*>& nodes, std::vector<double>& buffer)const {
+				for (size_t i = 0; i < nodes.size(); i++)
+					utils::misc::bufferNodeResponseVec3u(i, m_ndim, nodes[i]->getUnbalancedLoad(), buffer);
+			}
+		};
+
+		class ResultRecorderUnbalancedMoment : public ResultRecorder
+		{
+		public:
+			ResultRecorderUnbalancedMoment(const mpco::ProcessInfo& info)
+				: ResultRecorder(info)
+			{
+				std::stringstream ss_buffer;
+				ss_buffer << "MODEL_STAGE[" << info.current_model_stage_id << "]/RESULTS/ON_NODES/UNBALANCED_MOMENT";
+				m_result_name = ss_buffer.str();
+				m_result_display_name = "Unbalanced Moment";
+				m_num_components = 0;
+				if (m_ndim == 2) {
+					m_components_name = "Mz";
+					m_num_components = 1;
+					m_result_data_type = mpco::ResultDataType::Scalar;
+				}
+				else {
+					m_components_name = "Mx,My,Mz";
+					m_num_components = 3;
+					m_result_data_type = mpco::ResultDataType::Vectorial;
+				}
+				m_dimension = "F*L";
+				m_description = "Nodal unbalanced moment field";
+				m_result_type = mpco::ResultType::Generic;
+			}
+		protected:
+			virtual void bufferResponse(mpco::ProcessInfo& info, std::vector<Node*>& nodes, std::vector<double>& buffer)const {
+				for (size_t i = 0; i < nodes.size(); i++)
+					utils::misc::bufferNodeResponseVec3r(i, m_ndim, nodes[i]->getUnbalancedLoad(), buffer);
+			}
+		};
+
+		class ResultRecorderUnbalancedForceIncIntertia : public ResultRecorderUnbalancedForce
+		{
+		public:
+			ResultRecorderUnbalancedForceIncIntertia(const mpco::ProcessInfo& info)
+				: ResultRecorderUnbalancedForce(info)
+			{
+				std::stringstream ss_buffer;
+				ss_buffer << "MODEL_STAGE[" << info.current_model_stage_id << "]/RESULTS/ON_NODES/UNBALANCED_FORCE_INCLUDING_INERTIA";
+				m_result_name = ss_buffer.str();
+				m_result_display_name = "Unbalanced Force Including Inertia";
+				m_description = "Nodal unbalanced force field including inertia";
+			}
+		protected:
+			virtual void bufferResponse(mpco::ProcessInfo& info, std::vector<Node*>& nodes, std::vector<double>& buffer)const {
+				for (size_t i = 0; i < nodes.size(); i++)
+					utils::misc::bufferNodeResponseVec3u(i, m_ndim, nodes[i]->getUnbalancedLoadIncInertia(), buffer);
+			}
+		};
+
+		class ResultRecorderUnbalancedMomentIncIntertia : public ResultRecorderUnbalancedMoment
+		{
+		public:
+			ResultRecorderUnbalancedMomentIncIntertia(const mpco::ProcessInfo& info)
+				: ResultRecorderUnbalancedMoment(info)
+			{
+				std::stringstream ss_buffer;
+				ss_buffer << "MODEL_STAGE[" << info.current_model_stage_id << "]/RESULTS/ON_NODES/UNBALANCED_MOMENT_INCLUDING_INERTIA";
+				m_result_name = ss_buffer.str();
+				m_result_display_name = "Unbalanced Moment Including Inertia";
+				m_description = "Nodal unbalanced moment field including inertia";
+			}
+		protected:
+			virtual void bufferResponse(mpco::ProcessInfo& info, std::vector<Node*>& nodes, std::vector<double>& buffer)const {
+				for (size_t i = 0; i < nodes.size(); i++)
+					utils::misc::bufferNodeResponseVec3r(i, m_ndim, nodes[i]->getUnbalancedLoadIncInertia(), buffer);
+			}
 		};
 
 		class ResultRecorderVelocity : public ResultRecorder
@@ -2679,6 +2806,7 @@ namespace mpco {
 				, dummy_section_flag(false)
 				, gp_number(0)
 				, gp_eta(0.0)
+				, gp_weight(0.0)
 				, fib_y(0.0)
 				, fib_z(0.0)
 				, fib_a(0.0)
@@ -2692,6 +2820,7 @@ namespace mpco {
 				, dummy_section_flag(other.dummy_section_flag)
 				, gp_number(other.gp_number)
 				, gp_eta(other.gp_eta)
+				, gp_weight(other.gp_weight)
 				, fib_y(other.fib_y)
 				, fib_z(other.fib_z)
 				, fib_a(other.fib_a)
@@ -2717,6 +2846,7 @@ namespace mpco {
 					dummy_section_flag = other.dummy_section_flag;
 					gp_number = other.gp_number;
 					gp_eta = other.gp_eta;
+					gp_weight = other.gp_weight;
 					fib_y = other.fib_y;
 					fib_z = other.fib_z;
 					fib_a = other.fib_a;
@@ -2737,8 +2867,9 @@ namespace mpco {
 			bool dummy_section_flag;
 			// for gauss point
 			int gp_number;
-			double gp_eta; // use only eta (for beams)
-						   // for fibers
+			double gp_eta; // use only eta (for 1D custom integration)
+			double gp_weight;
+			// for fibers
 			double fib_y;
 			double fib_z;
 			double fib_a;
@@ -2788,6 +2919,20 @@ namespace mpco {
 							x[i] = 2.0*(x[i] - xmin) / span - 1.0;
 					}
 				}
+			}
+
+			void appendGaussLocation(std::vector<double>& x) const {
+				if (type == mpco::ElementOutputDescriptorType::Gauss)
+					x.push_back(gp_eta);
+				for (size_t i = 0; i < items.size(); i++)
+					items[i]->appendGaussLocation(x);
+			}
+
+			void appendGaussWeight(std::vector<double>& x) const {
+				if (type == mpco::ElementOutputDescriptorType::Gauss)
+					x.push_back(gp_weight);
+				for (size_t i = 0; i < items.size(); i++)
+					items[i]->appendGaussWeight(x);
 			}
 
 			void getFiberData(std::vector<mpco::element::FiberData> &data,
@@ -2856,7 +3001,7 @@ namespace mpco {
 				std::string indent = ss_indent.str();
 				ss << indent << "<" << mpco::ElementOutputDescriptorType::toString(this->type);
 				if (this->type == mpco::ElementOutputDescriptorType::Gauss) {
-					ss << " number=\"" << this->gp_number << "\" eta=\"" << this->gp_eta << "\"";
+					ss << " number=\"" << this->gp_number << "\" eta=\"" << this->gp_eta << "\" weight=\"" << this->gp_weight << "\"";
 				}
 				else if (this->type == mpco::ElementOutputDescriptorType::Section) {
 					ss << " tag=\"" << this->tag << "\"";
@@ -2917,13 +3062,6 @@ namespace mpco {
 				for (size_t i = 0; i < items.size(); i++)
 					items[i]->makeHeaderInternal(header, temp_path, temp_gp_id);
 				temp_path.pop_back();
-			}
-
-			void appendGaussLocation(std::vector<double> &x) const {
-				if (type == mpco::ElementOutputDescriptorType::Gauss)
-					x.push_back(gp_eta);
-				for (size_t i = 0; i < items.size(); i++)
-					items[i]->appendGaussLocation(x);
 			}
 
 			void appendFiberData(std::vector<mpco::element::FiberData> &data, std::vector<int> &data_mat_id,
@@ -3050,6 +3188,7 @@ namespace mpco {
 					}
 				}
 			}
+
 			void mergeSecInternal() {
 				if (items.size() > 0) {
 					if (items[0]->type == mpco::ElementOutputDescriptorType::Section) {
@@ -3302,6 +3441,8 @@ namespace mpco {
 					if (eo_curr_lev->type == mpco::ElementOutputDescriptorType::Gauss) {
 						if (strcmp(name, "eta") == 0)
 							eo_curr_lev->gp_eta = value;
+						if (strcmp(name, "weight") == 0)
+							eo_curr_lev->gp_weight = value;
 					}
 					else if (eo_curr_lev->type == mpco::ElementOutputDescriptorType::Fiber) {
 						if (strcmp(name, "yLoc") == 0)
@@ -3463,15 +3604,17 @@ namespace mpco {
 		struct ElementIntegrationRule
 		{
 			ElementIntegrationRule()
-				: int_rule_type(ElementIntegrationRuleType::CustomIntegrationRule), x()
+				: int_rule_type(ElementIntegrationRuleType::CustomIntegrationRule)
 			{}
 			ElementIntegrationRule(ElementIntegrationRuleType::Enum _int_rule_type)
-				: int_rule_type(_int_rule_type), x()
+				: int_rule_type(_int_rule_type)
 			{}
 			inline bool operator < (const ElementIntegrationRule &other) const {
 				const double rel_tol = 1.0e-5;
 				if (int_rule_type < other.int_rule_type) return true;
 				if (int_rule_type > other.int_rule_type) return false;
+				if (custom_rule_dimension < other.custom_rule_dimension) return true;
+				if (custom_rule_dimension > other.custom_rule_dimension) return false;
 				if (x.size() < other.x.size()) return true;
 				if (x.size() > other.x.size()) return false;
 				for (size_t i = 0; i < x.size(); i++) {
@@ -3486,6 +3629,8 @@ namespace mpco {
 				const double rel_tol = 1.0e-5;
 				if (int_rule_type > other.int_rule_type) return true;
 				if (int_rule_type < other.int_rule_type) return false;
+				if (custom_rule_dimension > other.custom_rule_dimension) return true;
+				if (custom_rule_dimension < other.custom_rule_dimension) return false;
 				if (x.size() > other.x.size()) return true;
 				if (x.size() < other.x.size()) return false;
 				for (size_t i = 0; i < x.size(); i++) {
@@ -3498,6 +3643,7 @@ namespace mpco {
 			}
 			ElementIntegrationRuleType::Enum int_rule_type;
 			std::vector<double> x;
+			int custom_rule_dimension = 1;
 		};
 
 		struct ElementWithSameCustomIntRuleCollection
@@ -3552,6 +3698,15 @@ namespace mpco {
 
 			void mapElements(Domain *d, bool has_region, const std::vector<int> &subset) {
 				/*
+				utilties
+				*/
+				auto lam_get_num_ext_nodes = [](Element* elem) {
+					switch (elem->getClassTag()) {
+					case ELE_TAG_SFI_MVLEM_3D: return 4;
+					default: return elem->getNumExternalNodes();
+					}
+				};
+				/*
 				clear previous mappings
 				*/
 				registered_custom_rules.clear();
@@ -3601,7 +3756,8 @@ namespace mpco {
 					}
 					ElementGeometryType::Enum geom_type;
 					ElementIntegrationRuleType::Enum int_rule_type;
-					getGeometryAndIntRuleByClassTag(elem_type, geom_type, int_rule_type);
+					int custom_rule_dimension;
+					getGeometryAndIntRuleByClassTag(elem_type, geom_type, int_rule_type, custom_rule_dimension);
 					/*
 					map by class tag
 					*/
@@ -3609,14 +3765,14 @@ namespace mpco {
 					if (elem_coll_by_tag.is_new) {
 						elem_coll_by_tag.class_tag = elem_type;
 						elem_coll_by_tag.class_name = current_element->getClassType();
-						elem_coll_by_tag.num_nodes = current_element->getNumExternalNodes();
+						elem_coll_by_tag.num_nodes = lam_get_num_ext_nodes(current_element);
 						elem_coll_by_tag.geom_type = geom_type;
 						elem_coll_by_tag.is_new = false;
 					}
 					/*
 					make sure that every element with the same tag have the same number of nodes
 					*/
-					if (current_element->getNumExternalNodes() != elem_coll_by_tag.num_nodes) {
+					if (lam_get_num_ext_nodes(current_element) != elem_coll_by_tag.num_nodes) {
 						opserr << "MPCORecorder Error while mapping elements: elements with different number of nodes "
 							"exist within the same class tag. This is not supported\n";
 						exit(-1);
@@ -3625,8 +3781,10 @@ namespace mpco {
 					create the integration rule
 					*/
 					ElementIntegrationRule int_rule(int_rule_type);
-					if (int_rule_type == ElementIntegrationRuleType::CustomIntegrationRule)
+					if (int_rule_type == ElementIntegrationRuleType::CustomIntegrationRule) {
 						getCustomGaussPointLocations(current_element, int_rule);
+						int_rule.custom_rule_dimension = custom_rule_dimension;
+					}
 					/*
 					if this is a custom rule, register it
 					*/
@@ -3675,13 +3833,15 @@ namespace mpco {
 			void getGeometryAndIntRuleByClassTag(
 				int elem_class_tag,
 				ElementGeometryType::Enum &geom_type,
-				ElementIntegrationRuleType::Enum &int_type) {
+				ElementIntegrationRuleType::Enum &int_type,
+				int &custom_rule_dimension) {
 				/*
 				set default values. custom geometry (i.e. point cloud)
 				and no integration rule
 				*/
 				geom_type = ElementGeometryType::Custom;
 				int_type = ElementIntegrationRuleType::NoIntegrationRule;
+				custom_rule_dimension = 1;
 				/*
 				2-node line with 1 gp
 				*/
@@ -3689,6 +3849,9 @@ namespace mpco {
 					// ./adapter actuators
 					elem_class_tag == ELE_TAG_Actuator ||
 					elem_class_tag == ELE_TAG_ActuatorCorot ||
+					// ./absorbentBoundaries
+					elem_class_tag == ELE_TAG_FSIInterfaceElement2D ||
+					elem_class_tag == ELE_TAG_FSIFluidBoundaryElement2D ||
 					// ./truss
 					elem_class_tag == ELE_TAG_Truss ||
 					elem_class_tag == ELE_TAG_Truss2 ||
@@ -3772,7 +3935,7 @@ namespace mpco {
 				*/
 				else if (
 					// ./shell
-					elem_class_tag == ELE_TAG_ShellANDeS
+					elem_class_tag == ELE_TAG_ASDShellT3
 					) {
 					geom_type = ElementGeometryType::Triangle_3N;
 					int_type = ElementIntegrationRuleType::Triangle_GaussLegendre_2B;
@@ -3783,8 +3946,7 @@ namespace mpco {
 				else if (
 					// ./shell
 					elem_class_tag == ELE_TAG_ShellDKGT ||
-					elem_class_tag == ELE_TAG_ShellNLDKGT ||
-					elem_class_tag == ELE_TAG_ASDShellT3
+					elem_class_tag == ELE_TAG_ShellNLDKGT
 					) {
 					geom_type = ElementGeometryType::Triangle_3N;
 					int_type = ElementIntegrationRuleType::Triangle_GaussLegendre_2C;
@@ -3797,7 +3959,8 @@ namespace mpco {
 					elem_class_tag == ELE_TAG_SSPquad ||
 					elem_class_tag == ELE_TAG_SSPquadUP ||
 					// ./absorbentBoundaries
-					elem_class_tag == ELE_TAG_ASDAbsorbingBoundary2D
+					elem_class_tag == ELE_TAG_ASDAbsorbingBoundary2D ||
+					elem_class_tag == ELE_TAG_FSIFluidElement2D
 					)
 				{
 					geom_type = ElementGeometryType::Quadrilateral_4N;
@@ -3827,6 +3990,18 @@ namespace mpco {
 					int_type = ElementIntegrationRuleType::Quadrilateral_GaussLegendre_2;
 				}
 				/*
+				4-node quadrilateral cohesive with custom rule
+				*/
+				else if (
+					// ./mvlem
+					elem_class_tag == ELE_TAG_MVLEM_3D ||
+					elem_class_tag == ELE_TAG_SFI_MVLEM_3D
+					) {
+					geom_type = ElementGeometryType::Quadrilateral_CohesiveBand_4N;
+					int_type = ElementIntegrationRuleType::CustomIntegrationRule;
+					custom_rule_dimension = 2;
+				}
+				/*
 				9-node quadrilateral with 3x3 gp
 				*/
 				else if (
@@ -3842,7 +4017,7 @@ namespace mpco {
 					int_type = ElementIntegrationRuleType::Quadrilateral_GaussLegendre_3;
 				}
 				/*
-				4-node tetrahedron with 1x1x1 gp
+				4-node tetrahedron with 4 gp
 				*/
 				else if (
 					// ./tetrahedron
@@ -3851,6 +4026,17 @@ namespace mpco {
 				{
 					geom_type = ElementGeometryType::Tetrahedron_4N;
 					int_type = ElementIntegrationRuleType::Tetrahedron_GaussLegendre_1;
+				}
+				/*
+				10-node tetrahedron with 1x1x1 gp
+				*/
+				else if (
+					// ./tetrahedron
+					elem_class_tag == ELE_TAG_TenNodeTetrahedron
+					)
+				{
+					geom_type = ElementGeometryType::Tetrahedron_10N;
+					int_type = ElementIntegrationRuleType::Tetrahedron_GaussLegendre_2;
 				}
 				/*
 				8-node hexahedron with 1x1x1 gp
@@ -3980,12 +4166,16 @@ namespace mpco {
 						return;
 				}
 				/*
-				..., otherwise, ask for a dummy response on all sections, findind out what is the number of gauss points
+				..., otherwise, ask for a dummy response on all sections, finding out what is the number of gauss points
 				*/
 				{
 					//std::cout << "get custom gp: trying with \"section(1,2,..,N)\"...\n";
 					bool done = false;
 					std::string request1 = "section";
+					if (elem->getClassTag() == ELE_TAG_MVLEM_3D || 
+						elem->getClassTag() == ELE_TAG_SFI_MVLEM_3D) {
+						request1 = "material";
+					}
 					std::string request3 = "dummy";
 					int argc = 3;
 					const char **argv = new const char*[argc];
@@ -3993,6 +4183,7 @@ namespace mpco {
 					argv[2] = request3.c_str();
 
 					int trial_num = 0;
+					double rule_weight_sum = 0.0;
 					while (true) {
 						trial_num++;
 						if (trial_num > MPCO_MAX_TRIAL_NSEC) {
@@ -4010,7 +4201,9 @@ namespace mpco {
 						if (eo_response)
 							delete eo_response; // we don't need it now
 						std::vector<double> trial_x;
-						eo_descriptor.getGaussLocations(trial_x);
+						std::vector<double> trial_w;
+						eo_descriptor.appendGaussLocation(trial_x);
+						eo_descriptor.appendGaussWeight(trial_w);
 						if (trial_x.size() > 0) {
 							if (trial_x.size() > 1) {
 								// we should never get here!
@@ -4019,6 +4212,7 @@ namespace mpco {
 									<< "\nonly the first one will be considered\n";
 							}
 							rule.x.push_back(trial_x[0]);
+							rule_weight_sum += trial_w[0];
 						}
 						else {
 							// we reached the maximum number of gauss points for this element
@@ -4026,27 +4220,31 @@ namespace mpco {
 						}
 					}
 					if (rule.x.size() > 0) {
-						if (rule.x.size() == 1) {
-							rule.x[0] = 0.0;
-						}
-						else {
-							double x_min = std::numeric_limits<double>::max();
-							double x_max = -x_min;
-							for (size_t i = 0; i < rule.x.size(); i++) {
-								double ieta = rule.x[i];
-								if (ieta < x_min)
-									x_min = ieta;
-								else if (ieta > x_max)
-									x_max = ieta;
-							}
-							double span = x_max - x_min;
-							if (span == 0.0) {
-								for (size_t i = 0; i < rule.x.size(); i++)
-									rule.x[i] = 0.0;
+						if (std::abs(rule_weight_sum - 2.0) > 1.0e-8) {
+							// don't do auto-normalization if the integration weight is explicitly given
+							// (only considered valid if the integration span is 2.0)
+							if (rule.x.size() == 1) {
+								rule.x[0] = 0.0;
 							}
 							else {
-								for (size_t i = 0; i < rule.x.size(); i++)
-									rule.x[i] = 2.0*(rule.x[i] - x_min) / span - 1.0;
+								double x_min = std::numeric_limits<double>::max();
+								double x_max = -x_min;
+								for (size_t i = 0; i < rule.x.size(); i++) {
+									double ieta = rule.x[i];
+									if (ieta < x_min)
+										x_min = ieta;
+									else if (ieta > x_max)
+										x_max = ieta;
+								}
+								double span = x_max - x_min;
+								if (span == 0.0) {
+									for (size_t i = 0; i < rule.x.size(); i++)
+										rule.x[i] = 0.0;
+								}
+								else {
+									for (size_t i = 0; i < rule.x.size(); i++)
+										rule.x[i] = 2.0 * (rule.x[i] - x_min) / span - 1.0;
+								}
 							}
 						}
 						done = true;
@@ -4368,14 +4566,40 @@ int MPCORecorder::record(int commitTag, double timeStamp)
 	/*
 	check domain changed and perform related initializations
 	*/
+	auto lambdaHasDomainChanged = [this]() -> int {
+		int new_stamp = m_data->info.domain->hasDomainChanged();
+#if defined(_PARALLEL_PROCESSING)
+		int pid = 0;
+		int np = 1;
+		MPI_Comm_rank(MPI_COMM_WORLD, &pid);
+		MPI_Comm_size(MPI_COMM_WORLD, &np);
+		// quick return for 1 process
+		if (np == 1) {
+			return new_stamp;
+		}
+		// if the model has not been partitioned, the recorder is only on P0!
+		// return otherwise the MPI_Allreduce will hang...
+		if (pid == 0 && !OPS_PARTITIONED) {
+			return new_stamp;
+		}
+		// get the maximum domain change stamp from all processes
+		int new_stamp_max = 0;
+		if (MPI_Allreduce(&new_stamp, &new_stamp_max, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD) != MPI_SUCCESS) {
+			opserr << "MPCORecorder::lambdaHasDomainChanged() Warning: MPI_Reduce failed to get max domain changed stamp\n";
+			return new_stamp;
+		}
+		new_stamp = new_stamp_max;
+#endif // defined(_PARALLEL_PROCESSING)
+		return new_stamp;
+	};
 	bool rebuild_model = false;
 	if (!m_data->first_domain_changed_done) {
-		m_data->info.current_model_stage_id = m_data->info.domain->hasDomainChanged();
+		m_data->info.current_model_stage_id = lambdaHasDomainChanged();
 		m_data->first_domain_changed_done = true;
 		rebuild_model = true;
 	}
 	else {
-		int new_domain_stamp = m_data->info.domain->hasDomainChanged();
+		int new_domain_stamp = lambdaHasDomainChanged();
 		if (new_domain_stamp != m_data->info.current_model_stage_id) {
 			m_data->info.current_model_stage_id = new_domain_stamp;
 			rebuild_model = true;
@@ -4685,9 +4909,28 @@ int MPCORecorder::initialize()
 	create info group and metadata
 	*/
 	hid_t h_gp_info = h5::group::create(m_data->info.h_file_id, "INFO", H5P_DEFAULT, m_data->info.h_group_proplist, H5P_DEFAULT);
+	hid_t h_dset_solvername = h5::dataset::createAndWrite(h_gp_info, "SOLVER_NAME", "OpenSees");
+	status = h5::dataset::close(h_dset_solvername);
+	{
+		std::vector<std::string> version_tokens;
+		utils::strings::split(OPS_VERSION, '.', version_tokens, true);
+		if (version_tokens.size() > 0) {
+			std::vector<int> version(version_tokens.size(), 0);
+			for (std::size_t i = 0; i < version_tokens.size(); ++i) {
+				try {
+					version[i] = std::stoi(version_tokens[i]);
+				}
+				catch (...) {
+					version[i] = 0;
+				}
+			}
+			hid_t h_dset_version = h5::dataset::createAndWrite(h_gp_info, "SOLVER_VERSION", version);
+			status = h5::dataset::close(h_dset_version);
+		}
+	}
 	hid_t h_dset_dim = h5::dataset::createAndWrite(h_gp_info, "SPATIAL_DIM", m_data->info.num_dimensions);
 	status = h5::dataset::close(h_dset_dim);
-	status = h5::group::close(h_gp_info);	
+	status = h5::group::close(h_gp_info);
 	/*
 	mark as initialized and return
 	*/
@@ -4951,6 +5194,7 @@ int MPCORecorder::writeModelElements()
 						if (elem_by_custom_rule.custom_int_rule_index != 0) {
 							mpco::element::ElementIntegrationRule &custom_rule = m_data->elements.registered_custom_rules[elem_by_custom_rule.custom_int_rule_index];
 							h5::attribute::write(dset_id, "GP_X", custom_rule.x);
+							h5::attribute::write(dset_id, "CUSTOM_INTEGRATION_RULE_DIMENSION", custom_rule.custom_rule_dimension);
 						}
 					}
 					/*
@@ -5275,6 +5519,13 @@ int MPCORecorder::writeSections()
 							/*
 							error checks
 							*/
+							// this workouround can pass some of the following checks:
+							// Sometimes in OpenSees objects open the xml tags even if they will not provide responses...
+							// in this case it can happen that a section opens the tags before checking if it really has fibers (see SectioinAggreator for example)
+							if (trial_sec_id.size() != trial_fiberdata.size()) trial_sec_id.resize(trial_fiberdata.size());
+							if (trial_gp_id.size() != trial_fiberdata.size()) trial_gp_id.resize(trial_fiberdata.size());
+							if (trial_dummy_flag.size() != trial_fiberdata.size()) trial_dummy_flag.resize(trial_fiberdata.size());
+							// these are errors that should never happen. we exit if they happen
 							if ((trial_fiberdata.size() > 0) && (trial_fiberdata.size() != trial_sec_id.size())) {
 								// this should never happen!
 								opserr << "MPCORecorder FATAL Error: trial_fiberdata.size() != trial_sec_id.size()\n";
@@ -5757,6 +6008,18 @@ int MPCORecorder::initNodeRecorders()
 			break;
 		case mpco::NodalResultType::RayleighMoment:
 			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderReactionMomentRayleigh(m_data->info);
+			break;
+		case mpco::NodalResultType::UnbalancedForce:
+			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderUnbalancedForce(m_data->info);
+			break;
+		case mpco::NodalResultType::UnbalancedMoment:
+			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderUnbalancedMoment(m_data->info);
+			break;
+		case mpco::NodalResultType::UnbalancedForceIncludingInertia:
+			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderUnbalancedForceIncIntertia(m_data->info);
+			break;
+		case mpco::NodalResultType::UnbalancedMomentIncludingInertia:
+			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderUnbalancedMomentIncIntertia(m_data->info);
 			break;
 		case mpco::NodalResultType::Velocity:
 			m_data->nodal_recorders[rtype] = new mpco::node::ResultRecorderVelocity(m_data->info);
@@ -6406,15 +6669,15 @@ void* OPS_MPCORecorder()
 #endif
 
 	// check the minimum number of arguments -> filename
-	int numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata < 1) {
+	int numData = OPS_GetNumRemainingInputArgs();
+	if (numData < 1) {
 		opserr << "MPCORecorder error: insufficient number of arguments\n";
 		return 0;
 	}
 
 	// filename
 	const char *filename = OPS_GetString();
-	numdata--;
+	numData--;
 
 	// get the current domain
 	Domain *domain = OPS_GetDomain();
@@ -6435,9 +6698,9 @@ void* OPS_MPCORecorder()
 	std::set<int> elem_set;
 	int one_item = 1;
 
-	while (numdata > 0) {
+	while (numData > 0) {
 		const char* data = OPS_GetString();
-		numdata--;
+		numData--;
 		if (strcmp(data, "-N") == 0) {
 			curr_opt = utils::parsing::opt_result_on_nodes;
 		}
@@ -6453,9 +6716,10 @@ void* OPS_MPCORecorder()
 		}
 		else if (strcmp(data, "-R") == 0) {
 			curr_opt = utils::parsing::opt_region;
-			if (numdata > 0) {
+			if (numData > 0) {
 				int region_tag = 0;
-				if (OPS_GetInt(1, &region_tag) != 0) {
+				int num = 1;
+				if (OPS_GetInt(&num, &region_tag) != 0) {
 					opserr << "MPCORecorder error: option -R (region) requires an extra parameter (int) for the region tag. (cannot get int value)\n";
 					return 0;
 				}
@@ -6471,7 +6735,7 @@ void* OPS_MPCORecorder()
 				for (int i = 0; i < elem_ids.Size(); i++)
 					elem_set.insert(elem_ids(i));
 				has_region = true;
-				numdata--;
+				numData--;
 			}
 			else {
 				opserr << "MPCORecorder error: option -R (region) requires an extra parameter (int) for the region tag\n";
@@ -6507,6 +6771,14 @@ void* OPS_MPCORecorder()
 					nodal_results_requests.push_back(mpco::NodalResultType::RayleighForce);
 				else if (strcmp(data, "rayleighMoment") == 0)
 					nodal_results_requests.push_back(mpco::NodalResultType::RayleighMoment);
+				else if (strcmp(data, "unbalancedForce") == 0)
+					nodal_results_requests.push_back(mpco::NodalResultType::UnbalancedForce);
+				else if (strcmp(data, "unbalancedMoment") == 0)
+					nodal_results_requests.push_back(mpco::NodalResultType::UnbalancedMoment);
+				else if (strcmp(data, "unbalancedForceIncludingInertia") == 0)
+					nodal_results_requests.push_back(mpco::NodalResultType::UnbalancedForceIncludingInertia);
+				else if (strcmp(data, "unbalancedMomentIncludingInertia") == 0)
+					nodal_results_requests.push_back(mpco::NodalResultType::UnbalancedMomentIncludingInertia);
 				else if (strcmp(data, "pressure") == 0)
 					nodal_results_requests.push_back(mpco::NodalResultType::Pressure);
 				else if (strcmp(data, "modesOfVibration") == 0)
@@ -6537,13 +6809,13 @@ void* OPS_MPCORecorder()
 					opserr << "MPCORecorder error: option -N with unknown result type (" << data << ")\n";
 					return 0;
 				}
-				if (numdata > 0) {
+				if (numData > 0) {
 					int grad_index;
-					if (OPS_GetInt(1, &grad_index) != 0) {
+					if (OPS_GetInt(&numData, &grad_index) != 0) {
 						opserr << "MPCORecorder error: option -NS requires an extra parameter (int) for the sensitivity parameter index. (cannot get int value)\n";
 						return 0;
 					}
-					numdata--;
+					numData--;
 					sens_grad_indices.push_back(grad_index);
 				}
 				else {
@@ -6563,13 +6835,14 @@ void* OPS_MPCORecorder()
 				if (strcmp(data, "dt") == 0) {
 					output_freq.type = mpco::OutputFrequency::DeltaTime;
 					output_freq.nsteps = 1;
-					if (numdata > 0) {
-						if (OPS_GetDouble(1, &output_freq.dt) != 0) {
+					if (numData > 0) {
+						int num = 1;
+						if (OPS_GetDouble(&num, &output_freq.dt) != 0) {
 							opserr << "MPCORecorder error: invalid double argument for the delta time\n";
 							return 0;
 						}
 						if (output_freq.dt < 0.0) output_freq.dt = 0.0;
-						numdata--;
+						numData--;
 					}
 					else {
 						opserr << "MPCORecorder error: option -T with type dt requires an extra argument for the delta time\n";
@@ -6579,13 +6852,13 @@ void* OPS_MPCORecorder()
 				else if (strcmp(data, "nsteps") == 0) {
 					output_freq.type = mpco::OutputFrequency::NumberOfSteps;
 					output_freq.dt = 0.0;
-					if (numdata > 0) {
-						if (OPS_GetInt(1, &output_freq.nsteps) != 0) {
+					if (numData > 0) {
+						if (OPS_GetInt(&numData, &output_freq.nsteps) != 0) {
 							opserr << "MPCORecorder error: invalid int argument for the number of steps\n";
 							return 0;
 						}
 						if (output_freq.nsteps < 1) output_freq.nsteps = 1; // make sure it's positive
-						numdata--;
+						numData--;
 					}
 					else {
 						opserr << "MPCORecorder error: option -T with type dt requires an extra argument for the delta time\n";

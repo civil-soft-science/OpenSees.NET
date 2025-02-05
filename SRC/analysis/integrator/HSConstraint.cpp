@@ -38,15 +38,15 @@
 
 void* OPS_HSConstraint()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 1) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 1) {
 	opserr << "WARNING integrator HSConstraint <arcLength> <psi_u> <psi_f> <u_ref> \n";
 	return 0;
     }
-    if (numdata > 4) numdata = 4;
+    if (numData > 4) numData = 4;
 
     double data[4];
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING integrator HSConstraint invalid double inputs\n";
 	return 0;
     }
@@ -55,7 +55,7 @@ void* OPS_HSConstraint()
     double psi_f = data[2];
     double u_ref = data[3];
     
-    switch(numdata) {
+    switch(numData) {
     case 1:
 	return new HSConstraint(arcLength);       
     case 2:

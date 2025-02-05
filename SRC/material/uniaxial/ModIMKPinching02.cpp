@@ -51,7 +51,8 @@ OPS_ModIMKPinching02(void)
   if (numModIMKPinching02Materials == 0) {
     numModIMKPinching02Materials++;
     opserr << "Modified Ibarra-Medina-Krawinkler Model with Pinched Hysteretic Response\n";
-	opserr << "Implementation and Calibration for CPH and FLPH by F.L.A. Ribeiro and A.R. Barbosa\n";   // Updated: Filipe Ribeiro and Andre Barbosa
+    //opserr << "Implementation and Calibration for CPH and FLPH by F.L.A. Ribeiro and A.R. Barbosa\n";   // Updated: Filipe Ribeiro and Andre Barbosa
+    opserr << "WARNING: DO NOT USE THE \"ModIMKPinching02\" MATERIAL, IT HAS BEEN REPLACED. Use \"IMKPinching\" or \"HystereticSM\" INSTEAD.\n";        
   }
  
   // Pointer to a uniaxial material that will be returned
@@ -61,7 +62,7 @@ OPS_ModIMKPinching02(void)
   double dData[27];			// Updated: Filipe Ribeiro and Andre Barbosa
   int numData = 1;
   // Check tag
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  ModIMKPinching02 tag" << endln;
     return 0;
   }
@@ -79,7 +80,7 @@ OPS_ModIMKPinching02(void)
 		}
 
 	if (numData == 26) {											// Updated: Filipe Ribeiro and Andre Barbosa
-		if (OPS_GetDoubleInput(numData, dData) != 0) {
+		if (OPS_GetDoubleInput(&numData, dData) != 0) {
 			opserr << "Invalid Args want: uniaxialMaterial ModIMKPinching02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?"; 
 			opserr << "FprPos?, FprNeg?, A_pinch?, Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?"; 
 			opserr << "thetaPCpos?, thetaPCneg?, ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, <nFactor?>";		// Updated: Filipe Ribeiro and Andre Barbosa
@@ -97,7 +98,7 @@ OPS_ModIMKPinching02(void)
 							dData[20], dData[21], dData[22], dData[23], dData[24], dData[25]);
 	
 	} else if (numData == 27) {			// Updated: Filipe Ribeiro and Andre Barbosa
-		if (OPS_GetDoubleInput(numData, dData) != 0) {
+		if (OPS_GetDoubleInput(&numData, dData) != 0) {
 			opserr << "Invalid Args want: uniaxialMaterial ModIMKPinching02 tag? Ke?, alfaPos?, alfaNeg?, My_pos?, My_neg?"; 
 			opserr << "FprPos?, FprNeg?, A_pinch?, Ls?, Ld?, La?, Lk?, Cs?, Cd?, Ca?, Ck?, thetaPpos?, thetaPneg?"; 
 			opserr << "thetaPCpos?, thetaPCneg?, ResfacPos?, ResfacNeg?, fracDispPos?, fracDispNeg?,DPos?, DNeg?, <nFactor?>";		// Updated: Filipe Ribeiro and Andre Barbosa

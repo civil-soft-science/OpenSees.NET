@@ -58,7 +58,7 @@ void *OPS_ElasticPowerFunc()
     const char *paraStr;
     
     int numData = 1;
-    if (OPS_GetIntInput(numData,tag) != 0)  {
+    if (OPS_GetIntInput(&numData,tag) != 0)  {
         opserr << "WARNING invalid uniaxialMaterial ElasticPowerFunc tag\n";
         return 0;
     }
@@ -66,7 +66,7 @@ void *OPS_ElasticPowerFunc()
     // check if eta is provided (odd number of inputs)
     if ((argc-3)%2 == 1)  {
         numData = 1;
-        if (OPS_GetDoubleInput(numData,&eta) != 0)  {
+        if (OPS_GetDoubleInput(&numData,&eta) != 0)  {
             opserr << "WARNING invalid eta\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;
@@ -80,7 +80,7 @@ void *OPS_ElasticPowerFunc()
     if (strcmp(paraStr,"-coeff") == 0 ||
         strcmp(paraStr, "-coefficient") == 0 ||
         strcmp(paraStr, "-coefficients") == 0)  {
-        if (OPS_GetDoubleInput(numData,coeffData) != 0)  {
+        if (OPS_GetDoubleInput(&numData,coeffData) != 0)  {
             opserr << "WARNING invalid coefficients\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;
@@ -97,7 +97,7 @@ void *OPS_ElasticPowerFunc()
     if (strcmp(paraStr,"-exp") == 0 ||
         strcmp(paraStr, "-exponent") == 0 ||
         strcmp(paraStr, "-exponents") == 0)  {
-        if (OPS_GetDoubleInput(numData, expData) != 0)  {
+        if (OPS_GetDoubleInput(&numData, expData) != 0)  {
             opserr << "WARNING invalid exponents\n";
             opserr << "uniaxialMaterial ElasticPowerFunc: " << tag[0] << endln;
             return 0;
@@ -233,10 +233,18 @@ int ElasticPowerFunc::sendSelf(int cTag, Channel &theChannel)
     data(3) = eta;
     
     res = theChannel.sendVector(this->getDbTag(), cTag, data);
-    res += theChannel.sendVector(this->getDbTag(), cTag, coefficients);
-    res += theChannel.sendVector(this->getDbTag(), cTag, exponents);
     if (res < 0) 
-        opserr << "ElasticPowerFunc::sendSelf() - failed to send data.\n";
+      opserr << "ElasticPowerFunc::sendSelf() - failed to send data" << endln;
+    
+    Vector pointData(2*numTerms + 1); // +1 so no conflict with data(4) when N=2
+    for (int i = 0; i < numTerms; i++) {
+      pointData(i)          = coefficients(i);
+      pointData(i+numTerms) = exponents(i);
+    }
+    
+    res = theChannel.sendVector(this->getDbTag(), cTag, pointData);
+    if (res < 0) 
+      opserr << "ElasticPowerFunc::sendSelf() - failed to send term data" << endln;
     
     return res;
 }
@@ -255,14 +263,20 @@ int ElasticPowerFunc::recvSelf(int cTag, Channel &theChannel,
         numTerms    = (int)data(1);
         initTangent = data(2);
         eta         = data(3);
-        
-        // receive the strain and stress arrays
-        coefficients.resize(numTerms);
-        exponents.resize(numTerms);
-        res += theChannel.recvVector(this->getDbTag(), cTag, coefficients);
-        res += theChannel.recvVector(this->getDbTag(), cTag, exponents);
-        if (res < 0) 
-            opserr << "ElasticPowerFunc::recvSelf() - failed to recv arrays.\n";
+    }
+
+    // receive the coeffient and exponent arrays
+    Vector pointData(2*numTerms + 1);
+    res = theChannel.recvVector(this->getDbTag(), cTag, pointData);
+    if (res < 0)
+      opserr << "ElasticPowerFunc::recvSelf() - failed to recv term data" << endln;
+    else {
+      coefficients.resize(numTerms);
+      exponents.resize(numTerms);
+      for (int i = 0; i < numTerms; i++) {
+	coefficients(i) = pointData(i);
+	exponents(i)    = pointData(i+numTerms);
+      }
     }
 
     return res;

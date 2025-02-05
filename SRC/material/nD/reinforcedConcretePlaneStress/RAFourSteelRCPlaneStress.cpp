@@ -49,25 +49,25 @@ OPS_RAFourSteelRCPlaneStressMaterial()
   int numData = 0;
 
   numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RAFourSteelRCPPlaneStress tag" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDouble(numData, &rho) != 0) {
+  if (OPS_GetDouble(&numData, &rho) != 0) {
     opserr << "Invalid Arg rho: uniaxialMaterial RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;	
   }
 
   numData = 6;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;
   }
 
   numData = 12;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid data RAFourSteelRCPPlaneStress tag: " << tag << endln;
     return 0;
   }
@@ -292,7 +292,9 @@ RAFourSteelRCPlaneStress::RAFourSteelRCPlaneStress (int      tag,
   argv[0] = "getPD";
   theResponses[6] = theMaterial[4]->setResponse(argv, 1, *theDummyStream);
   theResponses[7] = theMaterial[5]->setResponse(argv, 1, *theDummyStream);
-  
+
+  delete theDummyStream;
+	
   if ((theResponses[0] == 0) || (theResponses[1] == 0) ||
       (theResponses[2] == 0) || (theResponses[3] == 0) ||
       (theResponses[4] == 0) || (theResponses[5] == 0) ||
@@ -300,7 +302,7 @@ RAFourSteelRCPlaneStress::RAFourSteelRCPlaneStress (int      tag,
     opserr << " ReinforcedConcretePlaneStress::ReinforcedConcretePlaneStress - failed to set appropriate concrete material\n";
     exit(-1);
   }
-  
+
   // end FMK
 
   this->revertToStart();

@@ -43,7 +43,7 @@ OPS_ElasticIsotropic3D(void)
   dData[2] = 0.0;
   
   int numData = 1;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: nDMaterial ElasticIsotropic3D \n";
     return 0;
   }
@@ -53,7 +53,7 @@ OPS_ElasticIsotropic3D(void)
   else
     numData = 2;
   
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid data: nDMaterial ElasticIsotropic3D : " << iData[0] <<"\n";
     return 0;
   }  

@@ -76,10 +76,6 @@
 	 #include <PressureDependMultiYield02.h>
 #endif // _CSS
 
-// Controls on internal iteration between spring components
-const int PYmaxIterations = 20;
-const double PYtolerance = 1.0e-12;
-
 int PyLiq1::loadStage = 0;
 int PyConstructorType = 1;
 Vector PyLiq1::stressV3(3);
@@ -88,8 +84,8 @@ void* OPS_PyLiq1()
 {
     UniaxialMaterial* theMat = 0;
     
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 9) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 9) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial PyLiq1 tag? soilType? pult? y50? drag? dashpot? pRes? solidElem1? solidElem2?\n";
 	opserr << "or: uniaxialMaterial PyLiq1 tag? soilType? pult? y50? drag? dashpot? -timeSeries seriesTag?\n";
@@ -97,15 +93,15 @@ void* OPS_PyLiq1()
     }
 
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid int inputs\n";
 	return 0;
     }
 
     double ddata[5];
-    numdata = 5;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 5;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	return 0;
     }
@@ -116,8 +112,8 @@ void* OPS_PyLiq1()
     
     if (strcmp(arg, "-timeSeries") == 0) {
 	int tsTag;
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &tsTag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &tsTag) < 0) {
 	    opserr << "WARNING invalid time series tag\n";
 	    return 0;
 	}
@@ -132,8 +128,8 @@ void* OPS_PyLiq1()
 	OPS_ResetCurrentInputArg(-1);
 	
 	int eleTags[2];
-	numdata = 2;
-	if (OPS_GetIntInput(numdata, eleTags) < 0) {
+	numData = 2;
+	if (OPS_GetIntInput(&numData, eleTags) < 0) {
 	    opserr << "WARNING invalid element tags\n";
 	    return 0;
 	}
@@ -179,7 +175,7 @@ pRes(p_res), theDomain(the_Domain), theSeries(the_Series)
 //	Default constructor
 
 PyLiq1::PyLiq1()
-:PySimple1(), pRes(0.0), solidElem1(0), solidElem2(0), theDomain(0), theSeries(0)
+  :PySimple1(0, MAT_TAG_PyLiq1), pRes(0.0), solidElem1(0), solidElem2(0), theDomain(0), theSeries(0)
 {
 }
 
@@ -296,6 +292,7 @@ PyLiq1::setTrialStrain (double newy, double yRate)
 double 
 PyLiq1::getStress(void)
 {
+  const double PYtolerance = 1.0e-12;
 	double dashForce = getStrainRate()*this->getDampTangent();
 
 	// Limit the combined force to pult*(1-ru).

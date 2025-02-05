@@ -65,40 +65,40 @@ OPS_BucklingStrut()
 	int argc = OPS_GetNumRemainingInputArgs();
 	int numData = 1;
 	int curArg = 2;
-	if (OPS_GetIntInput(numData, &tag) != 0) {
+	if (OPS_GetIntInput(&numData, &tag) != 0) {
 		opserr << "WARNING invalid -tag";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
-	if (OPS_GetDoubleInput (numData, &fpy) != 0) {
+	if (OPS_GetDoubleInput (&numData, &fpy) != 0) {
 		opserr << "WARNING invalid -Fts";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
 
-	if (OPS_GetDoubleInput (numData, &E0) != 0) {
+	if (OPS_GetDoubleInput (&numData, &E0) != 0) {
 		opserr << "WARNING invalid -E0";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
 
-	if (OPS_GetDoubleInput (numData, &b) != 0) {
+	if (OPS_GetDoubleInput (&numData, &b) != 0) {
 		opserr << "WARNING invalid -b";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
 
-	if (OPS_GetDoubleInput (numData, &fc) != 0) {
+	if (OPS_GetDoubleInput (&numData, &fc) != 0) {
 		opserr << "WARNING invalid -fc";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
-	if (OPS_GetDoubleInput (numData, &bc) != 0) {
+	if (OPS_GetDoubleInput (&numData, &bc) != 0) {
 		opserr << "WARNING invalid -bc";
 		opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 		return 0;
@@ -111,7 +111,7 @@ OPS_BucklingStrut()
 	char * str = new char[10];
 	if (argc >= curArg + 1)
 	{
-		if (OPS_GetDoubleInput (numData, &R0) != 0) {
+		if (OPS_GetDoubleInput (&numData, &R0) != 0) {
 			opserr << "WARNING invalid R0";
 			opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 			return 0;
@@ -120,7 +120,7 @@ OPS_BucklingStrut()
 	}
 	if (argc >= curArg + 1)
 	{
-		if (OPS_GetDoubleInput (numData, &R1) != 0) {
+		if (OPS_GetDoubleInput (&numData, &R1) != 0) {
 			opserr << "WARNING invalid R1";
 			opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 			return 0;
@@ -129,7 +129,7 @@ OPS_BucklingStrut()
 	}
 	if (argc >= curArg + 1)
 	{
-		if (OPS_GetDoubleInput (numData, &R2) != 0) {
+		if (OPS_GetDoubleInput (&numData, &R2) != 0) {
 			opserr << "WARNING invalid R2";
 			opserr << "uniaxialMaterial BucklingStrut: " << tag << endln;
 			return 0;

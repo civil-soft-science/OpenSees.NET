@@ -56,7 +56,7 @@ OPS_Steel05()
   double dData[16];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel05 tag" << endln;
     return 0;
   }
@@ -77,7 +77,7 @@ OPS_Steel05()
 	dData[9] = 0.925;
 	dData[8] = 15;
 
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid Steel05 #args for: " << iData[0] << " see the syntax" << endln;
     return 0;
     }

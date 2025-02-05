@@ -48,7 +48,7 @@ void* OPS_CTestRelativeTotalNormDispIncr()
     // tolerance
     double tol = 1e-6;
     int numData = 1;
-    if(OPS_GetDoubleInput(numData,&tol) < 0) {
+    if(OPS_GetDoubleInput(&numData,&tol) < 0) {
 	opserr << "WARNING NormUnbalance failed to read tol\n";
 	return 0;
     }
@@ -57,7 +57,7 @@ void* OPS_CTestRelativeTotalNormDispIncr()
     numData = OPS_GetNumRemainingInputArgs();
     if(numData > 3) numData = 3;
     int data[3] = {0,0,2};
-    if(OPS_GetIntInput(numData,&data[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&data[0]) < 0) {
 	opserr << "WARNING NormUnbalance failed to read int values\n";
 	return 0;
     }

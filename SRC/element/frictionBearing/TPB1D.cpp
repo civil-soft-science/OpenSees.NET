@@ -96,7 +96,7 @@ OPS_TPB1D()
   int numData;
 
   numData = 4;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -104,7 +104,7 @@ OPS_TPB1D()
   int eleTag = iData[0];
 
   numData = 16;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING error reading element area for element" << eleTag << endln;
     return 0;
   }
@@ -208,7 +208,7 @@ TPB1D::TPB1D(int tag,
   
   double gapyield = 50*W;
 
-  UniaxialMaterial **theMaterials = new UniaxialMaterial *[10];
+  UniaxialMaterial *theMaterials[10];
   
   int damage = 0;
   double eta = 0.0;
@@ -245,6 +245,9 @@ TPB1D::TPB1D(int tag,
   
   //  uniaxialMaterial Parallel 100 11 12 13 14 15 16 17 18 19 20;
   theMaterial = new ParallelMaterial(1, 10, theMaterials);
+
+  for (int i = 0; i < 10; i++)
+	  delete theMaterials[i];
 }
 
 

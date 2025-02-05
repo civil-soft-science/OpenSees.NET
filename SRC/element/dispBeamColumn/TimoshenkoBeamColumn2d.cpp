@@ -46,6 +46,7 @@
 #include <math.h>
 #include <ElementalLoad.h>
 #include <elementAPI.h>
+#include <ElementIter.h>
 
 Matrix TimoshenkoBeamColumn2d::K(6,6);
 Vector TimoshenkoBeamColumn2d::P(6);
@@ -61,7 +62,7 @@ void* OPS_TimoshenkoBeamColumn2d()
     // inputs: 
     int iData[5];
     int numData = 5;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -76,7 +77,7 @@ void* OPS_TimoshenkoBeamColumn2d()
 	    cmass = 1;
 	} else if(strcmp(type,"-mass") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(numData,&mass) < 0) {
+		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
 		    opserr<<"WARNING: invalid mass\n";
 		    return 0;
 		}
@@ -115,10 +116,233 @@ void* OPS_TimoshenkoBeamColumn2d()
 	}
     }
     
-    Element *theEle =  new TimoshenkoBeamColumn2d(iData[0],iData[1],iData[2],secTags.Size(),
-						  sections, *bi,*theTransf,mass);
+    Element *theEle =  new TimoshenkoBeamColumn2d(iData[0],iData[1],iData[2],secTags.Size(),sections,
+						  *bi,*theTransf,mass);
     delete [] sections;
     return theEle;
+}
+
+void* OPS_TimoshenkoBeamColumn2d(const ID &info)
+{
+    // data
+    int iData[5];
+    int numData;
+    double mass = 0.0;
+    int cmass = 0;
+    // regular element, not in a mesh, get tags
+    if (info.Size() == 0) {
+	if(OPS_GetNumRemainingInputArgs() < 5) {
+	    opserr<<"insufficient arguments:eleTag,iNode,jNode,transfTag,integrationTag <-mass mass> <-cmass>\n";
+	    return 0;
+	}
+
+	int ndm = OPS_GetNDM();
+	int ndf = OPS_GetNDF();
+	if(ndm != 2 || ndf != 3) {
+	    opserr<<"ndm must be 2 and ndf must be 3\n";
+	    return 0;
+	}
+
+	// inputs:
+	numData = 3;
+	if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+	    opserr<<"WARNING: invalid integer inputs\n";
+	    return 0;
+	}
+    }
+
+    // regular element, or in a mesh
+    if (info.Size()==0 || info(0)==1) {
+	if(OPS_GetNumRemainingInputArgs() < 2) {
+	    opserr<<"insufficient arguments: transfTag,integrationTag\n";
+	    return 0;
+	}
+
+	numData = 2;
+	if(OPS_GetIntInput(&numData,&iData[3]) < 0) {
+	    opserr << "WARNING invalid int inputs\n";
+	    return 0;
+	}
+
+	// options
+	numData = 1;
+	while(OPS_GetNumRemainingInputArgs() > 0) {
+	    const char* type = OPS_GetString();
+	    if(strcmp(type, "-cMass") == 0) {
+		cmass = 1;
+	    } else if(strcmp(type,"-mass") == 0) {
+		if(OPS_GetNumRemainingInputArgs() > 0) {
+		    if(OPS_GetDoubleInput(&numData,&mass) < 0) {
+			opserr<<"WARNING: invalid mass\n";
+			return 0;
+		    }
+		}
+	    }
+        }
+    }
+
+    // store data for different mesh
+    static std::map<int, Vector> meshdata;
+    if (info.Size()>0 && info(0)==1) {
+	if (info.Size() < 2) {
+	    opserr << "WARNING: need info -- inmesh, meshtag\n";
+	    return 0;
+	}
+
+	// save the data for a mesh
+	Vector& mdata = meshdata[info(1)];
+	mdata.resize(4);
+	mdata(0) = iData[3];
+	mdata(1) = iData[4];
+	mdata(2) = mass;
+	mdata(3) = cmass;
+	return &meshdata;
+
+    } else if (info.Size()>0 && info(0)==2) {
+	if (info.Size() < 5) {
+	    opserr << "WARNING: need info -- inmesh, meshtag, eleTag, nd1, nd2\n";
+	    return 0;
+	}
+
+	// get the data for a mesh
+	Vector& mdata = meshdata[info(1)];
+	if (mdata.Size() < 4) return 0;
+
+	iData[0] = info(2);
+	iData[1] = info(3);
+	iData[2] = info(4);
+	iData[3] = mdata(0);
+	iData[4] = mdata(1);
+	mass = mdata(2);
+	cmass = mdata(3);
+    }
+
+    // check transf
+    CrdTransf* theTransf = OPS_getCrdTransf(iData[3]);
+    if(theTransf == 0) {
+	opserr<<"coord transfomration not found\n";
+	return 0;
+    }
+
+    // check beam integrataion
+    BeamIntegrationRule* theRule = OPS_getBeamIntegrationRule(iData[4]);
+    if(theRule == 0) {
+	opserr<<"beam integration not found\n";
+	return 0;
+    }
+    BeamIntegration* bi = theRule->getBeamIntegration();
+    if(bi == 0) {
+	opserr<<"beam integration is null\n";
+	return 0;
+    }
+
+    // check sections
+    const ID& secTags = theRule->getSectionTags();
+    SectionForceDeformation** sections = new SectionForceDeformation *[secTags.Size()];
+    for(int i=0; i<secTags.Size(); i++) {
+	sections[i] = OPS_getSectionForceDeformation(secTags(i));
+	if(sections[i] == 0) {
+	    opserr<<"section "<<secTags(i)<<"not found\n";
+		delete [] sections;
+	    return 0;
+	}
+    }
+    
+    Element *theEle =  new TimoshenkoBeamColumn2d(iData[0],iData[1],iData[2],secTags.Size(),sections,
+					    *bi,*theTransf,mass);
+    delete [] sections;
+    return theEle;
+}
+
+int OPS_TimoshenkoBeamColumn2d(Domain& theDomain, const ID& elenodes, ID& eletags)
+{
+    if(OPS_GetNumRemainingInputArgs() < 2) {
+	opserr<<"insufficient arguments:transfTag,integrationTag <-mass mass> <-cmass>\n";
+	return -1;
+    }
+
+    // inputs: 
+    int iData[2];
+    int numData = 2;
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
+	opserr<<"WARNING: invalid integer inputs\n";
+	return -1;
+    }
+
+    // options
+    double mass = 0.0;
+    int cmass = 0;
+    numData = 1;
+    while(OPS_GetNumRemainingInputArgs() > 0) {
+	const char* type = OPS_GetString();
+	if(strcmp(type,"-cMass") == 0) {
+	    cmass = 1;
+	} else if(strcmp(type,"-mass") == 0) {
+	    if(OPS_GetNumRemainingInputArgs() > 0) {
+		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
+		    opserr<<"WARNING: invalid mass\n";
+		    return -1;
+		}
+	    }
+	}
+    }
+
+    // check transf
+    CrdTransf* theTransf = OPS_getCrdTransf(iData[0]);
+    if(theTransf == 0) {
+	opserr<<"coord transfomration not found\n";
+	return -1;
+    }
+
+    // check beam integrataion
+    BeamIntegrationRule* theRule = OPS_getBeamIntegrationRule(iData[1]);
+    if(theRule == 0) {
+	opserr<<"beam integration not found\n";
+	return -1;
+    }
+    BeamIntegration* bi = theRule->getBeamIntegration();
+    if(bi == 0) {
+	opserr<<"beam integration is null\n";
+	return -1;
+    }
+
+    // check sections
+    const ID& secTags = theRule->getSectionTags();
+    SectionForceDeformation** sections = new SectionForceDeformation *[secTags.Size()];
+    for(int i=0; i<secTags.Size(); i++) {
+	sections[i] = OPS_getSectionForceDeformation(secTags(i));
+	if(sections[i] == 0) {
+	    opserr<<"section "<<secTags(i)<<"not found\n";
+		delete [] sections;
+	    return -1;
+	}
+    }
+
+    // create elements
+    ElementIter& theEles = theDomain.getElements();
+    Element* theEle = theEles();
+    int currTag = 0;
+    if (theEle != 0) {
+	currTag = theEle->getTag();
+    }
+    eletags.resize(elenodes.Size()/2);
+    for (int i=0; i<eletags.Size(); i++) {
+	theEle = new TimoshenkoBeamColumn2d(--currTag,elenodes(2*i),elenodes(2*i+1),secTags.Size(),
+				      sections,*bi,*theTransf,mass);
+	if (theEle == 0) {
+	    opserr<<"WARNING: run out of memory for creating element\n";
+	    return -1;
+	}
+	if (theDomain.addElement(theEle) == false) {
+	    opserr<<"WARNING: failed to add element to domain\n";
+	    delete theEle;
+	    return -1;
+	}
+	eletags(i) = currTag;
+    }
+    
+    delete [] sections;
+    return 0;
 }
 
 TimoshenkoBeamColumn2d::TimoshenkoBeamColumn2d(int tag, int nd1, int nd2,
@@ -532,19 +756,15 @@ TimoshenkoBeamColumn2d::getTangentStiff()
   return K;
 }
 
-const Matrix&
-TimoshenkoBeamColumn2d::getInitialBasicStiff()
+void
+TimoshenkoBeamColumn2d::getBasicStiff(Matrix &kb, int initial)
 {
-  static Matrix kb(3,3);
-
   // Zero for integral
   kb.Zero();
   
   double L = crdTransf->getInitialLength();
   double oneOverL = 1.0/L;
   
-  //const Matrix &pts = quadRule.getIntegrPointCoords(numSections);
-  //const Vector &wts = quadRule.getIntegrPointWeights(numSections);
   double xi[maxNumSections];
   beamInt->getSectionLocations(numSections, L, xi);
   double wt[maxNumSections];
@@ -564,11 +784,10 @@ TimoshenkoBeamColumn2d::getInitialBasicStiff()
     double phi = phis[i];
     
     // Get the section tangent stiffness
-    const Matrix &ks = theSections[i]->getSectionTangent();
+    const Matrix &ks = (initial) ? theSections[i]->getInitialTangent(): theSections[i]->getSectionTangent();
 
     // Perform numerical integration
     //kb.addMatrixTripleProduct(1.0, *B, ks, wts(i)/L);
-    //double wti = wts(i)*oneOverL;
     double wti = wt[i]*oneOverL;
     double tmp;
     for (int j = 0; j < order; j++) {
@@ -621,14 +840,14 @@ TimoshenkoBeamColumn2d::getInitialBasicStiff()
     }
     
   }
-
-  return kb;
 }
 
 const Matrix&
 TimoshenkoBeamColumn2d::getInitialStiff()
 {
-  const Matrix &kb = this->getInitialBasicStiff();
+  static Matrix kb(3,3);
+  
+  this->getBasicStiff(kb, 1);
 
   // Transform to global stiffness
   K = crdTransf->getInitialGlobalStiffMatrix(kb);
@@ -1244,6 +1463,12 @@ TimoshenkoBeamColumn2d::setResponse(const char **argv, int argc,
 
     theResponse =  new ElementResponse(this, 9, Vector(3));
 
+  } else if (strcmp(argv[0],"basicStiffness") == 0) {
+      output.tag("ResponseType","N");
+      output.tag("ResponseType","M1");
+      output.tag("ResponseType","M2");
+
+      theResponse = new ElementResponse(this, 19, Matrix(3,3));    
   // chord rotation -
   } else if (strcmp(argv[0],"chordRotation") == 0 || strcmp(argv[0],"chordDeformation") == 0 
 	     || strcmp(argv[0],"basicDeformation") == 0) {
@@ -1269,7 +1494,7 @@ TimoshenkoBeamColumn2d::setResponse(const char **argv, int argc,
   }
 
   // section response -
-  else if (strstr(argv[0],"sectionX") != 0) {
+  else if (strcmp(argv[0],"sectionX") == 0) {
     if (argc > 2) {
       float sectionLoc = atof(argv[1]);
 
@@ -1295,7 +1520,7 @@ TimoshenkoBeamColumn2d::setResponse(const char **argv, int argc,
       theResponse = theSections[sectionNum]->setResponse(&argv[2], argc-2, output);
     }
   }
-  else if (strstr(argv[0],"section") != 0) {
+  else if (strcmp(argv[0],"section") == 0) {
 
     if (argc > 1) {
       
@@ -1400,6 +1625,12 @@ TimoshenkoBeamColumn2d::getResponse(int responseID, Information &eleInfo)
     return eleInfo.setVector(q);
   }
 
+  else if (responseID == 19) {
+    static Matrix kb(3,3);
+    this->getBasicStiff(kb);
+    return eleInfo.setMatrix(kb);
+  }
+  
   // Chord rotation
   else if (responseID == 3)
     return eleInfo.setVector(crdTransf->getBasicTrialDisp());
@@ -1408,7 +1639,8 @@ TimoshenkoBeamColumn2d::getResponse(int responseID, Information &eleInfo)
   else if (responseID == 4) {
     static Vector vp(3);
     static Vector ve(3);
-    const Matrix &kb = this->getInitialBasicStiff();
+    static Matrix kb(3,3);
+    this->getBasicStiff(kb, 1);
     kb.Solve(q, ve);
     vp = crdTransf->getBasicTrialDisp();
     vp -= ve;
@@ -1504,9 +1736,10 @@ TimoshenkoBeamColumn2d::setParameter(const char **argv, int argc, Parameter &par
     return -1;
   
   // If the parameter belongs to the element itself
-  if (strcmp(argv[0],"rho") == 0)
+  if (strcmp(argv[0],"rho") == 0) {
+    param.setValue(rho);
     return param.addObject(1, this);
-  
+  }
   if (strstr(argv[0],"sectionX") != 0) {
     if (argc < 3)
 		return -1;

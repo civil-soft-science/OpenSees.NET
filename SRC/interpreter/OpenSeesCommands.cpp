@@ -49,6 +49,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <SectionRepres.h>
 #include <TimeSeries.h>
 #include <CrdTransf.h>
+#include <Damping.h>
 #include <BeamIntegration.h>
 #include <NodalLoad.h>
 #include <AnalysisModel.h>
@@ -89,7 +90,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <KrylovAccelerator.h>
 #include <AcceleratedNewton.h>
 #include <RaphsonAccelerator.h>
+#include <SecantAccelerator1.h>
 #include <SecantAccelerator2.h>
+#include <SecantAccelerator3.h>
 #include <PeriodicAccelerator.h>
 #include <LineSearch.h>
 #include <InitialInterpolatedLineSearch.h>
@@ -141,7 +144,8 @@ bool setMPIDSOEFlag = false;
 static OpenSeesCommands* cmds = 0;
 
 OpenSeesCommands::OpenSeesCommands(DL_Interpreter* interp)
-    :interpreter(interp), theDomain(0), ndf(0), ndm(0),
+    :interpreter(interp), theDomain(0), 
+     ndf(0), ndm(0),
      theSOE(0), theEigenSOE(0), theNumberer(0), theHandler(0),
      theStaticIntegrator(0), theTransientIntegrator(0),
      theAlgorithm(0), theStaticAnalysis(0), theTransientAnalysis(0),
@@ -349,7 +353,7 @@ OpenSeesCommands::eigen(int typeSolver, double shift,
 	for (int i=0; i<numEigen; i++) {
 	    data[i] = eigenvalues(i);
 	}
-	OPS_SetDoubleOutput(numEigen, data, false);
+	OPS_SetDoubleOutput(&numEigen, data, false);
 	delete [] data;
     }
 
@@ -361,8 +365,8 @@ int* OPS_GetNumEigen()
     static int numEigen = 0;                                                    
     if (cmds == 0) return 0;                                                    
     numEigen = cmds->getNumEigen();                                             
-    int numdata = 1;                                                            
-    if (OPS_SetIntOutput(numdata, &numEigen, true) < 0) {
+    int numData = 1;                                                            
+    if (OPS_SetIntOutput(&numData, &numEigen, true) < 0) {
         opserr << "WARNING failed to set output\n";                             
         return 0;                                                               
     }                                                                           
@@ -644,22 +648,22 @@ OpenSeesCommands::setPFEMAnalysis(bool suppress)
 	return -1;
     }
 
-    int numdata = 1;
+    int numData = 1;
     double dtmax, dtmin, gravity, ratio=0.5;
-    if (OPS_GetDoubleInput(numdata, &dtmax) < 0) {
+    if (OPS_GetDoubleInput(&numData, &dtmax) < 0) {
 	opserr<<"WARNING: invalid dtmax \n";
 	return -1;
     }
-    if (OPS_GetDoubleInput(numdata, &dtmin) < 0) {
+    if (OPS_GetDoubleInput(&numData, &dtmin) < 0) {
 	opserr<<"WARNING: invalid dtmin \n";
 	return -1;
     }
-    if (OPS_GetDoubleInput(numdata, &gravity) < 0) {
+    if (OPS_GetDoubleInput(&numData, &gravity) < 0) {
 	opserr<<"WARNING: invalid gravity \n";
 	return -1;
     }
     if(OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetDoubleInput(numdata, &ratio) < 0) {
+	if (OPS_GetDoubleInput(&numData, &ratio) < 0) {
 	    opserr<<"WARNING: invalid ratio \n";
 	    return -1;
 	}
@@ -951,6 +955,9 @@ OpenSeesCommands::wipe()
     // wipe GeomTransf
     OPS_clearAllCrdTransf();
 
+    // wipe damping
+    OPS_clearAllDamping();
+
     // wipe BeamIntegration
     OPS_clearAllBeamIntegrationRule();
 
@@ -975,9 +982,6 @@ OpenSeesCommands::wipe()
     // wipe CyclicModel
     OPS_clearAllCyclicModel();
 
-    if (reliability != 0) {
-      reliability->wipe();
-    }
 }
 
 void
@@ -997,6 +1001,7 @@ int OPS_GetNumRemainingInputArgs()
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
+    opserr << "here\n";
     return interp->getNumRemainingInputArgs();
 }
 
@@ -1015,6 +1020,27 @@ int OPS_SetIntOutput(int *numData, int*data, bool scalar)
     return interp->setInt(data, *numData, scalar);
 }
 
+int OPS_SetIntListsOutput(std::vector<std::vector<int>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setInt(data);
+}
+
+int OPS_SetIntDictOutput(std::map<const char*, int>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setInt(data);
+}
+
+int OPS_SetIntDictListOutput(std::map<const char*, std::vector<int>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setInt(data);
+}
+
 int OPS_GetDoubleInput(int *numData, double *data)
 {
     if (cmds == 0) return 0;
@@ -1023,12 +1049,48 @@ int OPS_GetDoubleInput(int *numData, double *data)
     return interp->getDouble(data, *numData);
 }
 
+int OPS_GetDoubleListInput(int* size, Vector* data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->getDoubleList(size, data);
+}
+
+int OPS_EvalDoubleStringExpression(const char* theExpression, double& current_val) {
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->evalDoubleStringExpression(theExpression, current_val);
+}
+
 int OPS_SetDoubleOutput(int *numData, double *data, bool scalar)
 {
     if (cmds == 0) return 0;
     DL_Interpreter* interp = cmds->getInterpreter();
     return interp->setDouble(data, *numData, scalar);
 }
+
+int OPS_SetDoubleListsOutput(std::vector<std::vector<double>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setDouble(data);
+}
+
+int OPS_SetDoubleDictOutput(std::map<const char* ,double>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setDouble(data);
+}
+
+int OPS_SetDoubleDictListOutput(std::map<const char*, std::vector<double>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setDouble(data);
+}
+
+
 
 const char * OPS_GetString(void)
 {
@@ -1059,6 +1121,34 @@ int OPS_SetString(const char* str)
     return interp->setString(str);
 }
 
+int OPS_SetStringList(std::vector<const char*>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setString(data);
+}
+
+int OPS_SetStringLists(std::vector<std::vector<const char*>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setString(data);
+}
+
+int OPS_SetStringDict(std::map<const char*, const char*>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setString(data);
+}
+
+int OPS_SetStringDictList(std::map<const char*, std::vector<const char*>>& data)
+{
+    if (cmds == 0) return 0;
+    DL_Interpreter* interp = cmds->getInterpreter();
+    return interp->setString(data);
+}
+
 Domain* OPS_GetDomain(void)
 {
     if (cmds == 0) return 0;
@@ -1075,6 +1165,62 @@ OPS_GetAnalysisModel(void)
 {
     if (cmds == 0) return 0;
     return cmds->getAnalysisModel();
+}
+
+EquiSolnAlgo** OPS_GetAlgorithm(void) {
+    if (cmds == 0) return 0;
+    return cmds->getAlgorithmPointer();
+}
+
+ConstraintHandler** OPS_GetHandler(void) {
+    if (cmds == 0) return 0;
+    return cmds->getHandlerPointer();
+}
+
+DOF_Numberer** OPS_GetNumberer(void) {
+    if (cmds == 0) return 0;
+    return cmds->getNumbererPointer();
+}
+
+LinearSOE** OPS_GetSOE(void) {
+    if (cmds == 0) return 0;
+    return cmds->getSOEPointer();
+}
+
+EigenSOE** OPS_GetEigenSOE(void) {
+    if (cmds == 0) return 0;
+    return cmds->getEigenSOEPointer();
+}
+
+StaticAnalysis** OPS_GetStaticAnalysis(void) {
+    if (cmds == 0) return 0;
+    return cmds->getStaticAnalysisPointer();
+}
+
+DirectIntegrationAnalysis** OPS_GetTransientAnalysis(void) {
+    if (cmds == 0) return 0;
+    return cmds->getTransientAnalysisPointer();
+}
+
+VariableTimeStepDirectIntegrationAnalysis**
+OPS_GetVariableTimeStepTransientAnalysis(void) {
+    if (cmds == 0) return 0;
+    return cmds->getVariableAnalysisPointer();
+}
+
+StaticIntegrator** OPS_GetStaticIntegrator(void) {
+    if (cmds == 0) return 0;
+    return cmds->getStaticIntegratorPointer();
+}
+
+TransientIntegrator** OPS_GetTransientIntegrator(void) {
+    if (cmds == 0) return 0;
+    return cmds->getTransientIntegratorPointer();
+}
+
+ConvergenceTest** OPS_GetTest(void) {
+    if (cmds == 0) return 0;
+    return cmds->getCTestPointer();
 }
 
 int OPS_GetNDF()
@@ -1155,9 +1301,9 @@ int OPS_model()
 	opserr<<"WARNING first option must be -ndm\n";
 	return -1;
     }
-    int numdata = 1;
+    int numData = 1;
     int ndm = 0;
-    if (OPS_GetIntInput(numdata, &ndm) < 0) {
+    if (OPS_GetIntInput(&numData, &ndm) < 0) {
 	opserr<<"WARNING failed to read ndm\n";
 	return -1;
     }
@@ -1174,7 +1320,7 @@ int OPS_model()
 	    opserr<<"WARNING second option must be -ndf\n";
 	    return -1;
 	}
-	if (OPS_GetIntInput(numdata, &ndf) < 0) {
+	if (OPS_GetIntInput(&numData, &ndf) < 0) {
 	    opserr<<"WARNING failed to read ndf\n";
 	    return -1;
 	}
@@ -1390,6 +1536,9 @@ int OPS_ConstraintHandler()
 
     } else if (strcmp(type,"Transformation") == 0) {
     	theHandler = (ConstraintHandler*)OPS_TransformationConstraintHandler();
+
+    } else if (strcmp(type,"Auto") == 0) {
+    	theHandler = (ConstraintHandler*)OPS_AutoConstraintHandler();
 
     } else {
     	opserr<<"WARNING unknown ConstraintHandler type "<<type<<"\n";
@@ -1754,75 +1903,133 @@ int OPS_Analysis() {
   return 0;
 }
 
-int OPS_analyze()
-{
-    if (cmds == 0) return 0;
+int OPS_analyze() {
+  if (cmds == 0) return 0;
 
-    int result = 0;
-    StaticAnalysis* theStaticAnalysis = cmds->getStaticAnalysis();
-    TransientAnalysis* theTransientAnalysis = cmds->getTransientAnalysis();
-    PFEMAnalysis* thePFEMAnalysis = cmds->getPFEMAnalysis();
+  int result = 0;
+  StaticAnalysis* theStaticAnalysis = cmds->getStaticAnalysis();
+  TransientAnalysis* theTransientAnalysis =
+      cmds->getTransientAnalysis();
+  PFEMAnalysis* thePFEMAnalysis = cmds->getPFEMAnalysis();
 
-    if (theStaticAnalysis != 0) {
-	if (OPS_GetNumRemainingInputArgs() < 1) {
-	    opserr << "WARNING insufficient args: analyze numIncr ...\n";
-	    return -1;
-	}
-	int numIncr;
-	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &numIncr) < 0) return -1;
-	result = theStaticAnalysis->analyze(numIncr);
+  if (theStaticAnalysis != 0) {
+    if (OPS_GetNumRemainingInputArgs() < 1) {
+      opserr << "WARNING insufficient args: analyze numIncr "
+                "<-noFlush> ...\n";
+      return -1;
+    }
+    int numIncr;
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &numIncr) < 0) {
+      opserr << "WARNING: invalid numIncr\n";
+      return -1;
+    }
 
-    } else if (thePFEMAnalysis != 0) {
+    bool flush = true;
+    if (OPS_GetNumRemainingInputArgs() > 0) {
+      const char* opt = OPS_GetString();
+      if (strcmp(opt, "-noFlush") == 0) {
+        flush = false;
+      }
+    }
+    result = theStaticAnalysis->analyze(numIncr, flush);
 
-	result = thePFEMAnalysis->analyze();
+  } else if (thePFEMAnalysis != 0) {
+    bool flush = true;
+    if (OPS_GetNumRemainingInputArgs() > 0) {
+      const char* opt = OPS_GetString();
+      if (strcmp(opt, "-noFlush") == 0) {
+        flush = false;
+      }
+    }
+    result = thePFEMAnalysis->analyze(flush);
 
-    } else if (theTransientAnalysis != 0) {
-	if (OPS_GetNumRemainingInputArgs() < 2) {
-	    opserr << "WARNING insufficient args: analyze numIncr deltaT ...\n";
-	    return -1;
-	}
-	int numIncr;
-	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &numIncr) < 0) return -1;
+  } else if (theTransientAnalysis != 0) {
+    if (OPS_GetNumRemainingInputArgs() < 2) {
+      opserr << "WARNING insufficient args: analyze numIncr deltaT "
+                "...\n";
+      return -1;
+    }
+    int numIncr;
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &numIncr) < 0) {
+      opserr << "WARNING: invalid numIncr\n";
+      return -1;
+    }
 
-	double dt;
-	if (OPS_GetDoubleInput(numdata, &dt) < 0) return -1;
-	ops_Dt = dt;
+    double dt;
+    if (OPS_GetDoubleInput(&numData, &dt) < 0) {
+      opserr << "WARNING: invalid dt\n";
+      return -1;
+    }
+    ops_Dt = dt;
 
-	if (OPS_GetNumRemainingInputArgs() == 0) {
-	    result = theTransientAnalysis->analyze(numIncr, dt);
-	} else if (OPS_GetNumRemainingInputArgs() < 3) {
-	  opserr << "WARNING insufficient args for variable transient need: dtMin dtMax Jd \n";
-	  opserr << "n_args" << OPS_GetNumRemainingInputArgs() << "\n";
-	    return -1;
-	} else {
-	double dtMin;
-	if (OPS_GetDoubleInput(numdata, &dtMin) < 0) return -1;
-	double dtMax;
-	if (OPS_GetDoubleInput(numdata, &dtMax) < 0) return -1;
-	int Jd;
-	if (OPS_GetIntInput(numdata, &Jd) < 0) return -1;
-	  // Included getVariableAnalysis here as dont need it except for here. and analyze() is called a lot.
-	  VariableTimeStepDirectIntegrationAnalysis* theVariableTimeStepTransientAnalysis = cmds->getVariableAnalysis();
-	  result = theVariableTimeStepTransientAnalysis->analyze(numIncr, dt, dtMin, dtMax, Jd);
-	}
+    if (OPS_GetNumRemainingInputArgs() == 0) {
+      result = theTransientAnalysis->analyze(numIncr, dt, true);
+    } else if (OPS_GetNumRemainingInputArgs() == 1) {
+      bool flush = true;
+      if (OPS_GetNumRemainingInputArgs() > 0) {
+        const char* opt = OPS_GetString();
+        if (strcmp(opt, "-noFlush") == 0) {
+            flush = false;
+        }
+      }
+      result = theTransientAnalysis->analyze(numIncr, dt, flush);
+
+    } else if (OPS_GetNumRemainingInputArgs() < 3) {
+      opserr << "WARNING insufficient args for variable transient "
+                "need: dtMin dtMax Jd \n";
+      opserr << "n_args" << OPS_GetNumRemainingInputArgs() << "\n";
+      return -1;
+
     } else {
-	opserr << "WARNING No Analysis type has been specified \n";
-	return -1;
+      double dtMin;
+      if (OPS_GetDoubleInput(&numData, &dtMin) < 0) {
+        opserr << "WARNING: invalid dtMin\n";
+        return -1;
+      }
+      double dtMax;
+      if (OPS_GetDoubleInput(&numData, &dtMax) < 0) {
+        opserr << "WARNING: invalid dtMax\n";
+        return -1;
+      }
+      int Jd;
+      if (OPS_GetIntInput(&numData, &Jd) < 0) {
+        opserr << "WARNING: invalid Jd\n";
+        return -1;
+      }
+      bool flush = true;
+      if (OPS_GetNumRemainingInputArgs() > 0) {
+        const char* opt = OPS_GetString();
+        if (strcmp(opt, "-noFlush") == 0) {
+            flush = false;
+        }
+      }
+      // Included getVariableAnalysis here as dont need it except
+      // for here. and analyze() is called a lot.
+      VariableTimeStepDirectIntegrationAnalysis*
+          theVariableTimeStepTransientAnalysis =
+              cmds->getVariableAnalysis();
+      result = theVariableTimeStepTransientAnalysis->analyze(
+          numIncr, dt, dtMin, dtMax, Jd, flush);
     }
+  } else {
+    opserr << "WARNING No Analysis type has been specified \n";
+    return -1;
+  }
 
-    if (result < 0) {
-	opserr << "OpenSees > analyze failed, returned: " << result << " error flag\n";
-    }
+  if (result < 0) {
+    opserr << "OpenSees > analyze failed, returned: " << result
+           << " error flag\n";
+  }
 
-    int numdata = 1;
-    if (OPS_SetIntOutput(numdata, &result, true) < 0) {
-	opserr<<"WARNING failed to set output\n";
-	return -1;
-    }
+  int numData = 1;
+  if (OPS_SetIntOutput(&numData, &result, true) < 0) {
+    opserr << "WARNING failed to set output\n";
+    return -1;
+  }
 
-    return 0;
+  return 0;
 }
 
 int OPS_eigenAnalysis()
@@ -1892,8 +2099,8 @@ int OPS_eigenAnalysis()
 
     // check argv[loc] for number of modes
     int numEigen;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &numEigen) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &numEigen) < 0) {
 	opserr << "WARNING eigen numModes?  - can't read numModes\n";
 	return -1;
     }
@@ -1968,7 +2175,7 @@ int OPS_printA()
 
 	    const char* filename = OPS_GetString();
 	    if (outputFile.setFile(filename) != 0) {
-		opserr << "print <filename> .. - failed to open file: " << filename << endln;
+		opserr << "printA <filename> .. - failed to open file: " << filename << endln;
 		return -1;
 	    }
 	    output = &outputFile;
@@ -2001,7 +2208,7 @@ int OPS_printA()
 		int size = A->noRows() * A->noCols();
 		if (size >0) {
 		    double& ptr = (*A)(0,0);
-		    if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
+		    if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
 			opserr << "WARNING: printA - failed to set output\n";
 			return -1;
 		    }
@@ -2012,7 +2219,7 @@ int OPS_printA()
 	} else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -2020,7 +2227,7 @@ int OPS_printA()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
+        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
             opserr << "WARNING: printA - failed to set output\n";
             return -1;
         }
@@ -2050,7 +2257,7 @@ int OPS_printB()
 	    const char* filename = OPS_GetString();
 
 	    if (outputFile.setFile(filename) != 0) {
-		opserr << "print <filename> .. - failed to open file: " << filename << endln;
+		opserr << "printB <filename> .. - failed to open file: " << filename << endln;
 		return -1;
 	    }
 	    output = &outputFile;
@@ -2070,15 +2277,15 @@ int OPS_printB()
 	    int size = b.Size();
 	    if (size > 0) {
 		double &ptr = b(0);
-		if (OPS_SetDoubleOutput(size, &ptr, false) < 0) {
-		    opserr << "WARNING: printb - failed to set output\n";
+		if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		    opserr << "WARNING: printB - failed to set output\n";
 		    return -1;
 		}
 	    } else {
             size = 0;
             double *ptr2 = 0;
-            if (OPS_SetDoubleOutput(size, ptr2, false) < 0) {
-                opserr << "WARNING: printA - failed to set output\n";
+            if (OPS_SetDoubleOutput(&size, ptr2, false) < 0) {
+                opserr << "WARNING: printB - failed to set output\n";
                 return -1;
             }
 	    }
@@ -2088,8 +2295,77 @@ int OPS_printB()
     } else {
         int size = 0;
         double *ptr = 0;
-        if (OPS_SetDoubleOutput(size, ptr, false) < 0) {
-            opserr << "WARNING: printA - failed to set output\n";
+        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+            opserr << "WARNING: printB - failed to set output\n";
+            return -1;
+        }
+    }
+
+    // close the output file
+    outputFile.close();
+
+    return 0;
+}
+
+int OPS_printX()
+{
+    if (cmds == 0) return 0;
+    FileStream outputFile;
+    OPS_Stream *output = &opserr;
+
+    LinearSOE* theSOE = cmds->getSOE();
+    //StaticIntegrator* theStaticIntegrator = cmds->getStaticIntegrator();
+    //TransientIntegrator* theTransientIntegrator = cmds->getTransientIntegrator();
+
+    bool ret = false;
+    if (OPS_GetNumRemainingInputArgs() > 0) {
+	const char* flag = OPS_GetString();
+
+	if ((strcmp(flag,"file") == 0) || (strcmp(flag,"-file") == 0)) {
+	    const char* filename = OPS_GetString();
+
+	    if (outputFile.setFile(filename) != 0) {
+		opserr << "printX <filename> .. - failed to open file: " << filename << endln;
+		return -1;
+	    }
+	    output = &outputFile;
+	} else if((strcmp(flag,"ret") == 0) || (strcmp(flag,"-ret") == 0)) {
+	    ret = true;
+	}
+    }
+    if (theSOE != 0) {
+      /*
+	if (theStaticIntegrator != 0) {
+	  theStaticIntegrator->formUnbalance();
+	} else if (theTransientIntegrator != 0) {
+	  theTransientIntegrator->formUnbalance();
+	}
+      */
+	Vector &x = const_cast<Vector&>(theSOE->getX());
+	if (ret) {
+	    int size = x.Size();
+	    if (size > 0) {
+		double &ptr = x(0);
+		if (OPS_SetDoubleOutput(&size, &ptr, false) < 0) {
+		    opserr << "WARNING: printX - failed to set output\n";
+		    return -1;
+		}
+	    } else {
+            size = 0;
+            double *ptr2 = 0;
+            if (OPS_SetDoubleOutput(&size, ptr2, false) < 0) {
+                opserr << "WARNING: printX - failed to set output\n";
+                return -1;
+            }
+	    }
+	} else {
+	    *output << x;
+	}
+    } else {
+        int size = 0;
+        double *ptr = 0;
+        if (OPS_SetDoubleOutput(&size, ptr, false) < 0) {
+            opserr << "WARNING: printX - failed to set output\n";
             return -1;
         }
     }
@@ -2228,8 +2504,8 @@ void* OPS_KrylovNewton()
 	} else if (strcmp(flag,"-maxDim") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
 	    maxDim = atoi(flag);
-	    int numdata = 1;
-	    if (OPS_GetIntInput(numdata, &maxDim) < 0) {
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &maxDim) < 0) {
 		opserr<< "WARNING KrylovNewton failed to read maxDim\n";
 		return 0;
 	    }
@@ -2332,8 +2608,8 @@ void* OPS_MillerNewton()
 	} else if (strcmp(flag,"-maxDim") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
 	    maxDim = atoi(flag);
-	    int numdata = 1;
-	    if (OPS_GetIntInput(numdata, &maxDim) < 0) {
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &maxDim) < 0) {
 		opserr<< "WARNING KrylovNewton failed to read maxDim\n";
 		return 0;
 	    }
@@ -2356,6 +2632,9 @@ void* OPS_SecantNewton()
     int incrementTangent = CURRENT_TANGENT;
     int iterateTangent = CURRENT_TANGENT;
     int maxDim = 3;
+    int numTerms = 2;
+    bool cutOut = false;
+    double R[2];
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	const char* flag = OPS_GetString();
 
@@ -2385,12 +2664,26 @@ void* OPS_SecantNewton()
 	    }
 	} else if (strcmp(flag,"-maxDim") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    maxDim = atoi(flag);
-	    int numdata = 1;
-	    if (OPS_GetIntInput(numdata, &maxDim) < 0) {
-		opserr<< "WARNING KrylovNewton failed to read maxDim\n";
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &maxDim) < 0) {
+		opserr<< "WARNING SecantNewton failed to read maxDim\n";
 		return 0;
 	    }
+	} else if (strcmp(flag,"-numTerms") == 0 && OPS_GetNumRemainingInputArgs()>0) {
+
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &numTerms) < 0) {
+		opserr<< "WARNING SecantNewton failed to read maxDim\n";
+		return 0;
+	    }
+	} else if ((strcmp(flag,"-cutOut") == 0 || strcmp(flag,"-cutout") == 0)
+		   && OPS_GetNumRemainingInputArgs() > 1) {
+	  int numData = 2;
+	  if (OPS_GetDoubleInput(&numData, R) < 0) {
+	    opserr << "WARNING SecantNewton failed to read cutOut values R1 and R2" << endln;
+	    return 0;
+	  }
+	  cutOut = true;
 	}
     }
 
@@ -2400,8 +2693,22 @@ void* OPS_SecantNewton()
       return 0;
     }
 
-    Accelerator *theAccel;
-    theAccel = new SecantAccelerator2(maxDim, iterateTangent);
+    Accelerator *theAccel = 0;
+    if (numTerms <= 1)
+      if (cutOut)
+	theAccel = new SecantAccelerator1(maxDim, iterateTangent, R[0], R[1]);
+      else
+	theAccel = new SecantAccelerator1(maxDim, iterateTangent);
+    if (numTerms >= 3)
+      if (cutOut)
+	theAccel = new SecantAccelerator3(maxDim, iterateTangent, R[0], R[1]);
+      else
+	theAccel = new SecantAccelerator3(maxDim, iterateTangent);
+    if (numTerms == 2)
+      if (cutOut)
+	theAccel = new SecantAccelerator2(maxDim, iterateTangent, R[0], R[1]);
+      else
+	theAccel = new SecantAccelerator2(maxDim, iterateTangent);            
 
     return new AcceleratedNewton(*theTest, theAccel, incrementTangent);
 }
@@ -2442,8 +2749,8 @@ void* OPS_PeriodicNewton()
 	} else if (strcmp(flag,"-maxDim") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
 	    maxDim = atoi(flag);
-	    int numdata = 1;
-	    if (OPS_GetIntInput(numdata, &maxDim) < 0) {
+	    int numData = 1;
+	    if (OPS_GetIntInput(&numData, &maxDim) < 0) {
 		opserr<< "WARNING KrylovNewton failed to read maxDim\n";
 		return 0;
 	    }
@@ -2480,42 +2787,42 @@ void* OPS_NewtonLineSearch()
     int    pFlag      = 1;
     int    typeSearch = 0;
 
-    int numdata = 1;
+    int numData = 1;
 
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	const char* flag = OPS_GetString();
 
 	if (strcmp(flag, "-tol") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    if (OPS_GetDoubleInput(numdata, &tol) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &tol) < 0) {
 		opserr << "WARNING NewtonLineSearch failed to read tol\n";
 		return 0;
 	    }
 
 	} else if (strcmp(flag, "-maxIter") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    if (OPS_GetIntInput(numdata, &maxIter) < 0) {
+	    if (OPS_GetIntInput(&numData, &maxIter) < 0) {
 		opserr << "WARNING NewtonLineSearch failed to read maxIter\n";
 		return 0;
 	    }
 
 	} else if (strcmp(flag, "-pFlag") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    if (OPS_GetIntInput(numdata, &pFlag) < 0) {
+	    if (OPS_GetIntInput(&numData, &pFlag) < 0) {
 		opserr << "WARNING NewtonLineSearch failed to read pFlag\n";
 		return 0;
 	    }
 
 	} else if (strcmp(flag, "-minEta") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    if (OPS_GetDoubleInput(numdata, &minEta) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &minEta) < 0) {
 		opserr << "WARNING NewtonLineSearch failed to read minEta\n";
 		return 0;
 	    }
 
 	} else if (strcmp(flag, "-maxEta") == 0 && OPS_GetNumRemainingInputArgs()>0) {
 
-	    if (OPS_GetDoubleInput(numdata, &maxEta) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &maxEta) < 0) {
 		opserr << "WARNING NewtonLineSearch failed to read maxEta\n";
 		return 0;
 	    }
@@ -2557,14 +2864,14 @@ int OPS_getCTestNorms()
 
     if (theTest != 0) {
 	const Vector &norms = theTest->getNorms();
-	int numdata = norms.Size();
-	double* data = new double[numdata];
+	int numData = norms.Size();
+	double* data = new double[numData];
 
-	for (int i=0; i<numdata; i++) {
+	for (int i=0; i<numData; i++) {
 	    data[i] = norms(i);
 	}
 
-	if (OPS_SetDoubleOutput(numdata, data, false) < 0) {
+	if (OPS_SetDoubleOutput(&numData, data, false) < 0) {
 	    opserr << "WARNING failed to set test norms\n";
 	    delete [] data;
 	    return -1;
@@ -2584,8 +2891,8 @@ int OPS_getCTestIter()
 
     if (theTest != 0) {
 	int res = theTest->getNumTests();
-	int numdata = 1;
-	if (OPS_SetIntOutput(numdata, &res, true) < 0) {
+	int numData = 1;
+	if (OPS_SetIntOutput(&numData, &res, true) < 0) {
 	    opserr << "WARNING failed to set test iter\n";
 	    return -1;
 	}
@@ -2641,8 +2948,8 @@ int OPS_save()
 
     // check argv[1] for commitTag
     int commitTag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &commitTag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &commitTag) < 0) {
 	opserr << "WARNING - save could not read commitTag " << endln;
 	return -1;
     }
@@ -2672,8 +2979,8 @@ int OPS_restore()
 
     // check argv[1] for commitTag
     int commitTag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &commitTag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &commitTag) < 0) {
 	opserr << "WARNING - restore could not read commitTag " << endln;
 	return -1;
     }
@@ -2728,33 +3035,40 @@ int OPS_modalDamping()
     }
 
     int numModes = OPS_GetNumRemainingInputArgs();
-    if (numModes != 1 && numModes != numEigen) {
-      opserr << "WARNING modalDamping - same #damping factors as modes must be specified\n";
-      opserr << "                     - same damping ratio will be applied to all modes\n";
+    if (numModes != 1 && numModes < numEigen) {
+      opserr << "WARNING modalDamping - fewer damping factors than modes were specified\n";
+      opserr << "                     - zero damping will be applied to un-specified modes" << endln;
     }
+    if (numModes > numEigen) {
+      opserr << "WARNING modalDamping - more damping factors than modes were specifed\n";
+      opserr << "                     - ignoring additional damping factors" << endln;
+    }    
 
     double factor;
     Vector modalDampingValues(numEigen);
-    int numdata = 1;
+    int numData = 1;
 
     //
     // read in values and set factors
     //
-    if (numModes == numEigen) {
-      for (int i = 0; i < numEigen; i++) {
-	if (OPS_GetDoubleInput(numdata, &factor) < 0) {
-	  opserr << "WARNING modalDamping - could not read factor for mode " << i+1 << endln;
-	  return -1;
-	}
-	modalDampingValues(i) = factor;
-      }
-    } else {
-      if (OPS_GetDoubleInput(numdata, &factor) < 0) {
+    if (numModes == 1) {
+      if (OPS_GetDoubleInput(&numData, &factor) < 0) {
 	opserr << "WARNING modalDamping - could not read factor for all modes \n";
 	return -1;
       }
       for (int i = 0; i < numEigen; i++)
 	modalDampingValues(i) = factor;
+    }
+    else {
+      for (int i = 0; i < numModes; i++) {
+	if (OPS_GetDoubleInput(&numData, &factor) < 0) {
+	  opserr << "WARNING modalDamping - could not read factor for mode " << i+1 << endln;
+	  return -1;
+	}
+	modalDampingValues(i) = factor;
+      }
+      for (int i = numModes; i < numEigen; i++)
+	modalDampingValues(i) = 0.0;
     }
 
     Domain* theDomain = OPS_GetDomain();
@@ -2769,7 +3083,7 @@ int OPS_modalDampingQ()
 {
     if (cmds == 0) return 0;
     if (OPS_GetNumRemainingInputArgs() < 1) {
-	opserr << "WARNING modalDamping ?factor - not enough arguments to command\n";
+	opserr << "WARNING modalDampingQ ?factor - not enough arguments to command\n";
 	return -1;
     }
 
@@ -2777,20 +3091,45 @@ int OPS_modalDampingQ()
     EigenSOE* theEigenSOE = cmds->getEigenSOE();
 
     if (numEigen == 0 || theEigenSOE == 0) {
-	opserr << "WARNING modalDamping - eigen command needs to be called first - NO MODAL DAMPING APPLIED\n ";
+	opserr << "WARNING modalDampingQ - eigen command needs to be called first - NO MODAL DAMPING APPLIED\n ";
 	return -1;
     }
 
+    int numModes = OPS_GetNumRemainingInputArgs();
+    if (numModes != 1 && numModes < numEigen) {
+      opserr << "WARNING modalDampingQ - fewer damping factors than modes were specified\n";
+      opserr << "                      - zero damping will be applied to un-specified modes" << endln;
+    }
+    if (numModes > numEigen) {
+      opserr << "WARNING modalDampingQ - more damping factors than modes were specifed\n";
+      opserr << "                      - ignoring additional damping factors" << endln;
+    }
+    
     double factor;
-    int numdata = 1;
-    if (OPS_GetDoubleInput(numdata, &factor) < 0) {
-	opserr << "WARNING modalDamping - could not read factor for all modes \n";
-	return -1;
-    }
-
     Vector modalDampingValues(numEigen);
-    for (int i=0; i<numEigen; i++) {
+    int numData = 1;
+
+    //
+    // read in values and set factors
+    //
+    if (numModes == 1) {
+      if (OPS_GetDoubleInput(&numData, &factor) < 0) {
+	opserr << "WARNING modalDampingQ - could not read factor for all modes \n";
+	return -1;
+      }
+      for (int i = 0; i < numEigen; i++)
 	modalDampingValues(i) = factor;
+    }
+    else {
+      for (int i = 0; i < numModes; i++) {
+	if (OPS_GetDoubleInput(&numData, &factor) < 0) {
+	  opserr << "WARNING modalDampingQ - could not read factor for mode " << i+1 << endln;
+	  return -1;
+	}
+	modalDampingValues(i) = factor;
+      }
+      for (int i = numModes; i < numEigen; i++)
+	modalDampingValues(i) = 0.0;
     }
 
     Domain* theDomain = OPS_GetDomain();
@@ -3057,8 +3396,8 @@ int OPS_totalCPU()
     }
 
     double value = theAlgorithm->getTotalTimeCPU();
-    int numdata = 1;
-    if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3076,8 +3415,8 @@ int OPS_solveCPU()
     }
 
     double value = theAlgorithm->getSolveTimeCPU();
-    int numdata = 1;
-    if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3095,8 +3434,8 @@ int OPS_accelCPU()
     }
 
     double value = theAlgorithm->getAccelTimeCPU();
-    int numdata = 1;
-    if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3114,8 +3453,8 @@ int OPS_numFact()
     }
 
     double value = theAlgorithm->getNumFactorizations();
-    int numdata = 1;
-    if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3133,8 +3472,8 @@ int OPS_numIter()
     }
 
     int value = theAlgorithm->getNumIterations();
-    int numdata = 1;
-    if (OPS_SetIntOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetIntOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3152,8 +3491,8 @@ int OPS_systemSize()
     }
 
     int value = theSOE->getNumEqn();
-    int numdata = 1;
-    if (OPS_SetIntOutput(numdata, &value, true) < 0) {
+    int numData = 1;
+    if (OPS_SetIntOutput(&numData, &value, true) < 0) {
 	opserr << "WARNING failed to set output\n";
 	return -1;
     }
@@ -3167,15 +3506,15 @@ int OPS_domainCommitTag() {
     }
 
     int commitTag = cmds->getDomain()->getCommitTag();
-    int numdata = 1;
+    int numData = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-        if (OPS_GetIntInput(numdata, &commitTag) < 0) {
+        if (OPS_GetIntInput(&numData, &commitTag) < 0) {
             opserr << "WARNING: failed to get commitTag\n";
             return -1;
         }
         cmds->getDomain()->setCommitTag(commitTag);
     }
-    if (OPS_SetIntOutput(numdata, &commitTag, true) < 0) {
+    if (OPS_SetIntOutput(&numData, &commitTag, true) < 0) {
         opserr << "WARNING failed to set commitTag\n";
         return 0;
     }
@@ -3245,23 +3584,23 @@ void* OPS_ParallelDisplacementControl() {
     }
 
     int num = 2;
-    if (OPS_GetIntInput(num, &idata[0]) < 0) {
+    if (OPS_GetIntInput(&num, &idata[0]) < 0) {
         opserr << "WARNING: failed to get node and dof\n";
         return 0;
     }
     num = 1;
-    if (OPS_GetDoubleInput(num, &ddata[0]) < 0) {
+    if (OPS_GetDoubleInput(&num, &ddata[0]) < 0) {
         opserr << "WARNING: failed to get dU\n";
         return 0;
     }
     if (OPS_GetNumRemainingInputArgs() >= 3) {
         num = 1;
-        if (OPS_GetIntInput(num, &idata[2]) < 0) {
+        if (OPS_GetIntInput(&num, &idata[2]) < 0) {
             opserr << "WARNING: failed to get Jd\n";
             return 0;
         }
         num = 2;
-        if (OPS_GetDoubleInput(num, &ddata[1]) < 0) {
+        if (OPS_GetDoubleInput(&num, &ddata[1]) < 0) {
             opserr << "WARNING: failed to get min and max\n";
             return 0;
         }
@@ -3296,17 +3635,17 @@ void* OPS_MumpsSolver() {
         const char* opt = OPS_GetString();
         int num = 1;
         if (strcmp(opt, "-ICNTL14") == 0) {
-            if (OPS_GetIntInput(num, &icntl14) < 0) {
+            if (OPS_GetIntInput(&num, &icntl14) < 0) {
                 opserr << "WARNING: failed to get icntl14\n";
                 return 0;
             }
         } else if (strcmp(opt, "-ICNTL7") == 0) {
-            if (OPS_GetIntInput(num, &icntl7) < 0) {
+            if (OPS_GetIntInput(&num, &icntl7) < 0) {
                 opserr << "WARNING: failed to get icntl7\n";
                 return 0;
             }
         } else if (strcmp(opt, "-matrixType") == 0) {
-            if (OPS_GetIntInput(num, &matType) < 0) {
+            if (OPS_GetIntInput(&num, &matType) < 0) {
                 opserr << "WARNING: failed to get -matrixType. Unsymmetric matrix assumed\n";
                 return 0;
             }
@@ -3340,7 +3679,7 @@ void* OPS_MumpsSolver() {
     return theSOE;
 #endif
 #endif
-
+    return 0;
 }
 
 // Sensitivity:BEGIN /////////////////////////////////////////////

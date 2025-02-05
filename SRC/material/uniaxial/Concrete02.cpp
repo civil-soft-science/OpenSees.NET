@@ -59,7 +59,7 @@ OPS_Concrete02()
   double dData[7];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Concrete02 tag" << endln;
     return 0;
   }
@@ -71,7 +71,7 @@ OPS_Concrete02()
     return 0;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial Concrete02 " << iData[0] << " fpc? epsc0? fpcu? epscu? <rat? ft? Ets?>\n";
     return 0;
   }
@@ -103,6 +103,11 @@ Concrete02::Concrete02(int tag, double _fc, double _epsc0, double _fcu,
   ecminP = 0.0;
   deptP = 0.0;
 
+  if (fc > 0) fc = -fc;
+  if (epsc0 > 0) epsc0 = -epsc0;
+  if (fcu > 0) fcu = -fcu;
+  if (epscu > 0) epscu = -epscu;
+
   eP = 2.0*fc/epsc0;
   epsP = 0.0;
   sigP = 0.0;
@@ -119,6 +124,11 @@ Concrete02::Concrete02(int tag, double _fc, double _epsc0, double _fcu,
   ecminP = 0.0;
   deptP = 0.0;
 
+  if (fc > 0) fc = -fc;
+  if (epsc0 > 0) epsc0 = -epsc0;
+  if (fcu > 0) fcu = -fcu;
+  if (epscu > 0) epscu = -epscu;
+	  
   eP = 2.0*fc/epsc0;
   epsP = 0.0;
   sigP = 0.0;
@@ -259,6 +269,8 @@ Concrete02::setTrialStrain(double trialStrain, double strainRate)
     }
   }
 
+  //opserr << "CE: " << CEnergy << " -> TE: " << TEnergy << " | s (" << sigP << ", " << sig << ", M: " << 0.5 * (sigP + sig) << "); dE: " << (eps - epsP) << "\n";
+
   return 0;
 }
 
@@ -294,6 +306,8 @@ Concrete02::commitState(void)
   eP = e;
   sigP = sig;
   epsP = eps;
+
+
   return 0;
 }
 
@@ -306,6 +320,7 @@ Concrete02::revertToLastCommit(void)
   e = eP;
   sig = sigP;
   eps = epsP;
+
   return 0;
 }
 

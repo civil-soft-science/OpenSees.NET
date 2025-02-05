@@ -44,16 +44,16 @@ Matrix  PlateRebarMaterialThermal::tangent(5,5) ;
 
 void* OPS_PlateRebarMaterialThermal()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 3) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 3) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: nDMaterial PlateRebarThermal tag? matTag? angle?" << endln;
 	return 0;
     }
 
     int tag[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata,tag)<0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlateRebarThermal tag or matTag" << endln;
 	return 0;
     }
@@ -67,8 +67,8 @@ void* OPS_PlateRebarMaterialThermal()
     }
 
     double angle;
-    numdata = 1;
-    if (OPS_GetDoubleInput(numdata,&angle)<0) {
+    numData = 1;
+    if (OPS_GetDoubleInput(&numData,&angle)<0) {
 	opserr << "WARNING invalid angle" << endln;
 	return 0;
     }

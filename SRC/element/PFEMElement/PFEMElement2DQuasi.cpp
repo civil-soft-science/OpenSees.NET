@@ -44,25 +44,25 @@ Vector PFEMElement2DQuasi::P;
 
 void* OPS_PFEMElement2DQuasi()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 8) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 8) {
 	opserr<<"WARNING: insufficient number of arguments\n";
 	return 0;
     }
 
     // tag, nd1, nd2, nd3
-    numdata = 4;
+    numData = 4;
     int idata[4];
-    if(OPS_GetIntInput(numdata,idata)<0) {
+    if(OPS_GetIntInput(&numData,idata)<0) {
 	opserr << "WARNING: failed to read integers -- PFEMElement2DQuasi\n";
 	return 0;
     }
 
     // rho, mu, b1, b2, (thickness, kappa)
-    numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata > 6) numdata = 6;
+    numData = OPS_GetNumRemainingInputArgs();
+    if(numData > 6) numData = 6;
     double data[6] = {0,0,0,0,1.0,2.15e9};
-    if(OPS_GetDoubleInput(numdata,data) < 0) {
+    if(OPS_GetDoubleInput(&numData,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- PFEMElement2DQuasi\n";
 	return 0;
     }
@@ -74,17 +74,17 @@ void* OPS_PFEMElement2DQuasi()
 
 int OPS_PFEMElement2DQuasi(Domain& theDomain, const ID& elenodes, ID& eletags)
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata < 4) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if(numData < 4) {
 	opserr<<"WARNING: insufficient number of arguments\n";
 	return 0;
     }
 
     // rho, mu, b1, b2, (thickness, kappa)
-    numdata = OPS_GetNumRemainingInputArgs();
-    if(numdata > 6) numdata = 6;
+    numData = OPS_GetNumRemainingInputArgs();
+    if(numData > 6) numData = 6;
     double data[6] = {0,0,0,0,1.0,2.15e9};
-    if(OPS_GetDoubleInput(numdata,data) < 0) {
+    if(OPS_GetDoubleInput(&numData,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- PFEMElement2DQuasi\n";
 	return 0;
     }

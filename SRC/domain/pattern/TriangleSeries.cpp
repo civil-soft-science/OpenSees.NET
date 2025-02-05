@@ -64,7 +64,7 @@ OPS_Export void *OPS_TriangleSeries()
     // get tag if provided
     if (numRemainingArgs == 4 || numRemainingArgs == 6 || numRemainingArgs == 8 || numRemainingArgs == 10) {
         numData = 1;
-        if (OPS_GetIntInput(numData, &tag) != 0) {
+        if (OPS_GetIntInput(&numData, &tag) != 0) {
             opserr << "WARNING invalid series tag in Triangle tag?" << endln;
             return 0;
         }
@@ -72,7 +72,7 @@ OPS_Export void *OPS_TriangleSeries()
     }
 
     numData = 3;
-    if (OPS_GetDouble(numData, dData) != 0) {
+    if (OPS_GetDouble(&numData, dData) != 0) {
         opserr << "WARNING invalid double data in Triangle Series with tag: " << tag << endln;
         return 0;
     }
@@ -84,19 +84,19 @@ OPS_Export void *OPS_TriangleSeries()
 
         if (strcmp(argvS,"-shift") == 0 || strcmp(argvS,"-phaseShift") == 0) {
             numData = 1;
-            if (OPS_GetDouble(numData, &dData[3]) != 0) {
+            if (OPS_GetDouble(&numData, &dData[3]) != 0) {
                 opserr << "WARNING invalid phase shift in Triangle Series with tag?" << tag << endln;
                 return 0;
             }
         } else if (strcmp(argvS,"-factor") == 0) {
             numData = 1;
-            if (OPS_GetDouble(numData, &dData[4]) != 0) {
+            if (OPS_GetDouble(&numData, &dData[4]) != 0) {
                 opserr << "WARNING invalid factor in Triangle Series with tag?" << tag << endln;
                 return 0;
             }
         } else if (strcmp(argvS,"-zeroShift") == 0) {
             numData = 1;
-            if (OPS_GetDouble(numData, &dData[5]) != 0) {
+            if (OPS_GetDouble(&numData, &dData[5]) != 0) {
                 opserr << "WARNING invalid zero shift in Triangle Series with tag?" << tag << endln;
                 return 0;
             }

@@ -42,16 +42,16 @@ Earthquake Engineering & Structural Dynamics, 2013, 42(5): 705-723*/
 
 void* OPS_PlateFromPlaneStressMaterialThermal()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 3) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 3) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: nDMaterial PlateFromPlaneStressThermal tag? matTag? gmod?" << endln;
 	return 0;
     }
 
     int tag[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata,tag)<0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlateFromPlaneStressThermal tag and matTag" << endln;
 	return 0;
     }
@@ -65,8 +65,8 @@ void* OPS_PlateFromPlaneStressMaterialThermal()
     }
 
     double gmod;
-    numdata = 1;
-    if (OPS_GetDoubleInput(numdata,&gmod)<0) {
+    numData = 1;
+    if (OPS_GetDoubleInput(&numData,&gmod)<0) {
 	opserr << "WARNING invalid gmod" << endln;
 	return 0;
     }

@@ -44,16 +44,16 @@ Matrix  PlateFromPlaneStressMaterial::tangent(5,5) ;
 
 void* OPS_PlateFromPlaneStressMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 3) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 3) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: nDMaterial PlateFromPlaneStress tag? matTag? gmod?" << endln;
 	return 0;
     }
 
     int tag[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata,tag)<0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData,tag)<0) {
 	opserr << "WARNING invalid nDMaterial PlateFromPlaneStress tag and matTag" << endln;
 	return 0;
     }
@@ -67,8 +67,8 @@ void* OPS_PlateFromPlaneStressMaterial()
     }
 
     double gmod;
-    numdata = 1;
-    if (OPS_GetDoubleInput(numdata,&gmod)<0) {
+    numData = 1;
+    if (OPS_GetDoubleInput(&numData,&gmod)<0) {
 	opserr << "WARNING invalid gmod" << endln;
 	return 0;
     }
@@ -86,7 +86,7 @@ void* OPS_PlateFromPlaneStressMaterial()
 //null constructor
 PlateFromPlaneStressMaterial::PlateFromPlaneStressMaterial( ) : 
 NDMaterial(0, ND_TAG_PlateFromPlaneStressMaterial ), 
-strain(5) 
+theMat(nullptr), strain(5), gmod(0.0)
 { }
 
 
@@ -358,7 +358,7 @@ PlateFromPlaneStressMaterial::recvSelf(int commitTag, Channel &theChannel, FEM_O
 
   this->setTag(idData(0));
   int matClassTag = idData(1);
-  if (theMat->getClassTag() != matClassTag) {
+  if (theMat == nullptr || theMat->getClassTag() != matClassTag) {
     if (theMat != 0) delete theMat;
     theMat = theBroker.getNewNDMaterial(matClassTag);
     if (theMat == 0) {

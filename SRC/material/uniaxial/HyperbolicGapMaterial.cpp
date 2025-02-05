@@ -61,21 +61,21 @@
 void*
 OPS_HyperbolicGapMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 6) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 6) {
         opserr << "WARNING: Insufficient arguments\n";
         return 0;
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
         return 0;
     }
 
     double data[5];
-    numdata = 5;
-    if (OPS_GetDoubleInput(numdata,data)) {
+    numData = 5;
+    if (OPS_GetDoubleInput(&numData,data)) {
         return 0;
     }
 

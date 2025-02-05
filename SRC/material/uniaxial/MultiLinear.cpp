@@ -55,7 +55,7 @@ OPS_MultiLinear(void)
     
     int iData[1];
     int numData = 1;
-    if (OPS_GetIntInput(numData, iData) != 0) {
+    if (OPS_GetIntInput(&numData, iData) != 0) {
         opserr << "WARNING invalid tag or soilType uniaxialMaterial MultiLinearMaterial" << endln;
         return 0;
     }
@@ -64,7 +64,7 @@ OPS_MultiLinear(void)
     
     int numSlope = numData / 2;
     double* dData = new double[numData];
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
         opserr << "Invalid pyData data for material uniaxial MultiLinear " << iData[0] << endln;
         return 0;
     }

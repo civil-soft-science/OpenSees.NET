@@ -73,56 +73,56 @@ OPS_ElasticTubularJoint(void)
   int    numData;
   
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[0]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[0]) != 0) {
     opserr << "\n WARNING invalid ElasticTubularJoint Tag" << endln;
     return 0;
   }
   
   
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[1]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[1]) != 0) {
     opserr << "\n WARNING invalid iNode for ElasticTubularJoint " << iData[0] << endln;
     return 0;
   }
  
  numData = 1;
- if (OPS_GetIntInput(numData, &iData[2]) != 0) {
+ if (OPS_GetIntInput(&numData, &iData[2]) != 0) {
    opserr << "\n WARNING invalid jNode for ElasticTubularJoint " << iData[0] << endln;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[0]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[0]) != 0) {
    opserr << "\n WARNING invalid  brace diameter for ElasticTubularJoint " << iData[0] << endln;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
    opserr  << "\n WARNING invalid  brace_angle for ElasticTubularJoint " << iData[0] << endln ;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[2]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[2]) != 0) {
    opserr << "\n WARNING invalid E  for ElasticTubularJoint " << iData[0] << endln ;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[3]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[3]) != 0) {
    opserr << "\n WARNING invalid  chord diameter for ElasticTubularJoint "<< iData[0] << endln ;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[4]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[4]) != 0) {
    opserr  << "\n WARNING invalid  chord thickness for ElasticTubularJoint " <<iData[0] << endln ;
    return 0;
  }
  
  numData = 1;
- if (OPS_GetDoubleInput(numData, &dData[5]) != 0) {
+ if (OPS_GetDoubleInput(&numData, &dData[5]) != 0) {
    opserr  << "\n WARNING invalid  chord angle for ElasticTubularJoint " <<iData[0] << endln ;
    return 0;
  }

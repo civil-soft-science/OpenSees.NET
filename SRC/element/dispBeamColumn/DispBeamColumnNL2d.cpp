@@ -62,7 +62,7 @@ void* OPS_DispBeamColumnNL2d()
     // inputs: 
     int iData[5];
     int numData = 5;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
 	opserr<<"WARNING: invalid integer inputs\n";
 	return 0;
     }
@@ -77,7 +77,7 @@ void* OPS_DispBeamColumnNL2d()
 	    cmass = 1;
 	} else if(strcmp(type,"-mass") == 0) {
 	    if(OPS_GetNumRemainingInputArgs() > 0) {
-		if(OPS_GetDoubleInput(numData,&mass) < 0) {
+		if(OPS_GetDoubleInput(&numData,&mass) < 0) {
 		    opserr<<"WARNING: invalid mass\n";
 		    return 0;
 		}
@@ -146,7 +146,7 @@ void* OPS_DispBeamColumnNL2d(const ID &info)
 
 	// inputs:
 	numData = 3;
-	if(OPS_GetIntInput(numData,&iData[0]) < 0) {
+	if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
 	    opserr<<"WARNING: invalid integer inputs\n";
 	    return 0;
 	}
@@ -160,7 +160,7 @@ void* OPS_DispBeamColumnNL2d(const ID &info)
 	}
 
 	numData = 2;
-	if(OPS_GetIntInput(numData,&iData[3]) < 0) {
+	if(OPS_GetIntInput(&numData,&iData[3]) < 0) {
 	    opserr << "WARNING invalid int inputs\n";
 	    return 0;
 	}
@@ -173,7 +173,7 @@ void* OPS_DispBeamColumnNL2d(const ID &info)
 		cmass = 1;
 	    } else if(strcmp(type,"-mass") == 0) {
 		if(OPS_GetNumRemainingInputArgs() > 0) {
-		    if(OPS_GetDoubleInput(numData,&mass) < 0) {
+		    if(OPS_GetDoubleInput(&numData,&mass) < 0) {
 			opserr<<"WARNING: invalid mass\n";
 			return 0;
 		    }
@@ -1505,7 +1505,7 @@ DispBeamColumnNL2d::setResponse(const char **argv, int argc,
   }
 
   // section response -
-  else if (strstr(argv[0],"sectionX") != 0) {
+  else if (strcmp(argv[0],"sectionX") == 0) {
     if (argc > 2) {
       float sectionLoc = atof(argv[1]);
 
@@ -1531,7 +1531,7 @@ DispBeamColumnNL2d::setResponse(const char **argv, int argc,
       theResponse = theSections[sectionNum]->setResponse(&argv[2], argc-2, output);
     }
   }
-  else if (strstr(argv[0],"section") != 0) {
+  else if (strcmp(argv[0],"section") == 0) {
 
     if (argc > 1) {
       

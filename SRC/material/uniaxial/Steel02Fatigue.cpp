@@ -60,7 +60,7 @@ OPS_Steel02Fatigue()
   double dData[18];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel02Fatigue tag" << endln;
     return 0;
   }
@@ -74,7 +74,7 @@ OPS_Steel02Fatigue()
   }
 
   if (numData == 9) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid double: uniaxialMaterial Steel02Fatigue " << iData[0] << 
 	" fy? E? b? Cd? Cf? alpha? beta? minStrain? maxStrain? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -84,7 +84,7 @@ OPS_Steel02Fatigue()
     theMaterial = new Steel02Fatigue(iData[0], dData[0], dData[1], dData[2], dData[3], dData[4], dData[5], dData[6], dData[7], dData[8]);
 
   } else if (numData == 12) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid int: uniaxialMaterial Steel02Fatigue " << iData[0] << 
 	" fy? E? b? Cd? Cf? alpha? beta? minStrain? maxStrain? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -94,7 +94,7 @@ OPS_Steel02Fatigue()
     theMaterial = new Steel02Fatigue(iData[0], dData[0], dData[1], dData[2], dData[3], dData[4], dData[5], dData[6], dData[7], dData[8], dData[9], dData[10], dData[11]);
 
   } else if (numData == 16) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02Fatigue " << iData[0] << 
 	" fy? E? b? Cd? Cf? alpha? beta? minStrain? maxStrain? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -106,7 +106,7 @@ OPS_Steel02Fatigue()
 			      dData[7], dData[8], dData[9], dData[10], dData[11], dData[12], dData[13], dData[14], dData[15]);
 
   } else if (numData == 17) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02Fatigue " << iData[0] << 
 	" fy? E? b? Cd? Cf? alpha? beta? minStrain? maxStrain? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;

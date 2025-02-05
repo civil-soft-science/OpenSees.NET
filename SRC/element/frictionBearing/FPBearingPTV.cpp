@@ -87,7 +87,7 @@ void *OPS_FPBearingPTV()
     
   // get the id and end nodes
   numData = 3;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -98,7 +98,7 @@ void *OPS_FPBearingPTV()
   //MuRef
   double aDouble;
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;	
   }
@@ -108,7 +108,7 @@ void *OPS_FPBearingPTV()
   //IsPressureDependent
   numData = 1;
   int aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -117,7 +117,7 @@ void *OPS_FPBearingPTV()
 
   //Reference Pressure
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;
   }
@@ -127,7 +127,7 @@ void *OPS_FPBearingPTV()
   //IsTemperatureDependent
   numData = 1;
   aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -136,7 +136,7 @@ void *OPS_FPBearingPTV()
 
   //Thermal diffusivity of Steel
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;
   }
@@ -145,7 +145,7 @@ void *OPS_FPBearingPTV()
 
   //Thermal conductivity of Steel
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;
   }
@@ -155,7 +155,7 @@ void *OPS_FPBearingPTV()
   //IsVelocityDependent
   numData = 1;
   aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -164,7 +164,7 @@ void *OPS_FPBearingPTV()
 
   //rateParameter
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING invalid element data" << eleTag << endln;
     return 0;
   }
@@ -173,7 +173,7 @@ void *OPS_FPBearingPTV()
 
   //Effective radius of curvature of sliding surface
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING invalid element data" << eleTag << endln;
     return 0;
   }
@@ -182,7 +182,7 @@ void *OPS_FPBearingPTV()
 
   //Radius of contact area
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING invalid element data" << eleTag << endln;
     return 0;
   }
@@ -191,7 +191,7 @@ void *OPS_FPBearingPTV()
 
   //kInitial
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING invalid element data" << eleTag << endln;
     return 0;
   }
@@ -202,7 +202,7 @@ void *OPS_FPBearingPTV()
   numData = 1;
   int aNumber;
   for(int i=0; i<4; i++){
-	if (OPS_GetIntInput(numData, &aNumber) != 0) {
+	if (OPS_GetIntInput(&numData, &aNumber) != 0) {
 		opserr << "WARNING invalid material information\n";
 		return 0;
 	} else {
@@ -227,7 +227,7 @@ void *OPS_FPBearingPTV()
   //y(0)=1.0; y(1)=0.0; y(2)=0.0;
   numData = 1;  
   for(int i=0; i<6; i++){
-	  if (OPS_GetDoubleInput(numData, &aDouble) !=0) {
+	  if (OPS_GetDoubleInput(&numData, &aDouble) !=0) {
 		  opserr << "WARNING invalid element data\n";
 		  return 0;
 	  } else {
@@ -239,7 +239,7 @@ void *OPS_FPBearingPTV()
 
   //Shear distance
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING invalid element data" << eleTag << endln;
     return 0;
   }
@@ -249,7 +249,7 @@ void *OPS_FPBearingPTV()
   //doRayleigh
   numData = 1;
   aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -258,7 +258,7 @@ void *OPS_FPBearingPTV()
 
   //mass
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;
   }
@@ -268,7 +268,7 @@ void *OPS_FPBearingPTV()
   //NumberOfIterations
   numData = 1;
   aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -277,7 +277,7 @@ void *OPS_FPBearingPTV()
 
   //tol
   numData = 1;  
-  if (OPS_GetDoubleInput(numData, &aDouble) != 0) {
+  if (OPS_GetDoubleInput(&numData, &aDouble) != 0) {
     opserr << "WARNING error reading element properties for element" << eleTag << endln;
     return 0;
   }
@@ -287,7 +287,7 @@ void *OPS_FPBearingPTV()
   //Units 1: N,m,s,C; 2: kN,m,s,C; 3: N,mm,s,C; 4: kN,mm,s,C; 5: lb,in,s,C; 6: kip,in,s,C; 7: lb,ft,s,C; 8: kip,ft,s,C
   numData = 1;
   aInt = 0;
-  if (OPS_GetIntInput(numData, &aInt) != 0) {
+  if (OPS_GetIntInput(&numData, &aInt) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -312,10 +312,6 @@ void *OPS_FPBearingPTV()
 
   if (theEle == 0) {
     opserr << "WARNING ran out of memory creating element with tag " << eleTag << endln;
-	delete theMaterialA;
-	delete theMaterialB;
-	delete theMaterialC;
-	delete theMaterialD;
     return 0;
   }
  

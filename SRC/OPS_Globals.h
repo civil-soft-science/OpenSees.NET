@@ -11,8 +11,8 @@
 **                                                                    **
 ** Commercial use of this program without express permission of the   **
 ** University of California, Berkeley, is strictly prohibited.  See   **
-** file 'COPYRIGHT'  in main directory for information on usage and   **
-** redistribution,  and for a DISCLAIMER OF ALL WARRANTIES.           **
+** file 'COPYRIGHT' in main directory for information on usage and    **
+** redistribution, and for a DISCLAIMER OF ALL WARRANTIES.            **
 **                                                                    **
 ** Developed by:                                                      **
 **   Frank McKenna (fmckenna@ce.berkeley.edu)                         **
@@ -30,7 +30,7 @@
 #define _CSS
 #endif // !_CSS
 
-#define OPS_VERSION "3.3.0-H:2022-06-20"
+#define OPS_VERSION "3.7.1-H"
 
 
 #ifdef _WIN32

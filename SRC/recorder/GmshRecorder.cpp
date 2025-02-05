@@ -67,8 +67,8 @@ std::map<int, GmshRecorder::GmshType> GmshRecorder::gmshtypes;
 
 void* OPS_GmshRecorder()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 1) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 1) {
         opserr << "WARNING: insufficient number of arguments\n";
         return 0;
     }
@@ -79,7 +79,7 @@ void* OPS_GmshRecorder()
     const char* name = OPS_GetString();
 
     // plotting options
-    numdata = OPS_GetNumRemainingInputArgs();
+    numData = 1;
     int indent = 2;
     int precision = 10;
     int write_graph_mesh = 0;
@@ -87,7 +87,7 @@ void* OPS_GmshRecorder()
     int write_ele_updatetime = 0;
     GmshRecorder::NodeData nodedata;
     std::vector<GmshRecorder::EleData> eledata;
-    while (numdata > 0) {
+    while (OPS_GetNumRemainingInputArgs() > 0) {
         std::string type = OPS_GetString();
         if (type == "disp") {
             nodedata.disp = true;
@@ -114,37 +114,33 @@ void* OPS_GmshRecorder()
         // } else if (type == "partition") {
             // write_partition = true;
         }  else if (type == "eigen") {
-            numdata = OPS_GetNumRemainingInputArgs();
-            if (numdata < 1) {
+            if (OPS_GetNumRemainingInputArgs() < 1) {
                 opserr << "WARNING: eigen needs 'numEigenvector'\n";
                 return 0;
             }
 
-            if (OPS_GetIntInput(1, &nodedata.numeigen) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &nodedata.numeigen) < 0) return 0;
         } else if (type == "-precision") {
-            numdata = OPS_GetNumRemainingInputArgs();
-            if (numdata < 1) {
+            if (OPS_GetNumRemainingInputArgs() < 1) {
                 opserr << "WARNING: needs precision \n";
                 return 0;
             }
 
-            if (OPS_GetIntInput(1, &precision) < 0) return 0;
+            if (OPS_GetIntInput(&numData, &precision) < 0) return 0;
         } else if (type == "eleResponse") {
-            numdata = OPS_GetNumRemainingInputArgs();
-            if (numdata < 1) {
+          numData = OPS_GetNumRemainingInputArgs();
+            if (numData < 1) {
                 opserr << "WANRING: elementResponse needs 'argc','argv'\n";
                 return 0;
             }
             GmshRecorder::EleData edata;
-            numdata = OPS_GetNumRemainingInputArgs();
-            edata.resize(numdata);
-            for (int i = 0; i < numdata; i++) {
+            edata.resize(OPS_GetNumRemainingInputArgs());
+            for (int i = 0; i < numData; i++) {
                 edata[i] = OPS_GetString();
                 opserr << edata[i].c_str() << endln;
             }
             eledata.push_back(edata);
         }
-        numdata = OPS_GetNumRemainingInputArgs();
     }
 
     // create recorder
@@ -1392,6 +1388,7 @@ GmshRecorder::setGMSHType()
     gmshtypes[ELE_TAG_TFP_Bearing] = GMSH_LINE;
     gmshtypes[ELE_TAG_TFP_Bearing2d] = GMSH_LINE;
     gmshtypes[ELE_TAG_TripleFrictionPendulum] = GMSH_LINE;
+    gmshtypes[ELE_TAG_TripleFrictionPendulumX] = GMSH_LINE;
     gmshtypes[ELE_TAG_PFEMElement2D] = GMSH_TRIANGLE;
     gmshtypes[ELE_TAG_FourNodeQuad02] = GMSH_QUAD;
     gmshtypes[ELE_TAG_cont2d01] = GMSH_POLY_VERTEX;
@@ -1425,14 +1422,26 @@ GmshRecorder::setGMSHType()
     gmshtypes[ELE_TAG_SFI_MVLEM] = GMSH_POLY_VERTEX;
     gmshtypes[ELE_TAG_MVLEM_3D] = GMSH_POLY_VERTEX;
     gmshtypes[ELE_TAG_SFI_MVLEM_3D] = GMSH_POLY_VERTEX;
+    gmshtypes[ELE_TAG_E_SFI_MVLEM_3D] = GMSH_POLY_VERTEX;
+	gmshtypes[ELE_TAG_E_SFI] = GMSH_POLY_VERTEX;
+	gmshtypes[ELE_TAG_MEFI] = GMSH_POLY_VERTEX;
     gmshtypes[ELE_TAG_PFEMElement2DFIC] = GMSH_TRIANGLE;
     gmshtypes[ELE_TAG_CatenaryCable] = GMSH_LINE;
     gmshtypes[ELE_TAG_FourNodeTetrahedron] = GMSH_TETRA;
     gmshtypes[ELE_TAG_TriSurfaceLoad] = GMSH_TRIANGLE;
-    gmshtypes[ELE_TAG_ShellANDeS] = GMSH_TRIANGLE;
     gmshtypes[ELE_TAG_ShellDKGT] = GMSH_TRIANGLE;
     gmshtypes[ELE_TAG_ShellNLDKGT] = GMSH_TRIANGLE;
     gmshtypes[ELE_TAG_InertiaTruss] = GMSH_LINE;
     gmshtypes[ELE_TAG_ASDAbsorbingBoundary2D] = GMSH_QUAD;
     gmshtypes[ELE_TAG_ASDAbsorbingBoundary3D] = GMSH_HEXAHEDRON;
+    gmshtypes[ELE_TAG_FSIFluidElement2D] = GMSH_QUAD;
+    gmshtypes[ELE_TAG_FSIInterfaceElement2D] = GMSH_LINE;
+    gmshtypes[ELE_TAG_FSIFluidBoundaryElement2D] = GMSH_LINE;
+}
+
+int GmshRecorder::flush() {
+    if (theFile.is_open() && theFile.good()) {
+        theFile.flush();
+    }
+    return 0;
 }

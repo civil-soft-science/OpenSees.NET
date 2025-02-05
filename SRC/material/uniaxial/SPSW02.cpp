@@ -71,21 +71,21 @@ OPS_SPSW02()
 	int argc = OPS_GetNumRemainingInputArgs();
 	int numData = 1;
 	int curArg = 2;
-	if (OPS_GetIntInput(numData, &tag) != 0) {
+	if (OPS_GetIntInput(&numData, &tag) != 0) {
 		opserr << "WARNING invalid -tag";
 		opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
 
-	if (OPS_GetDoubleInput (numData, &E0) != 0) {
+	if (OPS_GetDoubleInput (&numData, &E0) != 0) {
 		opserr << "WARNING invalid -E0";
 		opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 		return 0;
 	}
 	curArg ++;
 
-	if (OPS_GetDoubleInput (numData, &b) != 0) {
+	if (OPS_GetDoubleInput (&numData, &b) != 0) {
 		opserr << "WARNING invalid -b";
 		opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 		return 0;
@@ -97,28 +97,28 @@ OPS_SPSW02()
 
 	if (strcmp(str , "-geom") == 0)
 	{
-		if (OPS_GetDoubleInput (numData, &fpy) != 0) {
+		if (OPS_GetDoubleInput (&numData, &fpy) != 0) {
 			opserr << "WARNING invalid -Fts";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &t) != 0) {
+		if (OPS_GetDoubleInput (&numData, &t) != 0) {
 			opserr << "WARNING invalid -t";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &hs) != 0) {
+		if (OPS_GetDoubleInput (&numData, &hs) != 0) {
 			opserr << "WARNING invalid -h";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &l) != 0) {
+		if (OPS_GetDoubleInput (&numData, &l) != 0) {
 			opserr << "WARNING invalid -l";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
@@ -128,42 +128,42 @@ OPS_SPSW02()
 	{
 		paramsSet = true;
 		//Fts, Fcs, cmpUnldngEFac, sigTEFac, sigTFfac, epsTFfac
-		if (OPS_GetDoubleInput (numData, &Fts) != 0) {
+		if (OPS_GetDoubleInput (&numData, &Fts) != 0) {
 			opserr << "WARNING invalid Fts";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &Fcs) != 0) {
+		if (OPS_GetDoubleInput (&numData, &Fcs) != 0) {
 			opserr << "WARNING invalid Fcs";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &cmpUnldngEFac) != 0) {
+		if (OPS_GetDoubleInput (&numData, &cmpUnldngEFac) != 0) {
 			opserr << "WARNING invalid cmpUnldngEFac";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &sigTEFac) != 0) {
+		if (OPS_GetDoubleInput (&numData, &sigTEFac) != 0) {
 			opserr << "WARNING invalid sigTEFac";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &sigTFfac) != 0) {
+		if (OPS_GetDoubleInput (&numData, &sigTFfac) != 0) {
 			opserr << "WARNING invalid sigTFfac";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
 		}
 		curArg ++;
 
-		if (OPS_GetDoubleInput (numData, &epsTFfac) != 0) {
+		if (OPS_GetDoubleInput (&numData, &epsTFfac) != 0) {
 			opserr << "WARNING invalid epsTFfac";
 			opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 			return 0;
@@ -190,7 +190,7 @@ OPS_SPSW02()
 		curArg ++;
 		if (strcmp(str , "-R") == 0)
 		{
-			if (OPS_GetDoubleInput (numData, &R) != 0) {
+			if (OPS_GetDoubleInput (&numData, &R) != 0) {
 				opserr << "WARNING invalid -R";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
@@ -211,35 +211,35 @@ OPS_SPSW02()
 		curArg++;
 		if (strcmp(str , "-Damage") == 0 || strcmp(str , "-damage") == 0)
 		{
-			if (OPS_GetDoubleInput (numData, &epsPCFac) != 0) {
+			if (OPS_GetDoubleInput (&numData, &epsPCFac) != 0) {
 				opserr << "WARNING invalid -epsPCFac";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
 			}
 			curArg++;
 	
-			if (OPS_GetDoubleInput (numData, &pstCapEFac) != 0) {
+			if (OPS_GetDoubleInput (&numData, &pstCapEFac) != 0) {
 				opserr << "WARNING invalid -pstCapEFac";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
 			}
 			curArg++;
 	
-			if (OPS_GetDoubleInput (numData, &gama) != 0) {
+			if (OPS_GetDoubleInput (&numData, &gama) != 0) {
 				opserr << "WARNING invalid -gama";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
 			}
 			curArg++;
 	
-			if (OPS_GetDoubleInput (numData, &c) != 0) {
+			if (OPS_GetDoubleInput (&numData, &c) != 0) {
 				opserr << "WARNING invalid -c";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
 			}
 			curArg++;
 	
-			if (OPS_GetDoubleInput (numData, &resFac) != 0) {
+			if (OPS_GetDoubleInput (&numData, &resFac) != 0) {
 				opserr << "WARNING invalid -resFac";
 				opserr << "uniaxialMaterial SPSW02: " << tag << endln;
 				return 0;
@@ -805,6 +805,8 @@ int SPSW02::recvSelf(int commitTag, Channel & theChannel, FEM_ObjectBroker & the
 	excurEnerg = excurEnergP;
 	totalEnerg = totalEnergP;
 	beta = betaP;
+
+	return res;
 }
 
 void SPSW02::Print(OPS_Stream & s, int flag)

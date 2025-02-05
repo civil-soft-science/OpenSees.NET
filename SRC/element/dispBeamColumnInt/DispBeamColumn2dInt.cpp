@@ -81,8 +81,8 @@ void* OPS_DispBeamColumn2dInt()
     int secTag[10]; // Max size of integration rule ... can change if needed
 
     int idata[4];
-    int numdata = 4;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 4;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid dispBeamColumn int inputs" << endln;
 	return 0;
     }
@@ -98,9 +98,9 @@ void* OPS_DispBeamColumn2dInt()
 	    return 0;
 	}
 	int section;
-	numdata = 1;
+	numData = 1;
 	for (int i = 0; i < nIP; i++) {
-	    if (OPS_GetIntInput(numdata, &section) < 0) {
+	    if (OPS_GetIntInput(&numData, &section) < 0) {
 		opserr << "WARNING invalid secTag - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 		return 0;
 	    }
@@ -111,8 +111,8 @@ void* OPS_DispBeamColumn2dInt()
     else {
 	OPS_ResetCurrentInputArg(-1);
 	int section;
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &section) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &section) < 0) {
 	    opserr << "WARNING invalid secTag - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 	    return 0;
 	}
@@ -121,15 +121,15 @@ void* OPS_DispBeamColumn2dInt()
     }
 	
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	numdata = 1;
-	if (OPS_GetIntInput(numdata, &transfTag) < 0) {
+	numData = 1;
+	if (OPS_GetIntInput(&numData, &transfTag) < 0) {
 	    opserr << "WARNING invalid transfTag? - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag?\n";
 	    return 0;
 	}
     }
 
-    numdata = 1;
-    if (OPS_GetDoubleInput(numdata, &C1) < 0) {
+    numData = 1;
+    if (OPS_GetDoubleInput(&numData, &C1) < 0) {
 	opserr << "WARNING invalid dispBeamColumn C1" << endln;
 	return 0;
     }
@@ -140,8 +140,8 @@ void* OPS_DispBeamColumn2dInt()
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	const char* massarg = OPS_GetString();
 	if (strcmp(massarg,"-mass") == 0 && OPS_GetNumRemainingInputArgs() > 0) {
-	    numdata = 1;
-	    if (OPS_GetDoubleInput(numdata, &massDens) < 0) {
+	    numData = 1;
+	    if (OPS_GetDoubleInput(&numData, &massDens) < 0) {
 		opserr << "WARNING invalid massDens - element dispBeamColumn eleTag? iNode? jNode? nIP? secTag? transfTag? C1? t? NStrip?\n";
 		return 0;
 	    }

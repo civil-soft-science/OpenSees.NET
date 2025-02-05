@@ -28,23 +28,23 @@
 
 void* OPS_SMAMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 7) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial SMA matTag? E? eps_L? sig_AM_s? sig_AM_f? sig_MA_s? sig_MA_f?" << endln;
 	return 0;
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING: failed to read tag\n";
 	return 0;
     }
 
     double data[6];
-    numdata = 6;
-    if (OPS_GetDoubleInput(numdata,data)) {
+    numData = 6;
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING: failed to read data\n";
 	return 0;
     }

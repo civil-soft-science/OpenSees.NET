@@ -52,8 +52,8 @@ using std::setiosflags;
 
 void* OPS_AxialCurve()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 7) {
 	opserr << "WARNING invalid number of arguments\n";
 	opserr << "Want: limitCurve Axial tag? eleTag? Fsw? Kdeg? Fres? defType? forType?" << endln; //SDK
 	opserr << "<ndI? ndJ? dof? perpDirn? delta? eleRemove?>" << endln;
@@ -72,37 +72,37 @@ void* OPS_AxialCurve()
     int eleRemove = 0;
     double delta = 0.0;
 
-    numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid Axial LimitCurve tag" << endln;
 	return 0;
     }
-    if (OPS_GetIntInput(numdata, &eleTag) < 0) {
+    if (OPS_GetIntInput(&numData, &eleTag) < 0) {
 	opserr << "WARNING invalid element tag for associated beam-column element (eleTag)\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetDoubleInput(numdata, &Fsw) < 0) {
+    if (OPS_GetDoubleInput(&numData, &Fsw) < 0) {
 	opserr << "WARNING invalid Fsw\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetDoubleInput(numdata, &Kdeg) < 0) {
+    if (OPS_GetDoubleInput(&numData, &Kdeg) < 0) {
 	opserr << "WARNING invalid degrading slope Kdeg\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetDoubleInput(numdata, &Fres) < 0) {
+    if (OPS_GetDoubleInput(&numData, &Fres) < 0) {
 	opserr << "WARNING invalid residual capacity Fres\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetIntInput(numdata, &defType) < 0) {
+    if (OPS_GetIntInput(&numData, &defType) < 0) {
 	opserr << "WARNING invalid deformation type defType\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
     }
-    if (OPS_GetIntInput(numdata, &forType) < 0) {
+    if (OPS_GetIntInput(&numData, &forType) < 0) {
 	opserr << "WARNING invalid force type forType\n";
 	opserr << "LimitCurve Axial: " << tag << endln;
 	return 0;
@@ -114,36 +114,36 @@ void* OPS_AxialCurve()
 	    opserr << "ndI? ndJ? dof? perpDirn? <delta? eleRemove?>" << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(numdata, &ndI) < 0) {
+	if (OPS_GetIntInput(&numData, &ndI) < 0) {
 	    opserr << "WARNING invalid node I\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(numdata, &ndJ) < 0) {
+	if (OPS_GetIntInput(&numData, &ndJ) < 0) {
 	    opserr << "WARNING invalid node J\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(numdata, &dof) < 0) {
+	if (OPS_GetIntInput(&numData, &dof) < 0) {
 	    opserr << "WARNING invalid degree of freedom for drift\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;
 	}
-	if (OPS_GetIntInput(numdata, &perpDirn) < 0) {
+	if (OPS_GetIntInput(&numData, &perpDirn) < 0) {
 	    opserr << "WARNING invalid direction for column length\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;
 	}
     }
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetDoubleInput(numdata, &delta) < 0) {
+	if (OPS_GetDoubleInput(&numData, &delta) < 0) {
 	    opserr << "WARNING invalid shift in drift surface (delta)\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;
 	}
     }
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetIntInput(numdata, &eleRemove) < 0) {
+	if (OPS_GetIntInput(&numData, &eleRemove) < 0) {
 	    opserr << "WARNING invalid element removal option\n";
 	    opserr << "LimitCurve Axial: " << tag << endln;
 	    return 0;

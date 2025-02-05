@@ -38,7 +38,7 @@ void* OPS_CompositeSimpsonBeamIntegration(int& integrationTag, ID& secTags)
   // Read tag
   int iData[2];
   int numData = 2;
-  if (OPS_GetIntInput(numData,&iData[0]) < 0) {
+  if (OPS_GetIntInput(&numData,&iData[0]) < 0) {
     opserr << "CompositeSimpsonBeamIntegration - unable to read int data" << endln;
     return 0;
   }
@@ -48,7 +48,7 @@ void* OPS_CompositeSimpsonBeamIntegration(int& integrationTag, ID& secTags)
     // inputs: integrationTag,secTag,N
     numData = 1;
     int Nsections;
-    if (OPS_GetIntInput(numData,&Nsections) < 0) {
+    if (OPS_GetIntInput(&numData,&Nsections) < 0) {
       opserr << "CompositeSimpsonBeamIntegration - Unable to read number of sections" << endln;
       return 0;
     }
@@ -70,7 +70,7 @@ void* OPS_CompositeSimpsonBeamIntegration(int& integrationTag, ID& secTags)
     if (Nsections < 0)
       return 0;
     int *sections = new int[Nsections];
-    if (OPS_GetIntInput(Nsections,sections) < 0) {
+    if (OPS_GetIntInput(&Nsections,sections) < 0) {
       opserr << "CompositeSimpsonBeamIntegration - Unable to read section tags" << endln;
       return 0;
     }

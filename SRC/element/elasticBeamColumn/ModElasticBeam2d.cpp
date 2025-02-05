@@ -88,7 +88,7 @@ OPS_ModElasticBeam2d()
   dData[8] = 0.0;  // rho
 
   numData = 3;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data (tag, iNode, jNode) element ElasticBeamColumn2d\n";
     return 0;
   }
@@ -96,19 +96,19 @@ OPS_ModElasticBeam2d()
   int eleTag = iData[0];
 
   numData = 3;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING error reading element data (A, E, I) element ElasticBeamColumn2d " << eleTag << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(numData, &dData[3]) != 0) {
+  if (OPS_GetDoubleInput(&numData, &dData[3]) != 0) {
     opserr << "WARNING error reading element data (K11, K33, K44) element ElasticBeamColumn2d " << eleTag << endln;
     return 0;
   }
 	
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[3]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[3]) != 0) {
 	opserr << "WARNING error reading data (transfTag) element ElasticBeamColumn2d " << eleTag << endln;
 	return 0;
   }
@@ -119,17 +119,17 @@ OPS_ModElasticBeam2d()
     numData = 1;
 
     if ((strcmp(argvLoc, "-alpha") == 0) || (strcmp(argvLoc, "-Alpha") == 0) || (strcmp(argvLoc, "-ALPHA") == 0)) {
-      if (OPS_GetDoubleInput(numData, &dData[6]) != 0) {
+      if (OPS_GetDoubleInput(&numData, &dData[6]) != 0) {
 	opserr << "WARNING error reading element data (alpha) element ElasticBeamColumn2d " << eleTag << endln;
 	return 0;
       }
     } else if ((strcmp(argvLoc, "-d") == 0) || (strcmp(argvLoc, "-D") == 0)) {
-      if (OPS_GetDoubleInput(numData, &dData[7]) != 0) {
+      if (OPS_GetDoubleInput(&numData, &dData[7]) != 0) {
 	opserr << "WARNING error reading element data (D) element ElasticBeamColumn2d " << eleTag << endln;
 	return 0;
       }
     } else if ((strcmp(argvLoc, "-rho") == 0) || (strcmp(argvLoc, "Rho") == 0) || (strcmp(argvLoc, "-RHO") == 0)) {
-      if (OPS_GetDoubleInput(numData, &dData[8]) != 0) {
+      if (OPS_GetDoubleInput(&numData, &dData[8]) != 0) {
 	opserr << "WARNING error reading element data (rho) element ElasticBeamColumn2d " << eleTag << endln;
 	return 0;
       }

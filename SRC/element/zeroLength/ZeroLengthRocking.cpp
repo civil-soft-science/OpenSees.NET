@@ -73,8 +73,8 @@ void* OPS_ZeroLengthRocking()
 
     // eleTag, iNode, jNode
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalied int inputs " <<
 	    "- element ZeroLengthRocking eleTag? iNode? jNode? " <<
 	    "kr? radius? theta0? kappa? <-orient x1? x2? x3? y1? y2? y3?>\n";
@@ -86,8 +86,8 @@ void* OPS_ZeroLengthRocking()
     
     // look for rocking required inputs
     double ddata[4];
-    numdata = 4;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 4;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalied double inputs " <<
 	    "- element ZeroLengthRocking eleTag? iNode? jNode? " <<
 	    "kr? radius? theta0? kappa? <-orient x1? x2? x3? y1? y2? y3?>\n";
@@ -108,7 +108,7 @@ void* OPS_ZeroLengthRocking()
     
     while (OPS_GetNumRemainingInputArgs() > 0) {
 	const char* flag = OPS_GetString();
-	numdata = 1;
+	numData = 1;
         if (strcmp(flag,"-orient") == 0) {
             if (OPS_GetNumRemainingInputArgs() < 6) {
                 opserr << "WARNING not enough parameters after -orient flag for ele " << eleTag <<
@@ -120,7 +120,7 @@ void* OPS_ZeroLengthRocking()
                 double value;
                 // read the x values
                 for (int i=0; i<3; i++)  {
-		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(&numData, &value) < 0) {
                         opserr << "WARNING invalid -orient value for ele  " << eleTag <<
 			    "- element ZeroLength eleTag? iNode? jNode? " <<
 			    "kr? radius? theta0? kappa? <-orient x1? x2? x3? y1? y2? y3?>\n";
@@ -131,7 +131,7 @@ void* OPS_ZeroLengthRocking()
                 }
                 // read the y values
                 for (int j=0; j<3; j++)  {
-		    if (OPS_GetDoubleInput(numdata, &value) < 0) {
+		    if (OPS_GetDoubleInput(&numData, &value) < 0) {
                         opserr << "WARNING invalid -orient value for ele  " <<
 			    eleTag << 
 			    "- element ZeroLength eleTag? iNode? jNode? " <<
@@ -148,7 +148,7 @@ void* OPS_ZeroLengthRocking()
                 opserr << "WARNING not enough parameters after -xi flag for ele " << eleTag << endln;
                 return 0;
             } else {
-		if (OPS_GetDoubleInput(numdata, &xi) < 0) {
+		if (OPS_GetDoubleInput(&numData, &xi) < 0) {
                     opserr << "WARNING invalid -xi value for ele  " << eleTag << endln;
                     return 0;
                 }
@@ -159,7 +159,7 @@ void* OPS_ZeroLengthRocking()
                 opserr << "WARNING not enough parameters after -dTol flag for ele " << eleTag << endln;
                 return 0;
             } else {
-		if (OPS_GetDoubleInput(numdata, &dTol) < 0) {
+		if (OPS_GetDoubleInput(&numData, &dTol) < 0) {
                     opserr << "WARNING invalid -dTol value for ele  " << eleTag << endln;
                     return 0;
 		}
@@ -170,7 +170,7 @@ void* OPS_ZeroLengthRocking()
                 opserr << "WARNING not enough parameters after -vTol flag for ele " << eleTag << endln;
                 return 0;
             } else {
-		if (OPS_GetDoubleInput(numdata, &vTol) < 0) {
+		if (OPS_GetDoubleInput(&numData, &vTol) < 0) {
                     opserr << "WARNING invalid -vTol value for ele  " << eleTag << endln;
                     return 0;
                 }

@@ -360,6 +360,20 @@ Domain::~Domain()
 	if (theLoadPatterns != 0)
 		delete theLoadPatterns;
 
+  if (theParameters != 0)
+    delete theParameters;
+
+  if (paramIndex != 0)
+    delete [] paramIndex;
+  
+  if (theEleIter != 0)
+    delete theEleIter;
+  
+  if (theNodIter != 0)
+    delete theNodIter;
+  
+  if (theSP_Iter != 0)
+    delete theSP_Iter;
 	if (theParameters != 0)
 		delete theParameters;
 
@@ -489,7 +503,7 @@ Domain::addNode(Node* node)
 
   TaggedObject *other = theNodes->getComponentPtr(nodTag);
   if (other != 0) {
-    opserr << "Domain::addNode - node with tag " << nodTag << "already exists in model\n"; 
+    opserr << "Domain::addNode - node with tag " << nodTag << " already exists in model\n"; 
     return false;
   }
   
@@ -596,14 +610,13 @@ Domain::addSP_Constraint(SP_Constraint* spConstraint)
 		return false;
 	}
 
-	// check that no other object with similar tag exists in model
-	int tag = spConstraint->getTag();
-	TaggedObject* other = theSPs->getComponentPtr(tag);
-	if (other != 0) {
-		opserr << "Domain::addSP_Constraint - cannot add as constraint with tag " <<
-			tag << "already exists in model\n";
-		spConstraint->Print(opserr);
-
+  // check that no other object with similar tag exists in model
+  int tag = spConstraint->getTag();
+  TaggedObject *other = theSPs->getComponentPtr(tag);
+  if (other != 0) {
+    opserr << "Domain::addSP_Constraint - cannot add as constraint with tag " << 
+      tag << " already exists in model\n";             
+    spConstraint->Print(opserr);
 		return false;
 	}
 
@@ -820,6 +833,13 @@ Domain::addParameter(Parameter* theParam)
 {
 	int paramTag = theParam->getTag();
 
+  // Commenting out bc setDomain is done below for all parameters -- MHS
+  // We need to be able to have tag=0 for parameters just like nodes, elements, etc.
+  //if (paramTag == 0) {
+  //  // don't add it .. just invoke setDomain on the parameter
+  //  theParam->setDomain(this);
+  //  return true;
+  //}
 	if (paramTag == 0) {
 		// don't add it .. just invoke setDomain on the parameter
 		theParam->setDomain(this);
@@ -949,8 +969,8 @@ Domain::addNodalLoad(NodalLoad* load, int pattern)
 		return false;
 	}
 
-	load->setDomain(this);    // done in LoadPattern::addNodalLoad()
-	this->domainChange();
+    load->setDomain(this);    // done in LoadPattern::addNodalLoad()
+    //this->domainChange(); // a nodal load does not change the domain
 
 	return result;
 }
@@ -1711,6 +1731,12 @@ Domain::getCurrentTime(void) const
 	return currentTime;
 }
 
+double
+Domain::getDT(void) const
+{
+    return dT;
+}
+
 int
 Domain::getCommitTag(void) const
 {
@@ -2387,13 +2413,16 @@ void Domain::unsetModalProperties(void)
     }
 }
 
-const DomainModalProperties& Domain::getModalProperties(void) const
+int Domain::getModalProperties(DomainModalProperties &dmp) const
 {
     if (theModalProperties == 0) {
-        opserr << "Domain::getModalProperties - DomainModalProperties were never set\n";
-        exit(-1);
+      opserr << "Domain::getModalProperties - DomainModalProperties were never set" << endln;
+      return -1;
     }
-    return *theModalProperties;
+    else {
+      dmp = *theModalProperties;
+      return 0;
+    }
 }
 
 int
@@ -2494,34 +2523,36 @@ Domain::Print(OPS_Stream& s, int flag)
 		s << "\n\t},\n";
 		s << "\t\"geometry\": {\n";
 
-		int numToPrint = theNodes->getNumComponents();
-		NodeIter& theNodess = this->getNodes();
-		Node* theNode;
-		int numPrinted = 0;
-		s << "\t\t\"nodes\": [\n";
-		while ((theNode = theNodess()) != 0) {
-			theNode->Print(s, flag);
-			numPrinted += 1;
-			if (numPrinted < numToPrint)
-				s << ",\n";
-			else
-				s << "\n\t\t],\n";
-		}
+    int numToPrint = theNodes->getNumComponents();
+    NodeIter &theNodess = this->getNodes();
+    Node *theNode;
+    int numPrinted = 0;
+    s << "\t\t\"nodes\": [\n";
+    while ((theNode = theNodess()) != 0) {    
+      theNode->Print(s, flag);
+      numPrinted += 1;
+      if (numPrinted < numToPrint)
+	s << ",\n";
+      else
+	s << "\n";
+    }
+    s<<"\t\t],\n";
 
 
-		Element* theEle;
-		ElementIter& theElementss = this->getElements();
-		numToPrint = theElements->getNumComponents();
-		numPrinted = 0;
-		s << "\t\t\"elements\": [\n";
-		while ((theEle = theElementss()) != 0) {
-			theEle->Print(s, flag);
-			numPrinted += 1;
-			if (numPrinted < numToPrint)
-				s << ",\n";
-			else
-				s << "\n\t\t]\n";
-		}
+    Element *theEle;
+    ElementIter &theElementss = this->getElements();
+    numToPrint = theElements->getNumComponents();
+    numPrinted = 0;
+    s << "\t\t\"elements\": [\n";
+    while ((theEle = theElementss()) != 0) {
+      theEle->Print(s, flag);
+      numPrinted += 1;
+      if (numPrinted < numToPrint)
+	s << ",\n";
+      else
+	s << "\n";
+      }
+	s<<"\t\t]\n";
 
 		s << "\t}\n";
 		s << "}\n";
@@ -2644,6 +2675,15 @@ Domain::removeRecorders(void)
 	theRecorders = 0;
 	numRecorders = 0;
 	return 0;
+}
+
+int Domain::flushRecorders() {
+    for (int i = 0; i < numRecorders; i++) {
+      if (theRecorders[i] != 0) {
+      theRecorders[i]->flush();
+      }
+    }
+    return 0;
 }
 
 int
@@ -3227,21 +3267,21 @@ Domain::sendSelf(int cTag, Channel& theChannel)
 				loc += 2;
 			}
 
-			if (theChannel.sendID(dbLPs, currentGeoTag, paramData) < 0) {
-				opserr << "Domain::send - channel failed to send the LoadPattern ID\n";
-				return -6;
-			}
-		}
-		// now so that we don't do this next time if nothing in the domain has changed
-		lastGeoSendTag = currentGeoTag;
-		/*
-		if (theChannel.isDatastore() == 1) {
-		  static ID theLastSendTag(1);
-		  theLastSendTag(0) = lastGeoSendTag;
-		  theChannel.sendID(0,0, theLastSendTag);
-		}
-		*/
-	}
+      if (theChannel.sendID(dbParam, currentGeoTag, paramData) < 0) {
+	opserr << "Domain::send - channel failed to send the Parameter ID\n";
+	return -7;
+      }    
+  }
+    // now so that we don't do this next time if nothing in the domain has changed
+    lastGeoSendTag = currentGeoTag;
+    /*
+    if (theChannel.isDatastore() == 1) {
+      static ID theLastSendTag(1);
+      theLastSendTag(0) = lastGeoSendTag;
+      theChannel.sendID(0,0, theLastSendTag);
+    }
+    */
+  }
 
 	//
 	// now we invoke sendSelf on each of the objects .. 
@@ -3598,30 +3638,30 @@ Domain::recvSelf(int cTag, Channel& theChannel, FEM_ObjectBroker& theBroker)
 		numLPs = domainData(5);
 		dbLPs = domainData(10);
 
-		if (numLPs != 0) {
-			ID lpData(2 * numLPs);
-
-			if (theChannel.recvID(dbLPs, geoTag, lpData) < 0) {
-				opserr << "Domain::recv - channel failed to recv the MP_Constraints ID\n";
-				return -2;
-			}
+    if (numLPs != 0) {
+      ID lpData(2*numLPs);
+      
+      if (theChannel.recvID(dbLPs, geoTag, lpData) < 0) {
+	opserr << "Domain::recv - channel failed to recv the LoadPatterns ID\n";
+	return -2;
+      }
 
 			loc = 0;
 			for (i = 0; i < numLPs; i++) {
 				int classTag = lpData(loc);
 				int dbTag = lpData(loc + 1);
 
-				LoadPattern* theLP = theBroker.getNewLoadPattern(classTag);
-				if (theLP == 0) {
-					opserr << "Domain::recv - cannot create MP_Constraint with classTag  " << classTag << endln;
-					return -2;
-				}
-				theLP->setDbTag(dbTag);
-
-				if (theLP->recvSelf(commitTag, theChannel, theBroker) < 0) {
-					opserr << "Domain::recv - LoadPattern with dbTag " << dbTag << " failed in recvSelf\n";
-					return -2;
-				}
+	LoadPattern *theLP = theBroker.getNewLoadPattern(classTag);
+	if (theLP == 0) {
+	  opserr << "Domain::recv - cannot create LoadPattern with classTag  " << classTag << endln;
+	  return -2;
+	}			
+	theLP->setDbTag(dbTag);
+      
+	if (theLP->recvSelf(commitTag, theChannel, theBroker) < 0) {
+	  opserr << "Domain::recv - LoadPattern with dbTag " << dbTag << " failed in recvSelf\n";
+	  return -2;
+	}			
 
 				if (this->addLoadPattern(theLP) == false) {
 					opserr << "Domain::recv - could not add LoadPattern with tag " << theLP->getTag() << " into the Domain\n";
@@ -3636,35 +3676,35 @@ Domain::recvSelf(int cTag, Channel& theChannel, FEM_ObjectBroker& theBroker)
 		int numParameters = domainData(11);
 		int dbParameters = domainData(12);
 
-		if (numParameters != 0) {
-			ID paramData(2 * numParameters);
-
-			if (theChannel.recvID(dbParameters, geoTag, paramData) < 0) {
-				opserr << "Domain::recv - channel failed to recv the MP_Constraints ID\n";
-				return -2;
-			}
+    if (numParameters != 0) {
+      ID paramData(2*numParameters);
+      
+      if (theChannel.recvID(dbParameters, geoTag, paramData) < 0) {
+	opserr << "Domain::recv - channel failed to recv the Parameters ID\n";
+	return -2;
+      }
 
 			loc = 0;
 			for (i = 0; i < numParameters; i++) {
 				int classTag = paramData(loc);
 				int dbTag = paramData(loc + 1);
 
-				Parameter* theParameter = theBroker.getParameter(classTag);
-				if (theParameter == 0) {
-					opserr << "Domain::recv - cannot create MP_Constraint with classTag  " << classTag << endln;
-					return -2;
-				}
-				theParameter->setDbTag(dbTag);
+	Parameter *theParameter = theBroker.getParameter(classTag);
+	if (theParameter == 0) {
+	  opserr << "Domain::recv - cannot create Parameter with classTag  " << classTag << endln;
+	  return -2;
+	}			
+	theParameter->setDbTag(dbTag);
+      
+	if (theParameter->recvSelf(commitTag, theChannel, theBroker) < 0) {
+	  opserr << "Domain::recv - Parameter with dbTag " << dbTag << " failed in recvSelf\n";
+	  return -2;
+	}			
 
-				if (theParameter->recvSelf(commitTag, theChannel, theBroker) < 0) {
-					opserr << "Domain::recv - Parameter with dbTag " << dbTag << " failed in recvSelf\n";
-					return -2;
-				}
-
-				if (this->addParameter(theParameter) == false) {
-					opserr << "Domain::recv - could not add LoadPattern with tag " << theParameter->getTag() << " into the Domain\n";
-					return -3;
-				}
+	if (this->addParameter(theParameter) == false) {
+	  opserr << "Domain::recv - could not add Parameter with tag " << theParameter->getTag() <<  " into the Domain\n";
+	  return -3;
+	}			
 
 				loc += 2;
 			}

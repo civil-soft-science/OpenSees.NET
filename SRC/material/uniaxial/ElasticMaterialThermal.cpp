@@ -57,7 +57,7 @@ OPS_ElasticMaterialThermal(void)
   double dData1[2];
   double dData2[2];
   int numData = 1;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid tag for uniaxialMaterial Elastic" << endln;
     return 0;
   }
@@ -68,7 +68,7 @@ OPS_ElasticMaterialThermal(void)
   else
 	  numData = 2;
 
-  if (OPS_GetDoubleInput(numData, dData1) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData1) != 0) {
 	  opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
 	  return 0;
   }
@@ -90,7 +90,7 @@ OPS_ElasticMaterialThermal(void)
 	if (numData > 2)
 		numData = 2;
 	if(numData>0){
-	if (OPS_GetDoubleInput(numData, dData2) != 0) {
+	if (OPS_GetDoubleInput(&numData, dData2) != 0) {
       opserr << "Invalid data for uniaxial Elastic " << iData[0] << endln;
       return 0;
 	}
@@ -316,7 +316,7 @@ ElasticMaterialThermal::setParameter(const char **argv, int argc, Parameter &par
 		param.setValue(Eneg);
 		return param.addObject(3, this);
 	}
-	else if (strcmp(argv[0], "eta") == 0) {
+	if (strcmp(argv[0], "eta") == 0) {
 		param.setValue(eta);
 		return param.addObject(4, this);
 	}
@@ -479,6 +479,7 @@ ElasticMaterialThermal::getElongTangent(double TempT, double& ET, double& Elong,
   else {
     ET = E0;
     ThermalElongation = Alpha * TempT;
+    Elong = ThermalElongation;
   }
   
   return 0.0; // We have to return something, why is this function not void? ... MHS

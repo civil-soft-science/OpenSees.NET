@@ -79,19 +79,19 @@ OPS_MasonPan3D()
   int numData;
 
   numData = 13;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
     int eleTag = iData[0];
  
   numData =1;
-  if (OPS_GetIntInput(numData, &iData[13]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[13]) != 0) {
     opserr << "WARNING error reading element material 1 tag for element " << eleTag << endln;
     return 0;
   }
       numData =1;
-  if (OPS_GetIntInput(numData, &iData[14]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[14]) != 0) {
     opserr << "WARNING error reading element material 2 tag for element " << eleTag << endln;
     return 0;
   }
@@ -100,7 +100,7 @@ OPS_MasonPan3D()
   int matID2 = iData[14];
  
   numData =3 ;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING error reading element areas, thickness and properties for element" << eleTag << endln;
     return 0;
   }

@@ -58,7 +58,7 @@ OPS_Steel02()
   double dData[12];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Steel02 tag" << endln;
     return 0;
   }
@@ -72,7 +72,7 @@ OPS_Steel02()
   }
 
   if (numData == 3) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid double: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -82,7 +82,7 @@ OPS_Steel02()
     theMaterial = new Steel02(iData[0], dData[0], dData[1], dData[2]);    
 
   } else if (numData == 6) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid int: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -92,7 +92,7 @@ OPS_Steel02()
     theMaterial = new Steel02(iData[0], dData[0], dData[1], dData[2], dData[3], dData[4], dData[5]);    
 
   } else if (numData == 10) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -104,7 +104,7 @@ OPS_Steel02()
 			      dData[7], dData[8], dData[9]);    
 
   } else if (numData == 11) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {
       opserr << "Invalid arggs: uniaxialMaterial Steel02 " << iData[0] << 
 	" fy? E? b? <R0? cR1? cR2? <a1? a2? a3? a4?>>" << endln;
       return 0;
@@ -604,7 +604,23 @@ Steel02::setParameter(const char **argv, int argc, Parameter &param)
     param.setValue(a4);
     return param.addObject(7, this);
   }
-
+  if (strcmp(argv[0],"R0") == 0) {
+    param.setValue(R0);
+    return param.addObject(8, this);
+  }
+  if (strcmp(argv[0],"cR1") == 0) {
+    param.setValue(cR1);
+    return param.addObject(9, this);
+  }
+  if (strcmp(argv[0],"cR2") == 0) {
+    param.setValue(cR2);
+    return param.addObject(10, this);
+  }
+  if (strcmp(argv[0],"sig0") == 0) {
+    param.setValue(sigini);
+    return param.addObject(11, this);
+  }
+	
   return -1;
 }
 
@@ -637,6 +653,18 @@ Steel02::updateParameter(int parameterID, Information &info)
   case 7:
     this->a4 = info.theDouble;
     break;
+  case 8:
+    this->R0 = info.theDouble;
+    break;
+  case 9:
+    this->cR1 = info.theDouble;
+    break;
+  case 10:
+    this->cR2 = info.theDouble;
+    break;
+  case 11:
+    this->sigini = info.theDouble;
+    break;	  
   default:
     return -1;
   }

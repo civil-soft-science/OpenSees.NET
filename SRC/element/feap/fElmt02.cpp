@@ -62,16 +62,16 @@ void* OPS_fElmt02()
 
     // get the id and end nodes
     int idata[3];
-    int numdata = 3;
-    if (OPS_GetIntInput(numdata, idata) < 0) {
+    int numData = 3;
+    if (OPS_GetIntInput(&numData, idata) < 0) {
 	opserr << "WARNING invalid truss eleTag, iNode or jNode" << endln;
 	return 0;
     }
     int trussId=idata[0], iNode=idata[1], jNode=idata[2];
 
     double ddata[2];
-    numdata = 2;
-    if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+    numData = 2;
+    if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 	opserr << "WARNING invalid truss A or E" << endln;
 	return 0;
     }

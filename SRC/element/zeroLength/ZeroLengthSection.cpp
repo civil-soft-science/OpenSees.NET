@@ -62,7 +62,7 @@ void* OPS_ZeroLengthSection()
     // get eleTag,iNode,jNode,secTag
     int iData[4];
     int numData = 4;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) {
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) {
       opserr << "WARNING too few arguments " <<
 	"want - element ZeroLengthSection eleTag? iNode? jNode? secTag? " <<
 	"<-orient x1? x2? x3? <y1? y2? y3?> >" << endln;      
@@ -86,17 +86,17 @@ void* OPS_ZeroLengthSection()
 	    return 0;
 	  }	    	      
 	  numData = 3;
-	  if(OPS_GetDoubleInput(numData,x_ptr) < 0) {
+	  if(OPS_GetDoubleInput(&numData,x_ptr) < 0) {
 	    opserr<<"WARNING zeroLengthSection invalid double inputs for x axis" << endln;
 	    return 0;
 	  }
-	  if(ndm == 3 && OPS_GetDoubleInput(numData,y_ptr) < 0) {
+	  if(ndm == 3 && OPS_GetDoubleInput(&numData,y_ptr) < 0) {
 	    opserr<<"WARNING zeroLengthSection invalid double inputs for y axis" << endln;
 	    return 0;
 	  }
 	} else if(strcmp(type, "-doRayleigh") == 0) {
 	    numData = 1;
-	    if(OPS_GetIntInput(numData,&doRayleighDamping) < 0) {
+	    if(OPS_GetIntInput(&numData,&doRayleighDamping) < 0) {
 	      opserr<<"WARNING zeroLengthSection - invalid integer input for doRayleigh" << endln;
 		return 0;
 	    }
@@ -113,7 +113,7 @@ void* OPS_ZeroLengthSection()
     // get section
     SectionForceDeformation* theSection = OPS_getSectionForceDeformation(iData[3]);
     if(theSection == 0) {
-      opserr << "zeroLengthSection -- no section with tag " << iData[0] << " exists in Domain" << endln;
+      opserr << "zeroLengthSection -- no section with tag " << iData[3] << " exists in Domain" << endln;
 	return 0;
     }
 
@@ -665,7 +665,35 @@ ZeroLengthSection::setResponse(const char **argv, int argc, OPS_Stream &output)
 
     // a section quantity
     } else if (strcmp(argv[0],"section") == 0) {
-        theResponse = theSection->setResponse(&argv[1], argc-1, output);
+		output.tag("GaussPointOutput");
+		output.attr("number", 1);
+		output.attr("eta", 0.0);
+		if (argc > 1) {
+			// we need at least one more argument otherwise 
+			// there is no need to forward this call to the material
+			if (argc > 2) {
+				// if we have 2 or more extra arguments, the first one 
+				// could be an integer. In this case we check to see if it is the section id
+				// (only 1 in this case)
+				int sectionNum = atoi(argv[1]);
+				if (sectionNum == 0) {
+					// if it is not a number we forward the call to the section as usual
+					theResponse = theSection->setResponse(&argv[1], argc - 1, output);
+				}
+				else {
+					// it is a number. Now we have to make sure it is within the allowed range
+					// for this element (in this case it can only be 1)
+					if (sectionNum == 1) {
+						theResponse = theSection->setResponse(&argv[2], argc - 2, output);
+					}
+				}
+			}
+			else {
+				// otherwise forward it as usual
+				theResponse = theSection->setResponse(&argv[1], argc - 1, output);
+			}
+		}
+		output.endTag();
     }
 
     if (strcmp(argv[0],"xaxis") == 0) {

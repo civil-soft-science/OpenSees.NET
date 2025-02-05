@@ -43,8 +43,9 @@ class DataFileStream : public OPS_Stream
   ~DataFileStream();
 
   int setFile(const char *fileName, openMode mode = OVERWRITE);
+  int close(openMode nextOpen = APPEND);
   int open(void);
-  int close(void);
+  int flush();
 #if _DLL
   int closeHandler() {
 	  return this->close();

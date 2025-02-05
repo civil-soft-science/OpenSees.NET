@@ -56,14 +56,14 @@ void* OPS_HarmonicSteadyState()
 
     double lambda;
     int numData = 1;
-    if(OPS_GetDoubleInput(numData,&lambda) < 0) {
+    if(OPS_GetDoubleInput(&numData,&lambda) < 0) {
 	opserr<<"WARNING failed to read double lambda\n";
 	return 0;
     }
 
 	double period = 0;
 	numData = 1;
-	if(OPS_GetDoubleInput(numData,&period) < 0) {
+	if(OPS_GetDoubleInput(&numData,&period) < 0) {
 	    opserr<<"WARNING failed to read double period\n";
 	    return 0;
 	}
@@ -71,12 +71,12 @@ void* OPS_HarmonicSteadyState()
     int numIter = 1;
     double mLambda[2] = {lambda,lambda};
     if(OPS_GetNumRemainingInputArgs() > 2) {
-	if(OPS_GetIntInput(numData,&numIter) < 0) {
+	if(OPS_GetIntInput(&numData,&numIter) < 0) {
 	    opserr<<"WARNING failed to read int numIter\n";
 	    return 0;
 	}
 	numData = 2;
-	if(OPS_GetDoubleInput(numData,&mLambda[0]) < 0) {
+	if(OPS_GetDoubleInput(&numData,&mLambda[0]) < 0) {
 	    opserr<<"WARNING failed to read double min and max\n";
 	    return 0;
 	}
@@ -227,7 +227,7 @@ int
 HarmonicSteadyState::formEleTangent(FE_Element *theEle)
 {
   static const double twoPi = 2*3.1415926535897932;
-  static double twoPiSquareOverPeriodSquare = twoPi*twoPi/(loadPeriod*loadPeriod);
+  double twoPiSquareOverPeriodSquare = twoPi*twoPi/(loadPeriod*loadPeriod);
   if (statusFlag == CURRENT_TANGENT) {
     theEle->zeroTangent();
     theEle->addKtToTang();

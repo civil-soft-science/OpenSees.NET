@@ -41,15 +41,15 @@ void* OPS_Elliptical2()
     }    
 
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid Elliptical tag" << endln;
 	return 0;
     }
 
-    numdata = 7;
+    numData = 7;
     double data[7];
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid double inputs\n";
 	opserr << "section Elliptical: " << tag << endln;
 	return 0;
@@ -438,6 +438,11 @@ Elliptical2::commitState(void)
 int
 Elliptical2::revertToLastCommit(void)
 {
+  eP_n1[0] = eP_n[0];
+  eP_n1[1] = eP_n[1];
+  
+  alpha_n1 = alpha_n;
+  
   return 0;
 }
 

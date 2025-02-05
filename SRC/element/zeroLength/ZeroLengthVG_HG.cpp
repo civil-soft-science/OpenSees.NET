@@ -65,8 +65,8 @@ OPS_ZeroLengthVG_HG(void)
     // along the global x and y axis
     //
     
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 7) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 7) {
         opserr << "WARNING too few arguments " <<
             "want - element ZeroLengthVG_HG eleTag? iNode? jNode? " <<
             "-mat matID1? ... -dir dirMat1? .. " <<
@@ -77,8 +77,8 @@ OPS_ZeroLengthVG_HG(void)
 
     // eleTag, iNode, jNode
     int idata [4];
-    numdata = 4;
-    if (OPS_GetIntInput(numdata,idata) < 0) {
+    numData = 4;
+    if (OPS_GetIntInput(&numData,idata) < 0) {
         opserr << "WARNING: failed to get integer data\n";
         return 0;
     }
@@ -102,10 +102,10 @@ OPS_ZeroLengthVG_HG(void)
     int numMats = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int mtag;
-        numdata = 1;
+        numData = 1;
 	// the first one not an int
 	int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(numdata,&mtag) < 0) {
+        if (OPS_GetIntInput(&numData,&mtag) < 0) {
 	    if (numArgs > OPS_GetNumRemainingInputArgs()) {
 		// move current arg back by one
 		OPS_ResetCurrentInputArg(-1); 
@@ -151,7 +151,7 @@ OPS_ZeroLengthVG_HG(void)
     }
     
     ID dirs(numMats);
-    if (OPS_GetIntInput(numMats,&dirs(0)) < 0) {
+    if (OPS_GetIntInput(&numMats,&dirs(0)) < 0) {
 	opserr << "WARNING invalid dir\n";
 	return 0;
     }
@@ -173,27 +173,27 @@ OPS_ZeroLengthVG_HG(void)
 	if (strcmp(type,"-doRayleigh") == 0) {
 	    doRayleighDamping = 1;
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		numdata = 1;
-		if (OPS_GetIntInput(numdata,&doRayleighDamping) < 0) {
+		numData = 1;
+		if (OPS_GetIntInput(&numData,&doRayleighDamping) < 0) {
 		    opserr<<"WARNING: invalid integer\n";
 		    return 0;
 		}
 	    }
 	} else if (strcmp(type,"-tol") == 0) {
 	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		numdata = 1;
-		if (OPS_GetDoubleInput(numdata,&tol) < 0) {
+		numData = 1;
+		if (OPS_GetDoubleInput(&numData,&tol) < 0) {
 		    opserr<<"WARNING: invalid integer\n";
 		    return 0;
 		}
 	    }
 	} else 	if (strcmp(type,"-dampMats") == 0)  {
 	  doRayleighDamping = 2;
-	  numdata = 1;
+	  numData = 1;
 	  int matType;
 	  for (int i=0; i<numMats; i++) {
 	    // the first one not an int
-	    if (OPS_GetIntInput(numdata,&matType) < 0) {
+	    if (OPS_GetIntInput(&numData,&matType) < 0) {
 	      UniaxialMaterial *theMat = OPS_getUniaxialMaterial(matType);
 	      if (theMat == 0) {
 		opserr << "WARNING no damp material material " << matType << " for zeroLength ele: " << idata[0] << endln;
@@ -209,12 +209,12 @@ OPS_ZeroLengthVG_HG(void)
 		opserr<<"WARNING: insufficient orient values\n";
 		return 0;
 	    }
-	    numdata = 3;
-	    if (OPS_GetDoubleInput(numdata,&x(0)) < 0) {
+	    numData = 3;
+	    if (OPS_GetDoubleInput(&numData,&x(0)) < 0) {
 		opserr<<"WARNING: invalid double input\n";
 		return 0;
 	    }
-	    if (OPS_GetDoubleInput(numdata,&y(0)) < 0) {
+	    if (OPS_GetDoubleInput(&numData,&y(0)) < 0) {
 		opserr<<"WARNING: invalid double input\n";
 		return 0;
 	    }

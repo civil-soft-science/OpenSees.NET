@@ -109,15 +109,15 @@ void* OPS_PressureDependMultiYield02()
 	return 0;
     }
 
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid PressureDependMultiYield02 tag" << "\n";
 	return 0;
     }
 
     int in = 17;
     for (int i=3; (i<argc && i<in); i++)
-	if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
+	if (OPS_GetDoubleInput(&numData, &param[i-3]) < 0) {
 	    opserr << "WARNING invalid " << arg[i-3] << "\n";
 	    opserr << "nDMaterial PressureDependMultiYield02: " << tag << "\n";
 	    return 0;
@@ -131,7 +131,7 @@ void* OPS_PressureDependMultiYield02()
 	gredu = new double[int(2*param[numParam])];
 
 	for (int i=0; i<2*param[numParam]; i++)
-	    if (OPS_GetDoubleInput(numdata, &gredu[i]) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &gredu[i]) < 0) {
 		opserr << "WARNING invalid " << " double" << "\n";
 		opserr << "nDMaterial PressureIndependMultiYield: " << tag << "\n";
 		return 0;
@@ -140,14 +140,14 @@ void* OPS_PressureDependMultiYield02()
 
     if (gredu != 0) {
 	for (int i=in+int(2*param[numParam]); i<argc; i++)
-	    if (OPS_GetDoubleInput(numdata, &param[i-3-int(2*param[numParam])]) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &param[i-3-int(2*param[numParam])]) < 0) {
 		opserr << "WARNING invalid " << " double" << "\n";
 		opserr << "nDMaterial PressureDependMultiYield02: " << tag << "\n";
 		return 0;
 	    }
     } else {
 	for (int i=in; i<argc; i++)
-	    if (OPS_GetDoubleInput(numdata, &param[i-3]) < 0) {
+	    if (OPS_GetDoubleInput(&numData, &param[i-3]) < 0) {
 		opserr << "WARNING invalid " << " double" << "\n";
 		opserr << "nDMaterial PressureDependMultiYield02: " << tag << "\n";
 		return 0;
@@ -954,13 +954,14 @@ NDMaterial * PressureDependMultiYield02::getCopy (void)
 
 NDMaterial * PressureDependMultiYield02::getCopy (const char *code)
 {
-  if (strcmp(code,"PressureDependMultiYield02") == 0 || strcmp(code,"PlaneStrain") == 0
-      || strcmp(code,"ThreeDimensional") == 0) {
+  if (strcmp(code,"PlaneStrain") == 0 || strcmp(code,"ThreeDimensional") == 0) {
     PressureDependMultiYield02 * copy = new PressureDependMultiYield02(*this);
     return copy;
   }
-
-  return 0;
+  else {
+    opserr << "ERROR PressureDependMultiYield02::getCopy -- cannot make copy for type " << code << endln;
+    return 0;
+  }
 }
 
 

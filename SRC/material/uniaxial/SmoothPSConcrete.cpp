@@ -56,16 +56,16 @@ void* OPS_SmoothPSConcrete()
     }    
       
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial SmoothPSConcrete tag\n";
 	return 0;
     }
     
     // double fu, Ec, fc;
     double data[3];
-    numdata = 3;
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    numData = 3;
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial SmoothPSConcrete double inputs\n";
 	return 0;
     }
@@ -74,9 +74,9 @@ void* OPS_SmoothPSConcrete()
     // double epsu=0.005;
     // double eta=0.2;
     double opt[3] = {0.002, 0.005, 0.2};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 3) numdata = 3;
-    if (OPS_GetDoubleInput(numdata, opt) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 3) numData = 3;
+    if (OPS_GetDoubleInput(&numData, opt) < 0) {
 	opserr << "WARNING invalid uniaxialMaterial SmoothPSConcrete double inputs\n";
 	return 0;
     }

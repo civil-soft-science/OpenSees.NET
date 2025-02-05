@@ -54,18 +54,18 @@ void* OPS_ElasticMembranePlateSection()
     }
 
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING invalid tag\n";
         return 0;
     }
 
     double data[5]  = {0, 0, 0, 0, 1};
-    numdata         = OPS_GetNumRemainingInputArgs();
+    numData         = OPS_GetNumRemainingInputArgs();
 
-    if (numdata > 5) numdata = 5;
+    if (numData > 5) numData = 5;
 
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
         opserr << "WARNING invalid double values\n";
         return 0;
     }

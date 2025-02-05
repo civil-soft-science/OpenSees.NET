@@ -66,13 +66,14 @@ OPS_ConfinedConcrete()
 	 UniaxialMaterial* theMaterial = 0;
 
 	 int tag;
-	 if (OPS_GetIntInput(1, &tag) != 0)
+	 int numData = 1;
+	 if (OPS_GetIntInput(&numData, &tag) != 0)
 	 {
 		  opserr << "WARNING invalid tag for uniaxialMaterial ConfinedConcrete" << endln;
 		  return 0;
 	 }
 
-	 int numData = OPS_GetNumRemainingInputArgs();
+	 numData = OPS_GetNumRemainingInputArgs();
 	 if (numData < 8)
 	 {
 		  opserr << "ConfinedConcrete::Invalid number of arguments; tag = " << tag << "; wants:\n";
@@ -83,7 +84,8 @@ OPS_ConfinedConcrete()
 		  return 0;
 	 }
 	 double concData[6];
-	 if (OPS_GetDouble(6, concData) != 0)
+	 numData = 6;
+	 if (OPS_GetDouble(&numData, concData) != 0)
 	 {
 		  opserr << "ConfinedConcrete::failed to read concrete properties before the [-beam/-column] switch; tag = " << tag << "\nwants:\n";
 		  opserr << "uniaxialMaterial ConfinedConcrete tag fc0 epsc0 fcu Lambda ft Ets \n";
@@ -112,7 +114,8 @@ OPS_ConfinedConcrete()
 	 if (isBeam)
 	 {
 		  double fac = 1;
-		  if (OPS_GetDouble(1, &fac) != 0)
+			numData = 1;
+			if (OPS_GetDouble(&numData, &fac) != 0)
 		  {
 				opserr << "ConfinedConcrete::Invalid Stress To GPa conversion factor for material with tag:" << tag << "\n";
 				return 0;
@@ -141,7 +144,8 @@ OPS_ConfinedConcrete()
 	 }
 	 //column
 	 double dData[14];
-	 if (OPS_GetDoubleInput(14, dData) != 0)
+	 numData = 6;
+	 if (OPS_GetDoubleInput(&numData, dData) != 0)
 	 {
 		  opserr << "ConfinedConcrete:: Invalid -column props. tag = " << tag << "; wants:\n";
 		  opserr << "-column B H cover fyh nBarTop dBarTop nBarBot dBarBot nBarInt dBarInt nBarTransH\n \
@@ -151,7 +155,8 @@ OPS_ConfinedConcrete()
 	 double wrpData[3] = { 0, 0, 0};
 	 numData = OPS_GetNumRemainingInputArgs();
 	 if (numData != 0)
-		if (OPS_GetDoubleInput(3, wrpData) != 0)
+		 numData = 3;
+	 if (OPS_GetDoubleInput(&numData, wrpData) != 0)
 		{
 		   opserr << "ConfinedConcrete:: Invalid wrap data. tag = " << tag << "; wants:wrapArea wrapFy wrapSpacing\n";
 		   return 0;

@@ -139,7 +139,7 @@ int
 modalProperties(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv);
 
 int
-responseSpectrum(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv);
+responseSpectrumAnalysis(ClientData clientData, Tcl_Interp* interp, int argc, TCL_Char** argv);
 
 int 
 videoPlayer(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
@@ -350,6 +350,12 @@ sectionLocation(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **
 
 int 
 sectionWeight(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
+
+int 
+sectionTag(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
+
+int 
+sectionDisplacement(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);
 
 int 
 basicDeformation(ClientData clientData, Tcl_Interp *interp, int argc, TCL_Char **argv);

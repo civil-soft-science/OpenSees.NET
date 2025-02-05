@@ -61,11 +61,11 @@ void *OPS_ExpressNewton()
 
   int nArgs = OPS_GetNumRemainingInputArgs();
   int numData = 1;
-  if (nArgs > 0 && OPS_GetIntInput(numData,&nIter) < 0) {
+  if (nArgs > 0 && OPS_GetIntInput(&numData,&nIter) < 0) {
     opserr << "WARNING ExpressNewton -- error reading nIter\n";
     return 0;
   }
-  if (nArgs > 1 && OPS_GetDoubleInput(numData,&kMultiplier) < 0) {
+  if (nArgs > 1 && OPS_GetDoubleInput(&numData,&kMultiplier) < 0) {
     opserr << "WARNING ExpressNewton -- error reading kMultiplier\n";
     return 0;
   }

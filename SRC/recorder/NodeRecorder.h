@@ -64,6 +64,7 @@ class NodeRecorder: public Recorder
 	}
 #endif
     int record(int commitTag, double timeStamp);
+    int flush();
 
     int domainChanged(void);
     int setDomain(Domain &theDomain);

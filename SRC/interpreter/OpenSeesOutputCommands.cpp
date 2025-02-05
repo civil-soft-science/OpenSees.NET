@@ -74,6 +74,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 #include <BackgroundMesh.h>
 #include <Parameter.h>
 #include <ParameterIter.h>
+#include <UniaxialMaterial.h>
+#include <SectionForceDeformation.h>
+#include <Damping.h>
 
 void* OPS_NodeRecorder(const char* type);
 void* OPS_ElementRecorder(const char* type);
@@ -86,8 +89,10 @@ void* OPS_DriftRecorder(const char* type);
 //#endif
 //BackgroundMesh& OPS_getBgMesh();
 
-//void* OPS_DriftRecorder();
-//void* OPS_PatternRecorder();
+int OPS_sectionLocation();
+int OPS_sectionWeight();
+int OPS_sectionTag();
+int OPS_sectionDisplacement();
 
 namespace {
 
@@ -119,11 +124,11 @@ namespace {
 		  //recordersMap.insert(std::make_pair("BgPVD", &OPS_PVDRecorder));
 		  //recordersMap.insert(std::make_pair("Remove", &OPS_RemoveRecorder));
 		  //recordersMap.insert(std::make_pair("ElementRemoval", &OPS_RemoveRecorder));
-		  //recordersMap.insert(std::make_pair("NodeRemoval", &OPS_RemoveRecorder));
-		  //recordersMap.insert(std::make_pair("Collapse", &OPS_RemoveRecorder));
-//#ifdef _HDF5
-//		  recordersMap.insert(std::make_pair("mpco", &OPS_MPCORecorder));
-//#endif
+#ifdef _HDF5
+	recordersMap.insert(std::make_pair("mpco", &OPS_MPCORecorder));
+#endif
+        //recordersMap.insert(std::make_pair("Drift", &OPS_DriftRecorder));
+        //recordersMap.insert(std::make_pair("Pattern", &OPS_PatternRecorder));
 
 		  return 0;
 	 }
@@ -131,6 +136,7 @@ namespace {
 
 int OPS_Recorder()
 {
+	opserr << "here3\n";
 	 static bool initDone = false;
 	 if (initDone == false) {
 		  setUpRecorders();
@@ -141,6 +147,7 @@ int OPS_Recorder()
 		  opserr << "WARNING too few arguments: recorder type? ...\n";
 		  return -1;
 	 }
+	 opserr << "here4\n";
 
 	 const char* type = OPS_GetString();
 	 OPS_ParsingFunctionMap::const_iterator iter = recordersMap.find(type);
@@ -175,7 +182,7 @@ int OPS_Recorder()
 	 // set recorder tag as result
 	 int size = 1;
 	 int tag = theRecorder->getTag();
-	 if (OPS_SetIntOutput(size, &tag, true) < 0) {
+	 if (OPS_SetIntOutput(&size, &tag, true) < 0) {
 		  opserr << "ERROR: failed to return recorder tag\n";
 		  return -1;
 	 }
@@ -192,12 +199,12 @@ int OPS_nodeDisp()
 
 	 // tag and dof
 	 int data[2] = { 0, -1 };
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata > 2) {
-		  numdata = 2;
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 if (numData > 2) {
+		  numData = 2;
 	 }
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING nodeDisp - failed to read int inputs\n";
 		  return -1;
 	 }
@@ -222,9 +229,9 @@ int OPS_nodeDisp()
 		  }
 
 		  double value = (*nodalResponse)(data[1]);
-		  numdata = 1;
+		  numData = 1;
 
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING nodeDisp - failed to read double inputs\n";
 				return -1;
 		  }
@@ -237,7 +244,7 @@ int OPS_nodeDisp()
 		  for (int i = 0; i < size; i++) {
 				values[i] = (*nodalResponse)(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
 				opserr << "WARNING nodeDisp - failed to read double inputs\n";
 				return -1;
 		  }
@@ -255,10 +262,10 @@ int OPS_nodeReaction()
 	 }
 
 	 int data[2] = { 0, -1 };
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata > 2) numdata = 2;
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 if (numData > 2) numData = 2;
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING nodeReaction - failed to read int inputs\n";
 		  return -1;
 	 }
@@ -284,10 +291,10 @@ int OPS_nodeReaction()
 		  }
 
 		  double value = (*nodalResponse)(data[1]);
-		  numdata = 1;
+		  numData = 1;
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING nodeReaction - failed to set double output\n";
 				return -1;
 		  }
@@ -299,7 +306,7 @@ int OPS_nodeReaction()
 		  for (int i = 0; i < size; i++) {
 				values[i] = (*nodalResponse)(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
 				opserr << "WARNING nodeReaction - failed to set double output\n";
 				return -1;
 		  }
@@ -312,17 +319,17 @@ int OPS_nodeEigenvector()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata < 2) {
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 if (numData < 2) {
 		  opserr << "WARNING want - nodeEigenVector nodeTag? eigenVector? <dof?>\n";
 		  return -1;
 	 }
 
 	 // tag, eigenvector, dof
-	 if (numdata > 3) numdata = 3;
+	 if (numData > 3) numData = 3;
 	 int data[3] = { 0, 0, -1 };
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING invalid int inputs\n";
 		  return -1;
 	 }
@@ -362,7 +369,7 @@ int OPS_nodeEigenvector()
 		  size = 1;
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(size, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&size, &value, true) < 0) {
 				opserr << "WARNING nodeEigenvector - failed to set double output\n";
 				return -1;
 		  }
@@ -376,7 +383,7 @@ int OPS_nodeEigenvector()
 		  }
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(size, &values(0), false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, &values(0), false) < 0) {
 				opserr << "WARNING nodeEigenvector - failed to set double output\n";
 				return -1;
 		  }
@@ -390,8 +397,8 @@ int OPS_getTime()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 	 double time = theDomain->getCurrentTime();
-	 int numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &time, true) < 0) {
+	 int numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &time, true) < 0) {
 		  opserr << "WARNING failed to get current time\n";
 		  return -1;
 	 }
@@ -404,30 +411,30 @@ int OPS_eleResponse()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata < 2) {
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 if (numData < 2) {
 		  opserr << "WARNING want - eleResponse eleTag? eleArgs...\n";
 		  return -1;
 	 }
 
 	 int tag;
-	 numdata = 1;
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 numData = 1;
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "could not read eleTag\n";
 		  return -1;
 	 }
 
-	 numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata > 0) {
-		  const char** argv = new const char* [numdata];
-		  for (int i = 0; i < numdata; i++) {
+	 numData = OPS_GetNumRemainingInputArgs();
+	 if (numData > 0) {
+		  const char** argv = new const char* [numData];
+		  for (int i = 0; i < numData; i++) {
 				argv[i] = new char[128];
 				// Turn everything in to a string for setResponse
 				OPS_GetStringFromAll((char*)argv[i], 128);
 		  }
-		  const Vector* data = theDomain->getElementResponse(tag, argv, numdata);
+		  const Vector* data = theDomain->getElementResponse(tag, argv, numData);
 
-		  for (int i = 0; i < numdata; i++)
+		  for (int i = 0; i < numData; i++)
 				delete[] argv[i];
 		  delete[] argv;
 
@@ -437,7 +444,7 @@ int OPS_eleResponse()
 				for (int i = 0; i < size; i++) {
 					 newdata[i] = (*data)(i);
 				}
-				if (OPS_SetDoubleOutput(size, newdata, false) < 0) {
+				if (OPS_SetDoubleOutput(&size, newdata, false) < 0) {
 					 opserr << "WARNING failed to et response\n";
 					 delete[] newdata;
 					 return -1;
@@ -448,7 +455,7 @@ int OPS_eleResponse()
 		  else {
 				int size = 0;
 				double* newdata = 0;
-				if (OPS_SetDoubleOutput(size, newdata, false) < 0) {
+				if (OPS_SetDoubleOutput(&size, newdata, false) < 0) {
 					 opserr << "WARNING failed to et response\n";
 					 return -1;
 				}
@@ -457,7 +464,7 @@ int OPS_eleResponse()
 	 else {
 		  int size = 0;
 		  double* newdata = 0;
-		  if (OPS_SetDoubleOutput(size, newdata, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, newdata, false) < 0) {
 				opserr << "WARNING failed to et response\n";
 				return -1;
 		  }
@@ -474,8 +481,8 @@ int OPS_getLoadFactor()
 	 }
 
 	 int pattern;
-	 int numdata = 1;
-	 if (OPS_GetIntInput(numdata, &pattern) < 0) {
+	 int numData = 1;
+	 if (OPS_GetIntInput(&numData, &pattern) < 0) {
 		  opserr << "ERROR reading load pattern tag -- getLoadFactor\n";
 		  return -1;
 	 }
@@ -489,7 +496,7 @@ int OPS_getLoadFactor()
 	 }
 
 	 double factor = thePattern->getLoadFactor();
-	 if (OPS_SetDoubleOutput(numdata, &factor, true) < 0) {
+	 if (OPS_SetDoubleOutput(&numData, &factor, true) < 0) {
 		  opserr << "WARNING failed to set load factor\n";
 		  return -1;
 	 }
@@ -530,8 +537,8 @@ int printNode(OPS_Stream& output)
 				opserr << "WARNING print <filename> node <flag int> no int specified \n";
 				return -1;
 		  }
-		  int numdata = 1;
-		  if (OPS_GetIntInput(numdata, &flag) < 0) {
+		  int numData = 1;
+		  if (OPS_GetIntInput(&numData, &flag) < 0) {
 				opserr << "WARNING print node failed to get integer flag: \n";
 				return -1;
 		  }
@@ -559,8 +566,8 @@ int printNode(OPS_Stream& output)
 		  ID* theNodes = new ID(numNodes);
 		  for (int i = 0; i < numNodes; i++) {
 				int nodeTag;
-				int numdata = 1;
-				if (OPS_GetIntInput(numdata, &nodeTag) < 0) {
+				int numData = 1;
+				if (OPS_GetIntInput(&numData, &nodeTag) < 0) {
 					 opserr << "WARNING print node failed to get integer: " << endln;
 					 delete theNodes;
 					 return -1;
@@ -602,8 +609,8 @@ int printElement(OPS_Stream& output)
 				opserr << "WARNING print <filename> ele <flag int> no int specified \n";
 				return -1;
 		  }
-		  int numdata = 1;
-		  if (OPS_GetIntInput(numdata, &flag) < 0) {
+		  int numData = 1;
+		  if (OPS_GetIntInput(&numData, &flag) < 0) {
 				opserr << "WARNING print ele failed to get integer flag: \n";
 				return -1;
 		  }
@@ -628,8 +635,8 @@ int printElement(OPS_Stream& output)
 		  ID* theEle = new ID(numEle);
 		  for (int i = 0; i < numEle; i++) {
 				int eleTag;
-				int numdata = 1;
-				if (OPS_GetIntInput(numdata, &eleTag) < 0) {
+				int numData = 1;
+				if (OPS_GetIntInput(&numData, &eleTag) < 0) {
 					 opserr << "WARNING print ele failed to get integer: " << endln;
 					 delete theEle;
 					 return -1;
@@ -659,8 +666,8 @@ int printAlgorithm(OPS_Stream& output)
 
 	 // if 'print <filename> Algorithm flag' get the flag
 	 int flag;
-	 int numdata = 1;
-	 if (OPS_GetIntInput(numdata, &flag) < 0) {
+	 int numData = 1;
+	 if (OPS_GetIntInput(&numData, &flag) < 0) {
 		  opserr << "WARNING print algorithm failed to get integer flag: \n";
 		  return -1;
 	 }
@@ -694,8 +701,8 @@ int printIntegrator(OPS_Stream& output)
 
 	 // if 'print <filename> Algorithm flag' get the flag
 	 int flag;
-	 int numdata = 1;
-	 if (OPS_GetIntInput(numdata, &flag) < 0) {
+	 int numData = 1;
+	 if (OPS_GetIntInput(&numData, &flag) < 0) {
 		  opserr << "WARNING print integrator failed to get integer flag: \n";
 		  return -1;
 	 }
@@ -717,7 +724,7 @@ int OPS_printModelGID()
 	 int startEle = 1;
 	 int endEle = 1;
 	 int eleRange = 0;
-	 int numdata = 1;
+	 int numData = 1;
 
 	 FileStream outputFile;
 	 // OPS_Stream *output = &opserr;
@@ -738,11 +745,11 @@ int OPS_printModelGID()
 		  if (strcmp(flag, "-eleRange") == 0 && OPS_GetNumRemainingInputArgs() > 1) {
 				//opserr<<"WARNING:commands: eleRange defined"<<endln;
 				eleRange = 1;
-				if (OPS_GetIntInput(numdata, &startEle) < 0) {
+				if (OPS_GetIntInput(&numData, &startEle) < 0) {
 					 opserr << "WARNING print node failed to get integer: " << endln;
 					 return -1;
 				}
-				if (OPS_GetIntInput(numdata, &endEle) < 0) {
+				if (OPS_GetIntInput(&numData, &endEle) < 0) {
 					 opserr << "WARNING print node failed to get integer: " << endln;
 					 return -1;
 				}
@@ -1076,15 +1083,15 @@ int OPS_eleForce()
 
 	 int tag;
 	 int dof = -1;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING eleForce eleTag? dof? - could not read nodeTag? \n";
 		  return -1;
 	 }
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING eleForce eleTag? dof? - could not read dof? \n";
 				return -1;
 		  }
@@ -1121,7 +1128,7 @@ int OPS_eleForce()
 				double value = (*force)(dof);
 
 				// now we copy the value to the tcl string that is returned
-				if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+				if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 					 opserr << "WARNING eleForce failed to set output\n";
 					 return -1;
 				}
@@ -1133,7 +1140,7 @@ int OPS_eleForce()
 				for (int i = 0; i < size; i++) {
 					 data[i] = (*force)(i);
 				}
-				if (OPS_SetDoubleOutput(size, data, false) < 0) {
+				if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 					 opserr << "WARNING eleForce failed to set outputs\n";
 					 delete[] data;
 					 return -1;
@@ -1157,15 +1164,15 @@ int OPS_eleDynamicalForce()
 
 	 int tag;
 	 int dof = -1;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING eleForce eleTag? dof? - could not read nodeTag? \n";
 		  return -1;
 	 }
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING eleForce eleTag? dof? - could not read dof? \n";
 				return -1;
 		  }
@@ -1195,7 +1202,7 @@ int OPS_eleDynamicalForce()
 		  double value = force(dof);
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(numdata, &value, false) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, false) < 0) {
 				opserr << "WARNING eleDyanmicalForce failed to set output\n";
 				return -1;
 		  }
@@ -1207,7 +1214,7 @@ int OPS_eleDynamicalForce()
 		  for (int i = 0; i < size; i++) {
 				data[i] = force(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 				opserr << "WARNING eleDyanmicalForce failed to set outputs\n";
 				delete[] data;
 				return -1;
@@ -1231,15 +1238,15 @@ int OPS_nodeUnbalance()
 
 	 int tag;
 	 int dof = -1;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING eleForce eleTag? dof? - could not read nodeTag? \n";
 		  return -1;
 	 }
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING eleForce eleTag? dof? - could not read dof? \n";
 				return -1;
 		  }
@@ -1267,7 +1274,7 @@ int OPS_nodeUnbalance()
 		  double value = (*nodalResponse)(dof);
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING nodeUnbalance failed to set output\n";
 				return -1;
 		  }
@@ -1279,7 +1286,7 @@ int OPS_nodeUnbalance()
 		  for (int i = 0; i < size; i++) {
 				data[i] = (*nodalResponse)(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 				opserr << "WARNING eleDyanmicalForce failed to set outputs\n";
 				delete[] data;
 				return -1;
@@ -1302,15 +1309,15 @@ int OPS_nodeVel()
 
 	 int tag;
 	 int dof = -1;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING nodeVel nodeTag? dof? - could not read nodeTag? \n";
 		  return -1;
 	 }
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING nodeVel nodeTag? dof? - could not read dof? \n";
 				return -1;
 		  }
@@ -1339,7 +1346,7 @@ int OPS_nodeVel()
 		  double value = (*nodalResponse)(dof);
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING nodeVel failed to set output\n";
 				return -1;
 		  }
@@ -1351,7 +1358,7 @@ int OPS_nodeVel()
 		  for (int i = 0; i < size; i++) {
 				data[i] = (*nodalResponse)(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 				opserr << "WARNING nodeVel failed to set outputs\n";
 				delete[] data;
 				return -1;
@@ -1374,15 +1381,15 @@ int OPS_nodeAccel()
 
 	 int tag;
 	 int dof = -1;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING nodeAccel nodeTag? dof? - could not read nodeTag? \n";
 		  return -1;
 	 }
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING nodeAccel nodeTag? dof? - could not read dof? \n";
 				return -1;
 		  }
@@ -1411,7 +1418,7 @@ int OPS_nodeAccel()
 		  double value = (*nodalResponse)(dof);
 
 		  // now we copy the value to the tcl string that is returned
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING nodeAccel failed to set output\n";
 				return -1;
 		  }
@@ -1423,7 +1430,7 @@ int OPS_nodeAccel()
 		  for (int i = 0; i < size; i++) {
 				data[i] = (*nodalResponse)(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 				opserr << "WARNING nodeAccel failed to set outputs\n";
 				delete[] data;
 				return -1;
@@ -1445,8 +1452,8 @@ int OPS_nodeResponse()
 	 }
 
 	 int data[3];
-	 int numdata = 3;
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 int numData = 3;
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING nodeResponse - could not read int inputs \n";
 		  return -1;
 	 }
@@ -1465,10 +1472,10 @@ int OPS_nodeResponse()
 	 }
 
 	 double value = (*nodalResponse)(dof);
-	 numdata = 1;
+	 numData = 1;
 
 	 // now we copy the value to the tcl string that is returned
-	 if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+	 if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -1485,9 +1492,9 @@ int OPS_nodeCoord()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING nodeCoord nodeTag? dim? - could not read nodeTag? \n";
 		  return -1;
 	 }
@@ -1507,7 +1514,7 @@ int OPS_nodeCoord()
 		  }
 		  else {
 				OPS_ResetCurrentInputArg(-1);
-				if (OPS_GetIntInput(numdata, &dim) < 0) {
+				if (OPS_GetIntInput(&numData, &dim) < 0) {
 					 opserr << "WARNING nodeCoord nodeTag? dim? - could not read dim? \n";
 					 return -1;
 				}
@@ -1533,7 +1540,7 @@ int OPS_nodeCoord()
 		  for (int i = 0; i < size; i++) {
 				data[i] = coords(i);
 		  }
-		  if (OPS_SetDoubleOutput(size, data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete[] data;
 				return -1;
@@ -1543,7 +1550,7 @@ int OPS_nodeCoord()
 	 }
 	 else if (dim < size) {
 		  double value = coords(dim); // -1 for OpenSees vs C indexing
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING failed to set output\n";
 				return -1;
 		  }
@@ -1566,9 +1573,9 @@ int OPS_setNodeCoord()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING setNodeCoord nodeTag? dim? value? - could not read nodeTag? \n";
 		  return -1;
 	 }
@@ -1576,11 +1583,11 @@ int OPS_setNodeCoord()
 	 int dim;
 	 double value;
 
-	 if (OPS_GetIntInput(numdata, &dim) < 0) {
+	 if (OPS_GetIntInput(&numData, &dim) < 0) {
 		  opserr << "WARNING setNodeCoord nodeTag? dim? value? - could not read dim? \n";
 		  return -1;
 	 }
-	 if (OPS_GetDoubleInput(numdata, &value) < 0) {
+	 if (OPS_GetDoubleInput(&numData, &value) < 0) {
 		  opserr << "WARNING setNodeCoord nodeTag? dim? value? - could not read value? \n";
 		  return -1;
 	 }
@@ -1599,6 +1606,29 @@ int OPS_setNodeCoord()
 	 theNode->setCrds(coords);
 
     return 0;
+}
+
+int OPS_getPatterns()
+{
+  Domain* theDomain = OPS_GetDomain();
+  if (theDomain == 0) return -1;
+    
+  LoadPattern *thePattern;
+  LoadPatternIter &thePatterns = theDomain->getLoadPatterns();
+
+  std::vector <int> data;
+  
+  while ((thePattern = thePatterns()) != 0)
+    data.push_back(thePattern->getTag());
+
+  int size = data.size();
+  
+  if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
+    opserr << "WARNING getPatterns - failed to set output\n";
+    return -1;
+  }
+  
+  return 0;
 }
 
 int OPS_getFixedNodes()
@@ -1621,7 +1651,7 @@ int OPS_getFixedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1638,9 +1668,9 @@ int OPS_getFixedDOFs()
     }
 
     int tag;
-    int numdata = 1;
+    int numData = 1;
 
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	  opserr << "WARNING getFixedDOFs fNodeTag? \n";
 	  return -1;
     }
@@ -1661,7 +1691,7 @@ int OPS_getFixedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1674,10 +1704,10 @@ int OPS_getConstrainedNodes()
 
     bool all = 1;
     int rNodeTag;
-    int numdata = 1;
+    int numData = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 2) {
-	  if (OPS_GetIntInput(numdata, &rNodeTag) < 0) {
+	  if (OPS_GetIntInput(&numData, &rNodeTag) < 0) {
 		opserr << "WARNING getConstrainedNodes <rNodeTag?> - could not read rNodeTag\n";
 		return -1;
 	  }
@@ -1704,7 +1734,7 @@ int OPS_getConstrainedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1721,9 +1751,9 @@ int OPS_getConstrainedDOFs()
     }
 
     int cNode;
-    int numdata = 1;
+    int numData = 1;
 
-    if (OPS_GetIntInput(numdata, &cNode) < 0) {
+    if (OPS_GetIntInput(&numData, &cNode) < 0) {
 	  opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read cNode? \n";
 	  return -1;
     }
@@ -1732,7 +1762,7 @@ int OPS_getConstrainedDOFs()
 	bool allNodes = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(numdata, &rNode) < 0) {
+	  if (OPS_GetIntInput(&numData, &rNode) < 0) {
 		opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read rNode? \n";
 		return -1;
 	  }
@@ -1742,7 +1772,7 @@ int OPS_getConstrainedDOFs()
     int rDOF;
 	bool allDOFs = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(numdata, &rDOF) < 0) {
+	  if (OPS_GetIntInput(&numData, &rDOF) < 0) {
 		opserr << "WARNING getConstrainedDOFs cNode? <rNode?> <rDOF?> - could not read rDOF? \n";
 		return -1;
 	  }
@@ -1785,7 +1815,7 @@ int OPS_getConstrainedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1798,10 +1828,10 @@ int OPS_getRetainedNodes()
 {
     bool all = 1;
     int cNodeTag;
-    int numdata = 1;
+    int numData = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 2) {
-	  if (OPS_GetIntInput(numdata, &cNodeTag) < 0) {
+	  if (OPS_GetIntInput(&numData, &cNodeTag) < 0) {
 		opserr << "WARNING getRetainedNodes <cNodeTag?> - could not read cNodeTag\n";
 		return -1;
 	  }
@@ -1828,7 +1858,7 @@ int OPS_getRetainedNodes()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1846,9 +1876,9 @@ int OPS_getRetainedDOFs()
     }
 
     int rNode;
-    int numdata = 1;
+    int numData = 1;
 
-    if (OPS_GetIntInput(numdata, &rNode) < 0) {
+    if (OPS_GetIntInput(&numData, &rNode) < 0) {
 	  opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read rNode? \n";
 	  return -1;
     }
@@ -1857,7 +1887,7 @@ int OPS_getRetainedDOFs()
 	bool allNodes = 1;
 
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(numdata, &cNode) < 0) {
+	  if (OPS_GetIntInput(&numData, &cNode) < 0) {
 		opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read cNode? \n";
 		return -1;
 	  }
@@ -1867,7 +1897,7 @@ int OPS_getRetainedDOFs()
     int cDOF;
 	bool allDOFs = 1;
     if (OPS_GetNumRemainingInputArgs() > 0) {
-	  if (OPS_GetIntInput(numdata, &cDOF) < 0) {
+	  if (OPS_GetIntInput(&numData, &cDOF) < 0) {
 		opserr << "WARNING getRetainedDOFs rNode? <cNode?> <cDOF?> - could not read cDOF? \n";
 		return -1;
 	  }
@@ -1909,7 +1939,7 @@ int OPS_getRetainedDOFs()
 
 	int size = data.size();
 
-	if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 	  opserr << "WARNING failed to set output\n";
 	  return -1;
 	}
@@ -1937,13 +1967,13 @@ int OPS_getNDMM()
 {
 
 	 int ndm;
-	 int numdata = 1;
+	 int numData = 1;
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
 
 		  int tag;
 
-		  if (OPS_GetIntInput(numdata, &tag) < 0) {
+		  if (OPS_GetIntInput(&numData, &tag) < 0) {
 				opserr << "WARNING getNDM nodeTag? \n";
 				return -1;
 		  }
@@ -1969,7 +1999,7 @@ int OPS_getNDMM()
 
 	 int size = 1;
 
-	 if (OPS_SetIntOutput(size, &ndm, false) < 0) {
+	 if (OPS_SetIntOutput(&size, &ndm, false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -1981,13 +2011,13 @@ int OPS_getNDFF()
 {
 
 	 int ndf;
-	 int numdata = 1;
+	 int numData = 1;
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
 
 		  int tag;
 
-		  if (OPS_GetIntInput(numdata, &tag) < 0) {
+		  if (OPS_GetIntInput(&numData, &tag) < 0) {
 				opserr << "WARNING getNDF nodeTag? \n";
 				return -1;
 		  }
@@ -2012,12 +2042,78 @@ int OPS_getNDFF()
 
 	 int size = 1;
 
-	 if (OPS_SetIntOutput(size, &ndf, false) < 0) {
+	 if (OPS_SetIntOutput(&size, &ndf, false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
 
 	 return 0;
+}
+
+int OPS_classType()
+{
+  if (OPS_GetNumRemainingInputArgs() < 2) {
+    opserr << "ERROR want - classType objectType tag?\n";
+    return -1;
+  }
+  
+  std::string type = OPS_GetString();
+  int tag;
+  int numData = 1;
+  
+  if (OPS_GetIntInput(&numData, &tag) < 0) {
+    opserr << "ERROR classType objectType tag? - unable to read tag" << endln;
+    return -1;
+  }
+  
+  if (type == "uniaxialMaterial") {
+    UniaxialMaterial *theMaterial = OPS_GetUniaxialMaterial(tag);
+    if (theMaterial == 0) {
+      opserr << "ERROR classType - uniaxialMaterial with tag " << tag << " not found" << endln;
+      return -1;
+    }
+    
+    std::string classType = theMaterial->getClassType();
+    if (OPS_SetString(classType.c_str()) < 0) {
+      opserr << "ERROR failed to set classType" << endln;
+      return -1;
+    }      
+  }
+  
+  else if (type == "section") {
+    SectionForceDeformation *theSection = OPS_getSectionForceDeformation(tag);
+    if (theSection == 0) {
+      opserr << "ERROR classType - section with tag " << tag << " not found" << endln;
+      return -1;
+    }
+    
+    std::string classType = theSection->getClassType();
+    if (OPS_SetString(classType.c_str()) < 0) {
+      opserr << "ERROR failed to set classType" << endln;
+      return -1;
+    }      
+  }
+
+  else if (type == "damping") {
+    Damping *theDamping = OPS_getDamping(tag);
+    if (theDamping == 0) {
+      opserr << "ERROR classType - damping with tag " << tag << " not found" << endln;
+      return -1;
+    }
+    
+    std::string classType = theDamping->getClassType();
+    if (OPS_SetString(classType.c_str()) < 0) {
+      opserr << "ERROR failed to set classType" << endln;
+      return -1;
+    }      
+  }
+	  
+  else {
+    opserr << "WARNING classType - " << type.c_str() << " not yet supported" << endln;
+    return 0;
+  }
+
+  return 0;
 }
 
 int OPS_eleType()
@@ -2028,9 +2124,9 @@ int OPS_eleType()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING eleType eleTag? \n";
 		  return -1;
 	 }
@@ -2063,9 +2159,9 @@ int OPS_eleNodes()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING eleNodes eleTag? \n";
 		  return -1;
 	 }
@@ -2087,7 +2183,7 @@ int OPS_eleNodes()
 				data[i] = (int)(*tags)(i);
 		  }
 
-		  if (OPS_SetIntOutput(numTags, data, false) < 0) {
+		  if (OPS_SetIntOutput(&numTags, data, false) < 0) {
 				opserr << "WARNING failed to set outputs\n";
 				delete[] data;
 				return -1;
@@ -2098,7 +2194,7 @@ int OPS_eleNodes()
 	 else {
 		  int numTags = 0;
 		  int* data = 0;
-		  if (OPS_SetIntOutput(numTags, data, false) < 0) {
+		  if (OPS_SetIntOutput(&numTags, data, false) < 0) {
 				opserr << "WARNING failed to set outputs\n";
 				return -1;
 		  }
@@ -2115,9 +2211,9 @@ int OPS_nodeDOFs()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING nodeDOFs nodeTag?\n";
 		  return -1;
 	 }
@@ -2142,7 +2238,7 @@ int OPS_nodeDOFs()
 	 for (int i = 0; i < numDOF; i++) {
 		  data[i] = eqnNumbers(i);
 	 }
-	 if (OPS_SetIntOutput(numDOF, data, false) < 0) {
+	 if (OPS_SetIntOutput(&numDOF, data, false) < 0) {
 		  opserr << "WARNING nodeDOFs failed to set outputs\n";
 		  delete[] data;
 		  return -1;
@@ -2159,12 +2255,12 @@ int OPS_nodeMass() {
 	 }
 
 	 int tag[2] = { 0, -1 };
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 if (numdata > 2) {
-		  numdata = 2;
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 if (numData > 2) {
+		  numData = 2;
 	 }
 
-	 if (OPS_GetIntInput(numdata, &tag[0]) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag[0]) < 0) {
 		  opserr << "WARNING nodeMass nodeTag?\n";
 		  return -1;
 	 }
@@ -2187,8 +2283,8 @@ int OPS_nodeMass() {
 				return -1;
 		  }
 		  double value = mass(tag[1], tag[1]);
-		  numdata = 1;
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  numData = 1;
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING: nodeMass - failed to set mass output\n";
 				return -1;
 		  }
@@ -2199,7 +2295,7 @@ int OPS_nodeMass() {
 				data[i] = mass(i, i);
 		  }
 
-		  if (OPS_SetDoubleOutput(numDOF, &data[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&numDOF, &data[0], false) < 0) {
 				opserr << "WARNING nodeMass failed to set mass\n";
 				return -1;
 		  }
@@ -2216,9 +2312,9 @@ int OPS_nodePressure()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING: nodePressure invalid tag\n";
 		  return -1;
 	 }
@@ -2231,7 +2327,7 @@ int OPS_nodePressure()
 	 if (thePC != 0) {
 		  pressure = thePC->getPressure();
 	 }
-	 if (OPS_SetDoubleOutput(numdata, &pressure, true) < 0) {
+	 if (OPS_SetDoubleOutput(&numData, &pressure, true) < 0) {
 		  opserr << "WARNING failed to get presure\n";
 		  return -1;
 	 }
@@ -2247,9 +2343,9 @@ int OPS_setNodePressure()
 	 }
 
 	 int tag;
-	 int numdata = 1;
+	 int numData = 1;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING: setNodePressure invalid tag\n";
 		  return -1;
 	 }
@@ -2259,7 +2355,7 @@ int OPS_setNodePressure()
 
 	 double pressure = 0.0;
 
-	 if (OPS_GetDoubleInput(numdata, &pressure) < 0) {
+	 if (OPS_GetDoubleInput(&numData, &pressure) < 0) {
 		  opserr << "WARNING: setNodePressure invalid pressure\n";
 		  return -1;
 	 }
@@ -2284,7 +2380,7 @@ int OPS_nodeBounds()
 	 for (int i = 0; i < size; i++)
 		  data[i] = bounds(i);
 
-	 if (OPS_SetDoubleOutput(size, data, false) < 0) {
+	 if (OPS_SetDoubleOutput(&size, data, false) < 0) {
 		  opserr << "WARNING failed to get node bounds\n";
 		  delete[] data;
 		  return -1;
@@ -2302,8 +2398,8 @@ int OPS_setPrecision()
 		  return -1;
 	 }
 	 int precision;
-	 int numdata = 1;
-	 if (OPS_GetIntInput(numdata, &precision) < 0) {
+	 int numData = 1;
+	 if (OPS_GetIntInput(&numData, &precision) < 0) {
 		  opserr << "WARNING setPrecision precision? - error reading precision value supplied\n";
 		  return -1;
 	 }
@@ -2335,7 +2431,7 @@ int OPS_getEleTags()
 		  if (strcmp(type, "-mesh") == 0) {
 				int tag;
 				int num = 1;
-				if (OPS_GetIntInput(num, &tag) < 0) {
+				if (OPS_GetIntInput(&num, &tag) < 0) {
 					 opserr << "WARNING: failed to get mesh tag\n";
 					 return -1;
 				}
@@ -2358,7 +2454,7 @@ int OPS_getEleTags()
 		  data = &eletags[0];
 	 }
 
-	 if (OPS_SetIntOutput(size, data, false) < 0) {
+	 if (OPS_SetIntOutput(&size, data, false) < 0) {
 		  opserr << "WARNING failed to set outputs\n";
 		  return -1;
 	 }
@@ -2377,7 +2473,7 @@ int OPS_getCrdTransfTags()
 		  data = &transfTags[0];
 	 }
 
-	 if (OPS_SetIntOutput(size, data, false) < 0) {
+	 if (OPS_SetIntOutput(&size, data, false) < 0) {
 		  opserr << "WARNING failed to set outputs\n";
 		  return -1;
 	 }
@@ -2408,7 +2504,7 @@ int OPS_getNodeTags() {
 				for (int i = 0; i < numtags; ++i) {
 					 int tag;
 					 int num = 1;
-					 if (OPS_GetIntInput(num, &tag) < 0) {
+					 if (OPS_GetIntInput(&num, &tag) < 0) {
 						  opserr << "WARNING: failed to get mesh tag\n";
 						  return -1;
 					 }
@@ -2438,7 +2534,7 @@ int OPS_getNodeTags() {
 		  data = &nodetags[0];
 	 }
 
-	 if (OPS_SetIntOutput(size, data, false) < 0) {
+	 if (OPS_SetIntOutput(&size, data, false) < 0) {
 		  opserr << "WARNING failed to set outputs\n";
 		  return -1;
 	 }
@@ -2459,10 +2555,10 @@ int OPS_sectionForce()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 2;
+	 int numData = 2;
 	 int data[3];
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING sectionForce eleTag? secNum? <dof?> - could not read int input? \n";
 		  return -1;
 	 }
@@ -2502,8 +2598,8 @@ int OPS_sectionForce()
 	 const Vector& theVec = *(info.theVector);
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  numdata = 1;
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  numData = 1;
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING sectionForce eleTag? secNum? dof? - could not read int input? \n";
 				delete theResponse;
 				return -1;
@@ -2514,9 +2610,9 @@ int OPS_sectionForce()
 	 if (dof > 0 && dof <= ndof) {
 
 		  double value = theVec(dof - 1);
-		  numdata = 1;
+		  numData = 1;
 
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2529,7 +2625,7 @@ int OPS_sectionForce()
 				values.push_back(theVec(i));
 		  }
 
-		  if (OPS_SetDoubleOutput(ndof, &values[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&ndof, &values[0], false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2554,10 +2650,10 @@ int OPS_sectionDeformation()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 2;
+	 int numData = 2;
 	 int data[3];
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING sectionDeformation eleTag? secNum? <dof?> - could not read int input? \n";
 		  return -1;
 	 }
@@ -2597,8 +2693,8 @@ int OPS_sectionDeformation()
 	 const Vector& theVec = *(info.theVector);
 
 	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  numdata = 1;
-		  if (OPS_GetIntInput(numdata, &dof) < 0) {
+		  numData = 1;
+		  if (OPS_GetIntInput(&numData, &dof) < 0) {
 				opserr << "WARNING sectionForce eleTag? secNum? dof? - could not read int input? \n";
 				delete theResponse;
 				return -1;
@@ -2609,9 +2705,9 @@ int OPS_sectionDeformation()
 	 if (dof > 0 && dof <= ndof) {
 
 		  double value = theVec(dof - 1);
-		  numdata = 1;
+		  numData = 1;
 
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2624,7 +2720,7 @@ int OPS_sectionDeformation()
 				values.push_back(theVec(i));
 		  }
 
-		  if (OPS_SetDoubleOutput(ndof, &values[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&ndof, &values[0], false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2649,10 +2745,10 @@ int OPS_sectionStiffness()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 2;
+	 int numData = 2;
 	 int data[2];
 
-    if (OPS_GetIntInput(numdata, data) < 0) {
+    if (OPS_GetIntInput(&numData, data) < 0) {
 	opserr << "WARNING sectionStiffness eleTag? secNum? - could not read int input? \n";
 	return -1;
     }
@@ -2693,7 +2789,7 @@ int OPS_sectionStiffness()
 	 int nsdof = theMat.noCols();
 	 int size = nsdof * nsdof;
 	 if (size == 0) {
-		  if (OPS_SetDoubleOutput(size, 0, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, 0, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2711,7 +2807,7 @@ int OPS_sectionStiffness()
 		  }
 	 }
 
-	 if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
+	 if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  delete theResponse;
 		  return -1;
@@ -2735,10 +2831,10 @@ int OPS_sectionFlexibility()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 2;
+	 int numData = 2;
 	 int data[2];
 
-    if (OPS_GetIntInput(numdata, data) < 0) {
+    if (OPS_GetIntInput(&numData, data) < 0) {
 	opserr << "WARNING sectionFlexibility eleTag? secNum? - could not read int input? \n";
 	return -1;
     }
@@ -2779,7 +2875,7 @@ int OPS_sectionFlexibility()
 	 int nsdof = theMat.noCols();
 	 int size = nsdof * nsdof;
 	 if (size == 0) {
-		  if (OPS_SetDoubleOutput(size, 0, false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, 0, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -2797,341 +2893,15 @@ int OPS_sectionFlexibility()
 		  }
 	 }
 
-	 if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
+	 if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  delete theResponse;
 		  return -1;
 	 }
 
-	 delete theResponse;
+    delete theResponse;
 
-	 return 0;
-}
-
-int OPS_sectionLocation()
-{
-	 // make sure at least one other argument to contain type of system
-	 if (OPS_GetNumRemainingInputArgs() < 1) {
-		  opserr << "WARNING want - sectionLocation eleTag? <secNum?> \n";
-		  return -1;
-	 }
-
-	 //opserr << "sectionLocation: ";
-	 //for (int i = 0; i < argc; i++)
-	 //  opserr << argv[i] << ' ' ;
-	 //opserr << endln;
-
-	 int numdata = 1;
-	 int tag;
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
-		  opserr << "WARNING sectionLocation eleTag? <secNum?> - could not read int input? \n";
-		  return -1;
-	 }
-
-	 int secNum = 0;
-	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &secNum) < 0) {
-				opserr << "WARNING sectionLocation eleTag? <secNum?> - could not read int input? \n";
-				return -1;
-		  }
-	 }
-
-	 Domain* theDomain = OPS_GetDomain();
-	 if (theDomain == 0) return -1;
-
-	 Element* theElement = theDomain->getElement(tag);
-	 if (theElement == 0) {
-		  opserr << "WARNING sectionLocation element with tag " << tag << " not found in domain \n";
-		  return -1;
-	 }
-
-	 int argcc = 1;
-	 char a[80] = "integrationPoints";
-	 const char* argvv[1];
-	 argvv[0] = a;
-
-	 DummyStream dummy;
-
-	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
-	 if (theResponse == 0) {
-		  return 0;
-	 }
-
-	 theResponse->getResponse();
-	 Information& info = theResponse->getInformation();
-
-	 const Vector& theVec = *(info.theVector);
-	 int Np = theVec.Size();
-
-	 if (secNum > 0 && secNum <= Np) { // One IP
-		  double value = theVec(secNum - 1);
-		  numdata = 1;
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-	 else { // All IPs in a list
-		  std::vector<double> data(Np);
-		  for (int i = 0; i < Np; i++)
-				data[i] = theVec(i);
-		  numdata = Np;
-		  if (OPS_SetDoubleOutput(numdata, &data[0], false) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-
-	 delete theResponse;
-
-	 return 0;
-}
-
-int OPS_sectionWeight()
-{
-	 // make sure at least one other argument to contain type of system
-	 if (OPS_GetNumRemainingInputArgs() < 1) {
-		  opserr << "WARNING want - sectionWeight eleTag? <secNum?> \n";
-		  return -1;
-	 }
-
-	 //opserr << "sectionWeight: ";
-	 //for (int i = 0; i < argc; i++)
-	 //  opserr << argv[i] << ' ' ;
-	 //opserr << endln;
-
-	 int numdata = 1;
-	 int tag;
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
-		  opserr << "WARNING sectionWeight eleTag? <secNum?> - could not read int input? \n";
-		  return -1;
-	 }
-
-	 int secNum = 0;
-	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &secNum) < 0) {
-				opserr << "WARNING sectionWeight eleTag? <secNum?> - could not read int input? \n";
-				return -1;
-		  }
-	 }
-
-	 Domain* theDomain = OPS_GetDomain();
-	 if (theDomain == 0) return -1;
-
-	 Element* theElement = theDomain->getElement(tag);
-	 if (theElement == 0) {
-		  opserr << "WARNING sectionWeight element with tag " << tag << " not found in domain \n";
-		  return -1;
-	 }
-
-	 int argcc = 1;
-	 char a[80] = "integrationWeights";
-	 const char* argvv[1];
-	 argvv[0] = a;
-
-	 DummyStream dummy;
-
-	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
-	 if (theResponse == 0) {
-		  return 0;
-	 }
-
-	 theResponse->getResponse();
-	 Information& info = theResponse->getInformation();
-
-	 const Vector& theVec = *(info.theVector);
-	 int Np = theVec.Size();
-
-	 if (secNum > 0 && secNum <= Np) { // One IP
-		  double value = theVec(secNum - 1);
-		  numdata = 1;
-		  if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-	 else { // All IPs in a list
-		  std::vector<double> data(Np);
-		  for (int i = 0; i < Np; i++)
-				data[i] = theVec(i);
-		  numdata = Np;
-		  if (OPS_SetDoubleOutput(numdata, &data[0], false) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-
-	 delete theResponse;
-
-	 return 0;
-}
-
-int OPS_sectionTag()
-{
-	 // make sure at least one other argument to contain type of system
-	 if (OPS_GetNumRemainingInputArgs() < 1) {
-		  opserr << "WARNING want - sectionTag eleTag? <secNum?> \n";
-		  return -1;
-	 }
-
-	 //opserr << "sectionLocation: ";
-	 //for (int i = 0; i < argc; i++)
-	 //  opserr << argv[i] << ' ' ;
-	 //opserr << endln;
-
-	 int numdata = 1;
-	 int tag;
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
-		  opserr << "WARNING sectionTag eleTag? <secNum?> - could not read int input? \n";
-		  return -1;
-	 }
-
-	 int secNum = 0;
-	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  if (OPS_GetIntInput(numdata, &secNum) < 0) {
-				opserr << "WARNING sectionTag eleTag? <secNum?> - could not read int input? \n";
-				return -1;
-		  }
-	 }
-
-	 Domain* theDomain = OPS_GetDomain();
-	 if (theDomain == 0) return -1;
-
-	 Element* theElement = theDomain->getElement(tag);
-	 if (theElement == 0) {
-		  opserr << "WARNING sectionTag - element with tag " << tag << " not found in domain \n";
-		  return -1;
-	 }
-
-	 int argcc = 1;
-	 char a[80] = "sectionTags";
-	 const char* argvv[1];
-	 argvv[0] = a;
-
-	 DummyStream dummy;
-
-	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
-	 if (theResponse == 0) {
-		  return 0;
-	 }
-
-	 theResponse->getResponse();
-	 Information& info = theResponse->getInformation();
-
-	 const ID& theID = *(info.theID);
-	 int Np = theID.Size();
-
-	 if (secNum > 0 && secNum <= Np) { // One IP
-		  int value = theID(secNum - 1);
-		  numdata = 1;
-		  if (OPS_SetIntOutput(numdata, &value, true) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-	 else { // All IPs in a list
-		  std::vector<int> data(Np);
-		  for (int i = 0; i < Np; i++)
-				data[i] = theID(i);
-		  numdata = Np;
-		  if (OPS_SetIntOutput(numdata, &data[0], false) < 0) {
-				opserr << "WARNING failed to set output\n";
-				delete theResponse;
-				return -1;
-		  }
-	 }
-
-	 delete theResponse;
-
-	 return 0;
-}
-
-int OPS_sectionDisplacement()
-{
-	 // make sure at least one other argument to contain type of system
-	 if (OPS_GetNumRemainingInputArgs() < 2) {
-		  opserr << "WARNING want - sectionDisplacement eleTag? secNum? \n";
-		  return -1;
-	 }
-
-	 //opserr << "sectionWeight: ";
-	 //for (int i = 0; i < argc; i++)
-	 //  opserr << argv[i] << ' ' ;
-	 //opserr << endln;
-
-	 int numdata = 2;
-	 int data[2];
-
-	 if (OPS_GetIntInput(numdata, data) < 0) {
-		  opserr << "WARNING sectionDisplacement eleTag? secNum? <-local>- could not read int input? \n";
-		  return -1;
-	 }
-
-	 int tag = data[0];
-	 int secNum = data[1];
-	 bool local = false;
-
-	 if (OPS_GetNumRemainingInputArgs() > 0) {
-		  const char* localGlobal = OPS_GetString();
-		  if (strstr(localGlobal, "local") != 0)
-				local = true;
-	 }
-
-	 Domain* theDomain = OPS_GetDomain();
-	 if (theDomain == 0) return -1;
-
-	 Element* theElement = theDomain->getElement(tag);
-	 if (theElement == 0) {
-		  opserr << "WARNING sectionDisplacement element with tag " << tag << " not found in domain \n";
-		  return -1;
-	 }
-
-	 int argcc = 2;
-	 char a[80] = "sectionDisplacements";
-	 const char* argvv[2];
-	 argvv[0] = a;
-	 if (local)
-		  argvv[1] = "local";
-	 else
-		  argvv[1] = "global";
-
-	 DummyStream dummy;
-
-	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
-	 if (theResponse == 0) {
-		  return 0;
-	 }
-
-	 theResponse->getResponse();
-	 Information& info = theResponse->getInformation();
-
-	 const Matrix& theMatrix = *(info.theMatrix);
-	 if (secNum <= 0 || secNum > theMatrix.noRows()) {
-		  opserr << "WARNING invalid secNum\n";
-		  delete theResponse;
-		  return -1;
-	 }
-
-	 double value[3];
-	 value[0] = theMatrix(secNum - 1, 0);
-	 value[1] = theMatrix(secNum - 1, 1);
-	 value[2] = theMatrix(secNum - 1, 2);
-
-	 numdata = 3;
-	 if (OPS_SetDoubleOutput(numdata, &value[0], false) < 0) {
-		  opserr << "WARNING failed to set output\n";
-		  delete theResponse;
-		  return -1;
-	 }
-
-	 delete theResponse;
-
-	 return 0;
+    return 0;
 }
 
 int OPS_cbdiDisplacement()
@@ -3147,15 +2917,15 @@ int OPS_cbdiDisplacement()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 1;
+	 int numData = 1;
 	 int data[1];
 	 double ddata[1];
 
-	 if (OPS_GetIntInput(numdata, data) < 0) {
+	 if (OPS_GetIntInput(&numData, data) < 0) {
 		  opserr << "WARNING cbdiDisplacement eleTag? x/L? - could not read int input? \n";
 		  return -1;
 	 }
-	 if (OPS_GetDoubleInput(numdata, ddata) < 0) {
+	 if (OPS_GetDoubleInput(&numData, ddata) < 0) {
 		  opserr << "WARNING cbdiDisplacement eleTag? x/L? - could not read double input? \n";
 		  return -1;
 	 }
@@ -3174,45 +2944,38 @@ int OPS_cbdiDisplacement()
 
 	 int argcc = 1;
 	 char a[80] = "cbdiDisplacements";
-	 const char* argvv[1];
-	 argvv[0] = a;
+    const char *argvv[1];
+    argvv[0] = a;
 
-	 DummyStream dummy;
+    DummyStream dummy;
 
-	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
-	 if (theResponse == 0) {
-		  return 0;
-	 }
+    Response *theResponse = theElement->setResponse(argvv, argcc, dummy);
+    if (theResponse == 0) {
+	return 0;
+	return 0;
+    }
 
-	 theResponse->getResponse();
-	 Information& info = theResponse->getInformation();
+    theResponse->getResponse();
+    Information &info = theResponse->getInformation();
 
 	 const Matrix& theMatrix = *(info.theMatrix);
 	 if (xOverL < 0.0 || xOverL > 1.0) {
-		  opserr << "WARNING invalid xOverL\n";
-		  delete theResponse;
-		  return -1;
-	 }
+	opserr << "WARNING invalid xOverL\n";
+	delete theResponse;
+	return -1;
+    }
 
-	 double value[3]; // Need to interpolate
-	 int N = theMatrix.noRows();
-	 double dx = 1.0 / (N - 1);
-	 for (int i = 0; i < N; i++) {
-		  double xi = double(i) / (N - 1);
-		  double xf = double(i + 1) / (N - 1);
-		  if (xOverL >= xi && xOverL < xf) {
-				value[0] = theMatrix(i, 0) + (xOverL - xi) / (xf - xi) * (theMatrix(i + 1, 0) - theMatrix(i, 0));
-				value[1] = theMatrix(i, 1) + (xOverL - xi) / (xf - xi) * (theMatrix(i + 1, 1) - theMatrix(i, 1));
-				value[2] = theMatrix(i, 2) + (xOverL - xi) / (xf - xi) * (theMatrix(i + 1, 2) - theMatrix(i, 2));
-		  }
-	 }
-
-	 numdata = 3;
-	 if (OPS_SetDoubleOutput(numdata, &value[0], false) < 0) {
-		  opserr << "WARNING failed to set output\n";
-		  delete theResponse;
-		  return -1;
-	 }
+    double value[3];
+    value[0] = theMatrix(0,0);
+    value[1] = theMatrix(0,1);
+    value[2] = theMatrix(0,2);
+    
+    numData = 3;
+    if (OPS_SetDoubleOutput(&numData, &value[0], false) < 0) {
+	opserr << "WARNING failed to set output\n";
+	delete theResponse;
+	return -1;
+    }
 
 	 delete theResponse;
 
@@ -3232,10 +2995,10 @@ int OPS_basicDeformation()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 1;
+	 int numData = 1;
 	 int tag;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING basicDeformation eleTag? - could not read eleTag? \n";
 		  return -1;
 	 }
@@ -3282,7 +3045,7 @@ int OPS_basicDeformation()
 				data[i] = theVec(i);
 		  }
 
-		  if (OPS_SetDoubleOutput(nbf, &data[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&nbf, &data[0], false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3292,7 +3055,7 @@ int OPS_basicDeformation()
 	 else {
 		  int nbf = 1;
 		  double data = info.theDouble;
-		  if (OPS_SetDoubleOutput(nbf, &data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&nbf, &data, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3317,10 +3080,10 @@ int OPS_basicForce()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 1;
+	 int numData = 1;
 	 int tag;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING basicForce eleTag? - could not read eleTag? \n";
 		  return -1;
 	 }
@@ -3367,7 +3130,7 @@ int OPS_basicForce()
 				data[i] = theVec(i);
 		  }
 
-		  if (OPS_SetDoubleOutput(nbf, &data[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&nbf, &data[0], false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3377,7 +3140,7 @@ int OPS_basicForce()
 	 else {
 		  int nbf = 1;
 		  double data = info.theDouble;
-		  if (OPS_SetDoubleOutput(nbf, &data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&nbf, &data, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3402,10 +3165,10 @@ int OPS_basicStiffness()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = 1;
+	 int numData = 1;
 	 int tag;
 
-	 if (OPS_GetIntInput(numdata, &tag) < 0) {
+	 if (OPS_GetIntInput(&numData, &tag) < 0) {
 		  opserr << "WARNING basicStiffness eleTag? - could not read eleTag? \n";
 		  return -1;
 	 }
@@ -3442,7 +3205,7 @@ int OPS_basicStiffness()
 		  std::vector<double> values;
 		  int size = nbf * nbf;
 		  if (size == 0) {
-				if (OPS_SetDoubleOutput(size, 0, false) < 0) {
+				if (OPS_SetDoubleOutput(&size, 0, false) < 0) {
 					 opserr << "WARNING failed to set output\n";
 					 delete theResponse;
 					 return -1;
@@ -3457,7 +3220,7 @@ int OPS_basicStiffness()
 				}
 		  }
 
-		  if (OPS_SetDoubleOutput(size, &values[0], false) < 0) {
+		  if (OPS_SetDoubleOutput(&size, &values[0], false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3467,7 +3230,7 @@ int OPS_basicStiffness()
 	 else {
 		  int nbf = 1;
 		  double data = info.theDouble;
-		  if (OPS_SetDoubleOutput(nbf, &data, false) < 0) {
+		  if (OPS_SetDoubleOutput(&nbf, &data, false) < 0) {
 				opserr << "WARNING failed to set output\n";
 				delete theResponse;
 				return -1;
@@ -3537,8 +3300,8 @@ int OPS_sensNodeDisp()
 	 }
 
 	 int data[3];
-	 int numdata = 3;
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = 3;
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to get tag, dof or paramTag\n";
 		  return -1;
 	 }
@@ -3563,8 +3326,8 @@ int OPS_sensNodeDisp()
 
 	 double value = theNode->getDispSensitivity(data[1], gradIndex);
 
-	 numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+	 numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3581,8 +3344,8 @@ int OPS_sensNodeVel()
 	 }
 
 	 int data[3];
-	 int numdata = 3;
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = 3;
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to get tag, dof or paramTag\n";
 		  return -1;
 	 }
@@ -3607,8 +3370,8 @@ int OPS_sensNodeVel()
 
 	 double value = theNode->getVelSensitivity(data[1], gradIndex);
 
-	 numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+	 numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3625,8 +3388,8 @@ int OPS_sensNodeAccel()
 	 }
 
 	 int data[3];
-	 int numdata = 3;
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = 3;
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to get tag, dof or paramTag\n";
 		  return -1;
 	 }
@@ -3651,8 +3414,8 @@ int OPS_sensNodeAccel()
 
 	 double value = theNode->getAccSensitivity(data[1], gradIndex);
 
-	 numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &value, true) < 0) {
+	 numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &value, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3668,8 +3431,8 @@ int OPS_sensLambda()
 	 }
 
 	 int data[2];
-	 int numdata = 2;
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = 2;
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to read patternTag or paramTag\n";
 		  return -1;
 	 }
@@ -3692,8 +3455,8 @@ int OPS_sensLambda()
 	 int gradIndex = theParam->getGradIndex();
 	 double factor = thePattern->getLoadFactorSensitivity(gradIndex);
 
-	 numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &factor, true) < 0) {
+	 numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &factor, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3713,16 +3476,16 @@ int OPS_sensSectionForce()
 	 //  opserr << argv[i] << ' ' ;
 	 //opserr << endln;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
-	 std::vector<int> data(numdata);
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = OPS_GetNumRemainingInputArgs();
+	 std::vector<int> data(numData);
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to read input data\n";
 		  return -1;
 	 }
 
 	 int tag, dof, paramTag;
 	 int secNum = -1;
-	 if (numdata == 3) {
+	 if (numData == 3) {
 		  tag = data[0];
 		  dof = data[1];
 		  paramTag = data[2];
@@ -3771,9 +3534,9 @@ int OPS_sensSectionForce()
 
 	 Response* theResponse = theElement->setResponse(argvv, argcc, dummy);
 	 if (theResponse == 0) {
-		  numdata = 1;
+		  numData = 1;
 		  double res = 0.0;
-		  if (OPS_SetDoubleOutput(numdata, &res, true) < 0) {
+		  if (OPS_SetDoubleOutput(&numData, &res, true) < 0) {
 				opserr << "WARNING failed to set output\n";
 				return -1;
 		  }
@@ -3785,8 +3548,8 @@ int OPS_sensSectionForce()
 
 	 Vector theVec = *(info.theVector);
 
-	 numdata = theVec.Size();
-	 if (OPS_SetDoubleOutput(numdata, &theVec(dof - 1), false) < 0) {
+	 numData = theVec.Size();
+	 if (OPS_SetDoubleOutput(&numData, &theVec(dof - 1), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3807,8 +3570,8 @@ int OPS_sensNodePressure()
 	 }
 
 	 int data[2];
-	 int numdata = 2;
-	 if (OPS_GetIntInput(numdata, &data[0]) < 0) {
+	 int numData = 2;
+	 if (OPS_GetIntInput(&numData, &data[0]) < 0) {
 		  opserr << "WARNING: failed to get tag or paramTag\n";
 		  return -1;
 	 }
@@ -3835,8 +3598,8 @@ int OPS_sensNodePressure()
 		  }
 	 }
 
-	 numdata = 1;
-	 if (OPS_SetDoubleOutput(numdata, &dp, true) < 0) {
+	 numData = 1;
+	 if (OPS_SetDoubleOutput(&numData, &dp, true) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3849,12 +3612,12 @@ int OPS_getEleClassTags()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <int> data;
 
 	 // all element tags
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  Element* theEle;
 		  ElementIter& theEles = theDomain->getElements();
 
@@ -3864,10 +3627,10 @@ int OPS_getEleClassTags()
 
 		  // specific element tag
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 		  int eleTag;
 
-		  if (OPS_GetIntInput(numdata, &eleTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &eleTag) < 0) {
 				opserr << "could not read eleTag\n";
 				return -1;
 		  }
@@ -3884,7 +3647,7 @@ int OPS_getEleClassTags()
 
 	 int size = data.size();
 
-	 if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3897,11 +3660,11 @@ int OPS_getEleLoadClassTags()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <int> data;
 
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  LoadPattern* thePattern;
 		  LoadPatternIter& thePatterns = theDomain->getLoadPatterns();
 
@@ -3916,10 +3679,10 @@ int OPS_getEleLoadClassTags()
 		  }
 
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 
 		  int patternTag;
-		  if (OPS_GetIntInput(numdata, &patternTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &patternTag) < 0) {
 				opserr << "could not read patternTag\n";
 				return -1;
 		  }
@@ -3945,7 +3708,7 @@ int OPS_getEleLoadClassTags()
 
 	 int size = data.size();
 
-	 if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -3958,11 +3721,11 @@ int OPS_getEleLoadTags()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <int> data;
 
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  LoadPattern* thePattern;
 		  LoadPatternIter& thePatterns = theDomain->getLoadPatterns();
 
@@ -3977,10 +3740,10 @@ int OPS_getEleLoadTags()
 		  }
 
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 
 		  int patternTag;
-		  if (OPS_GetIntInput(numdata, &patternTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &patternTag) < 0) {
 				opserr << "could not read patternTag\n";
 				return -1;
 		  }
@@ -4005,7 +3768,7 @@ int OPS_getEleLoadTags()
 
 	 int size = data.size();
 
-	 if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -4018,11 +3781,11 @@ int OPS_getEleLoadData()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <double> data;
 
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  LoadPattern* thePattern;
 		  LoadPatternIter& thePatterns = theDomain->getLoadPatterns();
 
@@ -4043,10 +3806,10 @@ int OPS_getEleLoadData()
 		  }
 
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 
 		  int patternTag;
-		  if (OPS_GetIntInput(numdata, &patternTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &patternTag) < 0) {
 				opserr << "could not read patternTag\n";
 				return -1;
 		  }
@@ -4078,7 +3841,7 @@ int OPS_getEleLoadData()
 
 	 int size = data.size();
 
-	 if (OPS_SetDoubleOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetDoubleOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -4091,11 +3854,11 @@ int OPS_getNodeLoadTags()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <int> data;
 
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  LoadPattern* thePattern;
 		  LoadPatternIter& thePatterns = theDomain->getLoadPatterns();
 
@@ -4110,10 +3873,10 @@ int OPS_getNodeLoadTags()
 		  }
 
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 
 		  int patternTag;
-		  if (OPS_GetIntInput(numdata, &patternTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &patternTag) < 0) {
 				opserr << "could not read patternTag\n";
 				return -1;
 		  }
@@ -4138,7 +3901,7 @@ int OPS_getNodeLoadTags()
 
 	 int size = data.size();
 
-	 if (OPS_SetIntOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetIntOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -4151,11 +3914,11 @@ int OPS_getNodeLoadData()
 	 Domain* theDomain = OPS_GetDomain();
 	 if (theDomain == 0) return -1;
 
-	 int numdata = OPS_GetNumRemainingInputArgs();
+	 int numData = OPS_GetNumRemainingInputArgs();
 
 	 std::vector <double> data;
 
-	 if (numdata < 1) {
+	 if (numData < 1) {
 		  LoadPattern* thePattern;
 		  LoadPatternIter& thePatterns = theDomain->getLoadPatterns();
 
@@ -4176,10 +3939,10 @@ int OPS_getNodeLoadData()
 		  }
 
 	 }
-	 else if (numdata == 1) {
+	 else if (numData == 1) {
 
 		  int patternTag;
-		  if (OPS_GetIntInput(numdata, &patternTag) < 0) {
+		  if (OPS_GetIntInput(&numData, &patternTag) < 0) {
 				opserr << "could not read patternTag\n";
 				return -1;
 		  }
@@ -4211,7 +3974,7 @@ int OPS_getNodeLoadData()
 
 	 int size = data.size();
 
-	 if (OPS_SetDoubleOutput(size, data.data(), false) < 0) {
+	 if (OPS_SetDoubleOutput(&size, data.data(), false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }
@@ -4228,7 +3991,7 @@ int OPS_getNumElements()
 	 int nEles = theDomain->getNumElements();
 	 int size = 1;
 
-	 if (OPS_SetIntOutput(size, &nEles, false) < 0) {
+	 if (OPS_SetIntOutput(&size, &nEles, false) < 0) {
 		  opserr << "WARNING failed to set output\n";
 		  return -1;
 	 }

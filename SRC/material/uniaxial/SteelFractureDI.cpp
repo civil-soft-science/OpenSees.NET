@@ -53,7 +53,7 @@ OPS_SteelFractureDI()
 	double dData[15];
 	int numData = 1;
 
-	if (OPS_GetIntInput(numData, iData) != 0) {
+	if (OPS_GetIntInput(&numData, iData) != 0) {
 		opserr << "WARNING invalid uniaxialMaterial SteelFractureDI tag" << endln;
 		return 0;
 	}
@@ -66,7 +66,7 @@ OPS_SteelFractureDI()
 		return 0;
 	}
 	else {
-		if (OPS_GetDoubleInput(numData, dData) != 0) {
+		if (OPS_GetDoubleInput(&numData, dData) != 0) {
 			opserr << "Invalid arggs: uniaxialMaterial SteelFractureDI " << iData[0] <<
 				" Fy? FyC? E? b? R0? cR1? cR2? a1? a2? a3? a4? sigcr? m? sigmin? FI_lim?" << endln;
 			return 0;
@@ -863,18 +863,18 @@ SteelFractureDI::setResponse(const char **argv, int argc, OPS_Stream &theOutput)
 	// stress
 	if (strcmp(argv[0], "stress") == 0) {
 		theOutput.tag("ResponseType", "sigma11");
-		theResponse = new MaterialResponse(this, 1, this->getStress());
+		theResponse = new MaterialResponse(this, 1, 0.0);
 	}
 	// tangent
 	else if (strcmp(argv[0], "tangent") == 0) {
 		theOutput.tag("ResponseType", "C11");
-		theResponse = new MaterialResponse(this, 2, this->getTangent());
+		theResponse = new MaterialResponse(this, 2, 0.0);
 	}
 
 	// strain
 	else if (strcmp(argv[0], "strain") == 0) {
 		theOutput.tag("ResponseType", "eps11");
-		theResponse = new MaterialResponse(this, 3, this->getStrain());
+		theResponse = new MaterialResponse(this, 3, 0.0);
 	}
 
 	// strain
@@ -887,7 +887,7 @@ SteelFractureDI::setResponse(const char **argv, int argc, OPS_Stream &theOutput)
 
 	// damage 
 	else if (strcmp(argv[0], "damage") == 0) {
-		theResponse = new MaterialResponse(this, 5, this->getDI());
+		theResponse = new MaterialResponse(this, 5, 0.0);
 		theOutput.tag("ResponseType", "DI");
 		// added 6/9/2006
 	}

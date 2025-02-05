@@ -95,7 +95,6 @@ class Steel01 : public UniaxialMaterial
  protected:
     
  private:
-	 double Energy;	//by SAJalali
 	/*** Material Properties ***/
     double fy;  // Yield stress
     double E0;  // Initial stiffness
@@ -133,6 +132,8 @@ class Steel01 : public UniaxialMaterial
     double Ttangent; // Not really a state variable, but declared here
                      // for convenience
 
+  double Energy;
+  
     // Calculates the trial state variables based on the trial strain
     void determineTrialState (double dStrain);
 

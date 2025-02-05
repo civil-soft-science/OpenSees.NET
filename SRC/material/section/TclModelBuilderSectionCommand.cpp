@@ -52,6 +52,7 @@ extern "C" int         OPS_ResetInputNoBuilder(ClientData clientData, Tcl_Interp
 #include <FiberSectionAsym3d.h>
 //#include <FiberSectionGJ.h>
 #include <FiberSectionRepr.h>
+#include <ASDCoupledHinge3D.h>
 
 #include <LayeredShellFiberSection.h> // Yuli Huang & Xinzheng Lu 
 
@@ -88,6 +89,7 @@ using std::ios;
 #include <packages.h>
 
 extern void *OPS_ElasticSection(void);
+extern void *OPS_ElasticBDShearSection2d(void);
 extern void *OPS_ElasticWarpingShearSection2d();
 extern void *OPS_ElasticTubeSection3d(void);
 extern void *OPS_WFSection2d(void);
@@ -98,9 +100,11 @@ extern void *OPS_RCTunnelSection(void);
 extern void *OPS_SectionAggregator(void);
 extern void *OPS_UniaxialSection(void);
 extern void *OPS_TubeSection(void);
+extern void *OPS_HSSSection(void);
 extern void *OPS_ParallelSection(void);
 extern void *OPS_Bidirectional(void);
 extern void *OPS_Elliptical2(void);
+extern void *OPS_ASDCoupledHinge3D(void);
 extern void *OPS_LayeredShellFiberSection(void);
 extern void *OPS_MembranePlateFiberSection(void);
 extern void *OPS_LayeredShellFiberSectionThermal(void);
@@ -109,6 +113,9 @@ extern void *OPS_DoubleMembranePlateFiberSection(void);
 extern void *OPS_Isolator2spring(void);
 extern void *OPS_ElasticMembranePlateSection(void);
 extern void *OPS_ElasticPlateSection(void);
+extern void *OPS_ReinforcedConcreteLayeredMembraneSection(void); // M. J. Nunez - UChile
+extern void *OPS_LayeredMembraneSection(void); // M. J. Nunez - UChile
+extern void *OPS_ElasticMembraneSection(void); // M. J. Nunez - UChile
 
 int
 TclCommand_addFiberSection (ClientData clientData, Tcl_Interp *interp, int argc,
@@ -168,7 +175,15 @@ TclModelBuilderSectionCommand (ClientData clientData, Tcl_Interp *interp, int ar
 	theSection = (SectionForceDeformation *)theMat;
       else 
 	return TCL_ERROR;
-    }	
+    }
+
+    else if (strcmp(argv[1],"ElasticBD") == 0) {
+      void *theMat = OPS_ElasticBDShearSection2d();
+      if (theMat != 0) 
+	theSection = (SectionForceDeformation *)theMat;
+      else 
+	return TCL_ERROR;
+    }	    
 
     else if (strcmp(argv[1],"ElasticWarpingShear") == 0) {
       void *theMat = OPS_ElasticWarpingShearSection2d();
@@ -275,7 +290,15 @@ TclModelBuilderSectionCommand (ClientData clientData, Tcl_Interp *interp, int ar
 	theSection = (SectionForceDeformation *)theMat;
       else 
 	return TCL_ERROR;
-    }    
+    }
+
+    else if (strcmp(argv[1],"HSS") == 0) {
+      void *theMat = OPS_HSSSection();
+      if (theMat != 0) 
+	theSection = (SectionForceDeformation *)theMat;
+      else 
+	return TCL_ERROR;
+    }        
 
     else if (strcmp(argv[1],"RCSection2d") == 0) {
       void *theMat = OPS_RCSection2d();
@@ -316,6 +339,14 @@ TclModelBuilderSectionCommand (ClientData clientData, Tcl_Interp *interp, int ar
       else 
 	return TCL_ERROR;  
     }
+
+	else if (strcmp(argv[1],"ASDCoupledHinge3D") == 0 ) {
+		void* theMat = OPS_ASDCoupledHinge3D();
+		if (theMat != 0)
+			theSection = (SectionForceDeformation*)theMat;
+		else
+			return TCL_ERROR;
+	}
 
     else if (strcmp(argv[1],"AddDeformation") == 0 || strcmp(argv[1],"Aggregator") == 0) {
       void *theMat = OPS_SectionAggregator();
@@ -412,6 +443,30 @@ TclModelBuilderSectionCommand (ClientData clientData, Tcl_Interp *interp, int ar
 	}
 	//end L.Jiang [SIF] added based on LayeredShellFiberSectionThermal section created by Yuli Huang & Xinzheng Lu ----
     
+    else if ((strcmp(argv[1], "ReinforcedConcreteLayeredMembraneSection") == 0) || (strcmp(argv[1], "RCLayeredMembraneSection") == 0) || (strcmp(argv[1], "RCLMS") == 0)) {
+        void* theMat = OPS_ReinforcedConcreteLayeredMembraneSection();
+        if (theMat != 0)
+            theSection = (SectionForceDeformation*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    else if ((strcmp(argv[1], "LayeredMembraneSection") == 0) || (strcmp(argv[1], "LMS") == 0)) {
+        void* theMat = OPS_LayeredMembraneSection();
+        if (theMat != 0)
+            theSection = (SectionForceDeformation*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    else if (strcmp(argv[1], "ElasticMembraneSection") == 0) {
+        void* theMat = OPS_ElasticMembraneSection();
+        if (theMat != 0)
+            theSection = (SectionForceDeformation*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
     else if (strcmp(argv[1],"Bidirectional") == 0) {
       void *theMat = OPS_Bidirectional();
       if (theMat != 0) 
@@ -1764,8 +1819,8 @@ buildSection(Tcl_Interp *interp, TclModelBuilder *theTclModelBuilder,
 
 	 //SectionForceDeformation *section = new FiberSection(secTag, numFibers, fiber);
    
-	 // Delete fibers
-	 for (i = 0; i < numFibers; i++)
+	 // Delete fibers created for patches and layers
+	 for (i = numSectionRepresFibers; i < numFibers; i++)
 	   delete fiber[i];
 
          if (section == 0)
@@ -1823,7 +1878,7 @@ buildSection(Tcl_Interp *interp, TclModelBuilder *theTclModelBuilder,
 	   section = new FiberSection3d(secTag, numFibers, fiber, theTorsion, currentSectionComputeCentroid);
    
 	 // Delete fibers
-	 for (i = 0; i < numFibers; i++)
+	 for (i = numSectionRepresFibers; i < numFibers; i++)
 	   delete fiber[i];
 
          if (section == 0)
@@ -2484,7 +2539,8 @@ int buildSectionThermal(Tcl_Interp *interp, TclModelBuilder *theTclModelBuilder,
 			//SectionForceDeformation *section = new FiberSection(secTag, numFibers, fiber);
 
 			SectionForceDeformation *section = 0;
-			section = new FiberSection3dThermal(secTag, numFibers, fiber, currentSectionComputeCentroid);
+            section = new FiberSection3dThermal(secTag, numFibers, fiber, theTorsion, currentSectionComputeCentroid); // GR
+            // section = new FiberSection3dThermal(secTag, numFibers, fiber, currentSectionComputeCentroid);
 
 			// Delete fibers
 			for (i = 0; i < numFibers; i++)

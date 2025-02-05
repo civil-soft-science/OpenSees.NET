@@ -67,7 +67,7 @@ int OPS_ShallowFoundationGen()
 
     int tags[2];
     int num = 2;
-    if (OPS_GetIntInput(num,tags) < 0) {
+    if (OPS_GetIntInput(&num,tags) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return -1;
     }
@@ -76,7 +76,7 @@ int OPS_ShallowFoundationGen()
 
     int ftype;
     num = 1;
-    if (OPS_GetIntInput(num,&ftype) < 0) {
+    if (OPS_GetIntInput(&num,&ftype) < 0) {
 	opserr<<"WARNING: invalid integer input\n";
 	return -1;
     }
@@ -238,7 +238,7 @@ q= GammaSoil*Dfoot;
 Nq= Nphi*exp(pi*tph);   
 if (PhiSoil == 0)
 {
-Nc = 5.7;  //using table 3.2 (Das, 2006)
+Nc = 5.14;  //using table 12.2 (Das, 2006)
 }
 else
 {
@@ -293,7 +293,7 @@ Qult = qu*Lfoot*Bfoot;
 
 //-------- CALCULATION OF Pult (LATERAL PASSIVE CAPACITY)
 Kp=Nphi;                                    //following Rankin's passive earth pressure theory (Rankin, 1857)
-Pult=(0.5*Kp*GammaSoil*Dfoot*Dfoot+2*cSoil*Dfoot*sqrt(Kp))*Lfoot;  //passive capacity of the footing 
+Pult=(0.5*Kp*GammaSoil*Dfoot*Dfoot+2*cSoil*Dfoot*sqrt(Kp))*Bfoot;  //passive capacity of the footing 
 //-------- END OF Pult CALCULATION
 
 //-------- CALCULATION OF Tult (LATERAL SLIDING CAPACITY)
@@ -437,7 +437,7 @@ z50mid=kvfactor*qmid/kvMidSpring;
 z50end=kvfactor*qend/kvEndSpring;
 z50endext=kvfactor*qendext/kvEndExt;
 xp50=kxpfactor*Pult/Kx;
-xt50=kxpfactor*Tult/Kx;
+xt50=kxtfactor*Tult/Kx;
 Cd=0.1;
 //--------- END OF Z50 AND X50 CALCULATION
 

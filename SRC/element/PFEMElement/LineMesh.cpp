@@ -44,7 +44,7 @@ int OPS_LineMesh() {
     // get tag and number of nodes
     int num = 2;
     int idata[2];
-    if (OPS_GetIntInput(num, idata) < 0) {
+    if (OPS_GetIntInput(&num, idata) < 0) {
         opserr << "WARNING: failed to read mesh tag, and number of nodes\n";
         return -1;
     }
@@ -64,7 +64,7 @@ int OPS_LineMesh() {
     // get node tags
     num = idata[1];
     ID ndtags(num);
-    if (OPS_GetIntInput(num, &ndtags(0)) < 0) {
+    if (OPS_GetIntInput(&num, &ndtags(0)) < 0) {
         opserr << "WARNING: failed to read node tags\n";
         return -1;
     }
@@ -73,7 +73,7 @@ int OPS_LineMesh() {
     // get id and ndf
     num = 2;
     int id[2];
-    if (OPS_GetIntInput(num, id) < 0) {
+    if (OPS_GetIntInput(&num, id) < 0) {
         opserr << "WARNING: failed to read mesh id and node ndf\n";
         return -1;
     }
@@ -83,7 +83,7 @@ int OPS_LineMesh() {
     // get size
     num = 1;
     double size;
-    if (OPS_GetDoubleInput(num, &size) < 0) {
+    if (OPS_GetDoubleInput(&num, &size) < 0) {
         opserr << "WARNING: failed to read mesh size\n";
         return -1;
     }

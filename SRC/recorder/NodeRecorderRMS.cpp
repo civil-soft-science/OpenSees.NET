@@ -93,7 +93,7 @@ OPS_NodeRecorderRMS()
     ID nodes(0, 6);
     ID dofs(0, 6);
     ID timeseries(0, 6);
-
+    int numData = 1;
     while (OPS_GetNumRemainingInputArgs() > 0) {
 
         const char* option = OPS_GetString();
@@ -129,7 +129,7 @@ OPS_NodeRecorderRMS()
             }
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetIntInput(1, &inetPort) < 0) {
+                if (OPS_GetIntInput(&numData, &inetPort) < 0) {
                     opserr << "WARNING: failed to read inetPort\n";
                     return 0;
                 }
@@ -151,7 +151,7 @@ OPS_NodeRecorderRMS()
         else if (strcmp(option, "-dT") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetDoubleInput(1, &dT) < 0) {
+                if (OPS_GetDoubleInput(&numData, &dT) < 0) {
                     opserr << "WARNING: failed to read dT\n";
                     return 0;
                 }
@@ -160,7 +160,7 @@ OPS_NodeRecorderRMS()
         else if (strcmp(option, "-rTolDt") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetDoubleInput(1, &rTolDt) < 0) {
+                if (OPS_GetDoubleInput(&numData, &rTolDt) < 0) {
                     opserr << "WARNING: failed to read rTolDt\n";
                     return 0;
                 }
@@ -171,7 +171,7 @@ OPS_NodeRecorderRMS()
             while (OPS_GetNumRemainingInputArgs() > 0) {
 
                 int ts;
-                if (OPS_GetIntInput(1, &ts) < 0) {
+                if (OPS_GetIntInput(&numData, &ts) < 0) {
 		  // OPS_ResetCurrentInputArg(-1);
                     break;
                 }
@@ -188,7 +188,7 @@ OPS_NodeRecorderRMS()
         else if (strcmp(option, "-precision") == 0) {
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetIntInput(1, &precision) < 0) {
+                if (OPS_GetIntInput(&numData, &precision) < 0) {
                     opserr << "WARNING: failed to read precision\n";
                     return 0;
                 }
@@ -199,7 +199,7 @@ OPS_NodeRecorderRMS()
             while (OPS_GetNumRemainingInputArgs() > 0) {
 
                 int nd;
-                if (OPS_GetIntInput(1, &nd) < 0) {
+                if (OPS_GetIntInput(&numData, &nd) < 0) {
 		  //                    OPS_ResetCurrentInputArg(-1);
                     break;
                 }
@@ -210,14 +210,14 @@ OPS_NodeRecorderRMS()
             int start, end;
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetIntInput(1, &start) < 0) {
+                if (OPS_GetIntInput(&numData, &start) < 0) {
                     opserr << "WARNING: failed to read start node\n";
                     return 0;
                 }
             }
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetIntInput(1, &end) < 0) {
+                if (OPS_GetIntInput(&numData, &end) < 0) {
                     opserr << "WARNING: failed to read end node\n";
                     return 0;
                 }
@@ -235,7 +235,7 @@ OPS_NodeRecorderRMS()
             int tag;
             if (OPS_GetNumRemainingInputArgs() > 0) {
 
-                if (OPS_GetIntInput(1, &tag) < 0) {
+                if (OPS_GetIntInput(&numData, &tag) < 0) {
                     opserr << "WARNING: failed to read region tag\n";
                     return 0;
                 }
@@ -256,7 +256,7 @@ OPS_NodeRecorderRMS()
             while (OPS_GetNumRemainingInputArgs() > 0) {
 
                 int dof;
-                if (OPS_GetIntInput(1, &dof) < 0) {
+                if (OPS_GetIntInput(&numData, &dof) < 0) {
 		  //                    OPS_ResetCurrentInputArg(-1);
                     break;
                 }
@@ -486,6 +486,9 @@ NodeRecorderRMS::~NodeRecorderRMS()
       delete theTimeSeries[i];
     delete [] theTimeSeries;
   }
+
+  if (timeSeriesValues != 0)
+    delete [] timeSeriesValues;  
 }
 
 int 
@@ -1100,4 +1103,11 @@ double NodeRecorderRMS::getRecordedValue(int clmnId, int rowOffset, bool reset)
 	if (reset)
 	  count = 0;
 	return res;
+}
+
+int NodeRecorderRMS::flush(void) {
+  if (theHandler != 0) {
+    return theHandler->flush();
+  }
+  return 0;
 }

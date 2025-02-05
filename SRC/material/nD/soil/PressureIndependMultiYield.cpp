@@ -57,14 +57,14 @@ void* OPS_PressureIndependMultiYield()
     }
     
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid PressureIndependMultiYield tag" << "\n";
 	return 0;
     }
 
     int nd;
-    if (OPS_GetIntInput(numdata, &nd) < 0) {
+    if (OPS_GetIntInput(&numData, &nd) < 0) {
 	opserr << "WARNING invalid PressureIndependMultiYield nd" << "\n";
 	return 0;
     }
@@ -73,15 +73,15 @@ void* OPS_PressureIndependMultiYield()
     param[5] = 0.0;
     param[6] = 100.;
     param[7] = 0.0;
-    numdata = 8;
-    if (OPS_GetDoubleInput(numdata, &param[0]) < 0) {
+    numData = 8;
+    if (OPS_GetDoubleInput(&numData, &param[0]) < 0) {
 	opserr << "WARNING invalid PressureIndependMultiYield double inputs" << "\n";
 	return 0;
     }
 
     int numberOfYieldSurf = 20;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata, &numberOfYieldSurf) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData, &numberOfYieldSurf) < 0) {
 	opserr << "WARNING invalid PressureIndependMultiYield numberOfYieldSurf" << "\n";
 	return 0;
     }
@@ -90,9 +90,9 @@ void* OPS_PressureIndependMultiYield()
     // user defined yield surfaces
     if (numberOfYieldSurf < 0 && numberOfYieldSurf > -40) {
 	numberOfYieldSurf = -int(numberOfYieldSurf);
-	numdata = int(2*numberOfYieldSurf);
-	gredu = new double[numdata];
-	if (OPS_GetDoubleInput(numdata, gredu) < 0) {
+	numData = int(2*numberOfYieldSurf);
+	gredu = new double[numData];
+	if (OPS_GetDoubleInput(&numData, gredu) < 0) {
 	    opserr << "WARNING invalid PressureIndependMultiYield double inputs" << "\n";
 	    return 0;
 	}
@@ -592,13 +592,14 @@ NDMaterial * PressureIndependMultiYield::getCopy (void)
 
 NDMaterial * PressureIndependMultiYield::getCopy (const char *code)
 {
-  if (strcmp(code,"PressureIndependMultiYield") == 0 || strcmp(code,"PlaneStrain") == 0
-      || strcmp(code,"ThreeDimensional") == 0) {
+  if (strcmp(code,"PlaneStrain") == 0 || strcmp(code,"ThreeDimensional") == 0) {
     PressureIndependMultiYield * copy = new PressureIndependMultiYield(*this);
     return copy;
   }
-
-  return 0;
+  else {
+    opserr << "ERROR PressureIndependMultiYield::getCopy -- cannot make copy for type " << code << endln;
+    return 0;
+  }
 }
 
 

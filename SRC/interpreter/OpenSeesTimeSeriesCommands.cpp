@@ -52,8 +52,12 @@ void* OPS_ConstantSeries();
 void* OPS_LinearSeries();
 void* OPS_TriangleSeries();
 void* OPS_TrigSeries();
+void* OPS_RampSeries();
 void* OPS_RectangularSeries();
 void* OPS_PulseSeries();
+void* OPS_MPAccSeries();   //Tang.S
+void* OPS_DiscretizedRandomProcessSeries();
+void* OPS_SimulatedRandomProcessSeries();
 
 namespace {
     
@@ -78,8 +82,8 @@ namespace {
 
 	// get tag
 	int tag =0;
-	int numdata = 1;
-	if(OPS_GetIntInput(numdata,&tag) < 0) return 0;
+	int numData = 1;
+	if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
 
 	// get other inputs
 	double factor = -1.0, dt = -1.0;
@@ -101,7 +105,7 @@ namespace {
 		    opserr << "WARNING no dt is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(numdata, &dt) < 0) {
+		if (OPS_GetDoubleInput(&numData, &dt) < 0) {
 		    opserr << "WARNING invalid dt\n";
 		    return 0;
 		}
@@ -110,7 +114,7 @@ namespace {
 	    } else if (strcmp(arg, "-values") == 0) {
 		while(OPS_GetNumRemainingInputArgs() > 0) {
 		    double val;
-		    if (OPS_GetDoubleInput(numdata, &val) < 0) {
+		    if (OPS_GetDoubleInput(&numData, &val) < 0) {
 			OPS_ResetCurrentInputArg(loc);
 			break;
 		    }
@@ -123,7 +127,7 @@ namespace {
 		    opserr << "WARNING no factor is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(numdata, &factor) < 0) {
+		if (OPS_GetDoubleInput(&numData, &factor) < 0) {
 		    opserr << "WARNING invalid factor\n";
 		    return 0;
 		}
@@ -140,7 +144,7 @@ namespace {
 		    opserr << "WARNING no start time is given\n";
 		    return 0;
 		}
-		if (OPS_GetDoubleInput(numdata, &startTime) < 0) {
+		if (OPS_GetDoubleInput(&numData, &startTime) < 0) {
 		    opserr << "WARNING invalid start time\n";
 		    return 0;
 		}
@@ -165,7 +169,7 @@ namespace {
 	    } else if (strcmp(arg, "-time") == 0) {
 		while(OPS_GetNumRemainingInputArgs() > 0) {
 		    double val;
-		    if (OPS_GetDoubleInput(numdata, &val) < 0) {
+		    if (OPS_GetDoubleInput(&numData, &val) < 0) {
 			OPS_ResetCurrentInputArg(loc);
 			break;
 		    }
@@ -175,8 +179,6 @@ namespace {
 		
 	    }
 	}
-
-	if (factor < 0) factor = 1.0;
 
 	// create path series
 	if (dt > 0 && values.empty()==false) {
@@ -210,6 +212,8 @@ namespace {
     {
 	functionMap.insert(std::make_pair("Constant", &OPS_ConstantSeries));
 	functionMap.insert(std::make_pair("ConstantSeries", &OPS_ConstantSeries));
+	functionMap.insert(std::make_pair("RampSeries", &OPS_RampSeries));
+	functionMap.insert(std::make_pair("Ramp", &OPS_RampSeries));
 	functionMap.insert(std::make_pair("Trig", &OPS_TrigSeries));
 	functionMap.insert(std::make_pair("TrigSeries", &OPS_TrigSeries));
 	functionMap.insert(std::make_pair("Sine", &OPS_TrigSeries));
@@ -223,6 +227,10 @@ namespace {
 	functionMap.insert(std::make_pair("TriangleSeries", &OPS_TriangleSeries));
 	functionMap.insert(std::make_pair("Path", &OPS_PathSeries));
 	functionMap.insert(std::make_pair("Series", &OPS_PathSeries));
+	functionMap.insert(std::make_pair("MPAcc", &OPS_MPAccSeries));  //Tang.S
+	functionMap.insert(std::make_pair("MPAccSeries", &OPS_MPAccSeries));
+	functionMap.insert(std::make_pair("DiscretizedRandomProcess", &OPS_DiscretizedRandomProcessSeries));
+	functionMap.insert(std::make_pair("SimulatedRandomProcess", &OPS_SimulatedRandomProcessSeries));
       
 	return 0;
     }

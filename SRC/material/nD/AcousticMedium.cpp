@@ -38,7 +38,7 @@ OPS_AcousticMedium(void)
   dData[2] = 0.0;
   
   int numData = 1;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     printf("WARNING invalid integer tag: nDMaterial AcousticMedium \n");
     return 0;
   }
@@ -48,7 +48,7 @@ OPS_AcousticMedium(void)
   else
     numData = 2;
   
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     printf("WARNING invalid data: nDMaterial AcousticMedium : %d\n", iData[0]);
     return 0;
   }

@@ -58,7 +58,7 @@ OPS_AV3D4QuadWithSensitivity(void){
     return 0;
   }
 
-  if (OPS_GetIntInput(argc, idData) != 0) {
+  if (OPS_GetIntInput(&argc, idData) != 0) {
     opserr << "element AV3D4Quad error reading integers\n";
     return 0;
   }  

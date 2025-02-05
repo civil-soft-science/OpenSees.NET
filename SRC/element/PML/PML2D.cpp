@@ -26,15 +26,13 @@
 // University of Washington, UC. Los Angeles, U.C. Berkeley, 12, 2020
 
 
-
-
-#include <OPS_Globals.h>
-
 #include "PML2D.h"
 
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <math.h> 
+
+#include <OPS_Globals.h>
 #include <ID.h> 
 #include <Vector.h>
 #include <Matrix.h>
@@ -62,13 +60,17 @@ void* OPS_PML2D()
   
   int idata[5];
   int num = 5;
-  if (OPS_GetIntInput(num,idata)<0) {
+  if (OPS_GetIntInput(&num,idata)<0) {
     opserr<<"WARNING: invalid integer data\n";
     return 0;
   }
   
   double dData[PML2D_NUM_PROPS]; num = PML2D_NUM_PROPS;
-  if (OPS_GetDoubleInput(num,dData) < 0) {
+  // make last two indicies zero 
+  dData[PML2D_NUM_PROPS-2] = 0.0;
+  dData[PML2D_NUM_PROPS-1] = 0.0;
+
+  if (OPS_GetDoubleInput(&num,dData) < 0) {
     opserr<<"WARNING: invalid double data\n";
     return 0;
   }	
@@ -79,6 +81,7 @@ void* OPS_PML2D()
 //static data
 Matrix PML2D::tangent;
 Vector PML2D::resid(PML2D_NUM_DOF);
+int PML2D::eleCount = 0;
     
 //null constructor
 PML2D::PML2D( ) 
@@ -99,14 +102,16 @@ PML2D::PML2D(int tag,
   :Element(tag, ELE_TAG_PML2D),
    connectedExternalNodes(PML2D_NUM_NODES)
 {
+  eleCount++;
+  if (eleCount == 1) {
+    opserr << "Perfectly Matched Layer 2D (PML) element -  Written: W. Zhang, E. Taciroglu, L. Chen, P. Arduino, UCLA, UCLA, U.Washington, U.Washington\n ";
+  }
   for (int i=0; i<PML2D_NUM_NODES; i++) {
     connectedExternalNodes(i) = nodeTags[i];
     nodePointers[i] = 0;
   } 
   for (int i=0; i<PML2D_NUM_PROPS; i++)
     props[i] = eleData[i];
-  for (int i=0; i<PML2D_NUM_PROPS; i++)
-    opserr << props[i] << "\n";
 }
 
 //destructor 
@@ -146,19 +151,18 @@ void  PML2D::setDomain( Domain *theDomain )
   int NPROPS = PML2D_NUM_PROPS;
   int MCRD = 2; 
   int NNODE = PML2D_NUM_NODES;
+  double G[PML2D_NUM_DOF * PML2D_NUM_DOF];
 
-#ifndef _CSS
-  pml2d_(K,
+  pml2d_(K, 
        C, 
-       M,   
+       M,  
+       G, 
        &NDOFEL, 
        props, 
        &NPROPS, 
        coords, 
        &MCRD,
        &NNODE);
-#endif // !_CSS
-
 }
 
 
@@ -543,3 +547,4 @@ PML2D::updateParameter(int parameterID, Information &info)
     int res = -1;
     return res;
 }
+

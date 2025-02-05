@@ -55,8 +55,8 @@ void* OPS_Adapter()
     
     // tags
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING: invalid tag\n";
         return 0;
     }
@@ -71,9 +71,9 @@ void* OPS_Adapter()
     int numNodes = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int node;
-        numdata = 1;
+        numData = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(numdata, &node) < 0) {
+        if (OPS_GetIntInput(&numData, &node) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -98,9 +98,9 @@ void* OPS_Adapter()
         int numDOFi = 0;
         while (OPS_GetNumRemainingInputArgs() > 0) {
             int dof;
-            numdata = 1;
+            numData = 1;
             int numArgs = OPS_GetNumRemainingInputArgs();
-            if (OPS_GetIntInput(numdata, &dof) < 0) {
+            if (OPS_GetIntInput(&numData, &dof) < 0) {
                 if (numArgs > OPS_GetNumRemainingInputArgs()) {
                     // move current arg back by one
                     OPS_ResetCurrentInputArg(-1);
@@ -129,10 +129,10 @@ void* OPS_Adapter()
         return 0;
     }
     Matrix kb(numDOF, numDOF);
-    numdata = 1;
+    numData = 1;
     for (int i = 0; i < numDOF; i++) {
         for (int j = 0; j < numDOF; j++) {
-            if (OPS_GetDoubleInput(numdata, &kb(i, j)) < 0) {
+            if (OPS_GetDoubleInput(&numData, &kb(i, j)) < 0) {
                 opserr << "WARNING invalid stiffness value\n";
                 return 0;
             }
@@ -140,8 +140,8 @@ void* OPS_Adapter()
     }
     // ipPort
     int ipPort;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata, &ipPort) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData, &ipPort) < 0) {
         opserr << "WARNING: invalid ipPort\n";
         return 0;
     }
@@ -171,11 +171,11 @@ void* OPS_Adapter()
                 return 0;
             }
             double mij;
-            numdata = 1;
+            numData = 1;
             mb = new Matrix(numDOF, numDOF);
             for (int i = 0; i < numDOF; i++) {
                 for (int j = 0; j < numDOF; j++) {
-                    if (OPS_GetDoubleInput(numdata, &mij) < 0) {
+                    if (OPS_GetDoubleInput(&numData, &mij) < 0) {
                         opserr << "WARNING invalid damping value\n";
                         delete mb;
                         return 0;

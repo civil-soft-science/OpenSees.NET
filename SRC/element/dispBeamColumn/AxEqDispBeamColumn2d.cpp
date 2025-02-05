@@ -108,7 +108,7 @@ OPS_AxEqDispBeamColumn2d(void)
   int numData = 6;
   
   // check the that 6 integer are given as input data
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid element data\n";
     return 0;
   }
@@ -124,7 +124,7 @@ OPS_AxEqDispBeamColumn2d(void)
   // added by DANILO: reading of the specified axial force tolerance
   double tolerance;
   numData = 1;
-  if (OPS_GetDoubleInput(numData, &tolerance) != 0) {
+  if (OPS_GetDoubleInput(&numData, &tolerance) != 0) {
     opserr << "WARNING error reading tolerance" << eleTag << endln;
     return 0;
   }
@@ -132,7 +132,7 @@ OPS_AxEqDispBeamColumn2d(void)
   // optional quantities that can be defined for the element
   double mass = 0.0;
   int cMass = 0;
-  int numdata = 1;
+  numData = 1;
   int maxNumIters = 20;
   
   while (OPS_GetNumRemainingInputArgs() > 0) {
@@ -143,7 +143,7 @@ OPS_AxEqDispBeamColumn2d(void)
     }
     else if (strcmp(type, "-mass") == 0) {
       if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetDoubleInput(numData, &mass) < 0) {
+	if (OPS_GetDoubleInput(&numData, &mass) < 0) {
 	  opserr << "WARNING: invalid mass\n";
 	  return 0;
 	}
@@ -168,7 +168,7 @@ OPS_AxEqDispBeamColumn2d(void)
     // added by DANILO: optional parameter that can be specified is the number of internal element iterations 
     else if (strcmp(type, "-iter") == 0) {
       if (OPS_GetNumRemainingInputArgs() > 0) {
-	if (OPS_GetIntInput(numData, &maxNumIters) < 0 && maxNumIters<=0) {
+	if (OPS_GetIntInput(&numData, &maxNumIters) < 0 && maxNumIters<=0) {
 	  opserr << "WARNING: invalid max number of iterations\n";
 	  return 0;
 	}

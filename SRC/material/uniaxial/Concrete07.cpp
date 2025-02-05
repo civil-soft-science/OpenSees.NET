@@ -41,8 +41,8 @@
 
 void* OPS_Concrete07()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 9) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 9) {
 	opserr << "WARNING: Insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial Concrete07 tag? ";
 	opserr << "fpc? epsc0? Ec? fpt? epst0? xcrp? xcrn? r?\n";
@@ -50,15 +50,15 @@ void* OPS_Concrete07()
     }
 
     int tag;
-    numdata = 1;
-    if (OPS_GetIntInput(numdata,&tag) < 0) {
+    numData = 1;
+    if (OPS_GetIntInput(&numData,&tag) < 0) {
 	opserr << "WARNING invalid tag\n";
 	return 0;
     }
 
     double data[8];
-    numdata = 8;
-    if (OPS_GetDoubleInput(numdata,data)) {
+    numData = 8;
+    if (OPS_GetDoubleInput(&numData,data)) {
 	opserr << "WARNING invalid double data\n";
 	return 0;
     }

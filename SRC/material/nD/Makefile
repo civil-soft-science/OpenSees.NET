@@ -55,6 +55,9 @@ OBJS       = NDMaterial.o \
 	J2BeamFiber2d.o \
 	J2BeamFiber3d.o \
 	J2ThreeDimensional.o \
+	OrthotropicMaterial.o \
+	Series3DMaterial.o \
+	Parallel3DMaterial.o \
 	PlaneStrainMaterial.o \
 	PlaneStressMaterial.o \
 	PlaneStressUserMaterial.o \
@@ -72,6 +75,8 @@ OBJS       = NDMaterial.o \
 	TclModelBuilderNDMaterialCommand.o \
 	WrapperNDMaterial.o \
 	InitStressNDMaterial.o \
+	InitStrainNDMaterial.o \
+	MinMaxNDMaterial.o \
 	ConcreteMcftNonLinear5.o \
 	ConcreteMcftNonLinear7.o \
 	CapPlasticity.o \
@@ -93,7 +98,8 @@ OBJS       = NDMaterial.o \
 	PlateRebarMaterialThermal.o \
 	ElasticPlaneStress.o \
 	ElasticOrthotropicPlaneStress.o \
-	VonPapaDamage.o
+	VonPapaDamage.o \
+	ASDConcrete3DMaterial.o
 
 
 all: $(OBJS) 
@@ -105,6 +111,9 @@ all: $(OBJS)
 	@$(CD) $(FE)/material/nD/matCMM; $(MAKE);
 	@$(CD) $(FE)/material/nD/stressDensityModel; $(MAKE);
 	@$(CD) $(FE)/material/nD/UANDESmaterials; $(MAKE);
+	@$(CD) $(FE)/material/nD/OrthotropicRotatingAngleConcreteT2DMaterial01; $(MAKE);
+	@$(CD) $(FE)/material/nD/SmearedSteelDoubleLayerT2DMaterial01; $(MAKE);
+	@$(CD) $(FE)/material/nD/ASDPlasticMaterial3D; $(MAKE);
 
 test: $(OBJS) main.o
 	$(LINKER) $(LINKFLAGS) main.o ../../../SRC/api/elementAPI_Dummy.o $(FE_LIBRARY) \
@@ -131,6 +140,10 @@ spotless: clean
 	@$(CD) $(FE)/material/nD/matCMM; $(MAKE) wipe;
 	@$(CD) $(FE)/material/nD/stressDensityModel; $(MAKE) wipe;
 	@$(CD) $(FE)/material/nD/UANDESmaterials; $(MAKE) wipe;
+	@$(CD) $(FE)/material/nD/OrthotropicRotatingAngleConcreteT2DMaterial01; $(MAKE) wipe;
+	@$(CD) $(FE)/material/nD/SmearedSteelDoubleLayerT2DMaterial01; $(MAKE) wipe;
+	@$(CD) $(FE)/material/nD/ASDPlasticMaterial3D; $(MAKE) wipe;
+	
 
 wipe: spotless
 

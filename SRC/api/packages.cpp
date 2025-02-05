@@ -114,18 +114,18 @@ getLibraryFunction(const char* libName, const char* funcName, void** libHandle, 
         typedef int(_cdecl* OPS_ResetCurrentInputArgType)(int);
         //typedef int(_cdecl* OPS_ResetInputType)(ClientData, Tcl_Interp*, int, int, TCL_Char**, Domain*, TclModelBuilder*);
         //typedef int(_cdecl* OPS_ResetInputNoBuilderType)(ClientData, Tcl_Interp*, int, int, TCL_Char**, Domain*);
-        typedef int(_cdecl* OPS_GetIntInputPtrType)(int, int*);
-        typedef int(_cdecl* OPS_GetDoubleInputPtrType)(int, double*);
+        typedef int(_cdecl* OPS_GetIntInputPtrType)(const int*, int*);
+        typedef int(_cdecl* OPS_GetDoubleInputPtrType)(int*, double*);
         typedef const char* (_cdecl* OPS_GetStringType)();
         typedef int(_cdecl* OPS_GetStringCopyType)(char**);
-        typedef int(_cdecl* OPS_AllocateElementPtrType)(eleObj*, int*, int);
+        typedef int(_cdecl* OPS_AllocateElementPtrType)(eleObj*, int*, int*);
         typedef int(_cdecl* OPS_AllocateMaterialPtrType)(matObj*);
         typedef UniaxialMaterial* (*OPS_GetUniaxialMaterialPtrType)(int);
         typedef NDMaterial* (*OPS_GetNDMaterialPtrType)(int);
         typedef SectionForceDeformation* (*OPS_GetSectionForceDeformationPtrType)(int);
         typedef CrdTransf* (*OPS_GetCrdTransfPtrType)(int);
         typedef FrictionModel* (*OPS_GetFrictionModelPtrType)(int);
-        typedef int(_cdecl* OPS_GetNodeInfoPtrType)(int, int, double*);
+        typedef int(_cdecl* OPS_GetNodeInfoPtrType)(int*, int*, double*);
         typedef int(_cdecl* OPS_InvokeMaterialDirectlyPtrType)(matObject**, modelState*, double*, double*, double*, int*);
         typedef int(_cdecl* OPS_GetIntPtrType)();
 

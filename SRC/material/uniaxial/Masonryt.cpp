@@ -34,12 +34,12 @@ void* OPS_Masonryt()
   double dData[21]; 
   int numData; 
   numData = 1; 
-  if (OPS_GetIntInput(numData, iData) != 0) { 
+  if (OPS_GetIntInput(&numData, iData) != 0) { 
     opserr << "WARNING invalid uniaxialMaterial Masonryt tag" << endln; 
     return 0; 
   } 
   numData = 21; 
-  if (OPS_GetDoubleInput(numData, dData) != 0) { 
+  if (OPS_GetDoubleInput(&numData, dData) != 0) { 
     opserr << "WARNING invalid Masonryt Material Parameters\n"; 
     return 0;   
   } 

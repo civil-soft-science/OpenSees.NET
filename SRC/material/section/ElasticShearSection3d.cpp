@@ -49,12 +49,12 @@ void* OPS_ElasticShearSection3d()
     // get tag
     int tag;
     int numData = 1;
-    if(OPS_GetIntInput(numData,&tag) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&tag) < 0) return 0;
 
     // get data
     numData = 8;
     double data[8];
-    if(OPS_GetDoubleInput(numData,&data[0]) < 0) return 0;
+    if(OPS_GetDoubleInput(&numData,&data[0]) < 0) return 0;
 
     return new ElasticShearSection3d(tag,data[0],data[1],data[2],
 				     data[3],data[4],data[5],data[6],

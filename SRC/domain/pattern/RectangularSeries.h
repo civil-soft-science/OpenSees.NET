@@ -57,20 +57,28 @@ class RectangularSeries : public TimeSeries
     double getDuration () {return (tFinish - tStart);}
     double getPeakFactor () {return cFactor;}
     double getTimeIncr (double pseudoTime) {return (tFinish - tStart);}
-    
+    double getStartTime() { return tStart; } 
     // methods for output    
     int sendSelf(int commitTag, Channel &theChannel);
     int recvSelf(int commitTag, Channel &theChannel, 
 		 FEM_ObjectBroker &theBroker);
 
     void Print(OPS_Stream &s, int flag =0);    
-    
+
+    // AddingSensitivity:BEGIN //////////////////////////////////////////
+    double getFactorSensitivity(double pseudoTime);
+    int setParameter(const char **argv, int argc, Parameter &param);
+    int updateParameter(int parameterID, Information &info);
+    int activateParameter(int parameterID);
+    // AddingSensitivity:BEGIN //////////////////////////////////////////
+  
   protected:
 	
   private:
     double tStart;    // start time of the pulse
 	double tFinish;   // finish time of the pulse
     double cFactor;   // factor = cFactor for tStart <= t <= tFinish
+  int parameterID;
 };
 
 #endif

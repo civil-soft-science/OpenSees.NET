@@ -60,7 +60,7 @@ OPS_InitialStateAnalysisWrapperMaterial(void)
   	int iData[3];
 
   	int numData = 3;
-  	if (OPS_GetInt(numData, iData) != 0) {
+  	if (OPS_GetInt(&numData, iData) != 0) {
     	opserr << "WARNING invalid integer data: nDMaterial InitialStateAnalysisWrapper with tag: " << iData[0] << endln;
     	return 0;
   	}

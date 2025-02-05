@@ -64,7 +64,7 @@ void* OPS_LoadPattern()
     // get tags
     int tags[2];
     int numData = 2;
-    if(OPS_GetIntInput(numData, &tags[0]) < 0) {
+    if(OPS_GetIntInput(&numData, &tags[0]) < 0) {
 	opserr << "WARNING failed to get load pattern tag\n";
 	return 0;
     }
@@ -75,7 +75,7 @@ void* OPS_LoadPattern()
 	std::string type = OPS_GetString();
 	if(type=="-fact" || type=="-factor") {
 	    numData = 1;
-	    if(OPS_GetDoubleInput(numData,&fact) < 0) {
+	    if(OPS_GetDoubleInput(&numData,&fact) < 0) {
 		opserr << "WARNING failed to get load pattern factor\n";
 		return 0;
 	    }
@@ -1015,7 +1015,7 @@ LoadPattern::setParameter(const char **argv, int argc, Parameter &param)
       return -1;
 
     // Nodal load
-    if (strstr(argv[0],"loadAtNode") != 0) {
+    if (strncmp(argv[0],"loadAtNode",80) == 0) {
 
       if (argc < 3)
 	return -1;
@@ -1039,7 +1039,7 @@ LoadPattern::setParameter(const char **argv, int argc, Parameter &param)
 	  return -1;
     }
 
-    else if (strstr(argv[0],"elementPointLoad") != 0 || strstr(argv[0],"elementLoad") != 0) {
+    else if (strncmp(argv[0],"elementPointLoad",80) == 0 || strncmp(argv[0],"elementLoad",80) == 0) {
 
       if (argc < 3)
 	return -1;
@@ -1059,7 +1059,7 @@ LoadPattern::setParameter(const char **argv, int argc, Parameter &param)
       return -1;
     }
 
-    else if (strstr(argv[0],"randomProcessDiscretizer") != 0) {
+    else if (strncmp(argv[0],"randomProcessDiscretizer",80) == 0) {
 
       if (argc < 2)
 	return -1;
@@ -1067,6 +1067,14 @@ LoadPattern::setParameter(const char **argv, int argc, Parameter &param)
         RVisRandomProcessDiscretizer = true;
         return theSeries->setParameter(&argv[1], argc-1, param);
     }
+
+    else if (strncmp(argv[0],"timeSeries",80) == 0) {
+
+      if (argc < 2)
+	return -1;
+
+      return theSeries->setParameter(&argv[1], argc-1, param);
+    }    
 
     // Unknown parameter
     else

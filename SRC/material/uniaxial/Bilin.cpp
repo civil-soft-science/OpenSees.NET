@@ -40,6 +40,7 @@
 #include <Vector.h>
 #include <Channel.h>
 #include <cfloat>
+#include <MaterialResponse.h>
 
 #include <OPS_Globals.h>
 
@@ -51,7 +52,7 @@ OPS_Bilin()
 {
   if (numBilinMaterials == 0) {
     numBilinMaterials++;
-    opserr << "Modified Ibarra-Medina-Krawinkler Model with Bilinear Hysteretic Response\n";
+    opserr << "WARNING: DO NOT USE THE \"Bilin\" MATERIAL, IT HAS BEEN REPLACED. Use \"IMKBilin\" or \"HystereticSM\" INSTEAD.\n";
   }
 
   // Pointer to a uniaxial material that will be returned
@@ -61,7 +62,7 @@ OPS_Bilin()
   double dData[24];                             // Updated: Filipe Ribeiro and Andre Barbosa
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial  Bilin tag" << endln;
     return 0;
   }
@@ -77,7 +78,7 @@ OPS_Bilin()
     return 0;           // Updated: Filipe Ribeiro and Andre Barbosa
   }
  
-  //  if (OPS_GetDoubleInput(numData, dData) != 0) {                   // Updated: Filipe Ribeiro and Andre Barbosa 
+  //  if (OPS_GetDoubleInput(&numData, dData) != 0) {                   // Updated: Filipe Ribeiro and Andre Barbosa 
   //    opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? nFactor? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";         
   //    opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
   //    opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg\n";     
@@ -85,7 +86,7 @@ OPS_Bilin()
   //  }																	// Updated: Filipe Ribeiro and Andre Barbosa 
  
   if (numData == 23) {
-    if (OPS_GetDoubleInput(numData, dData) != 0) {             // Updated: Filipe Ribeiro and Andre Barbosa 
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {             // Updated: Filipe Ribeiro and Andre Barbosa 
       opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";            
       opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
       opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg? <nFactor?> \n";          // Updated: Filipe Ribeiro and Andre Barbosa
@@ -100,7 +101,7 @@ OPS_Bilin()
                             dData[20], dData[21], dData[22]);           // Updated: Filipe Ribeiro and Andre Barbosa
    
   } else if (numData == 24) { // Updated: Filipe Ribeiro and Andre Barbosa 
-    if (OPS_GetDoubleInput(numData, dData) != 0) {             
+    if (OPS_GetDoubleInput(&numData, dData) != 0) {             
       opserr << "Invalid Args want: uniaxialMaterial Bilin tag? Ke? AsPos? AsNeg? My_pos? My_neg? LamdaS? ";            
       opserr << "LamdaD?  LamdaA? LamdaK? Cs? Cd? Ca? Ck? Thetap_pos? Thetap_neg? Thetapc_pos? Thetapc_neg?KPos? "; 
       opserr << "KNeg? Thetau_pos? Thetau_neg? PDPlus?  PDNeg? <nFactor?>\n";           // Updated: Filipe Ribeiro and Andre Barbosa 
@@ -984,9 +985,11 @@ Bilin::setTrialStrain(double strain, double strainRate)
       // When we reach post capping slope goes to zero due to residual
       if(fyNeg>=KNeg*My_neg) { // If strength drops below residual
         fyNeg = KNeg*My_neg;
-        alphaNeg = 10^(-4);
+        //alphaNeg = 10^(-4); // This evaluates to -10 (bitwise XOR)
+	alphaNeg = 1.0e-4;
         fCapRefNeg = fyNeg;
-        capSlopeNeg = -pow(10.0,-6);
+        //capSlopeNeg = -pow(10.0,-6);
+	capSlopeNeg = -1.0e-6;
         flagstopdeg = 1;
       } else { //% Keep updating the post capping slope
 
@@ -999,7 +1002,8 @@ Bilin::setTrialStrain(double strain, double strainRate)
         capSlopeNeg = capSlopeNeg/(1+nFactor*(1-capSlopeNeg));  // Updated: Filipe Ribeiro and Andre Barbosa
         
 		if(capSlopeNeg >=0){
-          capSlopeNeg = -pow(10.0,-6);
+		  //capSlopeNeg = -pow(10.0,-6);
+		  capSlopeNeg = -1.0e-6;
         }
       }
      
@@ -1050,9 +1054,11 @@ Bilin::setTrialStrain(double strain, double strainRate)
       //   %If post capping slope goes to zero due to residual:
       if(fyPos <= KPos*My_pos) {  //% If yield Strength Pos drops below residual
         fyPos = KPos*My_pos;
-        alphaPos = pow(10.0,-4);
+        //alphaPos = pow(10.0,-4);
+        alphaPos = 1.0e-4;
         fCapRefPos = fyPos;
-        capSlope = -pow(10.0,-6);
+        //capSlope = -pow(10.0,-6);
+        capSlope = -1.0e-6;
         flagstopdeg = 1;              
       }  else { //% keep updating
 
@@ -1065,7 +1071,8 @@ Bilin::setTrialStrain(double strain, double strainRate)
         capSlope = capSlope/(1+nFactor*(1-capSlope));   // Updated: Filipe Ribeiro and Andre Barbosa
         
 		if(capSlope >=0) {
-          capSlope = -pow(10.0,-6);
+		  //capSlope = -pow(10.0,-6);
+		  capSlope = -1.0e-6;
         }
       }
       dyPos = fyPos/Ke;
@@ -1975,6 +1982,37 @@ Bilin::Print(OPS_Stream &s, int flag)
         s << "\"PDNeg\": " << PDNeg << ", ";
         s << "\"nFactor\": " << nFactor << "}";
     }
+}
+
+Response *Bilin::setResponse(const char **argv, int argc, OPS_Stream &theOutput)
+{
+  // See if the response is one of the defaults
+  Response *theResponse = UniaxialMaterial::setResponse(argv, argc, theOutput);
+
+  if (theResponse != 0)
+    return theResponse;
+
+  if (strcmp(argv[0], "RSE") == 0)
+  {
+    theOutput.tag("ResponseType", "RSE");
+    theResponse = new MaterialResponse(this, 101, CRSE);
+  }
+
+  theOutput.endTag();
+  return theResponse;
+}
+
+int Bilin::getResponse(int responseID, Information &matInformation)
+{
+  if (responseID == 101)
+  {
+    matInformation.setDouble(CRSE);
+  }
+  else
+  {
+    return UniaxialMaterial::getResponse(responseID, matInformation);
+  }
+  return 0;
 }
 
 //my functions

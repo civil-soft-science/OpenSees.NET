@@ -928,3 +928,10 @@ int ElementRecorder::removeComponentResponse(int compTag)
 }
 
 #endif // _CSS
+
+int ElementRecorder::flush(void) {
+  if (theOutputHandler != 0) {
+    return theOutputHandler->flush();
+  }
+  return 0;
+}

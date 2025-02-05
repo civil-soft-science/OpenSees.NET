@@ -75,13 +75,13 @@ OPS_LysmerTriangle(void)
   int stage = 0;
 
   int numData = 4;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element LysmerTriangleElement" << endln;
     return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid data: element LysmerTriangle " << iData[0] << endln;
     return 0; 
   }
@@ -92,14 +92,14 @@ OPS_LysmerTriangle(void)
   if (num_args_remaining > 0)
   {
     numData = 1;
-    OPS_GetDoubleInput(numData, &eleLength);
+    OPS_GetDoubleInput(&numData, &eleLength);
   }
 
 // Its optional to set the element stage... will be set to 0 (damping mode) by default
   if (num_args_remaining > 0)
   {
     numData = 1;
-    OPS_GetIntInput(numData, &stage);
+    OPS_GetIntInput(&numData, &stage);
   }
 
   // Parsing was successful, allocate the material

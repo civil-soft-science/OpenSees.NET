@@ -44,7 +44,7 @@ void* OPS_LowOrderBeamIntegration(int& integrationTag, ID& secTags)
     // inputs: integrationTag,N
     int iData[2];
     int numData = 2;
-    if(OPS_GetIntInput(numData,&iData[0]) < 0) return 0;
+    if(OPS_GetIntInput(&numData,&iData[0]) < 0) return 0;
 
     integrationTag = iData[0];
     int N = iData[1];
@@ -64,18 +64,18 @@ void* OPS_LowOrderBeamIntegration(int& integrationTag, ID& secTags)
 
     // secTags
     int *secptr = &secTags(0);
-    if(OPS_GetIntInput(N,secptr) < 0) return 0;
+    if(OPS_GetIntInput(&N,secptr) < 0) return 0;
 
     // locations
     double *locptr = &pt(0);
-    if(OPS_GetDoubleInput(N,locptr) < 0) return 0;
+    if(OPS_GetDoubleInput(&N,locptr) < 0) return 0;
 
     // weights
     int Nc = OPS_GetNumRemainingInputArgs();
     Vector wt(Nc);
     if(Nc > 0) {
 	double *wtptr = &wt(0);
-	if(OPS_GetDoubleInput(Nc,wtptr) < 0) return 0;
+	if(OPS_GetDoubleInput(&Nc,wtptr) < 0) return 0;
     }
     
     return new LowOrderBeamIntegration(N,pt,Nc,wt);

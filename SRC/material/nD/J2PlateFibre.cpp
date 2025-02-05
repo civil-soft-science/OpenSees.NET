@@ -59,7 +59,7 @@ OPS_J2PlateFibreMaterial(void)
   dData[5] = 0.0;
   
   int numData = 1;
-  if (OPS_GetInt(numData, iData) != 0) {
+  if (OPS_GetInt(&numData, iData) != 0) {
     opserr << "WARNING invalid integer tag: nDMaterial J2PlateFibre \n";
     return 0;
   }
@@ -69,7 +69,7 @@ OPS_J2PlateFibreMaterial(void)
   else
     numData = 5;
   
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "WARNING invalid data: nDMaterial J2PlateFibre : " << iData[0] <<"\n";
     return 0;
   }  
@@ -832,7 +832,7 @@ J2PlateFibre::sendSelf (int commitTag, Channel &theChannel)
 {
   int res = 0;
 
-  static Vector data(6);
+  static Vector data(6+6);
   
   data(0) = this->getTag();
   data(1) = E;
@@ -840,6 +840,12 @@ J2PlateFibre::sendSelf (int commitTag, Channel &theChannel)
   data(3) = sigmaY;
   data(4) = Hiso;
   data(5) = Hkin;
+  data(6) = epsPn[0];
+  data(7) = epsPn[1];
+  data(8) = epsPn[2];
+  data(9) = epsPn[3];
+  data(10) = epsPn[4];
+  data(11) = alphan;
   
   res += theChannel.sendVector(this->getDbTag(), commitTag, data);
   if (res < 0) {
@@ -856,7 +862,7 @@ J2PlateFibre::recvSelf (int commitTag, Channel &theChannel,
 {
   int res = 0;
   
-  static Vector data(6);
+  static Vector data(6+6);
   
   res += theChannel.recvVector(this->getDbTag(), commitTag, data);
   if (res < 0) {
@@ -870,41 +876,66 @@ J2PlateFibre::recvSelf (int commitTag, Channel &theChannel,
   sigmaY = data(3);
   Hiso = data(4);
   Hkin = data(5);
+  epsPn[0] = data(6);
+  epsPn[1] = data(7);
+  epsPn[2] = data(8);
+  epsPn[3] = data(9);
+  epsPn[4] = data(10);
+  alphan = data(11);
+
+  this->revertToLastCommit();
   
   return res;
 }
 
 void
-J2PlateFibre::Print (OPS_Stream &s, int flag)
+J2PlateFibre::Print(OPS_Stream &s, int flag)
 {
-  s << "J2 Plate Fibre Material Model" << endln;
-  s << "\tE:  " << E << endln;
-  s << "\tnu:  " << nu << endln;
-  s << "\tsigmaY:  " << sigmaY << endln;
-  s << "\tHiso:  " << Hiso << endln;
-  s << "\tHkin:  " << Hkin << endln;
-  
-  return;
+    if (flag == OPS_PRINT_PRINTMODEL_MATERIAL) {
+        s << "J2 Plate Fibre Material Model" << endln;
+        s << "\tE:  " << E << endln;
+        s << "\tnu:  " << nu << endln;
+        s << "\tsigmaY:  " << sigmaY << endln;
+        s << "\tHiso:  " << Hiso << endln;
+        s << "\tHkin:  " << Hkin << endln;
+    }
+
+    if (flag == OPS_PRINT_PRINTMODEL_JSON) {
+        s << "\t\t\t{";
+        s << "\"name\": \"" << this->getTag() << "\", ";
+        s << "\"type\": \"J2PlateFibre\", ";
+        s << "\"E\": " << E << ", ";
+        s << "\"nu\": " << nu << ", ";
+        s << "\"fy\": " << sigmaY << ", ";
+        s << "\"Hiso\": " << Hiso << ", ";
+        s << "\"Hkin\": " << Hkin << "}";
+    }
 }
 
 int
 J2PlateFibre::setParameter(const char **argv, int argc,
 			    Parameter &param)
 {
-  if (strcmp(argv[0],"E") == 0)
+  if (strcmp(argv[0],"E") == 0) {
+    param.setValue(E);
     return param.addObject(1, this);
-  
-  else if (strcmp(argv[0],"nu") == 0)
+  }
+  else if (strcmp(argv[0],"nu") == 0) {
+    param.setValue(nu);
     return param.addObject(2, this);  
-  
-  else if (strcmp(argv[0],"sigmaY") == 0 || strcmp(argv[0],"fy") == 0)
+  }
+  else if (strcmp(argv[0],"sigmaY") == 0 || strcmp(argv[0],"fy") == 0 || strcmp(argv[0],"Fy") == 0) {
+    param.setValue(sigmaY);
     return param.addObject(5, this);
-
-  else if (strcmp(argv[0],"Hkin") == 0)
+  }
+  else if (strcmp(argv[0],"Hkin") == 0) {
+    param.setValue(Hkin);
     return param.addObject(6, this);
-
-  else if (strcmp(argv[0],"Hiso") == 0)
+  }
+  else if (strcmp(argv[0],"Hiso") == 0) {
+    param.setValue(Hiso);
     return param.addObject(7, this);
+  }
 
   return -1;
 }

@@ -71,13 +71,13 @@ OPS_BeamContact2D(void)
   int icSwitch = 0;
 
   int numData = 6;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element BeamContact2D " << iData[0] << endln;
 	return 0;
   }
 
   numData = 3;
-  if (OPS_GetDoubleInput(numData, dData) !=0) {
+  if (OPS_GetDoubleInput(&numData, dData) !=0) {
     opserr << "WARNING invalid data: element BeamContact2D " << dData[0] << endln;
 	return 0;
   }
@@ -93,7 +93,7 @@ OPS_BeamContact2D(void)
   numRemainingInputArgs -= 9;
   while (numRemainingInputArgs >= 1) {
     numData = 1;
-    if (OPS_GetIntInput(numData, &icSwitch) != 0) {
+    if (OPS_GetIntInput(&numData, &icSwitch) != 0) {
       opserr << "WARNING invalid initial contact flag: element BeamContact2D " << iData[0] << endln;
 	  return 0;
     }

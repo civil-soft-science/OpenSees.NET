@@ -55,6 +55,12 @@ Recorder::restart(void)
 }
 
 int 
+Recorder::flush(void)
+{
+  return 0;
+}
+
+int 
 Recorder::domainChanged(void)
 {
   return 0;

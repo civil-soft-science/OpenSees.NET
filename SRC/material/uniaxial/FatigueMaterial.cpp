@@ -57,8 +57,8 @@
 
 void* OPS_FatigueMaterial()
 {
-    int numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata < 2) {
+    int numData = OPS_GetNumRemainingInputArgs();
+    if (numData < 2) {
 	opserr << "WARNING insufficient arguments\n";
 	opserr << "Want: uniaxialMaterial Fatigue tag? matTag?";
 	opserr << " <-D_max dmax?> <-e0 e0?> <-m m?>" << endln;
@@ -67,8 +67,8 @@ void* OPS_FatigueMaterial()
     }
 
     int idata[2];
-    numdata = 2;
-    if (OPS_GetIntInput(numdata,idata)<0) {
+    numData = 2;
+    if (OPS_GetIntInput(&numData,idata)<0) {
 	opserr<<"WARNING invlid int inputs\n";
 	return 0;
     }
@@ -78,32 +78,32 @@ void* OPS_FatigueMaterial()
     double m         = -0.458;
     double epsmin    = NEG_INF_STRAIN;
     double epsmax    = POS_INF_STRAIN;
-    numdata = 1;
+    numData = 1;
 
     while(OPS_GetNumRemainingInputArgs() > 1) {
 	const char* type = OPS_GetString();
 	if (strcmp(type,"-Dmax")==0) {
-	    if (OPS_GetDouble(numdata,&Dmax)<0) {
+	    if (OPS_GetDouble(&numData,&Dmax)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-E0")==0) {
-	    if (OPS_GetDouble(numdata,&E0)<0) {
+	    if (OPS_GetDouble(&numData,&E0)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-m")==0) {
-	    if (OPS_GetDouble(numdata,&m)<0) {
+	    if (OPS_GetDouble(&numData,&m)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-min")==0) {
-	    if (OPS_GetDouble(numdata,&epsmin)<0) {
+	    if (OPS_GetDouble(&numData,&epsmin)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }
 	} else if (strcmp(type,"-max")==0) {
-	    if (OPS_GetDouble(numdata,&epsmax)<0) {
+	    if (OPS_GetDouble(&numData,&epsmax)<0) {
 		opserr<<"WARNING invalid double inputs\n";
 		return 0;
 	    }

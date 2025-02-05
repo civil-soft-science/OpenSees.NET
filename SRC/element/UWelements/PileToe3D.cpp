@@ -75,25 +75,25 @@ OPS_PileToe3D(void)
   double dData[2];
 
   int numData = 4;
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid integer data: element PileToe3D" << endln;
     return 0;
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "WARNING invalid radius data: element PileToe3D " << iData[0] << endln;
     return 0;  
   }
 
   numData = 1;
-  if (OPS_GetDoubleInput(numData, &dData[1]) != 0) {
+  if (OPS_GetDoubleInput(&numData, &dData[1]) != 0) {
     opserr << "WARNING invalid  k data: element PileToe3D " << iData[0] << endln;
     return 0;  
   }
 
   numData = 1;
-  if (OPS_GetIntInput(numData, &iData[4]) != 0) {
+  if (OPS_GetIntInput(&numData, &iData[4]) != 0) {
     opserr << "WARNING invalid integer crdTransf data: element PileToe3D" << iData[0] << endln;
     return 0;
   }

@@ -45,6 +45,9 @@ target_sources(OPS_Material
     PlaneStressLayeredMaterial.cpp
     PlateRebarMaterial.cpp
     PlaneStressRebarMaterial.cpp
+    OrthotropicMaterial.cpp
+    Series3DMaterial.cpp
+    Parallel3DMaterial.cpp
     CycLiqCP.cpp
     CycLiqCP3D.cpp
     CycLiqCPPlaneStrain.cpp
@@ -53,6 +56,8 @@ target_sources(OPS_Material
     CycLiqCPSPPlaneStrain.cpp
     WrapperNDMaterial.cpp
     InitStressNDMaterial.cpp
+    InitStrainNDMaterial.cpp
+    MinMaxNDMaterial.cpp    
     IncrementalElasticIsotropicThreeDimensional.cpp
     ConcreteMcftNonLinear5.cpp
     ConcreteMcftNonLinear7.cpp
@@ -76,6 +81,7 @@ target_sources(OPS_Material
     ElasticPlaneStress.cpp
     ElasticOrthotropicPlaneStress.cpp
     VonPapaDamage.cpp
+    ASDConcrete3DMaterial.cpp
   PUBLIC
     NDMaterial.h
     BeamFiberMaterial.h
@@ -116,6 +122,9 @@ target_sources(OPS_Material
     PlaneStressLayeredMaterial.h
     PlateRebarMaterial.h
     PlaneStressRebarMaterial.h
+    OrthotropicMaterial.h
+    Series3DMaterial.h
+    Parallel3DMaterial.h
     CycLiqCP.h
     CycLiqCP3D.h
     CycLiqCPPlaneStrain.h
@@ -124,6 +133,8 @@ target_sources(OPS_Material
     CycLiqCPSPPlaneStrain.h
     WrapperNDMaterial.h
     InitStressNDMaterial.h
+    InitStrainNDMaterial.h
+    MinMaxNDMaterial.h    
     IncrementalElasticIsotropicThreeDimensional.h
     ConcreteMcftNonLinear5.h
     ConcreteMcftNonLinear7.h
@@ -147,6 +158,7 @@ target_sources(OPS_Material
     ElasticPlaneStress.h
     ElasticOrthotropicPlaneStress.h
     VonPapaDamage.h
+    ASDConcrete3DMaterial.h
 )
 
 target_include_directories(OPS_Material PUBLIC ${CMAKE_CURRENT_LIST_DIR})
@@ -159,5 +171,7 @@ add_subdirectory(UWmaterials)
 add_subdirectory(matCMM)
 add_subdirectory(stressDensityModel)
 add_subdirectory(UANDESmaterials)
-
+add_subdirectory(OrthotropicRotatingAngleConcreteT2DMaterial01)
+add_subdirectory(SmearedSteelDoubleLayerT2DMaterial01)
+add_subdirectory(ASDPlasticMaterial3D)
 

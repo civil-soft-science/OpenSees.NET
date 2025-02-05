@@ -61,6 +61,7 @@ class EnvelopeNodeRecorder: public Recorder
 
     int record(int commitTag, double timeStamp);
     int restart(void);    
+    int flush(void);    
 
     int setDomain(Domain &theDomain);
     int sendSelf(int commitTag, Channel &theChannel);  
@@ -107,6 +108,7 @@ class EnvelopeNodeRecorder: public Recorder
     int addColumnInfo;
     TimeSeries **theTimeSeries;
     double *timeSeriesValues;
+  bool closeOnWrite;
 };
 
 #endif

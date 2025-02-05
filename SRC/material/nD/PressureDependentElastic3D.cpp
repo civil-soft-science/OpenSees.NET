@@ -43,8 +43,8 @@ void* OPS_PressureDependentElastic3D()
     }
 
     int tag = 0;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
 	opserr << "WARNING invalid PressureDependentElastic3D tag\n";
 	return 0;
     }
@@ -56,9 +56,9 @@ void* OPS_PressureDependentElastic3D()
     // double prp = 0.0;
     // double pop = 0.0;
     double data[6] = {0,0,0,0,0,0};
-    numdata = OPS_GetNumRemainingInputArgs();
-    if (numdata > 6) numdata = 6;
-    if (OPS_GetDoubleInput(numdata, data) < 0) {
+    numData = OPS_GetNumRemainingInputArgs();
+    if (numData > 6) numData = 6;
+    if (OPS_GetDoubleInput(&numData, data) < 0) {
 	opserr << "WARNING invalid PressureDependentElastic3D double inputs\n";
 	return 0;
     }

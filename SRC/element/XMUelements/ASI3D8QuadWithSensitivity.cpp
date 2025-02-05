@@ -44,7 +44,7 @@ Matrix  ASI3D8QuadWithSensitivity::mass(16,16) ;
 #include <elementAPI.h>
 
 void *
-OPS_ASID8QuadWithSensitivity(void){
+OPS_ASI3D8QuadWithSensitivity(void){
 
   static int idData[9];
 
@@ -55,7 +55,7 @@ OPS_ASID8QuadWithSensitivity(void){
     return 0;
   }
 
-  if (OPS_GetIntInput(argc, idData) != 0) {
+  if (OPS_GetIntInput(&argc, idData) != 0) {
     opserr << "element ASI3D8Quad error reading first 9 integers\n";
     return 0;
   }  

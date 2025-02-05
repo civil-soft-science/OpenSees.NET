@@ -53,7 +53,7 @@ void* OPS_TaylorHood2D()
     // tag, nd1, nd2, nd3
     num = 4;
     int idata[4];
-    if(OPS_GetIntInput(num,idata)<0) {
+    if(OPS_GetIntInput(&num,idata)<0) {
 	opserr << "WARNING: failed to read integers -- TaylorHood2D\n";
 	return 0;
     }
@@ -62,7 +62,7 @@ void* OPS_TaylorHood2D()
     num = OPS_GetNumRemainingInputArgs();
     if(num > 6) num = 6;
     double data[6] = {1000.0,1e-3,0,-9.81,1.0,2.15e9};
-    if(OPS_GetDoubleInput(num,data) < 0) {
+    if(OPS_GetDoubleInput(&num,data) < 0) {
 	opserr << "WARNING: failed to read doubles -- TaylorHood2D\n";
 	return 0;
     }

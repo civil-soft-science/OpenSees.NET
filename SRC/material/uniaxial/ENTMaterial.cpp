@@ -50,7 +50,7 @@ void* OPS_ENTMaterial()
 
     int tag;
     int num = 1;
-    if(OPS_GetIntInput(num, &tag) < 0) {
+    if(OPS_GetIntInput(&num, &tag) < 0) {
       opserr << "WARNING invalid tag for uniaxialMaterial ENT" << endln;
       return 0;
     }
@@ -60,7 +60,7 @@ void* OPS_ENTMaterial()
     if (num > 3)
       num = 3;
     
-    if(OPS_GetDoubleInput(num, data) < 0) {
+    if(OPS_GetDoubleInput(&num, data) < 0) {
       opserr << "Invalid data for uniaxialMaterial ENT " << tag << endln;
       return 0;
     }
@@ -126,7 +126,7 @@ ENTMaterial::getTangent(void)
     return 0;
   else {
     double tanhB = tanh(trialStrain*b);
-    return a*E*(1.0-tanhB*tanhB);
+    return a*E*b*(1.0-tanhB*tanhB);
   }
 }
 

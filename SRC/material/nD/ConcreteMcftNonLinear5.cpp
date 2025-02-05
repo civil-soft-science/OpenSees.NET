@@ -53,13 +53,13 @@ void *OPS_ConcreteMcftNonlinear5()
   double dData[8];
 
   int numData = 1;
-  if (OPS_GetInt(numData, &tag) != 0) {
+  if (OPS_GetInt(&numData, &tag) != 0) {
     opserr << "ERROR nDMaterial ConcreteMcftNonlinear5 - unable to read matTag" << endln;
     return 0;
   }
 
   numData = 8;
-  if (OPS_GetDouble(numData, dData) != 0) {
+  if (OPS_GetDouble(&numData, dData) != 0) {
     opserr << "ERROR nDMaterial ConcreteMcftNonlinear5 - unable to read inputs" << endln;    
     return 0;
   }

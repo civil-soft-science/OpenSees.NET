@@ -110,6 +110,7 @@ class Concrete02 : public UniaxialMaterial
     double sig;   
     double e;     
     double eps;   
+
 };
 
 

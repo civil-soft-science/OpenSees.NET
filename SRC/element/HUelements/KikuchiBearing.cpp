@@ -159,16 +159,16 @@ void* OPS_KikuchiBearing()
     } else {
 
     	//argv[2~4]
-    	int numdata = 1;
-    	if (OPS_GetIntInput(numdata, &eleTag) < 0) {
+    	int numData = 1;
+    	if (OPS_GetIntInput(&numData, &eleTag) < 0) {
     	    ifNoError = errDetected(ifNoError,"invalid eleTag");
     	}
 
-    	if (OPS_GetIntInput(numdata, &iNode) < 0) {
+    	if (OPS_GetIntInput(&numData, &iNode) < 0) {
     	    ifNoError = errDetected(ifNoError,"invalid iNode");
     	}
 
-    	if (OPS_GetIntInput(numdata, &jNode) < 0) {
+    	if (OPS_GetIntInput(&numData, &jNode) < 0) {
     	    ifNoError = errDetected(ifNoError,"invalid jNode");
     	}
     
@@ -193,12 +193,12 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-size")==0 && OPS_GetNumRemainingInputArgs()>1) { // -size size? totalRubber?
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &size)<0 || size<=0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &size)<0 || size<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid size");
     		}
 
-    		if (OPS_GetDoubleInput(numdata, &totalRubber)<0 || totalRubber<=0) {
+    		if (OPS_GetDoubleInput(&numData, &totalRubber)<0 || totalRubber<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid totalRubber");
     		}
 
@@ -206,8 +206,8 @@ void* OPS_KikuchiBearing()
 	
     	    } else if (strcmp(flag,"-totalHeight")==0 && OPS_GetNumRemainingInputArgs()>0) { // -totalHeight totalHeight?
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &totalHeight)<0 || totalHeight<=0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &totalHeight)<0 || totalHeight<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid totalHeight");
     		}
 
@@ -215,8 +215,8 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-nMSS")==0 && OPS_GetNumRemainingInputArgs()>0) { // -nMSS nMSS?
 
-    		numdata = 1;
-    		if (OPS_GetIntInput(numdata, &nMSS)<0 || nMSS<=0) {
+    		numData = 1;
+    		if (OPS_GetIntInput(&numData, &nMSS)<0 || nMSS<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid nMSS");
     		}
 
@@ -225,8 +225,8 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-matMSS")==0 && OPS_GetNumRemainingInputArgs()>0) { // -matMSS matMSSTag?
 
-    		numdata = 1;
-    		if (OPS_GetIntInput(numdata, &matMSSTag)<0) {
+    		numData = 1;
+    		if (OPS_GetIntInput(&numData, &matMSSTag)<0) {
     		    ifNoError = errDetected(ifNoError,"invalid matMSSTag");
     		}
 
@@ -240,8 +240,8 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-limDisp")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-limDisp limDisp?>
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &limDisp)<0 || limDisp<0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &limDisp)<0 || limDisp<0) {
     		    ifNoError = errDetected(ifNoError,"invalid limDisp");
     		}
 
@@ -250,8 +250,8 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-nMNS")==0 && OPS_GetNumRemainingInputArgs()>0) { // -nMNS nMNS?
 
-    		numdata = 1;
-    		if (OPS_GetIntInput(numdata, &nMNS)<0 || nMNS<=0) {
+    		numData = 1;
+    		if (OPS_GetIntInput(&numData, &nMNS)<0 || nMNS<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid nMNS");
     		}
 
@@ -259,8 +259,8 @@ void* OPS_KikuchiBearing()
 
 
     	    } else if (strcmp(flag,"-matMNS")==0 && OPS_GetNumRemainingInputArgs()>0) { // -matMNS matMNSTag?
-    		numdata = 1;
-    		if (OPS_GetIntInput(numdata, &matMNSTag)<0) {
+    		numData = 1;
+    		if (OPS_GetIntInput(&numData, &matMNSTag)<0) {
     		    ifNoError = errDetected(ifNoError,"invalid matMNSTag");
     		}
 
@@ -273,8 +273,8 @@ void* OPS_KikuchiBearing()
 
 
     	    } else if (strcmp(flag,"-lambda")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-lambda lambda?>
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &lambda)<0 || lambda<0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &lambda)<0 || lambda<0) {
     		    ifNoError = errDetected(ifNoError,"invalid lambda");
     		}
 
@@ -286,8 +286,8 @@ void* OPS_KikuchiBearing()
     		oriX.resize(3);
 
     		for (int j=1; j<=3; j++) {
-    		    numdata = 1;
-    		    if (OPS_GetDoubleInput(numdata, &value)<0) {
+    		    numData = 1;
+    		    if (OPS_GetDoubleInput(&numData, &value)<0) {
     			ifNoError = errDetected(ifNoError,"invalid orient");
     		    } else {
     			oriX(j-1) = value;
@@ -295,8 +295,8 @@ void* OPS_KikuchiBearing()
     		}
 
     		for (int j=1; j<=3; j++) {
-    		    numdata = 1;
-    		    if (OPS_GetDoubleInput(numdata, &value)<0) {
+    		    numData = 1;
+    		    if (OPS_GetDoubleInput(&numData, &value)<0) {
     			ifNoError = errDetected(ifNoError,"invalid orient");
     		    } else {
     			oriYp(j-1) = value;
@@ -308,8 +308,8 @@ void* OPS_KikuchiBearing()
     	    } else if (strcmp(flag,"-orient")==0 && OPS_GetNumRemainingInputArgs()>=3) { // <-orient yp1? yp2? yp3?>
 
     		for (int j=1; j<=3; j++) {
-    		    numdata = 1;
-    		    if (OPS_GetDoubleInput(numdata, &value)<0) {
+    		    numData = 1;
+    		    if (OPS_GetDoubleInput(&numData, &value)<0) {
     			ifNoError = errDetected(ifNoError,"invalid orient");
     		    } else {
     			oriYp(j-1) = value;
@@ -320,8 +320,8 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-mass")==0 && OPS_GetNumRemainingInputArgs()>0) { // <-mass mass?>
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &mass)<0 || mass<=0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &mass)<0 || mass<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid mass");
     		}
 
@@ -341,12 +341,12 @@ void* OPS_KikuchiBearing()
 	
     	    } else if (strcmp(flag,"-adjustPDOutput")==0 && OPS_GetNumRemainingInputArgs()>1) { // -adjustPDOutput ci? cj?
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &adjCi)<0 || adjCi<=0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &adjCi)<0 || adjCi<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid ci");
     		}
 
-    		if (OPS_GetDoubleInput(numdata, &adjCj)<0 || adjCj<=0) {
+    		if (OPS_GetDoubleInput(&numData, &adjCj)<0 || adjCj<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid cj");
     		}
 
@@ -354,16 +354,16 @@ void* OPS_KikuchiBearing()
 
     	    } else if (strcmp(flag,"-doBalance")==0 && OPS_GetNumRemainingInputArgs()>2) { // -doBalance limFo? limFi? nIter?
 
-    		numdata = 1;
-    		if (OPS_GetDoubleInput(numdata, &limFo)<0 || limFo<=0) {
+    		numData = 1;
+    		if (OPS_GetDoubleInput(&numData, &limFo)<0 || limFo<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid limFo");
     		}
 
-    		if (OPS_GetDoubleInput(numdata, &limFi)<0 || limFi<=0) {
+    		if (OPS_GetDoubleInput(&numData, &limFi)<0 || limFi<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid limFi");
     		}
 
-    		if (OPS_GetIntInput(numdata, &nIter)<0 || nIter<=0) {
+    		if (OPS_GetIntInput(&numData, &nIter)<0 || nIter<=0) {
     		    ifNoError = errDetected(ifNoError,"invalid nIter");
     		}
 

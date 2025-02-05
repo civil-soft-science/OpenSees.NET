@@ -18,14 +18,12 @@
 **                                                                    **
 ** ****************************************************************** */
                                                                         
-// $Revision: 1.31 $
-// $Date: 2010-04-23 22:56:02 $
-// $Source: /usr/local/cvs/OpenSees/SRC/element/brick/FourNodeTetrahedron.cpp,v $
-
-// Ed "C++" Love
-//
-// Eight node FourNodeTetrahedron element
-//
+// ============================================================================
+// 2018 By Jose Abell @ Universidad de los Andes, Chile
+// www.joseabell.com | https://github.com/jaabell | jaabell@miuandes.cl
+// ============================================================================
+// Please read detailed description in FourNodeTetrahedron.h.
+// ============================================================================
 
 #include <stdio.h> 
 #include <stdlib.h> 
@@ -55,13 +53,13 @@ void* OPS_FourNodeTetrahedron()
     if (OPS_GetNumRemainingInputArgs() < 6) 
     {
       opserr << "WARNING insufficient arguments\n";
-      opserr << "Want: element FourNodeTetrahedron eleTag? Node1? Node2? Node3? Node4? matTag?\n";
+      opserr << "Want: element FourNodeTetrahedron eleTag? Node1? Node2? Node3? Node4? matTag? (doInitDisp?)\n";
       return 0;
     }
 
     int idata[6];
     int num = 6;
-    if (OPS_GetIntInput(num,idata)<0) 
+    if (OPS_GetIntInput(&num,idata)<0) 
     {
       opserr<<"WARNING: invalid integer data\n";
       return 0;
@@ -75,6 +73,7 @@ void* OPS_FourNodeTetrahedron()
       opserr << "\nFourNodeTetrahedron element: " << idata[0] << endln;
     }
 
+    // Get the body forces
     double data[3] = {0,0,0};
     num = OPS_GetNumRemainingInputArgs();
 
@@ -84,13 +83,42 @@ void* OPS_FourNodeTetrahedron()
     }
     if (num > 0) 
     {
-      if (OPS_GetDoubleInput(num,data) < 0) 
+      if (OPS_GetDoubleInput(&num,data) < 0) 
       {
         opserr<<"WARNING: invalid double data\n";
         return 0;
       }     
     }
-    return new FourNodeTetrahedron(idata[0],idata[1],idata[2],idata[3],idata[4],*mat,data[0],data[1],data[2]);
+
+    //Get init disp flag
+
+    num = OPS_GetNumRemainingInputArgs();
+    
+    int do_init_disp_int = 0;
+    bool do_init_disp = false;
+
+
+    while (OPS_GetNumRemainingInputArgs() > 0) 
+    {
+        const char* type = OPS_GetString(); // Fetch the next string from input
+        if (strcmp(type, "-doInitDisp") == 0) 
+        {
+            num = 1;
+            OPS_GetIntInput(&num, &do_init_disp_int); 
+        }
+    }
+
+    do_init_disp = (bool) do_init_disp_int; 
+
+    Element* the_new_element_ptr = new FourNodeTetrahedron(idata[0],idata[1],idata[2],idata[3],idata[4],*mat,data[0],data[1],data[2], do_init_disp);
+
+    if (the_new_element_ptr == NULL)
+    {
+      opserr << "OPS_TenNodeTetrahedron() - Could not create pointer to new TenNodeTetrahedron object" << endln;
+      return 0;
+    }
+
+    return the_new_element_ptr;
 }
 
 void* OPS_FourNodeTetrahedron(const ID& info)
@@ -118,19 +146,19 @@ void* OPS_FourNodeTetrahedron(const ID& info)
 	}
 
 	// get tag
-	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &idata[5]) < 0) {
+	int numData = 1;
+	if (OPS_GetIntInput(&numData, &idata[5]) < 0) {
 	    opserr << "WARNING: failed to get material tag -- FourNodeTetrahedron\n";
 	    return 0;
 	}
 
 	// get body forces
-	numdata = OPS_GetNumRemainingInputArgs();
-	if (numdata > 3) {
-	    numdata = 3;
+	numData = OPS_GetNumRemainingInputArgs();
+	if (numData > 3) {
+	    numData = 3;
 	}
-	if (numdata > 0) {
-	    if (OPS_GetDoubleInput(numdata,data) < 0) {
+	if (numData > 0) {
+	    if (OPS_GetDoubleInput(&numData,data) < 0) {
 		opserr << "WARNING: failed to get body force -- FourNodeTetrahedron\n";
 		return 0;
 	    }
@@ -200,12 +228,12 @@ const double  FourNodeTetrahedron::sg[] = { 0.25 } ;
 const double  FourNodeTetrahedron::wg[] = { 0.166666666666666667 } ;
 
   
-static Matrix B(NumStressComponents,NumDOFsPerNode) ;
+Matrix FourNodeTetrahedron::B(NumStressComponents,NumDOFsPerNode) ;
 
 //null constructor
 FourNodeTetrahedron::FourNodeTetrahedron( ) 
 :Element( 0, ELE_TAG_FourNodeTetrahedron ),
- connectedExternalNodes(NumNodes), applyLoad(0), load(0), Ki(0)
+ connectedExternalNodes(NumNodes), applyLoad(0), load(0), Ki(0), do_init_disp(false)
 {
   B.Zero();
 
@@ -224,7 +252,7 @@ FourNodeTetrahedron::FourNodeTetrahedron( )
     initDisp[i] = Vector(3);
     initDisp[i].Zero();
   }
-  do_update = 1;
+  do_update = true;
 }
 
 
@@ -236,12 +264,12 @@ FourNodeTetrahedron::FourNodeTetrahedron(int tag,
        int node3,
        int node4,
        NDMaterial &theMaterial,
-       double b1, double b2, double b3)
+       double b1, double b2, double b3, bool do_init_disp_)
   :Element(tag, ELE_TAG_FourNodeTetrahedron),
-   connectedExternalNodes(4), applyLoad(0), load(0), Ki(0)
+   connectedExternalNodes(4), applyLoad(0), load(0), Ki(0), do_init_disp(do_init_disp_)
 {
   B.Zero();
-  do_update = 1;
+  do_update = true;
   connectedExternalNodes(0) = node1 ;
   connectedExternalNodes(1) = node2 ;
   connectedExternalNodes(2) = node3 ;
@@ -300,7 +328,12 @@ void  FourNodeTetrahedron::setDomain( Domain *theDomain )
   for ( i=0; i<NumNodes; i++ ) 
   {
       nodePointers[i] = theDomain->getNode( connectedExternalNodes(i) ) ;
-      initDisp[i] = nodePointers[i]->getDisp();
+
+
+      if(do_init_disp)
+      {
+        initDisp[i] = nodePointers[i]->getDisp();
+      }
   }
 
   this->DomainComponent::setDomain(theDomain);
@@ -453,8 +486,8 @@ void  FourNodeTetrahedron::Print(OPS_Stream &s, int flag)
         s << "\t\t\t{";
         s << "\"name\": " << this->getTag() << ", ";
         s << "\"type\": \"FourNodeTetrahedron\", ";
-        s << "\"nodes\": [" << connectedExternalNodes(0) << ", ";
-        for (int i = 1; i < 2; i++)
+        s << "\"nodes\": [";
+        for (int i = 0; i < 3; i++)
             s << connectedExternalNodes(i) << ", ";
         s << connectedExternalNodes(3) << "], ";
         s << "\"bodyForces\": [" << b[0] << ", " << b[1] << ", " << b[2] << "], ";
@@ -819,7 +852,7 @@ void   FourNodeTetrahedron::formInertiaTerms( int tangFlag )
   //zero mass 
   mass.Zero( ) ;
 
-  if(do_update == 0)
+  if(!do_update)
   {
     return ;
   }
@@ -939,8 +972,7 @@ int
 FourNodeTetrahedron::update(void) 
 {
 
-  if(do_update == 0)
-  {
+  if(!do_update ) {
     stiff.Zero();
     resid.Zero();
     mass.Zero();
@@ -1179,7 +1211,7 @@ void  FourNodeTetrahedron::formResidAndTangent( int tang_flag )
   stiff.Zero( ) ;
   resid.Zero( ) ;
 
-  if (do_update == 0)
+  if (!do_update)
   {
     return ;
   }
@@ -1316,7 +1348,7 @@ void  FourNodeTetrahedron::formResidAndTangent( int tang_flag )
         resid( jj + p ) += residJ(p)  ;
         if (applyLoad == 0)
         {
-          // resid( jj + p ) -= dvol[i]*b[p]*shp[3][j];
+          resid( jj + p ) -= dvol[i]*b[p]*shp[3][j];
         }
         else
         {
@@ -1452,7 +1484,7 @@ int  FourNodeTetrahedron::sendSelf (int commitTag, Channel &theChannel)
   // Now quad sends the ids of its materials
   int matDbTag;
   
-  static ID idData(27);
+  static ID idData(28);
 
   idData(24) = this->getTag();
   if (alphaM != 0 || betaK != 0 || betaK0 != 0 || betaKc != 0) 
@@ -1482,7 +1514,8 @@ int  FourNodeTetrahedron::sendSelf (int commitTag, Channel &theChannel)
   idData(17) = connectedExternalNodes(1);
   idData(18) = connectedExternalNodes(2);
   idData(19) = connectedExternalNodes(3);
-  idData(26) = do_update;
+  idData(26) = (int) do_update;
+  idData(27) = (int) do_init_disp;
   // idData(20) = connectedExternalNodes(4);
   // idData(21) = connectedExternalNodes(5);
   // idData(22) = connectedExternalNodes(6);
@@ -1530,7 +1563,7 @@ int  FourNodeTetrahedron::recvSelf (int commitTag,
   
   int dataTag = this->getDbTag();
 
-  static ID idData(27);
+  static ID idData(28);
   res += theChannel.recvID(dataTag, commitTag, idData);
   if (res < 0) {
     opserr << "WARNING FourNodeTetrahedron::recvSelf() - " << this->getTag() << " failed to receive ID\n";
@@ -1557,7 +1590,8 @@ int  FourNodeTetrahedron::recvSelf (int commitTag,
   connectedExternalNodes(1) = idData(17);
   connectedExternalNodes(2) = idData(18);
   connectedExternalNodes(3) = idData(19);
-  do_update = idData(26);
+  do_update = (bool) idData(26);
+  do_init_disp = (bool) idData(27);
   // connectedExternalNodes(4) = idData(20);
   // connectedExternalNodes(5) = idData(21);
   // connectedExternalNodes(6) = idData(22);
@@ -1902,10 +1936,10 @@ FourNodeTetrahedron::updateParameter(int parameterID, Information &info)
     }
     else if (parameterID == 1414)
     {
-      int new_do_update = info.theDouble;
-      if (do_update == 0 & new_do_update == 1)
+      bool new_do_update = info.theDouble;
+      if (!do_update  && new_do_update )
       {
-        do_update = 1;
+        do_update = true;
         Domain * mydomain = this->getDomain();
         opserr << "4Ntet::updateParameter - ele tag = " << this->getTag()  << " - sets to update and init disp ";
         for ( int i = 0; i < NumNodes; i++ ) 
@@ -1916,7 +1950,7 @@ FourNodeTetrahedron::updateParameter(int parameterID, Information &info)
         }
         opserr << endln;
       }
-      if(new_do_update == 0)
+      if(!new_do_update)
       {
         opserr << "4Ntet::updateParameter - ele tag = " << this->getTag()  << " - will not update\n";
       }
@@ -1936,19 +1970,7 @@ FourNodeTetrahedron::updateParameter(int parameterID, Information &info)
     }
 }
 
-/*
-      Inputs:
-         ss[4]     - Natural coordinates of point
-         xl[3][4]  - Nodal coordinates for element
 
-      Outputs:
-         xsj        - Jacobian determinant at point
-         shp[4][4]  - Shape functions and derivatives at point
-                     shp[0][i] = dN_i/dx
-                     shp[1][i] = dN_i/dy
-                     shp[2][i] = dN_i/dzc
-                     shp[3][i] =  N_i
-*/
 void  
 FourNodeTetrahedron::shp3d( const double ss[4], double &xsj, double shp[4][4], const double xl[3][4]   )
 {

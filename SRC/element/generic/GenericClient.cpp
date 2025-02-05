@@ -57,8 +57,8 @@ void* OPS_GenericClient()
     
     // tags
     int tag;
-    int numdata = 1;
-    if (OPS_GetIntInput(numdata, &tag) < 0) {
+    int numData = 1;
+    if (OPS_GetIntInput(&numData, &tag) < 0) {
         opserr << "WARNING: invalid tag\n";
         return 0;
     }
@@ -73,9 +73,9 @@ void* OPS_GenericClient()
     int numNodes = 0;
     while (OPS_GetNumRemainingInputArgs() > 0) {
         int node;
-        numdata = 1;
+        numData = 1;
         int numArgs = OPS_GetNumRemainingInputArgs();
-        if (OPS_GetIntInput(numdata, &node) < 0) {
+        if (OPS_GetIntInput(&numData, &node) < 0) {
             if (numArgs > OPS_GetNumRemainingInputArgs()) {
                 // move current arg back by one
                 OPS_ResetCurrentInputArg(-1);
@@ -100,9 +100,9 @@ void* OPS_GenericClient()
         int numDOFi = 0;
         while (OPS_GetNumRemainingInputArgs() > 0) {
             int dof;
-            numdata = 1;
+            numData = 1;
             int numArgs = OPS_GetNumRemainingInputArgs();
-            if (OPS_GetIntInput(numdata, &dof) < 0) {
+            if (OPS_GetIntInput(&numData, &dof) < 0) {
                 if (numArgs > OPS_GetNumRemainingInputArgs()) {
                     // move current arg back by one
                     OPS_ResetCurrentInputArg(-1);
@@ -122,13 +122,13 @@ void* OPS_GenericClient()
     
     // ipPort
     int ipPort;
-    numdata = 1;
+    numData = 1;
     type = OPS_GetString();
     if (strcmp(type, "-server") != 0) {
         opserr << "WARNING expecting -server ipPort <ipAddr>\n";
         return 0;
     }
-    if (OPS_GetIntInput(numdata, &ipPort) < 0) {
+    if (OPS_GetIntInput(&numData, &ipPort) < 0) {
         opserr << "WARNING: invalid ipPort\n";
         return 0;
     }
@@ -162,8 +162,8 @@ void* OPS_GenericClient()
                 opserr << "WARNING wrong dataSize specified\n";
                 return 0;
             }
-            numdata = 1;
-            if (OPS_GetIntInput(numdata, &dataSize) < 0) {
+            numData = 1;
+            if (OPS_GetIntInput(&numData, &dataSize) < 0) {
                 opserr << "WARNING invalid dataSize value\n";
                 return 0;
             }

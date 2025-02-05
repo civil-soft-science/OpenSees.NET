@@ -35,6 +35,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 *************************************************************************** */
 
 #include "DL_Interpreter.h"
+#include <iostream>
 
 DL_Interpreter  *ops_TheActiveInterpreter = 0;
 
@@ -78,6 +79,11 @@ DL_Interpreter::getDouble(double *, int numArgs)
     return -1;
 }
 
+int DL_Interpreter::getDoubleList(int* size, Vector* data)
+{
+    return -1;
+}
+
 const char*
 DL_Interpreter::getString()
 {
@@ -96,6 +102,11 @@ DL_Interpreter::getStringCopy(char **stringPtr)
     return -1;
 }
 
+int DL_Interpreter::evalDoubleStringExpression(const char* theExpression, double& current_val)
+{
+	return -1;
+}
+
 void
 DL_Interpreter::resetInput(int cArg)
 {
@@ -108,6 +119,18 @@ DL_Interpreter::setInt(int *, int numArgs, bool scalar)
     return -1;
 }
 
+int DL_Interpreter::setInt(std::vector<std::vector<int>> &data) {
+    return -1;
+}
+
+int DL_Interpreter::setInt(std::map<const char*, int>& data) {
+    return -1;
+}
+
+int DL_Interpreter::setInt(std::map<const char*, std::vector<int>>& data) {
+    return -1;
+}
+
 int
 DL_Interpreter::setDouble(double *, int numArgs, bool scalar)
 {
@@ -115,8 +138,42 @@ DL_Interpreter::setDouble(double *, int numArgs, bool scalar)
 }
 
 int
+DL_Interpreter::setDouble(std::vector<std::vector<double>>& data)
+{
+    return -1;
+}
+
+int DL_Interpreter::setDouble(std::map<const char*, double>& data) {
+    return -1;
+}
+
+int DL_Interpreter::setDouble(std::map<const char*, std::vector<double>>& data) {
+    return -1;
+}
+
+int
 DL_Interpreter::setString(const char*)
 {
+    return -1;
+}
+
+int
+DL_Interpreter::setString(std::vector<const char*>& data)
+{
+    return -1;
+}
+
+int DL_Interpreter::setString(std::map<const char*, const char*>& data) {
+    return -1;
+}
+
+int
+DL_Interpreter::setString(std::vector<std::vector<const char*>>& data)
+{
+    return -1;
+}
+
+int DL_Interpreter::setString(std::map<const char*, std::vector<const char*>>& data) {
     return -1;
 }
 

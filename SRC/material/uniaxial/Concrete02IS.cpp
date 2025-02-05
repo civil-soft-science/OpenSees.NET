@@ -61,7 +61,7 @@ OPS_Concrete02IS()
   double dData[8];
   int numData = 1;
 
-  if (OPS_GetIntInput(numData, iData) != 0) {
+  if (OPS_GetIntInput(&numData, iData) != 0) {
     opserr << "WARNING invalid uniaxialMaterial Concrete02IS tag" << endln;
     return 0;
   }
@@ -73,7 +73,7 @@ OPS_Concrete02IS()
     return 0;
   }
 
-  if (OPS_GetDoubleInput(numData, dData) != 0) {
+  if (OPS_GetDoubleInput(&numData, dData) != 0) {
     opserr << "Invalid #args, want: uniaxialMaterial Concrete02IS " << iData[0] << " E0? fpc? epsc0? fpcu? epscu? <rat? ft? Ets?>\n";
     return 0;
   }
@@ -101,6 +101,11 @@ Concrete02IS::Concrete02IS(int tag, double _E0, double _fc, double _epsc0, doubl
   ecminP = 0.0;
   deptP = 0.0;
 
+  if (fc > 0) fc = -fc;
+  if (epsc0 > 0) epsc0 = -epsc0;
+  if (fcu > 0) fcu = -fcu;
+  if (epscu > 0) epscu = -epscu;
+	  
   eP = E0;//2.0*fc / epsc0; // Marafi Change 2018/01/31
   epsP = 0.0;
   sigP = 0.0;
@@ -118,6 +123,11 @@ Concrete02IS::Concrete02IS(int tag, double _E0, double _fc, double _epsc0, doubl
   ecminP = 0.0;
   deptP = 0.0;
 
+  if (fc > 0) fc = -fc;
+  if (epsc0 > 0) epsc0 = -epsc0;
+  if (fcu > 0) fcu = -fcu;
+  if (epscu > 0) epscu = -epscu;
+	  
   eP = E0;//2.0*fc / epsc0; // Marafi Change 2018/01/31
   epsP = 0.0;
   sigP = 0.0;

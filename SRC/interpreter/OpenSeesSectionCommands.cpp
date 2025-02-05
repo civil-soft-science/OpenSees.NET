@@ -57,12 +57,13 @@
 //#include <FiberSectionGJThermal.h>
 #include <MembranePlateFiberSectionThermal.h>
 #include <LayeredShellFiberSectionThermal.h>
-#include <RCSectionIntegration.h>
+#include <PipeSection.h>
 
 void* OPS_ElasticSection2d();
 void* OPS_ElasticSection3d();
 void* OPS_ElasticShearSection2d();
 void* OPS_ElasticShearSection3d();
+void* OPS_ElasticBDShearSection2d();
 void* OPS_FiberSection2d();
 void* OPS_FiberSection3d();
 void* OPS_FiberSectionWarping3d();
@@ -81,17 +82,21 @@ void* OPS_CircReinfLayer();
 void* OPS_RectPatch();
 void* OPS_ElasticMembranePlateSection();
 void* OPS_MembranePlateFiberSection();
+void* OPS_MembranePlateFiberSectionThermal();
 void* OPS_DoubleMembranePlateFiberSection();
 void* OPS_ElasticWarpingShearSection2d();
 void* OPS_ElasticTubeSection3d();
 void* OPS_ParallelSection();
+void* OPS_ASDCoupledHinge3D();
 void* OPS_SectionAggregator();
 void* OPS_ElasticPlateSection();
 void* OPS_LayeredShellFiberSection();
+void* OPS_LayeredShellFiberSectionThermal();
 void* OPS_Bidirectional();
 void* OPS_Elliptical2();
 void* OPS_Isolator2spring();
 void* OPS_FiberSection2dThermal();
+void* OPS_FiberSection3dThermal();
 void* OPS_HSSSection();
 void* OPS_TubeSection();
 void* OPS_RCSection2d();
@@ -101,6 +106,10 @@ void* OPS_RCTunnelSection();
 void* OPS_UniaxialSection();
 void* OPS_RCTBeamSection2d();
 void* OPS_RCTBeamSectionUniMat2d();
+void* OPS_ReinforcedConcreteLayeredMembraneSection();	// M. J. Nunez - UChile
+void* OPS_LayeredMembraneSection();	// M. J. Nunez - UChile
+void* OPS_ElasticMembraneSection();	// M. J. Nunez - UChile
+void* OPS_PipeSection();
 
 namespace {
     static FiberSection2d* theActiveFiberSection2d = 0;
@@ -149,56 +158,6 @@ namespace {
 	    }
 	}
 
-	return theSec;
-    }
-
-    static void* OPS_FiberSection3dThermal(bool& isTorsion)
-    {
-	int numData = OPS_GetNumRemainingInputArgs();
-	if(numData < 1) {
-	    opserr<<"insufficient arguments for FiberSection3dThermal\n";
-	    return 0;
-	}
-
-	numData = 1;
-	int tag;
-	if (OPS_GetIntInput(numData, &tag) < 0) {
-	    opserr<<"WARNING: failed to read tag\n";
-	    return 0;
-	}
-
-	UniaxialMaterial *torsion = 0;
-	const char* opt = OPS_GetString();
-	numData = 1;
-	bool deleteTorsion = false;
-	if (strcmp(opt, "-GJ") == 0) {
-	  double GJ;
-	  if (OPS_GetDoubleInput(numData, &GJ) < 0) {
-	    opserr << "WARNING: failed to read GJ\n";
-	    return 0;
-	  }
-	  torsion = new ElasticMaterial(0,GJ);
-	  deleteTorsion = true;
-	}
-	if (strcmp(opt, "-torsion") == 0) {
-	  int torsionTag;
-	  if (OPS_GetIntInput(numData, &torsionTag) < 0) {
-	    opserr << "WARNING: failed to read torsion\n";
-	    return 0;
-	  }
-	  torsion = OPS_getUniaxialMaterial(torsionTag);
-	}
-	if (torsion == 0) {
-	  opserr << "WARNING torsion not speified for FiberSection\n";
-	  opserr << "\nFiberSection3dThermal section: " << tag << endln;
-	  return 0;
-	}
-
-	int num = 30;
-
-	SectionForceDeformation *theSec = new FiberSection3dThermal(tag,num);
-	if (deleteTorsion)
-	  delete torsion;
 	return theSec;
     }
 
@@ -259,8 +218,7 @@ namespace {
 	    theSec = OPS_FiberSection2dThermal();
 	    theActiveFiberSection2dThermal = (FiberSection2dThermal*)theSec;
 	} else if(ndm == 3) {
-	    bool isTorsion = false;
-	    theSec = OPS_FiberSection3dThermal(isTorsion);
+	    theSec = OPS_FiberSection3dThermal();
 	    theActiveFiberSection3dThermal = (FiberSection3dThermal*)theSec;
 	}
 
@@ -294,798 +252,13 @@ namespace {
 	  //theActiveNDFiberSection3d = (NDFiberSection3d*)theSec;
 	}
 
-	int data[2];
-	int numdata = 2;
-	if (OPS_GetIntInput(numdata, data) < 0) {
-	    opserr << "WARNING invalid integer" << endln;
-	    return 0;
-	}
-
-	int code;
-	const char* type = OPS_GetString();
-	if (strcmp(type,"Mz") == 0)
-	    code = SECTION_RESPONSE_MZ;
-	else if (strcmp(type,"P") == 0)
-	    code = SECTION_RESPONSE_P;
-	else if (strcmp(type,"Vy") == 0)
-	    code = SECTION_RESPONSE_VY;
-	else if (strcmp(type,"My") == 0)
-	    code = SECTION_RESPONSE_MY;
-	else if (strcmp(type,"Vz") == 0)
-	    code = SECTION_RESPONSE_VZ;
-	else if (strcmp(type,"T") == 0)
-	    code = SECTION_RESPONSE_T;
-	else {
-	    opserr << "WARNING invalid code" << endln;
-	    opserr << "Uniaxial section: " << data[0] << endln;
-	    return 0;
-	}
-
-	// Retrieve the uniaxial material from the model builder
-	UniaxialMaterial *theMat = OPS_getUniaxialMaterial(data[1]);
-
-	if (theMat == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "uniaxial material: " << data[0];
-	    opserr << "\nUniaxial section: " << data[1] << endln;
-	    return 0;
-	}
-
-	// Parsing was successful, allocate the section
-	//theSection = new GenericSection1d (tag, *theMat, code);
-
-	UniaxialMaterial *theMats[1];
-	theMats[0] = theMat;
-	ID codeID(1);
-	codeID(0) = code;
-	return new SectionAggregator(data[0], 1, theMats, codeID);
-    }
-  
-  static void* OPS_TubeSection()
-  {
-    if (OPS_GetNumRemainingInputArgs() < 6) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section Tube tag? matTag? D? t? nfw? nfr? <-nd shape?>" << endln;
-	    return 0;
-	}
-
-	int tag, matTag;
-	double D, t;
-	int nfw, nfr;
-
-	SectionForceDeformation* theSection = 0;
-
-	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
-	    opserr << "WARNING invalid section Tube tag" << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &matTag) < 0) {
-	    opserr << "WARNING invalid section Tube matTag" << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &D) < 0) {
-	    opserr << "WARNING invalid D" << endln;
-	    opserr << "Tube section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &t) < 0) {
-	    opserr << "WARNING invalid t" << endln;
-	    opserr << "Tube section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &nfw) < 0) {
-	    opserr << "WARNING invalid nfw" << endln;
-	    opserr << "Tube section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &nfr) < 0) {
-	    opserr << "WARNING invalid nfr" << endln;
-	    opserr << "Tube section: " << tag << endln;
-	    return 0;
-	}
-
-	TubeSectionIntegration tubesect(D, t, nfw, nfr);
-
-	int numFibers = tubesect.getNumFibers();
-
-	if (OPS_GetNumRemainingInputArgs() > 0) {
-
-	    double shape = 1.0;
-	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
-		    opserr << "WARNING invalid shape" << endln;
-		    opserr << "Tube section: " << tag << endln;
-		    return 0;
-		}
-	    }
-
-	    NDMaterial *theSteel = OPS_getNDMaterial(matTag);
-
-	    if (theSteel == 0) {
-		opserr << "WARNING ND material does not exist\n";
-		opserr << "material: " << matTag;
-		opserr << "\nTube section: " << tag << endln;
-		return 0;
-	    }
-
-	    NDMaterial **theMats = new NDMaterial *[numFibers];
-
-	    tubesect.arrangeFibers(theMats, theSteel);
-
-	    // Parsing was successful, allocate the section
-	    theSection = 0;
-	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		const char* flag = OPS_GetString();
-		if (strcmp(flag,"-nd") == 0) {
-		    theSection = new NDFiberSection3d(tag, numFibers, theMats, tubesect, shape);
-		} else if (strcmp(flag,"-ndWarping") == 0) {
-		    theSection = new NDFiberSectionWarping2d(tag, numFibers, theMats, tubesect, shape);
-		}
-	    }
-	    delete [] theMats;
-	}
-	else {
-	    UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(matTag);
-
-	    if (theSteel == 0) {
-		opserr << "WARNING uniaxial material does not exist\n";
-		opserr << "material: " << matTag;
-		opserr << "\nTube section: " << tag << endln;
-		return 0;
-	    }
-
-	    UniaxialMaterial **theMats = new UniaxialMaterial *[numFibers];
-
-	    tubesect.arrangeFibers(theMats, theSteel);
-
-	    // Parsing was successful, allocate the section
-	    theSection = new FiberSection2d(tag, numFibers, theMats, tubesect);
-
-	    delete [] theMats;
-	}
-	
-	return theSection;
-  }
-
-    static void* OPS_WFSection2d()
-    {
-	if (OPS_GetNumRemainingInputArgs() < 8) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section WFSection2d tag? matTag? d? tw? bf? tf? nfdw? nftf? <-nd shape?>" << endln;
-	    return 0;
-	}
-
-	int tag, matTag;
-	double d, tw, bf, tf;
-	int nfdw, nftf;
-
-	SectionForceDeformation* theSection = 0;
-
-	int numdata = 1;
-	if (OPS_GetIntInput(numdata, &tag) < 0) {
-	    opserr << "WARNING invalid section WFSection2d tag" << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &matTag) < 0) {
-	    opserr << "WARNING invalid section WFSection2d matTag" << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &d) < 0) {
-	    opserr << "WARNING invalid d" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &tw) < 0) {
-	    opserr << "WARNING invalid tw" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &bf) < 0) {
-	    opserr << "WARNING invalid bf" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetDoubleInput(numdata, &tf) < 0) {
-	    opserr << "WARNING invalid tf" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &nfdw) < 0) {
-	    opserr << "WARNING invalid nfdw" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	if (OPS_GetIntInput(numdata, &nftf) < 0) {
-	    opserr << "WARNING invalid nftf" << endln;
-	    opserr << "WFSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	WideFlangeSectionIntegration wfsect(d, tw, bf, tf, nfdw, nftf);
-
-	int numFibers = wfsect.getNumFibers();
-
-	if (OPS_GetNumRemainingInputArgs() > 0) {
-
-	    double shape = 1.0;
-	    if (OPS_GetNumRemainingInputArgs() > 1) {
-		if (OPS_GetDoubleInput(numdata, &shape) < 0) {
-		    opserr << "WARNING invalid shape" << endln;
-		    opserr << "WFSection2d section: " << tag << endln;
-		    return 0;
-		}
-	    }
-
-	    NDMaterial *theSteel = OPS_getNDMaterial(matTag);
-
-	    if (theSteel == 0) {
-		opserr << "WARNING ND material does not exist\n";
-		opserr << "material: " << matTag;
-		opserr << "\nWFSection2d section: " << tag << endln;
-		return 0;
-	    }
-
-	    NDMaterial **theMats = new NDMaterial *[numFibers];
-
-	    wfsect.arrangeFibers(theMats, theSteel);
-
-	    // Parsing was successful, allocate the section
-	    theSection = 0;
-	    if (OPS_GetNumRemainingInputArgs() > 0) {
-		const char* flag = OPS_GetString();
-		if (strcmp(flag,"-nd") == 0) {
-		    theSection = new NDFiberSection2d(tag, numFibers, theMats, wfsect, shape);
-		} else if (strcmp(flag,"-ndWarping") == 0) {
-		    theSection = new NDFiberSectionWarping2d(tag, numFibers, theMats, wfsect, shape);
-		}
-	    }
-	    delete [] theMats;
-	}
-	else {
-	    UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(matTag);
-
-	    if (theSteel == 0) {
-		opserr << "WARNING uniaxial material does not exist\n";
-		opserr << "material: " << matTag;
-		opserr << "\nWFSection2d section: " << tag << endln;
-		return 0;
-	    }
-
-	    UniaxialMaterial **theMats = new UniaxialMaterial *[numFibers];
-
-	    wfsect.arrangeFibers(theMats, theSteel);
-
-	    // Parsing was successful, allocate the section
-	    theSection = new FiberSection2d(tag, numFibers, theMats, wfsect);
-
-	    delete [] theMats;
-	}
-
-	return theSection;
+	return theSec;
     }  
-
-    static void* OPS_RCSection2d()
-    {
-	if (OPS_GetNumRemainingInputArgs() < 13) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section RCSection2d tag? coreTag? coverTag? steelTag? d? b? cover? Atop? Abottom? Aside? nfcore? nfcover? nfs?" << endln;
-	    return 0;
-	}
-
-	// int
-	int numdata = 4;
-	int idata[4];
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCSection2d int inputs" << endln;
-	    return 0;
-	}
-
-	int tag = idata[0];
-	int coreTag = idata[1];
-	int coverTag = idata[2];
-	int steelTag = idata[3];
-
-	// double
-	numdata = 6;
-	double data[6];
-	if (OPS_GetDoubleInput(numdata, data) < 0) {
-	    opserr << "WARNING invalid section RCSection2d double inputs" << endln;
-	    opserr << "RCSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	double d = data[0];
-	double b = data[1];
-	double cover = data[2];
-	double Atop = data[3];
-	double Abottom = data[4];
-	double Aside = data[5];
-
-	// int
-	numdata = 3;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCSection2d int inputs" << endln;
-	    opserr << "RCSection2d section: " << tag << endln;
-	    return 0;
-	}
-	int nfcore = idata[0];
-	int nfcover = idata[1];
-	int nfs = idata[2];
-
-	UniaxialMaterial *theCore = OPS_getUniaxialMaterial(coreTag);
-
-	if (theCore == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << coreTag;
-	    opserr << "\nRCSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	UniaxialMaterial *theCover = OPS_getUniaxialMaterial(coverTag);
-
-	if (theCover == 0) {
-	    opserr << "WARNING uniaxial material does not exist\4n";
-	    opserr << "material: " << coverTag;
-	    opserr << "\nRCSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(steelTag);
-
-	if (theSteel == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << steelTag;
-	    opserr << "\nRCSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	RCSectionIntegration rcsect(d, b, Atop, Abottom, Aside, cover, nfcore, nfcover, nfs);
-
-	int numFibers = rcsect.getNumFibers();
-
-	UniaxialMaterial **theMats = new UniaxialMaterial *[numFibers];
-
-	rcsect.arrangeFibers(theMats, theCore, theCover, theSteel);
-
-	// Parsing was successful, allocate the section
-	SectionForceDeformation* theSection = new FiberSection2d(tag, numFibers, theMats, rcsect);
-
-	delete [] theMats;
-	return theSection;
-    }
-
-    static void* OPS_RCTBeamSection2d()
-    {
-	if (OPS_GetNumRemainingInputArgs() < 18) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section RCTBeamSection2d tag? coreTag? coverTag? steelTag? d? bw? beff? hf? Atop? Abottom? flcov? wcov? Nflcover? Nwcover? Nflcore? Nwcore? NsteelTop?  NsteelBottom?" << endln;
-	    return 0;
-	}
-
-	// int
-	int numdata = 4;
-	int idata[6];
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
-	    return 0;
-	}
-	int tag = idata[0];
-	int coreTag = idata[1];
-	int coverTag = idata[2];
-	int steelTag = idata[3];
-
-	// double
-	numdata = 8;
-	double data[8];
-	if (OPS_GetDoubleInput(numdata, data) < 0) {
-	    opserr << "WARNING invalid double inputs" << endln;
-	    opserr << "RCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	double d = data[0];
-	double bw = data[1];
-	double beff = data[2];
-	double hf = data[3];
-	double Atop = data[4];
-	double Abottom = data[5];
-	double flcov = data[6];
-	double wcov = data[7];
-
-	// int
-	numdata = 6;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
-	    return 0;
-	}
-	int Nflcover = idata[0];
-	int Nwcover = idata[1];
-	int Nflcore = idata[2];
-	int Nwcore = idata[3];
-	int NsteelTop = idata[4];
-	int NsteelBottom = idata[5];
-
-	UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(steelTag);
-	if (theSteel == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << steelTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	RCTBeamSectionIntegration
-	    rctbeamsect(d, bw, beff, hf, Atop, Abottom, flcov, wcov,
-			Nflcover, Nwcover, Nflcore, Nwcore,
-			NsteelTop, NsteelBottom);
-
-
-	NDMaterial *theCore = OPS_getNDMaterial(coreTag);
-	if (theCore == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << coreTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	NDMaterial *theCover = OPS_getNDMaterial(coverTag);
-	if (theCover == 0) {
-	    opserr << "WARNING uniaxial material does not exist\4n";
-	    opserr << "material: " << coverTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	int numCFibers = rctbeamsect.getNumFibers(concrete);
-	int numSFibers = rctbeamsect.getNumFibers(steel);
-
-	NDMaterial **theNDMat = new NDMaterial *[numCFibers];
-	UniaxialMaterial **theUniMat = new UniaxialMaterial *[numSFibers];
-
-	rctbeamsect.arrangeFibers(theUniMat, theNDMat, theCore, theCover, theSteel);
-
-	//theSection = new McftSection2dfiber(tag, theNDMat, theUniMat, rctbeamsect);
-
-
-
-	RCTBeamSectionIntegration
-	    steel(d, bw, beff, hf, Atop, Abottom, flcov, wcov,
-		  0, 0, 0, 0,
-		  NsteelTop, NsteelBottom);
-	steel.arrangeFibers(theUniMat, theNDMat, 0, 0, theSteel);
-	FiberSection2d steelSec(0, numSFibers, theUniMat, steel);
-
-	RCTBeamSectionIntegration
-	    concrete(d, bw, beff, hf, Atop, Abottom, flcov, wcov,
-		     Nflcover, Nwcover, Nflcore, Nwcore,
-		     0, 0);
-	concrete.arrangeFibers(theUniMat, theNDMat, theCore, theCover, 0);
-	NDFiberSection2d concSec(0, numCFibers, theNDMat, concrete);
-
-
-
-	SectionForceDeformation *theSections[2];
-	theSections[1] = &steelSec;
-	theSections[0] = &concSec;
-	SectionForceDeformation *theSection = new ParallelSection(tag, 2, theSections);
-
-
-
-	delete [] theNDMat;
-	delete [] theUniMat;
-	return theSection;
-    }
-
-    static void* OPS_RCTBeamSectionUniMat2d()
-    {
-	if (OPS_GetNumRemainingInputArgs() < 18) {
-	    opserr << "WARNING insufficient arguments\n";
-	    opserr << "Want: section RCTBeamSection2d tag? coreTag? coverTag? steelTag? d? bw? beff? hf? Atop? Abottom? flcov? wcov? Nflcover? Nwcover? Nflcore? Nwcore? NsteelTop?  NsteelBottom?" << endln;
-	    return 0;
-	}
-
-	// int
-	int numdata = 4;
-	int idata[6];
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
-	    return 0;
-	}
-	int tag = idata[0];
-	int coreTag = idata[1];
-	int coverTag = idata[2];
-	int steelTag = idata[3];
-
-	// double
-	numdata = 8;
-	double data[8];
-	if (OPS_GetDoubleInput(numdata, data) < 0) {
-	    opserr << "WARNING invalid double inputs" << endln;
-	    opserr << "RCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	double d = data[0];
-	double bw = data[1];
-	double beff = data[2];
-	double hf = data[3];
-	double Atop = data[4];
-	double Abottom = data[5];
-	double flcov = data[6];
-	double wcov = data[7];
-
-	// int
-	numdata = 6;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCTBeamSection2d int inputs" << endln;
-	    return 0;
-	}
-	int Nflcover = idata[0];
-	int Nwcover = idata[1];
-	int Nflcore = idata[2];
-	int Nwcore = idata[3];
-	int NsteelTop = idata[4];
-	int NsteelBottom = idata[5];
-
-	UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(steelTag);
-	if (theSteel == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << steelTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	RCTBeamSectionIntegration
-	    rctbeamsect(d, bw, beff, hf, Atop, Abottom, flcov, wcov,
-			Nflcover, Nwcover, Nflcore, Nwcore,
-			NsteelTop, NsteelBottom);
-
-	UniaxialMaterial *theCore = OPS_getUniaxialMaterial(coreTag);
-	if (theCore == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << coreTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	UniaxialMaterial *theCover = OPS_getUniaxialMaterial(coverTag);
-	if (theCover == 0) {
-	    opserr << "WARNING uniaxial material does not exist\n";
-	    opserr << "material: " << coreTag;
-	    opserr << "\nRCTBeamSection2d section: " << tag << endln;
-	    return 0;
-	}
-
-	int numFibers = rctbeamsect.getNumFibers();
-
-	UniaxialMaterial **theUniMat = new UniaxialMaterial *[numFibers];
-
-	rctbeamsect.arrangeFibers(theUniMat, theCore, theCover, theSteel);
-
-	SectionForceDeformation *theSection = new FiberSection2d(tag, numFibers, theUniMat, rctbeamsect);
-
-	delete [] theUniMat;
-
-	return theSection;
-    }
-
-    static void* OPS_RCCircularSection()
-    {
-        if (OPS_GetNumRemainingInputArgs() < 13) {
-            opserr << "WARNING insufficient arguments\n";
-            opserr << "Want: section RCCircularSection tag? coreTag? coverTag? steelTag? d? cover? As? NringsCore? NringsCover? Nwedges? Nsteel? -GJ GJ <or> -torsion matTag\n";
-            return 0;
-        }
-
-	int idata[8];
-	double ddata[3];
-
-	int numdata = 4;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCCircularSection input\n";
-	    return 0;
-	}
-
-	numdata = 3;
-	if (OPS_GetDoubleInput(numdata, ddata) < 0) {
-	    opserr << "WARNING invalid section RCCircularSection input\n";
-	    return 0;
-	}
-
-	numdata = 4;
-	if (OPS_GetIntInput(numdata, &idata[4]) < 0) {
-	    opserr << "WARNING invalid section RCCircularSection input\n";
-	    return 0;
-	}
-	
-        int tag=idata[0], coreTag=idata[1], coverTag=idata[2], steelTag=idata[3];
-        double d=ddata[0], cover=ddata[1], As=ddata[2];
-        int ncore=idata[4], ncover=idata[5], nwedge=idata[6], nsteel=idata[7];
-
-        UniaxialMaterial *theCore = OPS_getUniaxialMaterial(coreTag);
-        
-        if (theCore == 0) {
-            opserr << "WARNING uniaxial material does not exist\n";
-            opserr << "material: " << coreTag; 
-            opserr << "\nRCCircularSection section: " << tag << endln;
-            return 0;
-        }
-        
-        UniaxialMaterial *theCover = OPS_getUniaxialMaterial(coverTag);
-        
-        if (theCover == 0) {
-            opserr << "WARNING uniaxial material does not exist\4n";
-            opserr << "material: " << coverTag; 
-            opserr << "\nRCCircularSection section: " << tag << endln;
-            return 0;
-        }
-        
-        UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(steelTag);
-
-        if (theSteel == 0) {
-            opserr << "WARNING uniaxial material does not exist\n";
-            opserr << "material: " << steelTag; 
-            opserr << "\nRCCircularSection section: " << tag << endln;
-            return 0;
-        }
-        
-        RCCircularSectionIntegration rcsect(d, As, cover, ncore, ncover, nwedge, nsteel);
-
-        int numFibers = rcsect.getNumFibers();
-
-        UniaxialMaterial **theMats = new UniaxialMaterial *[numFibers];
-
-        rcsect.arrangeFibers(theMats, theCore, theCover, theSteel);
-
-	UniaxialMaterial *torsion = 0;
-	const char* opt = OPS_GetString();
-	numdata = 1;
-	bool deleteTorsion = false;
-	if (strcmp(opt, "-GJ") == 0) {
-	  double GJ;
-	  if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
-	    opserr << "WARNING: failed to read GJ\n";
-	    return 0;
-	  }
-	  torsion = new ElasticMaterial(0,GJ);
-	  deleteTorsion = true;
-	}
-	if (strcmp(opt, "-torsion") == 0) {
-	  int torsionTag;
-	  if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
-	    opserr << "WARNING: failed to read torsion\n";
-	    return 0;
-	  }
-	  torsion = OPS_getUniaxialMaterial(torsionTag);
-	}
-	if (torsion == 0) {
-	  opserr << "WARNING torsion not speified for RCCircularSection\n";
-	  opserr << "\nRCCircularSection section: " << tag << endln;
-	  return 0;
-	}
-
-        // Parsing was successful, allocate the section
-        SectionForceDeformation* theSection = new FiberSection3d(tag, numFibers, theMats, rcsect, *torsion);
-	if (deleteTorsion)
-	  delete torsion;
-
-        delete [] theMats;
-
-	return theSection;
-    }
-
-    static void* OPS_RCTunnelSection()
-    {
-        if (OPS_GetNumRemainingInputArgs() < 13) {
-            opserr << "WARNING insufficient arguments\n";
-            opserr << "Want: section RCTunnelSection tag? concreteTag? steelTag? d? h? coverinner? coverouter? Asinner? Asouter? Nrings? Nwedges? Nbarsinner? Nbarsouter?\n";
-            return 0;
-        }
-
-	int idata[8];
-	double ddata[6];
-
-	int numdata = 3;
-	if (OPS_GetIntInput(numdata, idata) < 0) {
-	    opserr << "WARNING invalid section RCTunnelSection input\n";
-	    return 0;
-	}
-
-	numdata = 6;
-	if (OPS_GetDoubleInput(numdata, ddata) < 0) {
-	    opserr << "WARNING invalid section RCTunnelSection input\n";
-	    return 0;
-	}
-
-	numdata = 4;
-	if (OPS_GetIntInput(numdata, &idata[4]) < 0) {
-	    opserr << "WARNING invalid section RCTunnelSection input\n";
-	    return 0;
-	}
-	
-        int tag=idata[0], concreteTag=idata[1], steelTag=idata[2];
-        double d=ddata[0], h=ddata[1], coverinner=ddata[2], coverouter=ddata[3], Asinner=ddata[4], Asouter=ddata[5];
-        int nring=idata[3], nwedge=idata[4], nbarsinner=idata[5], nbarsouter=idata[6];
-
-        UniaxialMaterial *theConcrete = OPS_getUniaxialMaterial(concreteTag);
-        
-        if (theConcrete == 0) {
-            opserr << "WARNING uniaxial material does not exist\n";
-            opserr << "material: " << concreteTag; 
-            opserr << "\nRCTunnelSection section: " << tag << endln;
-            return 0;
-        }
-        
-        UniaxialMaterial *theSteel = OPS_getUniaxialMaterial(steelTag);
-
-        if (theSteel == 0) {
-            opserr << "WARNING uniaxial material does not exist\n";
-            opserr << "material: " << steelTag; 
-            opserr << "\nRCTunnelSection section: " << tag << endln;
-            return 0;
-        }
-        
-        RCTunnelSectionIntegration rcsect(d, h, Asinner, Asouter, coverinner, coverouter,
-					  nring, nwedge, nbarsinner, nbarsouter);
-
-        int numFibers = rcsect.getNumFibers();
-
-        UniaxialMaterial **theMats = new UniaxialMaterial *[numFibers];
-
-        rcsect.arrangeFibers(theMats, theConcrete, theSteel);
-
-	UniaxialMaterial *torsion = 0;
-	const char* opt = OPS_GetString();
-	numdata = 1;
-	bool deleteTorsion = false;
-	if (strcmp(opt, "-GJ") == 0) {
-	  double GJ;
-	  if (OPS_GetDoubleInput(numdata, &GJ) < 0) {
-	    opserr << "WARNING: failed to read GJ\n";
-	    return 0;
-	  }
-	  torsion = new ElasticMaterial(0,GJ);
-	  deleteTorsion = true;
-	}
-	if (strcmp(opt, "-torsion") == 0) {
-	  int torsionTag;
-	  if (OPS_GetIntInput(numdata, &torsionTag) < 0) {
-	    opserr << "WARNING: failed to read torsion\n";
-	    return 0;
-	  }
-	  torsion = OPS_getUniaxialMaterial(torsionTag);
-	}
-	if (torsion == 0) {
-	  opserr << "WARNING torsion not speified for RCCircularSection\n";
-	  opserr << "\nRCTunnelSection section: " << tag << endln;
-	  return 0;
-	}
-
-        // Parsing was successful, allocate the section
-        SectionForceDeformation* theSection = new FiberSection3d(tag, numFibers, theMats, rcsect, *torsion);
-
-        delete [] theMats;
-	if (deleteTorsion)
-	  delete torsion;
-
-	return theSection;
-    }
 
     static int setUpFunctions(void)
     {
 	functionMap.insert(std::make_pair("Elastic", &OPS_ElasticSection));
+	functionMap.insert(std::make_pair("ElasticBD", &OPS_ElasticBDShearSection2d));
 	functionMap.insert(std::make_pair("Fiber", &OPS_FiberSection));
 	functionMap.insert(std::make_pair("fiberSec", &OPS_FiberSection));
 	functionMap.insert(std::make_pair("FiberWarping", &OPS_FiberSectionWarping));
@@ -1098,6 +271,7 @@ namespace {
 	functionMap.insert(std::make_pair("Generic1d", &OPS_UniaxialSection));
 	functionMap.insert(std::make_pair("ElasticMembranePlateSection", &OPS_ElasticMembranePlateSection));
 	functionMap.insert(std::make_pair("PlateFiber", &OPS_MembranePlateFiberSection));
+	functionMap.insert(std::make_pair("PlateFiberThermal", &OPS_MembranePlateFiberSectionThermal));	
 	functionMap.insert(std::make_pair("DoublePlateFiber", &OPS_DoubleMembranePlateFiberSection));	
 	functionMap.insert(std::make_pair("ElasticWarpingShear", &OPS_ElasticWarpingShearSection2d));
 	functionMap.insert(std::make_pair("ElasticTube", &OPS_ElasticTubeSection3d));
@@ -1109,15 +283,24 @@ namespace {
 	functionMap.insert(std::make_pair("RCTBeamSection2d", &OPS_RCTBeamSection2d));
 	functionMap.insert(std::make_pair("RCTBeamSectionUniMat2d", &OPS_RCTBeamSectionUniMat2d));
 	functionMap.insert(std::make_pair("Parallel", &OPS_ParallelSection));
+	functionMap.insert(std::make_pair("ASDCoupledHinge3D", &OPS_ASDCoupledHinge3D));
 	functionMap.insert(std::make_pair("Aggregator", &OPS_SectionAggregator));
 	functionMap.insert(std::make_pair("AddDeformation", &OPS_SectionAggregator));
 	functionMap.insert(std::make_pair("ElasticPlateSection", &OPS_ElasticPlateSection));
 	functionMap.insert(std::make_pair("LayeredShell", &OPS_LayeredShellFiberSection));
+	functionMap.insert(std::make_pair("LayeredShellThermal", &OPS_LayeredShellFiberSectionThermal));	
 	functionMap.insert(std::make_pair("Bidirectional", &OPS_Bidirectional));
 	functionMap.insert(std::make_pair("Elliptical", &OPS_Elliptical2));	
 	functionMap.insert(std::make_pair("Isolator2spring", &OPS_Isolator2spring));
 	functionMap.insert(std::make_pair("RCCircularSection", &OPS_RCCircularSection));
 	functionMap.insert(std::make_pair("RCTunnelSection", &OPS_RCTunnelSection));
+	functionMap.insert(std::make_pair("ReinforcedConcreteLayeredMembraneSection", &OPS_ReinforcedConcreteLayeredMembraneSection));
+	functionMap.insert(std::make_pair("RCLayeredMembraneSection", &OPS_ReinforcedConcreteLayeredMembraneSection));
+	functionMap.insert(std::make_pair("RCLMS", &OPS_ReinforcedConcreteLayeredMembraneSection));
+	functionMap.insert(std::make_pair("LayeredMembraneSection", &OPS_LayeredMembraneSection));
+	functionMap.insert(std::make_pair("LMS", &OPS_LayeredMembraneSection));
+	functionMap.insert(std::make_pair("ElasticMembraneSection", &OPS_ElasticMembraneSection));
+	functionMap.insert(std::make_pair("Pipe", &OPS_PipeSection));
 
 	return 0;
     }
@@ -1254,9 +437,11 @@ int OPS_Fiber()
 
     }
 
+    if (theFiber != 0)
+       delete theFiber;
+	
     if (res < 0) {
 	opserr << "WARNING failed to add fiber to section\n";
-	delete theFiber;
 	return -1;
     }
 
@@ -1350,7 +535,8 @@ int OPS_Patch()
 		delete thePatch;
 		return -1;
 	    }
-	    theFiber = new UniaxialFiber3d(j,*material,area,cPos);
+	    double dval = cells[j]->getdValue();
+	    theFiber = new UniaxialFiber3d(j,*material,area,cPos,dval);
 	    theActiveFiberSectionWarping3d->addFiber(*theFiber);	
 
 	} else if (theActiveFiberSectionAsym3d != 0) {
@@ -1409,6 +595,8 @@ int OPS_Patch()
 	    theActiveNDFiberSectionWarping2d->addFiber(*theFiber);
 	}
 
+	if (theFiber != 0)
+	  delete theFiber;
 	delete cells[j];
     }
 
@@ -1565,7 +753,8 @@ int OPS_Layer()
 	    theActiveNDFiberSectionWarping2d->addFiber(*theFiber);
 	}
     
-
+	if (theFiber != 0)
+	  delete theFiber;
     }
 
     delete [] reinfBar;
